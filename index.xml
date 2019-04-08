@@ -6,9 +6,29 @@
     <description>Recent content on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Mon, 08 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>About</title>
+      <link>/about/</link>
+      <pubDate>Mon, 08 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/about/</guid>
+      <description>head spin - the Heads or Tails blog
+Data Scientist - Astrophysicist by training - Kaggler in my free time - Optimist - Heavenly Body - Curious at heart</description>
+    </item>
+    
+    <item>
+      <title>Prologue</title>
+      <link>/2019/04/08/prologue/</link>
+      <pubDate>Mon, 08 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/04/08/prologue/</guid>
+      <description>This one is all about change. In many ways life is about change. Not all change is good, but without it there would be no evolution. No progress. And as much as we sometimes want certain moments to last, stagnation is rarely a good thing. Without attempting something new it is impossible to say whether it will succeed. I guess that’s a verbose way of saying: I decided to start a blog.</description>
+    </item>
     
   </channel>
 </rss>
