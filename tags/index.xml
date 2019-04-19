@@ -6,10 +6,19 @@
     <description>Recent content in Tags on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 08 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 19 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Community</title>
+      <link>/tags/community/</link>
+      <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/community/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Journey</title>
@@ -17,6 +26,24 @@
       <pubDate>Mon, 08 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/journey/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Kaggle</title>
+      <link>/tags/kaggle/</link>
+      <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/kaggle/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Kaggle Days</title>
+      <link>/tags/kaggle-days/</link>
+      <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/kaggle-days/</guid>
       <description></description>
     </item>
     

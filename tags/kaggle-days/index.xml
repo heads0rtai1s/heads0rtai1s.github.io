@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on head spin - the Heads or Tails blog</title>
-    <link>/post/</link>
-    <description>Recent content in Posts on head spin - the Heads or Tails blog</description>
+    <title>Kaggle Days on head spin - the Heads or Tails blog</title>
+    <link>/tags/kaggle-days/</link>
+    <description>Recent content in Kaggle Days on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 19 Apr 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/kaggle-days/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -18,15 +18,6 @@
       
       <guid>/2019/04/19/great-community-kaggledays19/</guid>
       <description>The easy answer to this question is: the people. Great people build great communities. Case not quite closed yet, though, because there is more to it. Even the most promising group of individuals needs certain conditions in order to grow into a strong and thriving community. The kind of community that lifts up its members beyond their individual capabilities and becomes more than the sum of their proverbial skills and contributions.</description>
-    </item>
-    
-    <item>
-      <title>Prologue</title>
-      <link>/2019/04/08/prologue/</link>
-      <pubDate>Mon, 08 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/2019/04/08/prologue/</guid>
-      <description>This one is all about change. In many ways life is about change. Not all change is good, but without it there would be no evolution. No progress. And as much as we sometimes want certain moments to last, stagnation is rarely a good thing. Without attempting something new it is impossible to say whether it will succeed. I guess that’s a verbose way of saying: I decided to start a blog.</description>
     </item>
     
   </channel>
