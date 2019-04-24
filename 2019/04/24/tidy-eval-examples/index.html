@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.54.0" />
+
+
+<title>Tidy evaluation in R - Simple Examples - head spin - the Heads or Tails blog</title>
+<meta property="og:title" content="Tidy evaluation in R - Simple Examples - head spin - the Heads or Tails blog">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/avatar.png"
+         width="50"
+         height="50"
+         alt="Heads or Tails">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://twitter.com/heads0rtai1s">Twitter</a></li>
+    
+    <li><a href="https://www.kaggle.com/headsortails">Kaggle</a></li>
+    
+    <li><a href="https://www.linkedin.com/in/martin-henze">LinkedIn</a></li>
+    
+    <li><a href="https://github.com/heads0rtai1s">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">6 min read</span>
+    
+
+    <h1 class="article-title">Tidy evaluation in R - Simple Examples</h1>
+
+    
+    <span class="article-date">2019-04-24</span>
+    
+
+    <div class="article-content">
+      
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<p>The <a href="https://www.tidyverse.org/">tidyverse</a> philosophy introduced by <a href="http://hadley.nz/">Hadley Wickham</a> has been a game changer for the <a href="https://www.r-project.org/">R</a> community. It is based on intuitive rules of what a <em>tidy</em> data set should look like: <em>each variable is a column, each observation is a row</em> (<a href="https://www.jstatsoft.org/article/view/v059i10">Wickham 2014</a>). At its core, the tidyverse collection of R packages is powered by a consistent grammar of data manipulation and visualisation.</p>
+<p>The tidyverse grammar makes it easier to manipulate data sets using simple expressions that reduce the syntactic overhead and allow you to focus on the data. Thus, packages like <code>dplyr</code> or <code>tidyr</code> are great for exploratory data analysis (EDA) and hands-on data wrangling. A small downside of this approach is that these tools require a bit more effort when using them in functions with variable parameters. In general you want to use functions to improve the reusability and reproducibility of your code.</p>
+<p>This is where the <em>tidy evaluation</em> comes in. A few additional methods and concepts are sufficient to make all your tidy code run smoothly in a function context. Here I will go through some relatively simple examples to get you started.</p>
+<p>Before we begin we will need the following libraries:</p>
+<pre class="r"><code>libs &lt;- c(&#39;dplyr&#39;, &#39;tibble&#39;,              # wrangling
+          &#39;datasets&#39;,                     # data
+          &#39;knitr&#39;,&#39;kableExtra&#39;,           # table styling
+          &#39;ggplot2&#39;,&#39;gridExtra&#39;)          # plots, panels
+invisible(lapply(libs, library, character.only = TRUE))</code></pre>
+<p>We will use the <a href="https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/Orange.html">Orange data set</a>, which is part of the <a href="https://www.rdocumentation.org/packages/datasets/versions/3.5.3">datasets</a> package and records the growth of 5 orange trees. Here are the first 5 rows:</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Tree
+</th>
+<th style="text-align:right;">
+age
+</th>
+<th style="text-align:right;">
+circumference
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+118
+</td>
+<td style="text-align:right;">
+30
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+484
+</td>
+<td style="text-align:right;">
+51
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+664
+</td>
+<td style="text-align:right;">
+75
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+1004
+</td>
+<td style="text-align:right;">
+108
+</td>
+</tr>
+</tbody>
+</table>
+<p>Personally, I’m learning most efficiently by first looking at examples that show the code in action and then tweaking them to fit my needs. After playing with the code for a bit and inevitably breaking something I turn to the docs to understand more about the syntax and additional arguments of the function. Thus, all my posts on tools or methodology will follow the same pattern: I will jump right into the action by looking at a useful yet simple example or two. Next, I dissect this example, maybe break something, and explain the arguments. In closing, there will be a few more complex examples, caveats, pointers, and/or resources. Sounds good? Here we go:</p>
+<p>The first example is a function that takes as <em>input</em> a data frame <code>df</code> and a variable <code>var</code> from that data frame (i.e. a column/feature). The <em>output</em> is the difference between the (global) median and the mean of the variable. This is a realistic example of a concise helper function, since it goes beyond basic in-built tools and provides a quick check on whether a distribution is symmetric<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>:</p>
+<pre class="r"><code>median_minus_mean &lt;- function(df, var){
+  
+  var &lt;- enquo(var)
+  
+  df %&gt;% 
+    summarise(foo = median(!!var) - mean(!!var)) %&gt;% 
+    .$foo
+}</code></pre>
+<p>Now we apply it to the circumference of trees to find that the mean is larger than the median:</p>
+<pre class="r"><code>median_minus_mean(Orange, circumference)</code></pre>
+<pre><code>## [1] -0.8571429</code></pre>
+<p>To understand how it works here are the 2 key concepts:</p>
+<ul>
+<li><p><strong>Quoting:</strong> In the body of the function, the variable <code>var</code> is being quoted by the <code>enquo</code> function (borrowed from the <a href="https://cran.r-project.org/web/packages/rlang/index.html"><code>rlang</code> package</a>). This essentially means that the <em>content</em> (or <em>argument</em>) of the variable is being encoded. The quotation stops this variable from being immediately evaluated. Instead, its content is being treated as a functional R expression.</p></li>
+<li><p><strong>Unquoting:</strong> In order to tell a tidyverse verb like <code>summarise</code> that you are passing it the content of a quoted variable you need to unquote it. Practically you are copy-pasting the variable expression into the verb. This is done using the <code>!!</code> operator which Hadley wants to be pronounced <em>bang-bang</em>. I can only surmise that he said that because it makes boring conversations about code sound like wild-west movie fights.</p></li>
+</ul>
+<p>In most situations <code>enquo</code> and <code>!!</code> are all you need. Conceptually, there’s a bit more to it since <code>enquo</code> encodes the current state of the environment along with the variable. This is a useful property, which makes <code>enquo</code> aware of parameters defined outside a function, but for now you can ignore these finer details.</p>
+<p>(Talking about details: <code>foo</code> or <code>bar</code> are popular names for dummy variables in many programming languages. It’s just something that needs a name for the moment but can immediately be forgotten once its time-limited purpose is fulfilled.)</p>
+<p>Also: yes, this works:</p>
+<pre class="r"><code>median_minus_mean &lt;- function(df, var){
+  df %&gt;% 
+    summarise(foo = median(!!enquo(var)) - mean(!!enquo(var))) %&gt;% 
+    .$foo
+}
+median_minus_mean(Orange, circumference)</code></pre>
+<pre><code>## [1] -0.8571429</code></pre>
+<p>You can quote and unquote in the same step. Let’s go a bit further and include grouping by another variable, here the <code>age</code> of the trees:</p>
+<pre class="r"><code>median_minus_mean &lt;- function(df, var, gvar){
+  
+  var &lt;- enquo(var)
+  gvar &lt;- enquo(gvar)
+  
+  df %&gt;% 
+    group_by(!!gvar) %&gt;% 
+    summarise(foo = median(!!var) - mean(!!var)) %&gt;% 
+    .$foo
+}</code></pre>
+<pre class="r"><code>median_minus_mean(Orange, circumference, age)</code></pre>
+<pre><code>## [1] -1.0  0.2 -6.2 -9.2 -3.6  0.6  1.2</code></pre>
+<p>Turns out that for some ages the mean circumference is smaller than the median.</p>
+<p>Good news: quote/unquote also works for ggplot2. Here we quote the x, y, and colour-group variables of our plot:</p>
+<pre class="r"><code>plot_growth_tree &lt;- function(df, xvar, yvar, gvar){
+  
+  xvar &lt;- enquo(xvar)
+  yvar &lt;- enquo(yvar)
+  gvar &lt;- enquo(gvar)
+  
+  df %&gt;% 
+    ggplot(aes(!!xvar, !!yvar, col = !!gvar)) +
+    geom_line()
+}
+
+plot_growth_tree(Orange, age, circumference, Tree)</code></pre>
+<p><img src="/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Some trees grow faster than others.</p>
+<p>In fact, ggplot2 is a great use case because it allows us to quickly built helper functions if we need to repeat a certain plot for many similar features. Individual modification to those templates can be added using the ggplot2 grammar. Here is a histogram example where we add a custom title to the second plot<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>:</p>
+<pre class="r"><code>plot_hist &lt;- function(df, var, bins, bcol){
+  
+  var &lt;- enquo(var)
+  #bcol &lt;- as.character(sym(bcol))
+  
+  df %&gt;% 
+    ggplot(aes(!!var)) +
+    geom_histogram(bins = bins, fill = bcol, col = &quot;black&quot;)
+}</code></pre>
+<pre class="r"><code>p1 &lt;- plot_hist(Orange, age, 4, &quot;blue&quot;)
+p2 &lt;- plot_hist(Orange, circumference, 7, &quot;red&quot;) +
+  ggtitle(&quot;A custom title&quot;)
+
+grid.arrange(p1, p2, layout_matrix = rbind(c(1,2)))</code></pre>
+<p><img src="/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>You see that here the number of histogram bins and the plot colour are being passed to the function as normal integer and string - without need of being quoted. This works because these parameters are not R expressions.</p>
+<p>There will be a second post soon about more complex tidy evaluation examples. If you’re interested, watch this space.</p>
+<p>In the meantime: Curious about the bigger picture?</p>
+<ul>
+<li><p>The <a href="https://tidyeval.tidyverse.org/">tidy evaluation book</a> is a great starting guide into the concepts.</p></li>
+<li><p>This <a href="https://community.rstudio.com/t/interesting-tidy-eval-use-cases/21121/31">thread</a> collects some typical use cases for tidy evaluation.</p></li>
+<li><p>For a concise 5 minute intro to the main concepts by the man himself watch Hadley here:</p></li>
+</ul>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="//www.youtube.com/embed/nERXS3ssntw" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>If you are actually interested in the skewness of a distribution you can find a <code>skewness</code> function in the <a href="https://cran.r-project.org/package=e1071"><code>e1071</code> package</a>.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>The arranging of plots into panel layouts is done by the <a href="https://cran.r-project.org/web/packages/gridExtra/vignettes/arrangeGrob.html"><code>grid.arrange</code></a> function of the <a href="https://cran.r-project.org/web/packages/gridExtra/index.html"><code>gridExtra</code></a> package.<a href="#fnref2">↩</a></p></li>
+</ol>
+</div>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//headsortails.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137904077-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+  </body>
+</html>
+
