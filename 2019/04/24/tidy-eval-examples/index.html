@@ -212,7 +212,6 @@ plot_growth_tree(Orange, age, circumference, Tree)</code></pre>
 <pre class="r"><code>plot_hist &lt;- function(df, var, bins, bcol){
   
   var &lt;- enquo(var)
-  #bcol &lt;- as.character(sym(bcol))
   
   df %&gt;% 
     ggplot(aes(!!var)) +
