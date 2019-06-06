@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>head spin - the Heads or Tails blog</title>
@@ -6,10 +7,378 @@
     <description>Recent content on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 24 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 15 Jun 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Tidy evaluation in R - Complex use cases (feat. ggalluvial)</title>
+      <link>/2019/06/15/tidy-eval-examples/</link>
+      <pubDate>Sat, 15 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/06/15/tidy-eval-examples/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;In an &lt;a href=&#34;https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/&#34;&gt;earlier post&lt;/a&gt; I gave a gentle introduction to &lt;a href=&#34;https://tidyeval.tidyverse.org/&#34;&gt;tidy evaluation&lt;/a&gt; in the R &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; using simple examples. I covered quoting with &lt;code&gt;enquo&lt;/code&gt; and unquoting with &lt;code&gt;!!&lt;/code&gt; in brief &lt;code&gt;dplyr&lt;/code&gt; and &lt;code&gt;ggplot2&lt;/code&gt; snippets. Today, I aim to build a collection of more complex use cases involving additional tools.&lt;/p&gt;
+&lt;p&gt;Those are our libraries:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;stringr&amp;#39;,              # wrangling
+          &amp;#39;knitr&amp;#39;,&amp;#39;kableExtra&amp;#39;,           # table styling
+          &amp;#39;ggplot2&amp;#39;,&amp;#39;ggalluvial&amp;#39;)         # plots
+invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This time, the &lt;a href=&#34;https://ggplot2.tidyverse.org/reference/diamonds.html&#34;&gt;Diamonds dataset&lt;/a&gt; will be our best friend in exploring the depths of tidy eval. Included in the &lt;a href=&#34;https://cran.r-project.org/web/packages/ggplot2/index.html&#34;&gt;ggplot2 package&lt;/a&gt;, this dataset describes the price of 54k diamonds along with their cut, weight, clarity, size, and other relevant properties. Here are the first 4 rows:&lt;/p&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+carat
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+cut
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+color
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+clarity
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+depth
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+table
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+price
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+x
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+y
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+z
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.23
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Ideal
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+E
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+SI2
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+61.5
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+55
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+326
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+3.95
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+3.98
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2.43
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.21
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Premium
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+E
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+SI1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+59.8
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+61
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+326
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+3.89
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+3.84
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2.31
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.23
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Good
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+E
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+VS1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+56.9
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+65
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+327
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+4.05
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+4.07
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2.31
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.29
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Premium
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+I
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+VS2
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+62.4
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+58
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+334
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+4.20
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+4.23
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2.63
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The analogue to &lt;code&gt;enquo&lt;/code&gt; for encoding more than one variable is called &lt;code&gt;enquos&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;quote(mean(mass))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## mean(mass)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;expr(mean(mass))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## mean(mass)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_alluvial &amp;lt;- function(df, target, ...){
+  
+  target &amp;lt;- enquo(target)
+  cols &amp;lt;- enquos(...)
+  
+  df %&amp;gt;% 
+    count(!!!cols, !!target) %&amp;gt;% 
+    ggplot(aes(axis1 = !!!cols[1], axis2 = clarity, y = n)) +
+    geom_alluvium(aes(fill = !!target)) +
+    geom_stratum()
+  
+}
+
+plot_alluvial(diamonds, cut, color, clarity)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-06-15-tidy-eval-complex-examples_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_alluvial &amp;lt;- function(df, target, ...){
+  
+  target &amp;lt;- enquo(target)
+  cols &amp;lt;- enquos(...)
+  cols2 &amp;lt;- enexprs(...)
+  
+  #print(!!!cols[1])
+  print(!!!cols2[1])
+  
+}
+
+plot_alluvial(diamonds, cut, color, clarity)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As we all know, there was only 1 Big Bang&lt;/p&gt;
+&lt;p&gt;Who gif bb2 - caption: Or was there?&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Data flow visuals - alluvial vs ggalluvial in R</title>
+      <link>/2019/06/06/visuals-alluvial-ggalluvial/</link>
+      <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/06/06/visuals-alluvial-ggalluvial/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;I have long been a fan of creative data visualisation techniques. For me, the choice of visual representation is driven by both the type of data and the kind of question one wants to examine.&lt;/p&gt;
+&lt;p&gt;The power of its visualisation tools has been a major strength of the R language well before the &lt;a href=&#34;https://cran.r-project.org/web/packages/ggplot2/index.html&#34;&gt;ggplot2&lt;/a&gt; package and the &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; burst onto the scene. Today’s post will be an introductory examination of two similar packages that allow us to study the connection and &lt;em&gt;flow&lt;/em&gt; of data between different categorical features via &lt;strong&gt;alluvial plots&lt;/strong&gt;. Those packages are &lt;a href=&#34;https://cran.r-project.org/web/packages/alluvial/vignettes/alluvial.html&#34;&gt;alluvial&lt;/a&gt; and &lt;a href=&#34;https://cran.r-project.org/web/packages/ggalluvial/vignettes/ggalluvial.html&#34;&gt;ggalluvial&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;All in all we need the following libraries:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;stringr&amp;#39;, &amp;#39;forcats&amp;#39;,     # wrangling
+          &amp;#39;knitr&amp;#39;,&amp;#39;kableExtra&amp;#39;,               # table styling
+          &amp;#39;ggplot2&amp;#39;,&amp;#39;alluvial&amp;#39;,&amp;#39;ggalluvial&amp;#39;,  # plots
+          &amp;#39;nycflights13&amp;#39;)                     # data
+invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Alluvial plots are best explained by showing one. For illustrating the following examples we will take on board the flights data from the &lt;a href=&#34;https://cran.r-project.org/web/packages/nycflights13/index.html&#34;&gt;nycflights13 library&lt;/a&gt;. This comprehensive data set contains all flights that departed from the New York City airports JFK, LGA, and EWR in 2013. For this analysis, we will only look at three features - the 1st-class features if you will: airport of origin, destination airport, and carrier (i.e. airline code). From the metaphorical front of the cabin, here are the first 4 rows:&lt;/p&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+origin
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+carrier
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+dest
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+EWR
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+UA
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+IAH
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+LGA
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+UA
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+IAH
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+JFK
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+AA
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+MIA
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+JFK
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+B6
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+BQN
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The &lt;a href=&#34;https://github.com/mbojan/alluvial&#34;&gt;alluvial package&lt;/a&gt; was &lt;a href=&#34;http://bc.bojanorama.pl/2014/03/alluvial-diagrams/&#34;&gt;introduced in 2014&lt;/a&gt; to fill a niché in the landscape of visualisations. I have enjoyed using it in the past in &lt;a href=&#34;https://www.kaggle.com/headsortails/treemap-house-of-horror-spooky-eda-lda-features&#34;&gt;several&lt;/a&gt; &lt;a href=&#34;https://www.kaggle.com/headsortails/nyc-taxi-eda-update-the-fast-the-curious&#34;&gt;Kaggle&lt;/a&gt; &lt;a href=&#34;https://www.kaggle.com/headsortails/steering-wheel-of-fortune-porto-seguro-eda&#34;&gt;Kernels&lt;/a&gt;. Here’s what a plot looks like:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;top_dest &amp;lt;- flights %&amp;gt;% 
+  count(dest) %&amp;gt;% 
+  top_n(5, n) %&amp;gt;% 
+  pull(dest)
+
+top_carrier &amp;lt;- flights %&amp;gt;% 
+  filter(dest %in% top_dest) %&amp;gt;% 
+  count(carrier) %&amp;gt;% 
+  top_n(4, n) %&amp;gt;% 
+  pull(carrier)
+
+fly &amp;lt;- flights %&amp;gt;% 
+  filter(dest %in% top_dest &amp;amp; carrier %in% top_carrier) %&amp;gt;% 
+  count(origin, carrier, dest) %&amp;gt;% 
+  mutate(origin = fct_relevel(as.factor(origin), c(&amp;quot;EWR&amp;quot;, &amp;quot;LGA&amp;quot;, &amp;quot;JFK&amp;quot;)))
+
+alluvial(fly %&amp;gt;% select(-n),
+         freq=fly$n, border=NA, alpha = 0.5,
+         col=case_when(fly$origin == &amp;quot;JFK&amp;quot; ~ &amp;quot;red&amp;quot;,
+                       fly$origin == &amp;quot;EWR&amp;quot; ~ &amp;quot;blue&amp;quot;,
+                       TRUE ~ &amp;quot;orange&amp;quot;),
+         cex=0.75,
+         axis_labels = c(&amp;quot;Origin&amp;quot;, &amp;quot;Carrier&amp;quot;, &amp;quot;Destination&amp;quot;),
+         hide = fly$n &amp;lt; 150)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;The features are arranged horizontally, with their value counts stacked vertically. This corresponds to a stacked barplot: e.g. for the destinations “BOS” has fewer flights than “LAX”. Here we only look at the top 5 destination and their top 4 carriers (that’s the first two segments of the code above).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The “alluvia” are the bands that connect the features from left to right. Alluvia break down all feature combinations, with complexity increasing also from left to right. These sub-segments are called “flows”.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;This means that starting from the 3 origin airports on the left there are 4 “flows” each (i.e. 12 in total) connecting to the 4 main carriers. Between carrier and destination these then fan out into 5 flows each for a theoretical total of 60 different flows. In practice, we want to use the &lt;code&gt;hide&lt;/code&gt; parameter to exclude those flows that only have a few observations so that we can focus on the big picture.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;For further styling, a &lt;code&gt;border&lt;/code&gt; colour can be assigned to each alluvium. This would allow us to distinguish the different flows on the left side that then break into sub-flows on the right side. Feel free to try it out. Personally, I think the plot looks better without border colours.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;We chose a colour coding (argument &lt;code&gt;col&lt;/code&gt;) that puts focus on the origin airports. The first argument of the &lt;code&gt;alluvial&lt;/code&gt; function is the data set, followed by the frequency column (&lt;code&gt;freq&lt;/code&gt;). Note that &lt;code&gt;alluvial&lt;/code&gt; expects the data already to be in the shape of grouped counts (as prepared via &lt;code&gt;count&lt;/code&gt; in the third code segment above).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;In my view, the best transparency for alluvia is the default &lt;code&gt;alpha = 0.5&lt;/code&gt;. As usual, &lt;code&gt;cex&lt;/code&gt; does the font scaling and &lt;code&gt;axis_lables&lt;/code&gt; is pretty self-explanatory. The &lt;code&gt;hide&lt;/code&gt; parameter allows us to exclude very narrow alluvia. The best value here is data/problem specific.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The &lt;code&gt;alluvial&lt;/code&gt; function has an &lt;code&gt;ordering&lt;/code&gt; parameter, but it’s generally better to do the ordering through factor re-levelling when preparing the data (via the tidyverse &lt;a href=&#34;https://cran.r-project.org/web/packages/forcats/&#34;&gt;forcats library&lt;/a&gt;. Here we only change the order for the &lt;code&gt;origin&lt;/code&gt; feature.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So, other than looking pretty, what insights does it give us? Well, for instance we see that (for this subset) EWR is dominated by UA (United Airlines) and has almost no AA (American Airlines flights). In turn, UA flights are not frequent in LGA or JFK. Both Boston (BOS) and Los Angeles (LAX) are not connected to LGA (orange). &lt;strong&gt;Thus, the alluvial plot shows us - pretty literally in this case - the flow of flight volume between airports through airline carriers.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Now, the &lt;code&gt;alluvial&lt;/code&gt; tool has a rather specific syntax and doesn’t integrate seamlessly with the tidyverse. Enter the &lt;a href=&#34;https://github.com/corybrunson/ggalluvial&#34;&gt;&lt;code&gt;ggalluvial&lt;/code&gt; library&lt;/a&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fly %&amp;gt;% 
+  mutate(origin = fct_rev(as.factor(origin)),
+         carrier = fct_rev(as.factor(carrier)),
+         dest = fct_rev(as.factor(dest))) %&amp;gt;% 
+  filter(n &amp;gt; 150) %&amp;gt;% 
+  ggplot(aes(y = n, axis1 = origin, axis2 = carrier, axis3 = dest)) +
+  geom_alluvium(aes(fill = origin), aes.bind=TRUE, width = 1/12) +
+  geom_stratum(width = 1/4, fill = &amp;quot;white&amp;quot;, color = &amp;quot;black&amp;quot;) +
+  geom_text(stat = &amp;quot;stratum&amp;quot;, label.strata = TRUE) +
+  scale_x_discrete(limits = c(&amp;quot;Origin&amp;quot;, &amp;quot;Carrier&amp;quot;, &amp;quot;Destination&amp;quot;),
+                   expand = c(.05, .05)) +
+  scale_fill_manual(values = c(&amp;quot;red&amp;quot;, &amp;quot;orange&amp;quot;, &amp;quot;blue&amp;quot;)) +
+  labs(y = &amp;quot;Cases&amp;quot;) +
+  theme_minimal() +
+  theme(legend.position = &amp;quot;none&amp;quot;) +
+  ggtitle(&amp;quot;NYC flights volume for top destinations and airlines&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Here I purposefully choose the styling parameters to (broadly) reproduce the above plot. It is evident that &lt;code&gt;ggalluvial&lt;/code&gt; integrates much more smoothly into the &lt;code&gt;ggplot2&lt;/code&gt; grammar. Specifically:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;The alluvia and the vertical features (the “strata”; here: origin, carrier, and destination) are implemented as different geometry layers. Note, that the default order of the strata features is reversed compared to &lt;code&gt;alluvial&lt;/code&gt;. Also: there are no gaps between the strata here compared to what &lt;code&gt;alluvial&lt;/code&gt; does. This makes it easier to add a y-axis.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;I decided not to change the default y-axis and subtle background grid lines, which provide quantitative information and guide the eye. Replace &lt;code&gt;theme_minimal()&lt;/code&gt; by &lt;code&gt;theme_void()&lt;/code&gt; to get very close to the &lt;code&gt;alluvial&lt;/code&gt; plot style.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;By default, &lt;code&gt;ggalluvial&lt;/code&gt; plots the same number of flows between neighbouring strata. This behaviour can be changed by the &lt;code&gt;aes.bind=TRUE&lt;/code&gt; parameter in &lt;code&gt;geom_alluvial&lt;/code&gt;. Remove it to see the difference with a larger number of narrower flows between the origin and carrier strata.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;We are setting the colours manually. One advantage of &lt;code&gt;ggalluvial&lt;/code&gt; is that instead of a manual setting you can use any &lt;code&gt;ggplot2&lt;/code&gt; (or add-on) scale such as &lt;a href=&#34;https://ggplot2.tidyverse.org/reference/scale_brewer.html&#34;&gt;&lt;code&gt;brewer&lt;/code&gt;&lt;/a&gt; or &lt;a href=&#34;https://ggplot2.tidyverse.org/reference/scale_viridis.html&#34;&gt;&lt;code&gt;viridis&lt;/code&gt;&lt;/a&gt;. Similarly we can modify the plot &lt;a href=&#34;https://ggplot2.tidyverse.org/reference/theme.html&#34;&gt;&lt;code&gt;theme&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Instead of &lt;code&gt;geom_text&lt;/code&gt; you can use &lt;code&gt;geom_label&lt;/code&gt;, e.g. in combination with a different &lt;code&gt;fill&lt;/code&gt; colour in &lt;code&gt;geom_stratum&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In closing: both packages are versatile and provide somewhat different approaches to creating alluvial plots. If you are frequently working within the tidyverse then &lt;code&gt;ggalluvial&lt;/code&gt; might be more intuitive for you. Specific (edge) cases might be better handled by one tool than the other.&lt;/p&gt;
+&lt;p&gt;For more information check out the respective vignettes for &lt;a href=&#34;https://cran.r-project.org/web/packages/ggalluvial/vignettes/ggalluvial.html&#34;&gt;&lt;code&gt;ggalluvial&lt;/code&gt;&lt;/a&gt; and &lt;a href=&#34;https://cran.r-project.org/web/packages/alluvial/vignettes/alluvial.html&#34;&gt;&lt;code&gt;alluvial&lt;/code&gt;&lt;/a&gt; as well as their &lt;a href=&#34;https://github.com/corybrunson/ggalluvial&#34;&gt;pages&lt;/a&gt; on &lt;a href=&#34;https://github.com/mbojan/alluvial&#34;&gt;github&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Have fun!&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Tidy evaluation in R - Simple Examples</title>
@@ -17,8 +386,174 @@
       <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>/2019/04/24/tidy-eval-examples/</guid>
-      <description>The tidyverse philosophy introduced by Hadley Wickham has been a game changer for the R community. It is based on intuitive rules of what a tidy data set should look like: each variable is a column, each observation is a row (Wickham 2014). At its core, the tidyverse collection of R packages is powered by a consistent grammar of data manipulation and visualisation.
-The tidyverse grammar makes it easier to manipulate data sets using simple expressions that reduce the syntactic overhead and allow you to focus on the data.</description>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;The &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; philosophy introduced by &lt;a href=&#34;http://hadley.nz/&#34;&gt;Hadley Wickham&lt;/a&gt; has been a game changer for the &lt;a href=&#34;https://www.r-project.org/&#34;&gt;R&lt;/a&gt; community. It is based on intuitive rules of what a &lt;em&gt;tidy&lt;/em&gt; data set should look like: &lt;em&gt;each variable is a column, each observation is a row&lt;/em&gt; (&lt;a href=&#34;https://www.jstatsoft.org/article/view/v059i10&#34;&gt;Wickham 2014&lt;/a&gt;). At its core, the tidyverse collection of R packages is powered by a consistent grammar of data manipulation and visualisation.&lt;/p&gt;
+&lt;p&gt;The tidyverse grammar makes it easier to manipulate data sets using simple expressions that reduce the syntactic overhead and allow you to focus on the data. Thus, packages like &lt;code&gt;dplyr&lt;/code&gt; or &lt;code&gt;tidyr&lt;/code&gt; are great for exploratory data analysis (EDA) and hands-on data wrangling. A small downside of this approach is that these tools require a bit more effort when using them in functions with variable parameters. In general you want to use functions to improve the reusability and reproducibility of your code.&lt;/p&gt;
+&lt;p&gt;This is where the &lt;em&gt;tidy evaluation&lt;/em&gt; comes in. A few additional methods and concepts are sufficient to make all your tidy code run smoothly in a function context. Here I will go through some relatively simple examples to get you started.&lt;/p&gt;
+&lt;p&gt;Before we begin we will need the following libraries:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;tibble&amp;#39;,              # wrangling
+          &amp;#39;datasets&amp;#39;,                     # data
+          &amp;#39;knitr&amp;#39;,&amp;#39;kableExtra&amp;#39;,           # table styling
+          &amp;#39;ggplot2&amp;#39;,&amp;#39;gridExtra&amp;#39;)          # plots, panels
+invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We will use the &lt;a href=&#34;https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/Orange.html&#34;&gt;Orange data set&lt;/a&gt;, which is part of the &lt;a href=&#34;https://www.rdocumentation.org/packages/datasets/versions/3.5.3&#34;&gt;datasets&lt;/a&gt; package and records the growth of 5 orange trees. Here are the first 5 rows:&lt;/p&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+Tree
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+age
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+circumference
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+118
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+30
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+484
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+51
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+664
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+75
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1004
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+108
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Personally, I’m learning most efficiently by first looking at examples that show the code in action and then tweaking them to fit my needs. After playing with the code for a bit and inevitably breaking something I turn to the docs to understand more about the syntax and additional arguments of the function. Thus, all my posts on tools or methodology will follow the same pattern: I will jump right into the action by looking at a useful yet simple example or two. Next, I dissect this example, maybe break something, and explain the arguments. In closing, there will be a few more complex examples, caveats, pointers, and/or resources. Sounds good? Here we go:&lt;/p&gt;
+&lt;p&gt;The first example is a function that takes as &lt;em&gt;input&lt;/em&gt; a data frame &lt;code&gt;df&lt;/code&gt; and a variable &lt;code&gt;var&lt;/code&gt; from that data frame (i.e. a column/feature). The &lt;em&gt;output&lt;/em&gt; is the difference between the (global) median and the mean of the variable. This is a realistic example of a concise helper function, since it goes beyond basic in-built tools and provides a quick check on whether a distribution is symmetric&lt;a href=&#34;#fn1&#34; class=&#34;footnoteRef&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;median_minus_mean &amp;lt;- function(df, var){
+  
+  var &amp;lt;- enquo(var)
+  
+  df %&amp;gt;% 
+    summarise(foo = median(!!var) - mean(!!var)) %&amp;gt;% 
+    .$foo
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we apply it to the circumference of trees to find that the mean is larger than the median:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;median_minus_mean(Orange, circumference)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] -0.8571429&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To understand how it works here are the 2 key concepts:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Quoting:&lt;/strong&gt; In the body of the function, the variable &lt;code&gt;var&lt;/code&gt; is being quoted by the &lt;code&gt;enquo&lt;/code&gt; function (borrowed from the &lt;a href=&#34;https://cran.r-project.org/web/packages/rlang/index.html&#34;&gt;&lt;code&gt;rlang&lt;/code&gt; package&lt;/a&gt;). This essentially means that the &lt;em&gt;content&lt;/em&gt; (or &lt;em&gt;argument&lt;/em&gt;) of the variable is being encoded. The quotation stops this variable from being immediately evaluated. Instead, its content is being treated as a functional R expression.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Unquoting:&lt;/strong&gt; In order to tell a tidyverse verb like &lt;code&gt;summarise&lt;/code&gt; that you are passing it the content of a quoted variable you need to unquote it. Practically you are copy-pasting the variable expression into the verb. This is done using the &lt;code&gt;!!&lt;/code&gt; operator which Hadley wants to be pronounced &lt;em&gt;bang-bang&lt;/em&gt;. I can only surmise that he said that because it makes boring conversations about code sound like wild-west movie fights.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In most situations &lt;code&gt;enquo&lt;/code&gt; and &lt;code&gt;!!&lt;/code&gt; are all you need. Conceptually, there’s a bit more to it since &lt;code&gt;enquo&lt;/code&gt; encodes the current state of the environment along with the variable. This is a useful property, which makes &lt;code&gt;enquo&lt;/code&gt; aware of parameters defined outside a function, but for now you can ignore these finer details.&lt;/p&gt;
+&lt;p&gt;(Talking about details: &lt;code&gt;foo&lt;/code&gt; or &lt;code&gt;bar&lt;/code&gt; are popular names for dummy variables in many programming languages. It’s just something that needs a name for the moment but can immediately be forgotten once its time-limited purpose is fulfilled.)&lt;/p&gt;
+&lt;p&gt;Also: yes, this works:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;median_minus_mean &amp;lt;- function(df, var){
+  df %&amp;gt;% 
+    summarise(foo = median(!!enquo(var)) - mean(!!enquo(var))) %&amp;gt;% 
+    .$foo
+}
+median_minus_mean(Orange, circumference)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] -0.8571429&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can quote and unquote in the same step. Let’s go a bit further and include grouping by another variable, here the &lt;code&gt;age&lt;/code&gt; of the trees:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;median_minus_mean &amp;lt;- function(df, var, gvar){
+  
+  var &amp;lt;- enquo(var)
+  gvar &amp;lt;- enquo(gvar)
+  
+  df %&amp;gt;% 
+    group_by(!!gvar) %&amp;gt;% 
+    summarise(foo = median(!!var) - mean(!!var)) %&amp;gt;% 
+    .$foo
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;median_minus_mean(Orange, circumference, age)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] -1.0  0.2 -6.2 -9.2 -3.6  0.6  1.2&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Turns out that for some ages the mean circumference is smaller than the median.&lt;/p&gt;
+&lt;p&gt;Good news: quote/unquote also works for ggplot2. Here we quote the x, y, and colour-group variables of our plot:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_growth_tree &amp;lt;- function(df, xvar, yvar, gvar){
+  
+  xvar &amp;lt;- enquo(xvar)
+  yvar &amp;lt;- enquo(yvar)
+  gvar &amp;lt;- enquo(gvar)
+  
+  df %&amp;gt;% 
+    ggplot(aes(!!xvar, !!yvar, col = !!gvar)) +
+    geom_line()
+}
+
+plot_growth_tree(Orange, age, circumference, Tree)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Some trees grow faster than others.&lt;/p&gt;
+&lt;p&gt;In fact, ggplot2 is a great use case because it allows us to quickly built helper functions if we need to repeat a certain plot for many similar features. Individual modification to those templates can be added using the ggplot2 grammar. Here is a histogram example where we add a custom title to the second plot&lt;a href=&#34;#fn2&#34; class=&#34;footnoteRef&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_hist &amp;lt;- function(df, var, bins, bcol){
+  
+  var &amp;lt;- enquo(var)
+  
+  df %&amp;gt;% 
+    ggplot(aes(!!var)) +
+    geom_histogram(bins = bins, fill = bcol, col = &amp;quot;black&amp;quot;)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p1 &amp;lt;- plot_hist(Orange, age, 4, &amp;quot;blue&amp;quot;)
+p2 &amp;lt;- plot_hist(Orange, circumference, 7, &amp;quot;red&amp;quot;) +
+  ggtitle(&amp;quot;A custom title&amp;quot;)
+
+grid.arrange(p1, p2, layout_matrix = rbind(c(1,2)))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;You see that here the number of histogram bins and the plot colour are being passed to the function as normal integer and string - without need of being quoted. This works because these parameters are not R expressions.&lt;/p&gt;
+&lt;p&gt;There will be a second post soon about more complex tidy evaluation examples. If you’re interested, watch this space.&lt;/p&gt;
+&lt;p&gt;In the meantime: Curious about the bigger picture?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;The &lt;a href=&#34;https://tidyeval.tidyverse.org/&#34;&gt;tidy evaluation book&lt;/a&gt; is a great starting guide into the concepts.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;This &lt;a href=&#34;https://community.rstudio.com/t/interesting-tidy-eval-use-cases/21121/31&#34;&gt;thread&lt;/a&gt; collects some typical use cases for tidy evaluation.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;For a concise 5 minute intro to the main concepts by the man himself watch Hadley here:&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;//www.youtube.com/embed/nERXS3ssntw&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;If you are actually interested in the skewness of a distribution you can find a &lt;code&gt;skewness&lt;/code&gt; function in the &lt;a href=&#34;https://cran.r-project.org/package=e1071&#34;&gt;&lt;code&gt;e1071&lt;/code&gt; package&lt;/a&gt;.&lt;a href=&#34;#fnref1&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn2&#34;&gt;&lt;p&gt;The arranging of plots into panel layouts is done by the &lt;a href=&#34;https://cran.r-project.org/web/packages/gridExtra/vignettes/arrangeGrob.html&#34;&gt;&lt;code&gt;grid.arrange&lt;/code&gt;&lt;/a&gt; function of the &lt;a href=&#34;https://cran.r-project.org/web/packages/gridExtra/index.html&#34;&gt;&lt;code&gt;gridExtra&lt;/code&gt;&lt;/a&gt; package.&lt;a href=&#34;#fnref2&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
     </item>
     
     <item>
@@ -27,7 +562,43 @@ The tidyverse grammar makes it easier to manipulate data sets using simple expre
       <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>/2019/04/19/great-community-kaggledays19/</guid>
-      <description>The easy answer to this question is: the people. Great people build great communities. Case not quite closed yet, though, because there is more to it. Even the most promising group of individuals needs certain conditions in order to grow into a strong and thriving community. The kind of community that lifts up its members beyond their individual capabilities and becomes more than the sum of their proverbial skills and contributions.</description>
+      <description>
+
+
+&lt;p&gt;The easy answer to this question is: the people. Great people build great communities. Case not quite closed yet, though, because there is more to it. Even the most promising group of individuals needs certain conditions in order to grow into a strong and thriving community. The kind of community that lifts up its members beyond their individual capabilities and becomes more than the sum of their proverbial skills and contributions. I believe that such communities are the cornerstones of all scientific fields, including data science, and that those fields succeed or fail depending on their communities.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/pics/kdays19_1.jpg&#34; alt=&#34;Kaggle Days audience for welcome talks&#34; style=&#34;width:100.0%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;&lt;em&gt;Kaggle Days audience for welcome talks&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Here is the case study that prompted this post: last week I took part in the &lt;a href=&#34;https://kaggledays.com/sanfrancisco/&#34;&gt;Kaggle Days meeting in San Francisco&lt;/a&gt;. Kaggle Days are a new series of local meetings which aim to bring together members of the international, virtual &lt;a href=&#34;https://www.kaggle.com/&#34;&gt;Kaggle&lt;/a&gt; community for in-person workshops, presentations, and competitions. Over the last few years, Kaggle itself has transformed from being “merely” the go-to place for sophisticated machine learning competitions to a multi-faceted online community. The range and depth of user-hosted datasets continues to grow rapidly from month to month, as does a unique repository of machine learning and data science code templates in the form of Kaggle &lt;a href=&#34;https://www.kaggle.com/kernels&#34;&gt;Kernels&lt;/a&gt;: reproducible R/Python notebooks or scripts in a self-contained, cloud-based environment. There really is something for everyone.&lt;/p&gt;
+&lt;p&gt;It is fair to say that Kaggle has been a main catalyst for my career change. Joining the platform in early 2017, two years ago, opened my eyes to the multitude of fascinating challenges and problem-solving strategies beyond my narrow academic field. One year later, I had become the first ever &lt;a href=&#34;http://blog.kaggle.com/2018/06/19/tales-from-my-first-year-inside-the-head-of-a-recent-kaggle-addict/&#34;&gt;Kaggle Kernels Grandmaster&lt;/a&gt; - a journey that I plan to revisit in a future post. What drew me into Kaggle, beyond the fun competitions, was a remarkably friendly and supportive community. It’s a rare occurrence to find people who are both extremely smart and happy to help a newcomer in an approachable and relaxed way. Machine Learning can be intimidating, but the people on Kaggle made it fun. Sooner than expected, I started to feel that I had become part of a community which, despite being very competitive, was remarkably efficient at working together to solve hard problems. Especially considering that we all worked on these challenges in our free-time and in different corners of the world.&lt;/p&gt;
+&lt;p&gt;All this back story might help to illustrate why I felt rather excited to finally encounter many of my fellow Kagglers in person at the Kaggle Days meetup. Excited and a bit nervous as to how the virtual collaboration would translate to the real world. I had high expectations - which were exceeded spectacularly. Kaggle Days was a blast! Almost the entire &lt;a href=&#34;https://www.kaggle.com/about/team&#34;&gt;Kaggle Team&lt;/a&gt; was present, including CEO &lt;a href=&#34;https://twitter.com/antgoldbloom&#34;&gt;Anthony Goldblum&lt;/a&gt; and Co-Founder &lt;a href=&#34;https://twitter.com/benhamner&#34;&gt;Ben Hamner&lt;/a&gt;. Top Kagglers such as &lt;a href=&#34;https://twitter.com/tunguz&#34;&gt;Bojan Tunguz&lt;/a&gt; and &lt;a href=&#34;https://twitter.com/DmitryLarko&#34;&gt;Dmitry Larko&lt;/a&gt; gave presentations and workshops alongside Machine Learning gurus like &lt;a href=&#34;https://twitter.com/fchollet&#34;&gt;Francois Chollet&lt;/a&gt; (Keras) or &lt;a href=&#34;https://twitter.com/quocleix&#34;&gt;Quoc Le&lt;/a&gt; (Google Brain / AutoML). So many super smart people to listen and talk to! It was great fun.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/pics/kdays19_2.jpg&#34; alt=&#34;Kaggle Days brainstorming sessions&#34; style=&#34;width:100.0%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;&lt;em&gt;Kaggle Days brainstorming sessions&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Interestingly, as a side effect of my initial Kaggle anonymity (I did not use my real name at all during my first year) I quickly found it more useful to introduce myself as “Heads or Tails”, even though my badge had my actual name on it. I only forgot this when I first met almost the entire Kaggle team at once and needed a second take for a more useful introduction. As this blog shows, I still prefer the “Heads or Tails” moniker for my Data Science personality. Let’s hope that no psychologists read this.&lt;/p&gt;
+&lt;p&gt;Ever the hands-on community, the second (and final) day of the Kaggle Days meetup gave us the opportunity to form small teams to participate in an on-site competition. This was particularly interesting for me, since I had never teamed up with others to tackle a Kaggle problem. In a team, there is much more code sharing and discussion than in the open Kaggle forum. And even though there were a few small hiccups in this particular competition (Want a change in metric plus additional data halfway through? Say no more!) working with my team mates was a lot of fun. Shout-out to &lt;a href=&#34;https://www.kaggle.com/thawatt&#34;&gt;Michael&lt;/a&gt; and &lt;a href=&#34;https://www.kaggle.com/gtoubassi&#34;&gt;Garrick&lt;/a&gt; - you guys rock! As a result of Kaggle Days I’m definitely more motivated to team up with others in future competitions. Not just that: I’m more motivated in general to spend time on Kaggle.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/pics/kdays19_3.jpg&#34; alt=&#34;Kaggle Days competition winners&#34; style=&#34;width:100.0%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;&lt;em&gt;Kaggle Days competition winners&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Now, why is that exactly? What makes the Kaggle community such a fun place? For me, there are several different factors that all enhance each other when combined:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;Kagglers are smart yet down to earth.&lt;/em&gt; &lt;strong&gt;Not only are they happy to share their insights, they really make an effort to do so in an accessible way.&lt;/strong&gt; I recommend anyone who joins a competition not to immediately abandon it after the results are in, but to read the write ups of the top teams which are usually of high detail and quality. There is lots to learn from such a post mortem.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;No big egos in the community.&lt;/em&gt; This is related to the previous point but touches on a different aspect. Even though our community has its own big names who’s opinions (deservedly) have weight in discussions, nobody thinks they are more important than others. This is crucial because it lowers the threshold for beginners (and anyone) to ask questions. Asking questions is what drives the improvement of individuals and the community. As a side note: In my time in academia I have come across some really big egos, although luckily never in immediate collaboration. Although these people are very smart you really don’t want to be around them for longer than absolutely necessary. No gossip here - moving on:&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;A common goal.&lt;/em&gt; As soon as you meet other Kagglers you have something to talk about; be it an ongoing competition, the new Kernels interface, or the most recent Machine Learning tools. But it goes beyond that: competitions are the best example for creating a specific goal that everyone can focus on and contribute to, to the best of their abilities. And while sharing is encouraged, there is plenty of competition at the highest level. The last days of a competition are one of the most intense examples of a singular focus in an online community of hundreds to ten thousands of people from all over the world.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;Diversity.&lt;/em&gt; Speaking of ‘all over the world’. Kagglers come from a large number of countries and have many different backgrounds. It is true that we are still predominantly male and STEM based, and we are working on becoming more inclusive towards many other groups. You can think about it this way: When doing Machine Learning, diversity is a big advantage. If you average over several models then your results will be better the less similarity these models have (i.e. the less collinearity there is). An insight that is missed by one model might be picked up by a different method. The likelihood that all models will overfit in the same direction is smaller. And the same is true for communities. Different points of view help us to challenge pre-conceived beliefs and broaden our horizons. For deeper insights into the diversity of Kagglers you can check out my analysis, and those of many others, of the latest &lt;a href=&#34;https://www.kaggle.com/headsortails/what-we-do-in-the-kernels-a-kaggle-survey-story&#34;&gt;Kaggle Survey&lt;/a&gt; which, true to form, is a detailed annual assessment of the state of the community.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;People care about the community.&lt;/em&gt; This is one of the most important factors. It might somewhat derive from the points above but it’s by no means a given. I have been part of (and witness to) passionate discussions in the Kaggle forums about difficult issues in the community. Often Kagglers themselves have suggested solutions to problems that the administrative team might not have been aware of. And even if tempers flare up, which is more understandable in a competitive context, there is mutual respect and usually a (virtual) handshake once the dust has settled. Kaggle is &lt;em&gt;our&lt;/em&gt; community and we care about keeping it friendly and welcoming.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;Infrastructure for collaboration and communication.&lt;/em&gt; Last but not least, for a community to function well there need to be tools and environments in place that allow for efficient communication. The lower the thresholds are for exchanging information the better it will work. Ideally, the infrastructure should be designed in a way that encourages different ways of interaction for the community members. This further promotes a welcoming and inclusive atmosphere. Kaggle provides all this through discussion forums (general ones and those specific to each competition or data set). In addition, the aforementioned Kernel notebooks have comments enabled, which is a great way to show appreciation to an author’s work or ask for clarification. From my point of view, commenting on Kernels is great, low-threshold way of starting to actively participate in the community. And I can guarantee that Kernel authors appreciated feedback. My own Kernels have frequently been improved by people kind enough to post their ideas and suggestions.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;A special kind of infrastructure is an in-person meetup like Kaggle Days. Remote interaction works fine, but from my experience there is a certain extra factor in face-to-face meetings. During my time in academia I had the privilege to be part of many successful teams and to work with many smart people. The highlights of these collaborations were always our team meetings in which we could brainstorm new ideas and strategies. Sometimes at a hotel pool, sometimes late at night over drinks or pizza; but always with extra energy and creativity. And when your creativity goes into overdrive then you have found a great community.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;Finally, this post doesn’t feel complete without highlighting the remarkable way in which the Data Science community (and especially the R community) is responding to the disgraceful case of sexual harassment and the botched attempt at a cover up at &lt;a href=&#34;https://dhavide.github.io/a-note-to-our-commuity-on-building-trust.html&#34;&gt;DataCamp&lt;/a&gt;. The community is supporting the victim and former employees who spoke out and were fired. Many content creators are pulling their courses from DataCamp to push for necessary change. Here is a community actively working to transform bad practices that those who are primarily responsible are repeatedly failing to address. Because I’m an optimist at heart, I want to close by pointing to one of the most remarkable products of this sorry situation: a free natural language programming (NLP) course plus a great interactive app template build by &lt;a href=&#34;https://twitter.com/_inesmontani&#34;&gt;Ines Montani&lt;/a&gt;:&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;Like many of you, I&amp;#39;m incredibly disappointed by DataCamp. I wanted to make a free version of my spaCy course so you don&amp;#39;t have to sign up for their service – and ended up building my own interactive app. Powered by the awesome &lt;a href=&#34;https://twitter.com/mybinderteam?ref_src=twsrc%5Etfw&#34;&gt;@mybinderteam&lt;/a&gt; &amp;amp; &lt;a href=&#34;https://twitter.com/gatsbyjs?ref_src=twsrc%5Etfw&#34;&gt;@gatsbyjs&lt;/a&gt; 💖 &lt;a href=&#34;https://t.co/2QOuDPoZEX&#34;&gt;https://t.co/2QOuDPoZEX&lt;/a&gt;&lt;/p&gt;&amp;mdash; Ines Montani 〰️ (@_inesmontani) &lt;a href=&#34;https://twitter.com/_inesmontani/status/1118508634357604353?ref_src=twsrc%5Etfw&#34;&gt;April 17, 2019&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+</description>
     </item>
     
     <item>
@@ -36,8 +607,12 @@ The tidyverse grammar makes it easier to manipulate data sets using simple expre
       <pubDate>Mon, 08 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>/about/</guid>
-      <description>head spin - the Heads or Tails blog
-Data Scientist - Astrophysicist by training - Kaggler in my free time - Optimist - Heavenly Body - Curious at heart</description>
+      <description>&lt;p&gt;&lt;em&gt;head spin&lt;/em&gt; - the Heads or Tails blog&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.linkedin.com/in/martin-henze&#34;&gt;Data Scientist&lt;/a&gt; - &lt;a href=&#34;http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?db_key=AST&amp;amp;db_key=PRE&amp;amp;qform=AST&amp;amp;arxiv_sel=astro-ph&amp;amp;author=Henze%2CMartin&amp;amp;nr_to_return=500&#34;&gt;Astrophysicist&lt;/a&gt; by training - &lt;a href=&#34;https://www.kaggle.com/headsortails&#34;&gt;Kaggler&lt;/a&gt; in my free time - Optimist - &lt;a href=&#34;https://minorplanetcenter.net/db_search/show_object?object_id=6642&#34;&gt;Heavenly Body&lt;/a&gt; -  Curious at heart&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -46,7 +621,19 @@ Data Scientist - Astrophysicist by training - Kaggler in my free time - Optimist
       <pubDate>Mon, 08 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>/2019/04/08/prologue/</guid>
-      <description>This one is all about change. In many ways life is about change. Not all change is good, but without it there would be no evolution. No progress. And as much as we sometimes want certain moments to last, stagnation is rarely a good thing. Without attempting something new it is impossible to say whether it will succeed. I guess that’s a verbose way of saying: I decided to start a blog.</description>
+      <description>
+
+
+&lt;p&gt;This one is all about &lt;em&gt;change&lt;/em&gt;. In many ways life is about change. Not all change is good, but without it there would be no evolution. No progress. And as much as we sometimes want certain moments to last, stagnation is rarely a good thing. Without attempting something new it is impossible to say whether it will succeed. I guess that’s a verbose way of saying: I decided to start a blog.&lt;/p&gt;
+&lt;p&gt;The blog is far from the only change, though. After a good ten years of working in astronomy and astrophysics I have just made the transition into data science. Instead of exploding stars in nearby galaxies I will now be working on topics that are much closer to our every day experience; such as travel, consumer trends, or demographics. Yeah, this is a bigger change than the blog. Maybe I should have led with that.&lt;/p&gt;
+&lt;p&gt;My reasons for changing careers are manifold. First and foremost I’m driven by curiosity. I want to understand the world, and beyond, and figure out how everything works. What motivates people, makes economies flourish, or lightens up entire suns like a cosmic firework. And after gazing out into the universe for quite some time, maybe it is time to work a little closer to home.&lt;/p&gt;
+&lt;p&gt;In my field of academia, anything beyond a traditional research career is still regarded as a somewhat unusual alternative path; even though only a small percentage of astrophysics PhDs will end up in a tenured (professor) position at a university. Thus, I hope that these Chronicles of an Astronomer’s Adventures in Data Science (hopefully the title of the eventual movie; take note Hollywood) will be useful for other young astronomers who are contemplating their career options. Or it might even make them aware of the fact that they have career options. Academia, for all it’s advantages, can still be rather insular and does not always do the best job in emphasising transferable skills.&lt;/p&gt;
+&lt;p&gt;And many astronomers have a whole bag of skills they can transfer. Observational astronomers, like me, turns out are rather good at analysing data. Sometimes big data, often messy data. Different telescopes can have very different ways of data collection and storage. I might share some X-ray imaging data in a future throwback post. While a typical astronomer’s education focusses heavily on the (astro-) physics and the specific instrument software, many of us have taught themselves programming, statistics, data bases, or other useful things practically on the side.&lt;/p&gt;
+&lt;p&gt;Which brings me to another of my motivations: to understand the tools that help us understand the world. I’m a big fan of data visualisation to extract its secrets and hidden insights. There will be many pictures here; hopefully some pretty ones among them. And while the best tool for a certain job might be a very specific one, many tools are surprisingly versatile. Languages like Python and R. Data base tools like the various SQL flavours. Data viz libraries like ggplot2, matplotlib, or D3. Those will be among the frequent Dramatis Personae in this blog.&lt;/p&gt;
+&lt;p&gt;I will aim for at least weekly posts, describing my impressions of working in data science and the contrast to academia. I’ll give it a decent try not to reveal any industry secrets. There aren’t really many “academia secrets”, since everything interesting get published sooner rather than later. I guess that’s one contrast. There will be the occassional update about new astro results, some throwback posts, and any other insights I find noteworthy.&lt;/p&gt;
+&lt;p&gt;The world, after all, is always changing. I was born in East Germany when it was still a separate country - locked in ideological contest with its western brother. When I was a kid, a peaceful revolution swept away the old, out-of-touch system and then, from one day to the next, the borders were open and change was as fundamental as it was inevitable. Down the line, this taught me that there aren’t many things you can take for granted, but as long as you are prepared for change and willing to adapt there can be much potential in every new twist and turn.&lt;/p&gt;
+&lt;p&gt;So this is where I come from. Now let’s see what happens next.&lt;/p&gt;
+</description>
     </item>
     
   </channel>

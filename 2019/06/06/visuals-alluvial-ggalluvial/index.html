@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.54.0" />
+
+
+<title>Data flow visuals - alluvial vs ggalluvial in R - head spin - the Heads or Tails blog</title>
+<meta property="og:title" content="Data flow visuals - alluvial vs ggalluvial in R - head spin - the Heads or Tails blog">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/avatar.png"
+         width="50"
+         height="50"
+         alt="Heads or Tails">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://twitter.com/heads0rtai1s">Twitter</a></li>
+    
+    <li><a href="https://www.kaggle.com/headsortails">Kaggle</a></li>
+    
+    <li><a href="https://www.linkedin.com/in/martin-henze">LinkedIn</a></li>
+    
+    <li><a href="https://github.com/heads0rtai1s">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">6 min read</span>
+    
+
+    <h1 class="article-title">Data flow visuals - alluvial vs ggalluvial in R</h1>
+
+    
+    <span class="article-date">2019-06-06</span>
+    
+
+    <div class="article-content">
+      
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<p>I have long been a fan of creative data visualisation techniques. For me, the choice of visual representation is driven by both the type of data and the kind of question one wants to examine.</p>
+<p>The power of its visualisation tools has been a major strength of the R language well before the <a href="https://cran.r-project.org/web/packages/ggplot2/index.html">ggplot2</a> package and the <a href="https://www.tidyverse.org/">tidyverse</a> burst onto the scene. Today’s post will be an introductory examination of two similar packages that allow us to study the connection and <em>flow</em> of data between different categorical features via <strong>alluvial plots</strong>. Those packages are <a href="https://cran.r-project.org/web/packages/alluvial/vignettes/alluvial.html">alluvial</a> and <a href="https://cran.r-project.org/web/packages/ggalluvial/vignettes/ggalluvial.html">ggalluvial</a>.</p>
+<p>All in all we need the following libraries:</p>
+<pre class="r"><code>libs &lt;- c(&#39;dplyr&#39;, &#39;stringr&#39;, &#39;forcats&#39;,     # wrangling
+          &#39;knitr&#39;,&#39;kableExtra&#39;,               # table styling
+          &#39;ggplot2&#39;,&#39;alluvial&#39;,&#39;ggalluvial&#39;,  # plots
+          &#39;nycflights13&#39;)                     # data
+invisible(lapply(libs, library, character.only = TRUE))</code></pre>
+<p>Alluvial plots are best explained by showing one. For illustrating the following examples we will take on board the flights data from the <a href="https://cran.r-project.org/web/packages/nycflights13/index.html">nycflights13 library</a>. This comprehensive data set contains all flights that departed from the New York City airports JFK, LGA, and EWR in 2013. For this analysis, we will only look at three features - the 1st-class features if you will: airport of origin, destination airport, and carrier (i.e. airline code). From the metaphorical front of the cabin, here are the first 4 rows:</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+origin
+</th>
+<th style="text-align:left;">
+carrier
+</th>
+<th style="text-align:left;">
+dest
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+EWR
+</td>
+<td style="text-align:left;">
+UA
+</td>
+<td style="text-align:left;">
+IAH
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+LGA
+</td>
+<td style="text-align:left;">
+UA
+</td>
+<td style="text-align:left;">
+IAH
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+JFK
+</td>
+<td style="text-align:left;">
+AA
+</td>
+<td style="text-align:left;">
+MIA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+JFK
+</td>
+<td style="text-align:left;">
+B6
+</td>
+<td style="text-align:left;">
+BQN
+</td>
+</tr>
+</tbody>
+</table>
+<p>The <a href="https://github.com/mbojan/alluvial">alluvial package</a> was <a href="http://bc.bojanorama.pl/2014/03/alluvial-diagrams/">introduced in 2014</a> to fill a niché in the landscape of visualisations. I have enjoyed using it in the past in <a href="https://www.kaggle.com/headsortails/treemap-house-of-horror-spooky-eda-lda-features">several</a> <a href="https://www.kaggle.com/headsortails/nyc-taxi-eda-update-the-fast-the-curious">Kaggle</a> <a href="https://www.kaggle.com/headsortails/steering-wheel-of-fortune-porto-seguro-eda">Kernels</a>. Here’s what a plot looks like:</p>
+<pre class="r"><code>top_dest &lt;- flights %&gt;% 
+  count(dest) %&gt;% 
+  top_n(5, n) %&gt;% 
+  pull(dest)
+
+top_carrier &lt;- flights %&gt;% 
+  filter(dest %in% top_dest) %&gt;% 
+  count(carrier) %&gt;% 
+  top_n(4, n) %&gt;% 
+  pull(carrier)
+
+fly &lt;- flights %&gt;% 
+  filter(dest %in% top_dest &amp; carrier %in% top_carrier) %&gt;% 
+  count(origin, carrier, dest) %&gt;% 
+  mutate(origin = fct_relevel(as.factor(origin), c(&quot;EWR&quot;, &quot;LGA&quot;, &quot;JFK&quot;)))
+
+alluvial(fly %&gt;% select(-n),
+         freq=fly$n, border=NA, alpha = 0.5,
+         col=case_when(fly$origin == &quot;JFK&quot; ~ &quot;red&quot;,
+                       fly$origin == &quot;EWR&quot; ~ &quot;blue&quot;,
+                       TRUE ~ &quot;orange&quot;),
+         cex=0.75,
+         axis_labels = c(&quot;Origin&quot;, &quot;Carrier&quot;, &quot;Destination&quot;),
+         hide = fly$n &lt; 150)</code></pre>
+<p><img src="/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<ul>
+<li><p>The features are arranged horizontally, with their value counts stacked vertically. This corresponds to a stacked barplot: e.g. for the destinations “BOS” has fewer flights than “LAX”. Here we only look at the top 5 destination and their top 4 carriers (that’s the first two segments of the code above).</p></li>
+<li><p>The “alluvia” are the bands that connect the features from left to right. Alluvia break down all feature combinations, with complexity increasing also from left to right. These sub-segments are called “flows”.</p></li>
+<li><p>This means that starting from the 3 origin airports on the left there are 4 “flows” each (i.e. 12 in total) connecting to the 4 main carriers. Between carrier and destination these then fan out into 5 flows each for a theoretical total of 60 different flows. In practice, we want to use the <code>hide</code> parameter to exclude those flows that only have a few observations so that we can focus on the big picture.</p></li>
+<li><p>For further styling, a <code>border</code> colour can be assigned to each alluvium. This would allow us to distinguish the different flows on the left side that then break into sub-flows on the right side. Feel free to try it out. Personally, I think the plot looks better without border colours.</p></li>
+<li><p>We chose a colour coding (argument <code>col</code>) that puts focus on the origin airports. The first argument of the <code>alluvial</code> function is the data set, followed by the frequency column (<code>freq</code>). Note that <code>alluvial</code> expects the data already to be in the shape of grouped counts (as prepared via <code>count</code> in the third code segment above).</p></li>
+<li><p>In my view, the best transparency for alluvia is the default <code>alpha = 0.5</code>. As usual, <code>cex</code> does the font scaling and <code>axis_lables</code> is pretty self-explanatory. The <code>hide</code> parameter allows us to exclude very narrow alluvia. The best value here is data/problem specific.</p></li>
+<li><p>The <code>alluvial</code> function has an <code>ordering</code> parameter, but it’s generally better to do the ordering through factor re-levelling when preparing the data (via the tidyverse <a href="https://cran.r-project.org/web/packages/forcats/">forcats library</a>. Here we only change the order for the <code>origin</code> feature.</p></li>
+</ul>
+<p>So, other than looking pretty, what insights does it give us? Well, for instance we see that (for this subset) EWR is dominated by UA (United Airlines) and has almost no AA (American Airlines flights). In turn, UA flights are not frequent in LGA or JFK. Both Boston (BOS) and Los Angeles (LAX) are not connected to LGA (orange). <strong>Thus, the alluvial plot shows us - pretty literally in this case - the flow of flight volume between airports through airline carriers.</strong></p>
+<p>Now, the <code>alluvial</code> tool has a rather specific syntax and doesn’t integrate seamlessly with the tidyverse. Enter the <a href="https://github.com/corybrunson/ggalluvial"><code>ggalluvial</code> library</a>:</p>
+<pre class="r"><code>fly %&gt;% 
+  mutate(origin = fct_rev(as.factor(origin)),
+         carrier = fct_rev(as.factor(carrier)),
+         dest = fct_rev(as.factor(dest))) %&gt;% 
+  filter(n &gt; 150) %&gt;% 
+  ggplot(aes(y = n, axis1 = origin, axis2 = carrier, axis3 = dest)) +
+  geom_alluvium(aes(fill = origin), aes.bind=TRUE, width = 1/12) +
+  geom_stratum(width = 1/4, fill = &quot;white&quot;, color = &quot;black&quot;) +
+  geom_text(stat = &quot;stratum&quot;, label.strata = TRUE) +
+  scale_x_discrete(limits = c(&quot;Origin&quot;, &quot;Carrier&quot;, &quot;Destination&quot;),
+                   expand = c(.05, .05)) +
+  scale_fill_manual(values = c(&quot;red&quot;, &quot;orange&quot;, &quot;blue&quot;)) +
+  labs(y = &quot;Cases&quot;) +
+  theme_minimal() +
+  theme(legend.position = &quot;none&quot;) +
+  ggtitle(&quot;NYC flights volume for top destinations and airlines&quot;)</code></pre>
+<p><img src="/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Here I purposefully choose the styling parameters to (broadly) reproduce the above plot. It is evident that <code>ggalluvial</code> integrates much more smoothly into the <code>ggplot2</code> grammar. Specifically:</p>
+<ul>
+<li><p>The alluvia and the vertical features (the “strata”; here: origin, carrier, and destination) are implemented as different geometry layers. Note, that the default order of the strata features is reversed compared to <code>alluvial</code>. Also: there are no gaps between the strata here compared to what <code>alluvial</code> does. This makes it easier to add a y-axis.</p></li>
+<li><p>I decided not to change the default y-axis and subtle background grid lines, which provide quantitative information and guide the eye. Replace <code>theme_minimal()</code> by <code>theme_void()</code> to get very close to the <code>alluvial</code> plot style.</p></li>
+<li><p>By default, <code>ggalluvial</code> plots the same number of flows between neighbouring strata. This behaviour can be changed by the <code>aes.bind=TRUE</code> parameter in <code>geom_alluvial</code>. Remove it to see the difference with a larger number of narrower flows between the origin and carrier strata.</p></li>
+<li><p>We are setting the colours manually. One advantage of <code>ggalluvial</code> is that instead of a manual setting you can use any <code>ggplot2</code> (or add-on) scale such as <a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html"><code>brewer</code></a> or <a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html"><code>viridis</code></a>. Similarly we can modify the plot <a href="https://ggplot2.tidyverse.org/reference/theme.html"><code>theme</code></a>.</p></li>
+<li><p>Instead of <code>geom_text</code> you can use <code>geom_label</code>, e.g. in combination with a different <code>fill</code> colour in <code>geom_stratum</code>.</p></li>
+</ul>
+<p>In closing: both packages are versatile and provide somewhat different approaches to creating alluvial plots. If you are frequently working within the tidyverse then <code>ggalluvial</code> might be more intuitive for you. Specific (edge) cases might be better handled by one tool than the other.</p>
+<p>For more information check out the respective vignettes for <a href="https://cran.r-project.org/web/packages/ggalluvial/vignettes/ggalluvial.html"><code>ggalluvial</code></a> and <a href="https://cran.r-project.org/web/packages/alluvial/vignettes/alluvial.html"><code>alluvial</code></a> as well as their <a href="https://github.com/corybrunson/ggalluvial">pages</a> on <a href="https://github.com/mbojan/alluvial">github</a>.</p>
+<p>Have fun!</p>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//headsortails.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137904077-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+  </body>
+</html>
+

@@ -6,10 +6,21 @@
     <description>Recent content in Programming on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 24 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 15 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/programming/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Tidy evaluation in R - Complex use cases (feat. ggalluvial)</title>
+      <link>/2019/06/15/tidy-eval-examples/</link>
+      <pubDate>Sat, 15 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/06/15/tidy-eval-examples/</guid>
+      <description>In an earlier post I gave a gentle introduction to tidy evaluation in the R tidyverse using simple examples. I covered quoting with enquo and unquoting with !! in brief dplyr and ggplot2 snippets. Today, I aim to build a collection of more complex use cases involving additional tools.
+Those are our libraries:
+libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;stringr&amp;#39;, # wrangling &amp;#39;knitr&amp;#39;,&amp;#39;kableExtra&amp;#39;, # table styling &amp;#39;ggplot2&amp;#39;,&amp;#39;ggalluvial&amp;#39;) # plots invisible(lapply(libs, library, character.</description>
+    </item>
     
     <item>
       <title>Tidy evaluation in R - Simple Examples</title>
