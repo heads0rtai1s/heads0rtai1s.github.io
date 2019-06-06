@@ -45,25 +45,25 @@
   </url>
   
   <url>
-    <loc>https://heads0rtai1s.github.io/tags/journey/</loc>
-    <lastmod>2019-04-08T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://heads0rtai1s.github.io/categories/journey/</loc>
     <lastmod>2019-04-08T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://heads0rtai1s.github.io/tags/kaggle/</loc>
-    <lastmod>2019-04-19T00:00:00+00:00</lastmod>
+    <loc>https://heads0rtai1s.github.io/tags/journey/</loc>
+    <lastmod>2019-04-08T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://heads0rtai1s.github.io/categories/kaggle/</loc>
+    <lastmod>2019-04-19T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://heads0rtai1s.github.io/tags/kaggle/</loc>
     <lastmod>2019-04-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -93,13 +93,13 @@
   </url>
   
   <url>
-    <loc>https://heads0rtai1s.github.io/tags/r/</loc>
+    <loc>https://heads0rtai1s.github.io/categories/r/</loc>
     <lastmod>2019-06-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://heads0rtai1s.github.io/categories/r/</loc>
+    <loc>https://heads0rtai1s.github.io/tags/r/</loc>
     <lastmod>2019-06-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -111,25 +111,25 @@
   </url>
   
   <url>
-    <loc>https://heads0rtai1s.github.io/tags/tidyverse/</loc>
-    <lastmod>2019-06-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://heads0rtai1s.github.io/categories/tidyverse/</loc>
     <lastmod>2019-06-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://heads0rtai1s.github.io/tags/visualisation/</loc>
+    <loc>https://heads0rtai1s.github.io/tags/tidyverse/</loc>
     <lastmod>2019-06-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://heads0rtai1s.github.io/categories/visualisation/</loc>
+    <lastmod>2019-06-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://heads0rtai1s.github.io/tags/visualisation/</loc>
     <lastmod>2019-06-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
