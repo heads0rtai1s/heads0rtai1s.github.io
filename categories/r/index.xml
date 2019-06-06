@@ -2,42 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R on head spin - the Heads or Tails blog</title>
-    <link>/categories/r/</link>
+    <link>https://heads0rtai1s.github.io/categories/r/</link>
     <description>Recent content in R on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 15 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 06 Jun 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://heads0rtai1s.github.io/categories/r/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Tidy evaluation in R - Complex use cases (feat. ggalluvial)</title>
-      <link>/2019/06/15/tidy-eval-examples/</link>
-      <pubDate>Sat, 15 Jun 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/2019/06/15/tidy-eval-examples/</guid>
-      <description>In an earlier post I gave a gentle introduction to tidy evaluation in the R tidyverse using simple examples. I covered quoting with enquo and unquoting with !! in brief dplyr and ggplot2 snippets. Today, I aim to build a collection of more complex use cases involving additional tools.
-Those are our libraries:
-libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;stringr&amp;#39;, # wrangling &amp;#39;knitr&amp;#39;,&amp;#39;kableExtra&amp;#39;, # table styling &amp;#39;ggplot2&amp;#39;,&amp;#39;ggalluvial&amp;#39;) # plots invisible(lapply(libs, library, character.</description>
-    </item>
     
     <item>
       <title>Data flow visuals - alluvial vs ggalluvial in R</title>
-      <link>/2019/06/06/visuals-alluvial-ggalluvial/</link>
+      <link>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</link>
       <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/06/06/visuals-alluvial-ggalluvial/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</guid>
       <description>I have long been a fan of creative data visualisation techniques. For me, the choice of visual representation is driven by both the type of data and the kind of question one wants to examine.
 The power of its visualisation tools has been a major strength of the R language well before the ggplot2 package and the tidyverse burst onto the scene. Today’s post will be an introductory examination of two similar packages that allow us to study the connection and flow of data between different categorical features via alluvial plots.</description>
     </item>
     
     <item>
       <title>Tidy evaluation in R - Simple Examples</title>
-      <link>/2019/04/24/tidy-eval-examples/</link>
+      <link>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</link>
       <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/04/24/tidy-eval-examples/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</guid>
       <description>The tidyverse philosophy introduced by Hadley Wickham has been a game changer for the R community. It is based on intuitive rules of what a tidy data set should look like: each variable is a column, each observation is a row (Wickham 2014). At its core, the tidyverse collection of R packages is powered by a consistent grammar of data manipulation and visualisation.
 The tidyverse grammar makes it easier to manipulate data sets using simple expressions that reduce the syntactic overhead and allow you to focus on the data.</description>
     </item>

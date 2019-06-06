@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Visualisation on head spin - the Heads or Tails blog</title>
-    <link>/categories/visualisation/</link>
+    <link>https://heads0rtai1s.github.io/categories/visualisation/</link>
     <description>Recent content in Visualisation on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 06 Jun 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/categories/visualisation/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://heads0rtai1s.github.io/categories/visualisation/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Data flow visuals - alluvial vs ggalluvial in R</title>
-      <link>/2019/06/06/visuals-alluvial-ggalluvial/</link>
+      <link>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</link>
       <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/06/06/visuals-alluvial-ggalluvial/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</guid>
       <description>I have long been a fan of creative data visualisation techniques. For me, the choice of visual representation is driven by both the type of data and the kind of question one wants to examine.
 The power of its visualisation tools has been a major strength of the R language well before the ggplot2 package and the tidyverse burst onto the scene. Today’s post will be an introductory examination of two similar packages that allow us to study the connection and flow of data between different categorical features via alluvial plots.</description>
     </item>
