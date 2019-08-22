@@ -2,102 +2,102 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on head spin - the Heads or Tails blog</title>
-    <link>https://heads0rtai1s.github.io/tags/</link>
+    <link>/tags/</link>
     <description>Recent content in Tags on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 19 Apr 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://heads0rtai1s.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Community</title>
-      <link>https://heads0rtai1s.github.io/tags/community/</link>
+      <link>/tags/community/</link>
       <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://heads0rtai1s.github.io/tags/community/</guid>
+      <guid>/tags/community/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Ggplot2</title>
-      <link>https://heads0rtai1s.github.io/tags/ggplot2/</link>
+      <link>/tags/ggplot2/</link>
       <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://heads0rtai1s.github.io/tags/ggplot2/</guid>
+      <guid>/tags/ggplot2/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Journey</title>
-      <link>https://heads0rtai1s.github.io/tags/journey/</link>
+      <link>/tags/journey/</link>
       <pubDate>Mon, 08 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://heads0rtai1s.github.io/tags/journey/</guid>
+      <guid>/tags/journey/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Kaggle</title>
-      <link>https://heads0rtai1s.github.io/tags/kaggle/</link>
+      <link>/tags/kaggle/</link>
       <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://heads0rtai1s.github.io/tags/kaggle/</guid>
+      <guid>/tags/kaggle/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Kaggle Days</title>
-      <link>https://heads0rtai1s.github.io/tags/kaggle-days/</link>
+      <link>/tags/kaggle-days/</link>
       <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://heads0rtai1s.github.io/tags/kaggle-days/</guid>
+      <guid>/tags/kaggle-days/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Meta</title>
-      <link>https://heads0rtai1s.github.io/tags/meta/</link>
+      <link>/tags/meta/</link>
       <pubDate>Mon, 08 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://heads0rtai1s.github.io/tags/meta/</guid>
+      <guid>/tags/meta/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Programming</title>
-      <link>https://heads0rtai1s.github.io/tags/programming/</link>
-      <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
+      <link>/tags/programming/</link>
+      <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://heads0rtai1s.github.io/tags/programming/</guid>
+      <guid>/tags/programming/</guid>
       <description></description>
     </item>
     
     <item>
       <title>R</title>
-      <link>https://heads0rtai1s.github.io/tags/r/</link>
-      <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
+      <link>/tags/r/</link>
+      <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://heads0rtai1s.github.io/tags/r/</guid>
+      <guid>/tags/r/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Tidyverse</title>
-      <link>https://heads0rtai1s.github.io/tags/tidyverse/</link>
-      <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
+      <link>/tags/tidyverse/</link>
+      <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://heads0rtai1s.github.io/tags/tidyverse/</guid>
+      <guid>/tags/tidyverse/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Visualisation</title>
-      <link>https://heads0rtai1s.github.io/tags/visualisation/</link>
-      <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
+      <link>/tags/visualisation/</link>
+      <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://heads0rtai1s.github.io/tags/visualisation/</guid>
+      <guid>/tags/visualisation/</guid>
       <description></description>
     </item>
     

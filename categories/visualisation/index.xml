@@ -1,24 +1,463 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Visualisation on head spin - the Heads or Tails blog</title>
-    <link>https://heads0rtai1s.github.io/categories/visualisation/</link>
+    <link>/categories/visualisation/</link>
     <description>Recent content in Visualisation on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 06 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 22 Aug 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://heads0rtai1s.github.io/categories/visualisation/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="/categories/visualisation/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Tidy evaluation in R: Part 2 - Complex use cases (feat. facet zoom)</title>
+      <link>/2019/08/22/tidy-eval-examples-part2/</link>
+      <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/08/22/tidy-eval-examples-part2/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;In an &lt;a href=&#34;https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/&#34;&gt;earlier post&lt;/a&gt; I gave a gentle introduction to &lt;a href=&#34;https://tidyeval.tidyverse.org/&#34;&gt;tidy evaluation&lt;/a&gt; in the R &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; using simple examples. I covered quoting with &lt;code&gt;enquo&lt;/code&gt; and unquoting with &lt;code&gt;!!&lt;/code&gt; in brief &lt;code&gt;dplyr&lt;/code&gt; and &lt;code&gt;ggplot2&lt;/code&gt; snippets. Today, I aim to build a collection of more complex use cases involving additional tools.&lt;/p&gt;
+&lt;p&gt;Those are our libraries:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;stringr&amp;#39;,             # wrangling
+          &amp;#39;knitr&amp;#39;,&amp;#39;kableExtra&amp;#39;,           # table styling
+          &amp;#39;ggplot2&amp;#39;,&amp;#39;ggforce&amp;#39;)            # plots
+invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This time, the &lt;a href=&#34;https://ggplot2.tidyverse.org/reference/diamonds.html&#34;&gt;Diamonds dataset&lt;/a&gt; will be our best friend in exploring the depths of tidy eval. Included in the &lt;a href=&#34;https://cran.r-project.org/web/packages/ggplot2/index.html&#34;&gt;ggplot2 package&lt;/a&gt;, this dataset describes the price of 54k diamonds along with their cut, weight, clarity, size, and other relevant properties. Here are the first 4 rows:&lt;/p&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+carat
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+cut
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+color
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+clarity
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+depth
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+table
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+price
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+x
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+y
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+z
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.23
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Ideal
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+E
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+SI2
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+61.5
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+55
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+326
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+3.95
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+3.98
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2.43
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.21
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Premium
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+E
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+SI1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+59.8
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+61
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+326
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+3.89
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+3.84
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2.31
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.23
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Good
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+E
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+VS1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+56.9
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+65
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+327
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+4.05
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+4.07
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2.31
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.29
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Premium
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+I
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+VS2
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+62.4
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+58
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+334
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+4.20
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+4.23
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2.63
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Meet &lt;code&gt;enqous&lt;/code&gt; and &lt;code&gt;!!!&lt;/code&gt;:&lt;/strong&gt; The equivalent to &lt;code&gt;enquo&lt;/code&gt; for &lt;strong&gt;quoting more than one variable&lt;/strong&gt; is called &lt;code&gt;enquos&lt;/code&gt;. So far, so plural. The corresponding &lt;strong&gt;unquoting&lt;/strong&gt; method is &lt;code&gt;!!!&lt;/code&gt; - the &lt;em&gt;big bang&lt;/em&gt; operator (remember that &lt;code&gt;!!&lt;/code&gt; is &lt;em&gt;bang-bang&lt;/em&gt;). The tidyverse certainly doesn’t shy away from cosmological superlatives. (The &lt;a href=&#34;https://www.rstudio.com/resources/cheatsheets/&#34;&gt;tidyeval cheat sheet&lt;/a&gt; calls it &lt;em&gt;bang-bang-bang&lt;/em&gt;, which makes more intuitive sense but is less poetic; as a trained astronomer my choice is clear.) Here we see both operators in action:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;group_mean &amp;lt;- function(df, g, x, y){
+  
+  group_cols &amp;lt;- enquos(x, y)
+  mean_col &amp;lt;- enquo(g)
+  df %&amp;gt;% 
+    group_by(!!! group_cols) %&amp;gt;% 
+    summarise(mean = mean(!! mean_col))
+}
+
+group_mean(diamonds, price, cut, color) %&amp;gt;% 
+  head(5)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 5 x 3
+## # Groups:   cut [1]
+##   cut   color  mean
+##   &amp;lt;ord&amp;gt; &amp;lt;ord&amp;gt; &amp;lt;dbl&amp;gt;
+## 1 Fair  D     4291.
+## 2 Fair  E     3682.
+## 3 Fair  F     3827.
+## 4 Fair  G     4239.
+## 5 Fair  H     5136.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Alternative: use &lt;code&gt;...&lt;/code&gt; aka dots:&lt;/strong&gt; Note, that if all you need to do is group together a bunch of variables (or to treat them as one group in any other way) then R offers the nifty &lt;code&gt;...&lt;/code&gt; operator. You might have seen this style in function definitions or help pages already. With the dots you can capture everything that is not explicitely named and refer to it as one entity. This simplifies our above function in the following way:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;group_mean &amp;lt;- function(df, g, ...){
+  
+  mean_col &amp;lt;- enquo(g)
+  df %&amp;gt;% 
+    group_by(...) %&amp;gt;% 
+    summarise(mean = mean(!! mean_col))
+}
+
+group_mean(diamonds, price, cut, color) %&amp;gt;% 
+  head(5)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 5 x 3
+## # Groups:   cut [1]
+##   cut   color  mean
+##   &amp;lt;ord&amp;gt; &amp;lt;ord&amp;gt; &amp;lt;dbl&amp;gt;
+## 1 Fair  D     4291.
+## 2 Fair  E     3682.
+## 3 Fair  F     3827.
+## 4 Fair  G     4239.
+## 5 Fair  H     5136.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It’s important to note that &lt;code&gt;!!!&lt;/code&gt; currently doesn’t work in &lt;code&gt;ggplot(aes())&lt;/code&gt;. &lt;a href=&#34;https://stackoverflow.com/questions/55815963/tidyeval-splice-operator-fails-with-ggplots-aes&#34;&gt;There is a workaround&lt;/a&gt; and hopefully soon a fix that I will cover in a future post.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The &lt;code&gt;:=&lt;/code&gt; operator:&lt;/strong&gt; to &lt;strong&gt;rename a variable to a quoted name&lt;/strong&gt; you need the &lt;code&gt;:=&lt;/code&gt; operator. Think of it as a maths-style definition if that helps you to remember the syntax. Here’s how it works, giving our mean price variable a custom name:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;group_mean &amp;lt;- function(df, g, n, ...){
+  
+  mean_col &amp;lt;- enquo(g)
+  new_name &amp;lt;- enquo(n)
+  
+  df %&amp;gt;% 
+    group_by(...) %&amp;gt;% 
+    summarise(!! new_name := mean(!! mean_col))
+}
+
+group_mean(diamonds, price, mean_price, cut, color) %&amp;gt;% 
+  head(5)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 5 x 3
+## # Groups:   cut [1]
+##   cut   color mean_price
+##   &amp;lt;ord&amp;gt; &amp;lt;ord&amp;gt;      &amp;lt;dbl&amp;gt;
+## 1 Fair  D          4291.
+## 2 Fair  E          3682.
+## 3 Fair  F          3827.
+## 4 Fair  G          4239.
+## 5 Fair  H          5136.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This operator becomes more useful in complex functions or when you are writing your own packages.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Encoding strings with &lt;code&gt;ensym&lt;/code&gt;:&lt;/strong&gt; In some scenarios you want to quote your input not as an expression but a symbol. In the context of helper functions this will often involve strings - and a common use case is &lt;code&gt;ggplot2&lt;/code&gt; wrappers. The strings can then be further manipulated for instance with the tidy &lt;a href=&#34;https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html&#34;&gt;&lt;code&gt;stringr&lt;/code&gt;&lt;/a&gt; package.&lt;/p&gt;
+&lt;p&gt;In this final example of the post I will showcase the use of &lt;code&gt;ensym&lt;/code&gt; alongside the other main &lt;code&gt;tidyeval&lt;/code&gt; operators. The function will be a &lt;code&gt;ggplot2&lt;/code&gt; convenience wrapper that build a scatter plot of two numerical features colour-coded by a categorical variable. Custom axes labels and plot title will be added. For a little extra flourish, I will add a zoom view on one particular category using the powerful &lt;code&gt;facet_zoom&lt;/code&gt; function from the &lt;a href=&#34;https://cran.r-project.org/web/packages/ggforce/index.html&#34;&gt;&lt;code&gt;ggforce&lt;/code&gt;&lt;/a&gt; package. Here’s what it looks like:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_xy &amp;lt;- function(df, x, y, col, var_zoom, ...){
+  
+  x &amp;lt;- enquo(x)
+  y &amp;lt;- enquo(y)
+  col &amp;lt;- enquo(col)
+  group_vars &amp;lt;- enquos(...)
+  
+  dfname &amp;lt;- ensym(df) %&amp;gt;% str_to_sentence()
+  xname &amp;lt;- ensym(x) %&amp;gt;% str_to_sentence()
+  yname &amp;lt;- ensym(y) %&amp;gt;% str_to_sentence()
+  colname &amp;lt;- ensym(col) %&amp;gt;% str_to_sentence()
+  
+  df %&amp;gt;% 
+    mutate(!! col := as.factor(!! col)) %&amp;gt;% 
+    group_by(!! col, !!! group_vars) %&amp;gt;% 
+    summarise(mean_x = mean(!!x),
+              mean_y = mean(!!y)) %&amp;gt;% 
+    ungroup() %&amp;gt;% 
+    ggplot(aes(mean_x, mean_y, col = !!col)) +
+    geom_point() +
+    scale_color_brewer(type = &amp;quot;qual&amp;quot;, palette = &amp;quot;Set1&amp;quot;) +
+    labs(x = xname, y = yname, col = colname) +
+    ggtitle(str_c(dfname, &amp;quot; dataset: &amp;quot;,
+                  xname, &amp;quot; vs &amp;quot;, yname,
+                  &amp;quot; with colour coding by &amp;quot;, colname),
+            subtitle = str_c(&amp;quot;Zoom view to emphasise &amp;quot;,
+                             colname, &amp;quot; = &amp;quot;, var_zoom)) +
+    facet_zoom(x = (!! col == var_zoom))
+}
+
+plot_xy(diamonds, carat, price, clarity, &amp;quot;IF&amp;quot;, color, cut)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-08-22-tidy-eval-complex-examples_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Let’s break it down:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;The &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt; features are encoded using &lt;code&gt;enquo&lt;/code&gt; and &lt;code&gt;!!&lt;/code&gt;, as covered in the &lt;a href=&#34;https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/&#34;&gt;previous post&lt;/a&gt;. Those variables will form our scatter plot. But now, they are also encoded using &lt;code&gt;ensym&lt;/code&gt; as &lt;code&gt;xname&lt;/code&gt; and &lt;code&gt;yname&lt;/code&gt;. Those are symbols that we can now use in string functions to build custom plot titles and labels.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The &lt;code&gt;col&lt;/code&gt; feature is also encoded both as a quote and a symbol. This needs to be a categorical feature that we will use to colour-code the data points. The legend is the default style and position. Note, that we use &lt;code&gt;:=&lt;/code&gt; to preserve the column name when transforming this feature from character to factor.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The &lt;code&gt;string_to_sentence&lt;/code&gt; tool, from the &lt;code&gt;stringr&lt;/code&gt; package, simply capitalises our input strings.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Additional grouping variables are encoded using &lt;code&gt;enquos&lt;/code&gt; and spliced into the &lt;code&gt;group_by&lt;/code&gt; call via &lt;code&gt;!!!&lt;/code&gt;. By using the dots &lt;code&gt;...&lt;/code&gt; in the function call we give ourselves the option to use an arbitrary number of grouping features in this function.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;What the function does, is to group the data by the grouping variables (here: Color and Cut) plus the colour-coding feature (here: Clarity). Then it computes the group mean for the x and y features (here: Carat and Price). It plots these group means in a colour-coded scatter plot.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Finally, it zooms into one particular category of the colour-coding (here: Clarity = “IF”) and provides a magnified view. This zoom view is shown in the lower panel. The upper panel shows the entire data set. Note, that this upper panel has a darker background (and a connecting region) to indicate where the zoom view is located in the overall picture.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The zoom facet is provided by the &lt;code&gt;ggforce&lt;/code&gt; tool &lt;code&gt;facet_zoom&lt;/code&gt; which is very useful for examining specific data points. Here we only zoom into the x-axis, but it can also provide zooms on the y axis or for both axes simultaneously.&lt;/p&gt;
+&lt;p&gt;More Resources:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Rstudio’s excellent &lt;a href=&#34;https://www.rstudio.com/resources/cheatsheets/&#34;&gt;cheats sheets&lt;/a&gt; include a tidyeval specimen.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The prolific &lt;a href=&#34;https://community.rstudio.com/&#34;&gt;Rstudio Community&lt;/a&gt; has a tag for &lt;a href=&#34;https://community.rstudio.com/tags/c/tidyverse/tidyeval&#34;&gt;tidyeval questions and solutions&lt;/a&gt;, among many other interesting topics.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Data flow visuals - alluvial vs ggalluvial in R</title>
-      <link>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</link>
+      <link>/2019/06/06/visuals-alluvial-ggalluvial/</link>
       <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</guid>
-      <description>I have long been a fan of creative data visualisation techniques. For me, the choice of visual representation is driven by both the type of data and the kind of question one wants to examine.
-The power of its visualisation tools has been a major strength of the R language well before the ggplot2 package and the tidyverse burst onto the scene. Today’s post will be an introductory examination of two similar packages that allow us to study the connection and flow of data between different categorical features via alluvial plots.</description>
+      <guid>/2019/06/06/visuals-alluvial-ggalluvial/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;I have long been a fan of creative data visualisation techniques. For me, the choice of visual representation is driven by both the type of data and the kind of question one wants to examine.&lt;/p&gt;
+&lt;p&gt;The power of its visualisation tools has been a major strength of the R language well before the &lt;a href=&#34;https://cran.r-project.org/web/packages/ggplot2/index.html&#34;&gt;ggplot2&lt;/a&gt; package and the &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; burst onto the scene. Today’s post will be an introductory examination of two similar packages that allow us to study the connection and &lt;em&gt;flow&lt;/em&gt; of data between different categorical features via &lt;strong&gt;alluvial plots&lt;/strong&gt;. Those packages are &lt;a href=&#34;https://cran.r-project.org/web/packages/alluvial/vignettes/alluvial.html&#34;&gt;alluvial&lt;/a&gt; and &lt;a href=&#34;https://cran.r-project.org/web/packages/ggalluvial/vignettes/ggalluvial.html&#34;&gt;ggalluvial&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;All in all we need the following libraries:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;stringr&amp;#39;, &amp;#39;forcats&amp;#39;,     # wrangling
+          &amp;#39;knitr&amp;#39;,&amp;#39;kableExtra&amp;#39;,               # table styling
+          &amp;#39;ggplot2&amp;#39;,&amp;#39;alluvial&amp;#39;,&amp;#39;ggalluvial&amp;#39;,  # plots
+          &amp;#39;nycflights13&amp;#39;)                     # data
+invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Alluvial plots are best explained by showing one. For illustrating the following examples we will take on board the flights data from the &lt;a href=&#34;https://cran.r-project.org/web/packages/nycflights13/index.html&#34;&gt;nycflights13 library&lt;/a&gt;. This comprehensive data set contains all flights that departed from the New York City airports JFK, LGA, and EWR in 2013. For this analysis, we will only look at three features - the 1st-class features if you will: airport of origin, destination airport, and carrier (i.e. airline code). From the metaphorical front of the cabin, here are the first 4 rows:&lt;/p&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+origin
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+carrier
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+dest
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+EWR
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+UA
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+IAH
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+LGA
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+UA
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+IAH
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+JFK
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+AA
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+MIA
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+JFK
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+B6
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+BQN
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The &lt;a href=&#34;https://github.com/mbojan/alluvial&#34;&gt;alluvial package&lt;/a&gt; was &lt;a href=&#34;http://bc.bojanorama.pl/2014/03/alluvial-diagrams/&#34;&gt;introduced in 2014&lt;/a&gt; to fill a niché in the landscape of visualisations. I have enjoyed using it in the past in &lt;a href=&#34;https://www.kaggle.com/headsortails/treemap-house-of-horror-spooky-eda-lda-features&#34;&gt;several&lt;/a&gt; &lt;a href=&#34;https://www.kaggle.com/headsortails/nyc-taxi-eda-update-the-fast-the-curious&#34;&gt;Kaggle&lt;/a&gt; &lt;a href=&#34;https://www.kaggle.com/headsortails/steering-wheel-of-fortune-porto-seguro-eda&#34;&gt;Kernels&lt;/a&gt;. Here’s what a plot looks like:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;top_dest &amp;lt;- flights %&amp;gt;% 
+  count(dest) %&amp;gt;% 
+  top_n(5, n) %&amp;gt;% 
+  pull(dest)
+
+top_carrier &amp;lt;- flights %&amp;gt;% 
+  filter(dest %in% top_dest) %&amp;gt;% 
+  count(carrier) %&amp;gt;% 
+  top_n(4, n) %&amp;gt;% 
+  pull(carrier)
+
+fly &amp;lt;- flights %&amp;gt;% 
+  filter(dest %in% top_dest &amp;amp; carrier %in% top_carrier) %&amp;gt;% 
+  count(origin, carrier, dest) %&amp;gt;% 
+  mutate(origin = fct_relevel(as.factor(origin), c(&amp;quot;EWR&amp;quot;, &amp;quot;LGA&amp;quot;, &amp;quot;JFK&amp;quot;)))
+
+alluvial(fly %&amp;gt;% select(-n),
+         freq=fly$n, border=NA, alpha = 0.5,
+         col=case_when(fly$origin == &amp;quot;JFK&amp;quot; ~ &amp;quot;red&amp;quot;,
+                       fly$origin == &amp;quot;EWR&amp;quot; ~ &amp;quot;blue&amp;quot;,
+                       TRUE ~ &amp;quot;orange&amp;quot;),
+         cex=0.75,
+         axis_labels = c(&amp;quot;Origin&amp;quot;, &amp;quot;Carrier&amp;quot;, &amp;quot;Destination&amp;quot;),
+         hide = fly$n &amp;lt; 150)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;The features are arranged horizontally, with their value counts stacked vertically. This corresponds to a stacked barplot: e.g. for the destinations “BOS” has fewer flights than “LAX”. Here we only look at the top 5 destination and their top 4 carriers (that’s the first two segments of the code above).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The “alluvia” are the bands that connect the features from left to right. Alluvia break down all feature combinations, with complexity increasing also from left to right. These sub-segments are called “flows”.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;This means that starting from the 3 origin airports on the left there are 4 “flows” each (i.e. 12 in total) connecting to the 4 main carriers. Between carrier and destination these then fan out into 5 flows each for a theoretical total of 60 different flows. In practice, we want to use the &lt;code&gt;hide&lt;/code&gt; parameter to exclude those flows that only have a few observations so that we can focus on the big picture.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;For further styling, a &lt;code&gt;border&lt;/code&gt; colour can be assigned to each alluvium. This would allow us to distinguish the different flows on the left side that then break into sub-flows on the right side. Feel free to try it out. Personally, I think the plot looks better without border colours.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;We chose a colour coding (argument &lt;code&gt;col&lt;/code&gt;) that puts focus on the origin airports. The first argument of the &lt;code&gt;alluvial&lt;/code&gt; function is the data set, followed by the frequency column (&lt;code&gt;freq&lt;/code&gt;). Note that &lt;code&gt;alluvial&lt;/code&gt; expects the data already to be in the shape of grouped counts (as prepared via &lt;code&gt;count&lt;/code&gt; in the third code segment above).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;In my view, the best transparency for alluvia is the default &lt;code&gt;alpha = 0.5&lt;/code&gt;. As usual, &lt;code&gt;cex&lt;/code&gt; does the font scaling and &lt;code&gt;axis_lables&lt;/code&gt; is pretty self-explanatory.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The &lt;code&gt;alluvial&lt;/code&gt; function has an &lt;code&gt;ordering&lt;/code&gt; parameter, but it’s generally better to do the ordering through factor re-levelling when preparing the data (via the tidyverse &lt;a href=&#34;https://cran.r-project.org/web/packages/forcats/&#34;&gt;forcats library&lt;/a&gt;). Here we only change the order for the &lt;code&gt;origin&lt;/code&gt; feature.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So, other than looking pretty, what insights does it give us? Well, for instance we see that (for this subset) EWR is dominated by UA (United Airlines) and has almost no AA (American Airlines flights). In turn, UA flights are not frequent in LGA or JFK. Both Boston (BOS) and Los Angeles (LAX) are not connected to LGA (orange). &lt;strong&gt;Thus, the alluvial plot shows us - pretty literally in this case - the flow of flight volume between airports through airline carriers.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Now, the &lt;code&gt;alluvial&lt;/code&gt; tool has a rather specific syntax and doesn’t integrate seamlessly with the tidyverse. Enter the &lt;a href=&#34;https://github.com/corybrunson/ggalluvial&#34;&gt;&lt;code&gt;ggalluvial&lt;/code&gt; library&lt;/a&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fly %&amp;gt;% 
+  mutate(origin = fct_rev(as.factor(origin)),
+         carrier = fct_rev(as.factor(carrier)),
+         dest = fct_rev(as.factor(dest))) %&amp;gt;% 
+  filter(n &amp;gt; 150) %&amp;gt;% 
+  ggplot(aes(y = n, axis1 = origin, axis2 = carrier, axis3 = dest)) +
+  geom_alluvium(aes(fill = origin), aes.bind=TRUE, width = 1/12) +
+  geom_stratum(width = 1/4, fill = &amp;quot;white&amp;quot;, color = &amp;quot;black&amp;quot;) +
+  geom_text(stat = &amp;quot;stratum&amp;quot;, label.strata = TRUE) +
+  scale_x_discrete(limits = c(&amp;quot;Origin&amp;quot;, &amp;quot;Carrier&amp;quot;, &amp;quot;Destination&amp;quot;),
+                   expand = c(.05, .05)) +
+  scale_fill_manual(values = c(&amp;quot;red&amp;quot;, &amp;quot;orange&amp;quot;, &amp;quot;blue&amp;quot;)) +
+  labs(y = &amp;quot;Cases&amp;quot;) +
+  theme_minimal() +
+  theme(legend.position = &amp;quot;none&amp;quot;) +
+  ggtitle(&amp;quot;NYC flights volume for top destinations and airlines&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Here I purposefully choose the styling parameters to (broadly) reproduce the above plot. It is evident that &lt;code&gt;ggalluvial&lt;/code&gt; integrates much more smoothly into the &lt;code&gt;ggplot2&lt;/code&gt; grammar. Specifically:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;The alluvia and the vertical features (the “strata”; here: origin, carrier, and destination) are implemented as different geometry layers. Note, that the default order of the strata features is reversed compared to &lt;code&gt;alluvial&lt;/code&gt;. Also: there are no gaps between the strata here compared to what &lt;code&gt;alluvial&lt;/code&gt; does. This makes it easier to add a y-axis.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;I decided not to change the default y-axis and subtle background grid lines, which provide quantitative information and guide the eye. Replace &lt;code&gt;theme_minimal()&lt;/code&gt; by &lt;code&gt;theme_void()&lt;/code&gt; to get very close to the &lt;code&gt;alluvial&lt;/code&gt; plot style.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;By default, &lt;code&gt;ggalluvial&lt;/code&gt; plots the same number of flows between neighbouring strata. This behaviour can be changed by the &lt;code&gt;aes.bind=TRUE&lt;/code&gt; parameter in &lt;code&gt;geom_alluvial&lt;/code&gt;. Remove it to see the difference with a larger number of narrower flows between the origin and carrier strata.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;We are setting the colours manually. One advantage of &lt;code&gt;ggalluvial&lt;/code&gt; is that instead of a manual setting you can use any &lt;code&gt;ggplot2&lt;/code&gt; (or add-on) scale such as &lt;a href=&#34;https://ggplot2.tidyverse.org/reference/scale_brewer.html&#34;&gt;&lt;code&gt;brewer&lt;/code&gt;&lt;/a&gt; or &lt;a href=&#34;https://ggplot2.tidyverse.org/reference/scale_viridis.html&#34;&gt;&lt;code&gt;viridis&lt;/code&gt;&lt;/a&gt;. Similarly we can modify the plot &lt;a href=&#34;https://ggplot2.tidyverse.org/reference/theme.html&#34;&gt;&lt;code&gt;theme&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Instead of &lt;code&gt;geom_text&lt;/code&gt; you can use &lt;code&gt;geom_label&lt;/code&gt;, e.g. in combination with a different &lt;code&gt;fill&lt;/code&gt; colour in &lt;code&gt;geom_stratum&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In closing: both packages are versatile and provide somewhat different approaches to creating alluvial plots. If you are frequently working within the tidyverse then &lt;code&gt;ggalluvial&lt;/code&gt; might be more intuitive for you. Specific (edge) cases might be better handled by one tool than the other.&lt;/p&gt;
+&lt;p&gt;For more information check out the respective vignettes for &lt;a href=&#34;https://cran.r-project.org/web/packages/ggalluvial/vignettes/ggalluvial.html&#34;&gt;&lt;code&gt;ggalluvial&lt;/code&gt;&lt;/a&gt; and &lt;a href=&#34;https://cran.r-project.org/web/packages/alluvial/vignettes/alluvial.html&#34;&gt;&lt;code&gt;alluvial&lt;/code&gt;&lt;/a&gt; as well as their &lt;a href=&#34;https://github.com/corybrunson/ggalluvial&#34;&gt;pages&lt;/a&gt; on &lt;a href=&#34;https://github.com/mbojan/alluvial&#34;&gt;github&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Have fun!&lt;/p&gt;
+</description>
     </item>
     
   </channel>

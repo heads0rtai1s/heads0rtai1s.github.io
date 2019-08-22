@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Kaggle Days on head spin - the Heads or Tails blog</title>
-    <link>https://heads0rtai1s.github.io/tags/kaggle-days/</link>
+    <link>/tags/kaggle-days/</link>
     <description>Recent content in Kaggle Days on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 19 Apr 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://heads0rtai1s.github.io/tags/kaggle-days/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/kaggle-days/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>What makes a community great?</title>
-      <link>https://heads0rtai1s.github.io/2019/04/19/great-community-kaggledays19/</link>
+      <link>/2019/04/19/great-community-kaggledays19/</link>
       <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://heads0rtai1s.github.io/2019/04/19/great-community-kaggledays19/</guid>
+      <guid>/2019/04/19/great-community-kaggledays19/</guid>
       <description>The easy answer to this question is: the people. Great people build great communities. Case not quite closed yet, though, because there is more to it. Even the most promising group of individuals needs certain conditions in order to grow into a strong and thriving community. The kind of community that lifts up its members beyond their individual capabilities and becomes more than the sum of their proverbial skills and contributions.</description>
     </item>
     

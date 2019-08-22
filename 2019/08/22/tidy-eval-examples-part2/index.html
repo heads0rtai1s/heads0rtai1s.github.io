@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.54.0" />
+
+
+<title>Tidy evaluation in R: Part 2 - Complex use cases (feat. facet zoom) - head spin - the Heads or Tails blog</title>
+<meta property="og:title" content="Tidy evaluation in R: Part 2 - Complex use cases (feat. facet zoom) - head spin - the Heads or Tails blog">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/avatar.png"
+         width="50"
+         height="50"
+         alt="Heads or Tails">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://twitter.com/heads0rtai1s">Twitter</a></li>
+    
+    <li><a href="https://www.kaggle.com/headsortails">Kaggle</a></li>
+    
+    <li><a href="https://www.linkedin.com/in/martin-henze">LinkedIn</a></li>
+    
+    <li><a href="https://github.com/heads0rtai1s">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">6 min read</span>
+    
+
+    <h1 class="article-title">Tidy evaluation in R: Part 2 - Complex use cases (feat. facet zoom)</h1>
+
+    
+    <span class="article-date">2019-08-22</span>
+    
+
+    <div class="article-content">
+      
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<p>In an <a href="https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/">earlier post</a> I gave a gentle introduction to <a href="https://tidyeval.tidyverse.org/">tidy evaluation</a> in the R <a href="https://www.tidyverse.org/">tidyverse</a> using simple examples. I covered quoting with <code>enquo</code> and unquoting with <code>!!</code> in brief <code>dplyr</code> and <code>ggplot2</code> snippets. Today, I aim to build a collection of more complex use cases involving additional tools.</p>
+<p>Those are our libraries:</p>
+<pre class="r"><code>libs &lt;- c(&#39;dplyr&#39;, &#39;stringr&#39;,             # wrangling
+          &#39;knitr&#39;,&#39;kableExtra&#39;,           # table styling
+          &#39;ggplot2&#39;,&#39;ggforce&#39;)            # plots
+invisible(lapply(libs, library, character.only = TRUE))</code></pre>
+<p>This time, the <a href="https://ggplot2.tidyverse.org/reference/diamonds.html">Diamonds dataset</a> will be our best friend in exploring the depths of tidy eval. Included in the <a href="https://cran.r-project.org/web/packages/ggplot2/index.html">ggplot2 package</a>, this dataset describes the price of 54k diamonds along with their cut, weight, clarity, size, and other relevant properties. Here are the first 4 rows:</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+carat
+</th>
+<th style="text-align:left;">
+cut
+</th>
+<th style="text-align:left;">
+color
+</th>
+<th style="text-align:left;">
+clarity
+</th>
+<th style="text-align:right;">
+depth
+</th>
+<th style="text-align:right;">
+table
+</th>
+<th style="text-align:right;">
+price
+</th>
+<th style="text-align:right;">
+x
+</th>
+<th style="text-align:right;">
+y
+</th>
+<th style="text-align:right;">
+z
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.23
+</td>
+<td style="text-align:left;">
+Ideal
+</td>
+<td style="text-align:left;">
+E
+</td>
+<td style="text-align:left;">
+SI2
+</td>
+<td style="text-align:right;">
+61.5
+</td>
+<td style="text-align:right;">
+55
+</td>
+<td style="text-align:right;">
+326
+</td>
+<td style="text-align:right;">
+3.95
+</td>
+<td style="text-align:right;">
+3.98
+</td>
+<td style="text-align:right;">
+2.43
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.21
+</td>
+<td style="text-align:left;">
+Premium
+</td>
+<td style="text-align:left;">
+E
+</td>
+<td style="text-align:left;">
+SI1
+</td>
+<td style="text-align:right;">
+59.8
+</td>
+<td style="text-align:right;">
+61
+</td>
+<td style="text-align:right;">
+326
+</td>
+<td style="text-align:right;">
+3.89
+</td>
+<td style="text-align:right;">
+3.84
+</td>
+<td style="text-align:right;">
+2.31
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.23
+</td>
+<td style="text-align:left;">
+Good
+</td>
+<td style="text-align:left;">
+E
+</td>
+<td style="text-align:left;">
+VS1
+</td>
+<td style="text-align:right;">
+56.9
+</td>
+<td style="text-align:right;">
+65
+</td>
+<td style="text-align:right;">
+327
+</td>
+<td style="text-align:right;">
+4.05
+</td>
+<td style="text-align:right;">
+4.07
+</td>
+<td style="text-align:right;">
+2.31
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.29
+</td>
+<td style="text-align:left;">
+Premium
+</td>
+<td style="text-align:left;">
+I
+</td>
+<td style="text-align:left;">
+VS2
+</td>
+<td style="text-align:right;">
+62.4
+</td>
+<td style="text-align:right;">
+58
+</td>
+<td style="text-align:right;">
+334
+</td>
+<td style="text-align:right;">
+4.20
+</td>
+<td style="text-align:right;">
+4.23
+</td>
+<td style="text-align:right;">
+2.63
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Meet <code>enqous</code> and <code>!!!</code>:</strong> The equivalent to <code>enquo</code> for <strong>quoting more than one variable</strong> is called <code>enquos</code>. So far, so plural. The corresponding <strong>unquoting</strong> method is <code>!!!</code> - the <em>big bang</em> operator (remember that <code>!!</code> is <em>bang-bang</em>). The tidyverse certainly doesn’t shy away from cosmological superlatives. (The <a href="https://www.rstudio.com/resources/cheatsheets/">tidyeval cheat sheet</a> calls it <em>bang-bang-bang</em>, which makes more intuitive sense but is less poetic; as a trained astronomer my choice is clear.) Here we see both operators in action:</p>
+<pre class="r"><code>group_mean &lt;- function(df, g, x, y){
+  
+  group_cols &lt;- enquos(x, y)
+  mean_col &lt;- enquo(g)
+  df %&gt;% 
+    group_by(!!! group_cols) %&gt;% 
+    summarise(mean = mean(!! mean_col))
+}
+
+group_mean(diamonds, price, cut, color) %&gt;% 
+  head(5)</code></pre>
+<pre><code>## # A tibble: 5 x 3
+## # Groups:   cut [1]
+##   cut   color  mean
+##   &lt;ord&gt; &lt;ord&gt; &lt;dbl&gt;
+## 1 Fair  D     4291.
+## 2 Fair  E     3682.
+## 3 Fair  F     3827.
+## 4 Fair  G     4239.
+## 5 Fair  H     5136.</code></pre>
+<p><strong>Alternative: use <code>...</code> aka dots:</strong> Note, that if all you need to do is group together a bunch of variables (or to treat them as one group in any other way) then R offers the nifty <code>...</code> operator. You might have seen this style in function definitions or help pages already. With the dots you can capture everything that is not explicitely named and refer to it as one entity. This simplifies our above function in the following way:</p>
+<pre class="r"><code>group_mean &lt;- function(df, g, ...){
+  
+  mean_col &lt;- enquo(g)
+  df %&gt;% 
+    group_by(...) %&gt;% 
+    summarise(mean = mean(!! mean_col))
+}
+
+group_mean(diamonds, price, cut, color) %&gt;% 
+  head(5)</code></pre>
+<pre><code>## # A tibble: 5 x 3
+## # Groups:   cut [1]
+##   cut   color  mean
+##   &lt;ord&gt; &lt;ord&gt; &lt;dbl&gt;
+## 1 Fair  D     4291.
+## 2 Fair  E     3682.
+## 3 Fair  F     3827.
+## 4 Fair  G     4239.
+## 5 Fair  H     5136.</code></pre>
+<p>It’s important to note that <code>!!!</code> currently doesn’t work in <code>ggplot(aes())</code>. <a href="https://stackoverflow.com/questions/55815963/tidyeval-splice-operator-fails-with-ggplots-aes">There is a workaround</a> and hopefully soon a fix that I will cover in a future post.</p>
+<p><strong>The <code>:=</code> operator:</strong> to <strong>rename a variable to a quoted name</strong> you need the <code>:=</code> operator. Think of it as a maths-style definition if that helps you to remember the syntax. Here’s how it works, giving our mean price variable a custom name:</p>
+<pre class="r"><code>group_mean &lt;- function(df, g, n, ...){
+  
+  mean_col &lt;- enquo(g)
+  new_name &lt;- enquo(n)
+  
+  df %&gt;% 
+    group_by(...) %&gt;% 
+    summarise(!! new_name := mean(!! mean_col))
+}
+
+group_mean(diamonds, price, mean_price, cut, color) %&gt;% 
+  head(5)</code></pre>
+<pre><code>## # A tibble: 5 x 3
+## # Groups:   cut [1]
+##   cut   color mean_price
+##   &lt;ord&gt; &lt;ord&gt;      &lt;dbl&gt;
+## 1 Fair  D          4291.
+## 2 Fair  E          3682.
+## 3 Fair  F          3827.
+## 4 Fair  G          4239.
+## 5 Fair  H          5136.</code></pre>
+<p>This operator becomes more useful in complex functions or when you are writing your own packages.</p>
+<p><strong>Encoding strings with <code>ensym</code>:</strong> In some scenarios you want to quote your input not as an expression but a symbol. In the context of helper functions this will often involve strings - and a common use case is <code>ggplot2</code> wrappers. The strings can then be further manipulated for instance with the tidy <a href="https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html"><code>stringr</code></a> package.</p>
+<p>In this final example of the post I will showcase the use of <code>ensym</code> alongside the other main <code>tidyeval</code> operators. The function will be a <code>ggplot2</code> convenience wrapper that build a scatter plot of two numerical features colour-coded by a categorical variable. Custom axes labels and plot title will be added. For a little extra flourish, I will add a zoom view on one particular category using the powerful <code>facet_zoom</code> function from the <a href="https://cran.r-project.org/web/packages/ggforce/index.html"><code>ggforce</code></a> package. Here’s what it looks like:</p>
+<pre class="r"><code>plot_xy &lt;- function(df, x, y, col, var_zoom, ...){
+  
+  x &lt;- enquo(x)
+  y &lt;- enquo(y)
+  col &lt;- enquo(col)
+  group_vars &lt;- enquos(...)
+  
+  dfname &lt;- ensym(df) %&gt;% str_to_sentence()
+  xname &lt;- ensym(x) %&gt;% str_to_sentence()
+  yname &lt;- ensym(y) %&gt;% str_to_sentence()
+  colname &lt;- ensym(col) %&gt;% str_to_sentence()
+  
+  df %&gt;% 
+    mutate(!! col := as.factor(!! col)) %&gt;% 
+    group_by(!! col, !!! group_vars) %&gt;% 
+    summarise(mean_x = mean(!!x),
+              mean_y = mean(!!y)) %&gt;% 
+    ungroup() %&gt;% 
+    ggplot(aes(mean_x, mean_y, col = !!col)) +
+    geom_point() +
+    scale_color_brewer(type = &quot;qual&quot;, palette = &quot;Set1&quot;) +
+    labs(x = xname, y = yname, col = colname) +
+    ggtitle(str_c(dfname, &quot; dataset: &quot;,
+                  xname, &quot; vs &quot;, yname,
+                  &quot; with colour coding by &quot;, colname),
+            subtitle = str_c(&quot;Zoom view to emphasise &quot;,
+                             colname, &quot; = &quot;, var_zoom)) +
+    facet_zoom(x = (!! col == var_zoom))
+}
+
+plot_xy(diamonds, carat, price, clarity, &quot;IF&quot;, color, cut)</code></pre>
+<p><img src="/post/2019-08-22-tidy-eval-complex-examples_files/figure-html/unnamed-chunk-6-1.png" width="100%" /></p>
+<p>Let’s break it down:</p>
+<ul>
+<li><p>The <code>x</code> and <code>y</code> features are encoded using <code>enquo</code> and <code>!!</code>, as covered in the <a href="https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/">previous post</a>. Those variables will form our scatter plot. But now, they are also encoded using <code>ensym</code> as <code>xname</code> and <code>yname</code>. Those are symbols that we can now use in string functions to build custom plot titles and labels.</p></li>
+<li><p>The <code>col</code> feature is also encoded both as a quote and a symbol. This needs to be a categorical feature that we will use to colour-code the data points. The legend is the default style and position. Note, that we use <code>:=</code> to preserve the column name when transforming this feature from character to factor.</p></li>
+<li><p>The <code>string_to_sentence</code> tool, from the <code>stringr</code> package, simply capitalises our input strings.</p></li>
+<li><p>Additional grouping variables are encoded using <code>enquos</code> and spliced into the <code>group_by</code> call via <code>!!!</code>. By using the dots <code>...</code> in the function call we give ourselves the option to use an arbitrary number of grouping features in this function.</p></li>
+<li><p>What the function does, is to group the data by the grouping variables (here: Color and Cut) plus the colour-coding feature (here: Clarity). Then it computes the group mean for the x and y features (here: Carat and Price). It plots these group means in a colour-coded scatter plot.</p></li>
+<li><p>Finally, it zooms into one particular category of the colour-coding (here: Clarity = “IF”) and provides a magnified view. This zoom view is shown in the lower panel. The upper panel shows the entire data set. Note, that this upper panel has a darker background (and a connecting region) to indicate where the zoom view is located in the overall picture.</p></li>
+</ul>
+<p>The zoom facet is provided by the <code>ggforce</code> tool <code>facet_zoom</code> which is very useful for examining specific data points. Here we only zoom into the x-axis, but it can also provide zooms on the y axis or for both axes simultaneously.</p>
+<p>More Resources:</p>
+<ul>
+<li><p>Rstudio’s excellent <a href="https://www.rstudio.com/resources/cheatsheets/">cheats sheets</a> include a tidyeval specimen.</p></li>
+<li><p>The prolific <a href="https://community.rstudio.com/">Rstudio Community</a> has a tag for <a href="https://community.rstudio.com/tags/c/tidyverse/tidyeval">tidyeval questions and solutions</a>, among many other interesting topics.</p></li>
+</ul>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//headsortails.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137904077-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+  </body>
+</html>
+

@@ -1,23 +1,36 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Journey on head spin - the Heads or Tails blog</title>
-    <link>https://heads0rtai1s.github.io/categories/journey/</link>
+    <link>/categories/journey/</link>
     <description>Recent content in Journey on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 08 Apr 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://heads0rtai1s.github.io/categories/journey/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="/categories/journey/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Prologue</title>
-      <link>https://heads0rtai1s.github.io/2019/04/08/prologue/</link>
+      <link>/2019/04/08/prologue/</link>
       <pubDate>Mon, 08 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://heads0rtai1s.github.io/2019/04/08/prologue/</guid>
-      <description>This one is all about change. In many ways life is about change. Not all change is good, but without it there would be no evolution. No progress. And as much as we sometimes want certain moments to last, stagnation is rarely a good thing. Without attempting something new it is impossible to say whether it will succeed. I guess that’s a verbose way of saying: I decided to start a blog.</description>
+      <guid>/2019/04/08/prologue/</guid>
+      <description>
+
+
+&lt;p&gt;This one is all about &lt;em&gt;change&lt;/em&gt;. In many ways life is about change. Not all change is good, but without it there would be no evolution. No progress. And as much as we sometimes want certain moments to last, stagnation is rarely a good thing. Without attempting something new it is impossible to say whether it will succeed. I guess that’s a verbose way of saying: I decided to start a blog.&lt;/p&gt;
+&lt;p&gt;The blog is far from the only change, though. After a good ten years of working in astronomy and astrophysics I have just made the transition into data science. Instead of exploding stars in nearby galaxies I will now be working on topics that are much closer to our every day experience; such as travel, consumer trends, or demographics. Yeah, this is a bigger change than the blog. Maybe I should have led with that.&lt;/p&gt;
+&lt;p&gt;My reasons for changing careers are manifold. First and foremost I’m driven by curiosity. I want to understand the world, and beyond, and figure out how everything works. What motivates people, makes economies flourish, or lightens up entire suns like a cosmic firework. And after gazing out into the universe for quite some time, maybe it is time to work a little closer to home.&lt;/p&gt;
+&lt;p&gt;In my field of academia, anything beyond a traditional research career is still regarded as a somewhat unusual alternative path; even though only a small percentage of astrophysics PhDs will end up in a tenured (professor) position at a university. Thus, I hope that these Chronicles of an Astronomer’s Adventures in Data Science (hopefully the title of the eventual movie; take note Hollywood) will be useful for other young astronomers who are contemplating their career options. Or it might even make them aware of the fact that they have career options. Academia, for all it’s advantages, can still be rather insular and does not always do the best job in emphasising transferable skills.&lt;/p&gt;
+&lt;p&gt;And many astronomers have a whole bag of skills they can transfer. Observational astronomers, like me, turns out are rather good at analysing data. Sometimes big data, often messy data. Different telescopes can have very different ways of data collection and storage. I might share some X-ray imaging data in a future throwback post. While a typical astronomer’s education focusses heavily on the (astro-) physics and the specific instrument software, many of us have taught themselves programming, statistics, data bases, or other useful things practically on the side.&lt;/p&gt;
+&lt;p&gt;Which brings me to another of my motivations: to understand the tools that help us understand the world. I’m a big fan of data visualisation to extract its secrets and hidden insights. There will be many pictures here; hopefully some pretty ones among them. And while the best tool for a certain job might be a very specific one, many tools are surprisingly versatile. Languages like Python and R. Data base tools like the various SQL flavours. Data viz libraries like ggplot2, matplotlib, or D3. Those will be among the frequent Dramatis Personae in this blog.&lt;/p&gt;
+&lt;p&gt;I will aim for at least weekly posts, describing my impressions of working in data science and the contrast to academia. I’ll give it a decent try not to reveal any industry secrets. There aren’t really many “academia secrets”, since everything interesting get published sooner rather than later. I guess that’s one contrast. There will be the occassional update about new astro results, some throwback posts, and any other insights I find noteworthy.&lt;/p&gt;
+&lt;p&gt;The world, after all, is always changing. I was born in East Germany when it was still a separate country - locked in ideological contest with its western brother. When I was a kid, a peaceful revolution swept away the old, out-of-touch system and then, from one day to the next, the borders were open and change was as fundamental as it was inevitable. Down the line, this taught me that there aren’t many things you can take for granted, but as long as you are prepared for change and willing to adapt there can be much potential in every new twist and turn.&lt;/p&gt;
+&lt;p&gt;So this is where I come from. Now let’s see what happens next.&lt;/p&gt;
+</description>
     </item>
     
   </channel>
