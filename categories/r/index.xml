@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R on head spin - the Heads or Tails blog</title>
@@ -8,15 +6,15 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 22 Aug 2019 00:00:00 +0000</lastBuildDate>
-    
+
         <atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+
+
     <item>
       <title>Tidy evaluation in R: Part 2 - Complex use cases (feat. facet zoom)</title>
       <link>/2019/08/22/tidy-eval-examples-part2/</link>
       <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
-      
+
       <guid>/2019/08/22/tidy-eval-examples-part2/</guid>
       <description>
 &lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
@@ -197,15 +195,15 @@ VS2
 &lt;/table&gt;
 &lt;p&gt;&lt;strong&gt;Meet &lt;code&gt;enqous&lt;/code&gt; and &lt;code&gt;!!!&lt;/code&gt;:&lt;/strong&gt; The equivalent to &lt;code&gt;enquo&lt;/code&gt; for &lt;strong&gt;quoting more than one variable&lt;/strong&gt; is called &lt;code&gt;enquos&lt;/code&gt;. So far, so plural. The corresponding &lt;strong&gt;unquoting&lt;/strong&gt; method is &lt;code&gt;!!!&lt;/code&gt; - the &lt;em&gt;big bang&lt;/em&gt; operator (remember that &lt;code&gt;!!&lt;/code&gt; is &lt;em&gt;bang-bang&lt;/em&gt;). The tidyverse certainly doesn’t shy away from cosmological superlatives. (The &lt;a href=&#34;https://www.rstudio.com/resources/cheatsheets/&#34;&gt;tidyeval cheat sheet&lt;/a&gt; calls it &lt;em&gt;bang-bang-bang&lt;/em&gt;, which makes more intuitive sense but is less poetic; as a trained astronomer my choice is clear.) Here we see both operators in action:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;group_mean &amp;lt;- function(df, g, x, y){
-  
+
   group_cols &amp;lt;- enquos(x, y)
   mean_col &amp;lt;- enquo(g)
-  df %&amp;gt;% 
-    group_by(!!! group_cols) %&amp;gt;% 
+  df %&amp;gt;%
+    group_by(!!! group_cols) %&amp;gt;%
     summarise(mean = mean(!! mean_col))
 }
 
-group_mean(diamonds, price, cut, color) %&amp;gt;% 
+group_mean(diamonds, price, cut, color) %&amp;gt;%
   head(5)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## # A tibble: 5 x 3
 ## # Groups:   cut [1]
@@ -218,14 +216,14 @@ group_mean(diamonds, price, cut, color) %&amp;gt;%
 ## 5 Fair  H     5136.&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;strong&gt;Alternative: use &lt;code&gt;...&lt;/code&gt; aka dots:&lt;/strong&gt; Note, that if all you need to do is group together a bunch of variables (or to treat them as one group in any other way) then R offers the nifty &lt;code&gt;...&lt;/code&gt; operator. You might have seen this style in function definitions or help pages already. With the dots you can capture everything that is not explicitely named and refer to it as one entity. This simplifies our above function in the following way:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;group_mean &amp;lt;- function(df, g, ...){
-  
+
   mean_col &amp;lt;- enquo(g)
-  df %&amp;gt;% 
-    group_by(...) %&amp;gt;% 
+  df %&amp;gt;%
+    group_by(...) %&amp;gt;%
     summarise(mean = mean(!! mean_col))
 }
 
-group_mean(diamonds, price, cut, color) %&amp;gt;% 
+group_mean(diamonds, price, cut, color) %&amp;gt;%
   head(5)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## # A tibble: 5 x 3
 ## # Groups:   cut [1]
@@ -239,16 +237,16 @@ group_mean(diamonds, price, cut, color) %&amp;gt;%
 &lt;p&gt;It’s important to note that &lt;code&gt;!!!&lt;/code&gt; currently doesn’t work in &lt;code&gt;ggplot(aes())&lt;/code&gt;. &lt;a href=&#34;https://stackoverflow.com/questions/55815963/tidyeval-splice-operator-fails-with-ggplots-aes&#34;&gt;There is a workaround&lt;/a&gt; and hopefully soon a fix that I will cover in a future post.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;The &lt;code&gt;:=&lt;/code&gt; operator:&lt;/strong&gt; to &lt;strong&gt;rename a variable to a quoted name&lt;/strong&gt; you need the &lt;code&gt;:=&lt;/code&gt; operator. Think of it as a maths-style definition if that helps you to remember the syntax. Here’s how it works, giving our mean price variable a custom name:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;group_mean &amp;lt;- function(df, g, n, ...){
-  
+
   mean_col &amp;lt;- enquo(g)
   new_name &amp;lt;- enquo(n)
-  
-  df %&amp;gt;% 
-    group_by(...) %&amp;gt;% 
+
+  df %&amp;gt;%
+    group_by(...) %&amp;gt;%
     summarise(!! new_name := mean(!! mean_col))
 }
 
-group_mean(diamonds, price, mean_price, cut, color) %&amp;gt;% 
+group_mean(diamonds, price, mean_price, cut, color) %&amp;gt;%
   head(5)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## # A tibble: 5 x 3
 ## # Groups:   cut [1]
@@ -263,23 +261,23 @@ group_mean(diamonds, price, mean_price, cut, color) %&amp;gt;%
 &lt;p&gt;&lt;strong&gt;Encoding strings with &lt;code&gt;ensym&lt;/code&gt;:&lt;/strong&gt; In some scenarios you want to quote your input not as an expression but a symbol. In the context of helper functions this will often involve strings - and a common use case is &lt;code&gt;ggplot2&lt;/code&gt; wrappers. The strings can then be further manipulated for instance with the tidy &lt;a href=&#34;https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html&#34;&gt;&lt;code&gt;stringr&lt;/code&gt;&lt;/a&gt; package.&lt;/p&gt;
 &lt;p&gt;In this final example of the post I will showcase the use of &lt;code&gt;ensym&lt;/code&gt; alongside the other main &lt;code&gt;tidyeval&lt;/code&gt; operators. The function will be a &lt;code&gt;ggplot2&lt;/code&gt; convenience wrapper that build a scatter plot of two numerical features colour-coded by a categorical variable. Custom axes labels and plot title will be added. For a little extra flourish, I will add a zoom view on one particular category using the powerful &lt;code&gt;facet_zoom&lt;/code&gt; function from the &lt;a href=&#34;https://cran.r-project.org/web/packages/ggforce/index.html&#34;&gt;&lt;code&gt;ggforce&lt;/code&gt;&lt;/a&gt; package. Here’s what it looks like:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_xy &amp;lt;- function(df, x, y, col, var_zoom, ...){
-  
+
   x &amp;lt;- enquo(x)
   y &amp;lt;- enquo(y)
   col &amp;lt;- enquo(col)
   group_vars &amp;lt;- enquos(...)
-  
+
   dfname &amp;lt;- ensym(df) %&amp;gt;% str_to_sentence()
   xname &amp;lt;- ensym(x) %&amp;gt;% str_to_sentence()
   yname &amp;lt;- ensym(y) %&amp;gt;% str_to_sentence()
   colname &amp;lt;- ensym(col) %&amp;gt;% str_to_sentence()
-  
-  df %&amp;gt;% 
-    mutate(!! col := as.factor(!! col)) %&amp;gt;% 
-    group_by(!! col, !!! group_vars) %&amp;gt;% 
+
+  df %&amp;gt;%
+    mutate(!! col := as.factor(!! col)) %&amp;gt;%
+    group_by(!! col, !!! group_vars) %&amp;gt;%
     summarise(mean_x = mean(!!x),
-              mean_y = mean(!!y)) %&amp;gt;% 
-    ungroup() %&amp;gt;% 
+              mean_y = mean(!!y)) %&amp;gt;%
+    ungroup() %&amp;gt;%
     ggplot(aes(mean_x, mean_y, col = !!col)) +
     geom_point() +
     scale_color_brewer(type = &amp;quot;qual&amp;quot;, palette = &amp;quot;Set1&amp;quot;) +
@@ -311,12 +309,12 @@ plot_xy(diamonds, carat, price, clarity, &amp;quot;IF&amp;quot;, color, cut)&lt;
 &lt;/ul&gt;
 </description>
     </item>
-    
+
     <item>
       <title>Data flow visuals - alluvial vs ggalluvial in R</title>
       <link>/2019/06/06/visuals-alluvial-ggalluvial/</link>
       <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
-      
+
       <guid>/2019/06/06/visuals-alluvial-ggalluvial/</guid>
       <description>
 &lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
@@ -393,20 +391,20 @@ BQN
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;The &lt;a href=&#34;https://github.com/mbojan/alluvial&#34;&gt;alluvial package&lt;/a&gt; was &lt;a href=&#34;http://bc.bojanorama.pl/2014/03/alluvial-diagrams/&#34;&gt;introduced in 2014&lt;/a&gt; to fill a niché in the landscape of visualisations. I have enjoyed using it in the past in &lt;a href=&#34;https://www.kaggle.com/headsortails/treemap-house-of-horror-spooky-eda-lda-features&#34;&gt;several&lt;/a&gt; &lt;a href=&#34;https://www.kaggle.com/headsortails/nyc-taxi-eda-update-the-fast-the-curious&#34;&gt;Kaggle&lt;/a&gt; &lt;a href=&#34;https://www.kaggle.com/headsortails/steering-wheel-of-fortune-porto-seguro-eda&#34;&gt;Kernels&lt;/a&gt;. Here’s what a plot looks like:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;top_dest &amp;lt;- flights %&amp;gt;% 
-  count(dest) %&amp;gt;% 
-  top_n(5, n) %&amp;gt;% 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;top_dest &amp;lt;- flights %&amp;gt;%
+  count(dest) %&amp;gt;%
+  top_n(5, n) %&amp;gt;%
   pull(dest)
 
-top_carrier &amp;lt;- flights %&amp;gt;% 
-  filter(dest %in% top_dest) %&amp;gt;% 
-  count(carrier) %&amp;gt;% 
-  top_n(4, n) %&amp;gt;% 
+top_carrier &amp;lt;- flights %&amp;gt;%
+  filter(dest %in% top_dest) %&amp;gt;%
+  count(carrier) %&amp;gt;%
+  top_n(4, n) %&amp;gt;%
   pull(carrier)
 
-fly &amp;lt;- flights %&amp;gt;% 
-  filter(dest %in% top_dest &amp;amp; carrier %in% top_carrier) %&amp;gt;% 
-  count(origin, carrier, dest) %&amp;gt;% 
+fly &amp;lt;- flights %&amp;gt;%
+  filter(dest %in% top_dest &amp;amp; carrier %in% top_carrier) %&amp;gt;%
+  count(origin, carrier, dest) %&amp;gt;%
   mutate(origin = fct_relevel(as.factor(origin), c(&amp;quot;EWR&amp;quot;, &amp;quot;LGA&amp;quot;, &amp;quot;JFK&amp;quot;)))
 
 alluvial(fly %&amp;gt;% select(-n),
@@ -429,11 +427,11 @@ alluvial(fly %&amp;gt;% select(-n),
 &lt;/ul&gt;
 &lt;p&gt;So, other than looking pretty, what insights does it give us? Well, for instance we see that (for this subset) EWR is dominated by UA (United Airlines) and has almost no AA (American Airlines flights). In turn, UA flights are not frequent in LGA or JFK. Both Boston (BOS) and Los Angeles (LAX) are not connected to LGA (orange). &lt;strong&gt;Thus, the alluvial plot shows us - pretty literally in this case - the flow of flight volume between airports through airline carriers.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;Now, the &lt;code&gt;alluvial&lt;/code&gt; tool has a rather specific syntax and doesn’t integrate seamlessly with the tidyverse. Enter the &lt;a href=&#34;https://github.com/corybrunson/ggalluvial&#34;&gt;&lt;code&gt;ggalluvial&lt;/code&gt; library&lt;/a&gt;:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fly %&amp;gt;% 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fly %&amp;gt;%
   mutate(origin = fct_rev(as.factor(origin)),
          carrier = fct_rev(as.factor(carrier)),
-         dest = fct_rev(as.factor(dest))) %&amp;gt;% 
-  filter(n &amp;gt; 150) %&amp;gt;% 
+         dest = fct_rev(as.factor(dest))) %&amp;gt;%
+  filter(n &amp;gt; 150) %&amp;gt;%
   ggplot(aes(y = n, axis1 = origin, axis2 = carrier, axis3 = dest)) +
   geom_alluvium(aes(fill = origin), aes.bind=TRUE, width = 1/12) +
   geom_stratum(width = 1/4, fill = &amp;quot;white&amp;quot;, color = &amp;quot;black&amp;quot;) +
@@ -459,12 +457,12 @@ alluvial(fly %&amp;gt;% select(-n),
 &lt;p&gt;Have fun!&lt;/p&gt;
 </description>
     </item>
-    
+
     <item>
       <title>Tidy evaluation in R - Simple Examples</title>
       <link>/2019/04/24/tidy-eval-examples/</link>
       <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
-      
+
       <guid>/2019/04/24/tidy-eval-examples/</guid>
       <description>
 &lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
@@ -544,11 +542,11 @@ circumference
 &lt;p&gt;Personally, I’m learning most efficiently by first looking at examples that show the code in action and then tweaking them to fit my needs. After playing with the code for a bit and inevitably breaking something I turn to the docs to understand more about the syntax and additional arguments of the function. Thus, all my posts on tools or methodology will follow the same pattern: I will jump right into the action by looking at a useful yet simple example or two. Next, I dissect this example, maybe break something, and explain the arguments. In closing, there will be a few more complex examples, caveats, pointers, and/or resources. Sounds good? Here we go:&lt;/p&gt;
 &lt;p&gt;The first example is a function that takes as &lt;em&gt;input&lt;/em&gt; a data frame &lt;code&gt;df&lt;/code&gt; and a variable &lt;code&gt;var&lt;/code&gt; from that data frame (i.e. a column/feature). The &lt;em&gt;output&lt;/em&gt; is the difference between the (global) median and the mean of the variable. This is a realistic example of a concise helper function, since it goes beyond basic in-built tools and provides a quick check on whether a distribution is symmetric&lt;a href=&#34;#fn1&#34; class=&#34;footnoteRef&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;median_minus_mean &amp;lt;- function(df, var){
-  
+
   var &amp;lt;- enquo(var)
-  
-  df %&amp;gt;% 
-    summarise(foo = median(!!var) - mean(!!var)) %&amp;gt;% 
+
+  df %&amp;gt;%
+    summarise(foo = median(!!var) - mean(!!var)) %&amp;gt;%
     .$foo
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Now we apply it to the circumference of trees to find that the mean is larger than the median:&lt;/p&gt;
@@ -563,21 +561,21 @@ circumference
 &lt;p&gt;(Talking about details: &lt;code&gt;foo&lt;/code&gt; or &lt;code&gt;bar&lt;/code&gt; are popular names for dummy variables in many programming languages. It’s just something that needs a name for the moment but can immediately be forgotten once its time-limited purpose is fulfilled.)&lt;/p&gt;
 &lt;p&gt;Also: yes, this works:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;median_minus_mean &amp;lt;- function(df, var){
-  df %&amp;gt;% 
-    summarise(foo = median(!!enquo(var)) - mean(!!enquo(var))) %&amp;gt;% 
+  df %&amp;gt;%
+    summarise(foo = median(!!enquo(var)) - mean(!!enquo(var))) %&amp;gt;%
     .$foo
 }
 median_minus_mean(Orange, circumference)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## [1] -0.8571429&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;You can quote and unquote in the same step. Let’s go a bit further and include grouping by another variable, here the &lt;code&gt;age&lt;/code&gt; of the trees:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;median_minus_mean &amp;lt;- function(df, var, gvar){
-  
+
   var &amp;lt;- enquo(var)
   gvar &amp;lt;- enquo(gvar)
-  
-  df %&amp;gt;% 
-    group_by(!!gvar) %&amp;gt;% 
-    summarise(foo = median(!!var) - mean(!!var)) %&amp;gt;% 
+
+  df %&amp;gt;%
+    group_by(!!gvar) %&amp;gt;%
+    summarise(foo = median(!!var) - mean(!!var)) %&amp;gt;%
     .$foo
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;median_minus_mean(Orange, circumference, age)&lt;/code&gt;&lt;/pre&gt;
@@ -585,12 +583,12 @@ median_minus_mean(Orange, circumference)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Turns out that for some ages the mean circumference is smaller than the median.&lt;/p&gt;
 &lt;p&gt;Good news: quote/unquote also works for ggplot2. Here we quote the x, y, and colour-group variables of our plot:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_growth_tree &amp;lt;- function(df, xvar, yvar, gvar){
-  
+
   xvar &amp;lt;- enquo(xvar)
   yvar &amp;lt;- enquo(yvar)
   gvar &amp;lt;- enquo(gvar)
-  
-  df %&amp;gt;% 
+
+  df %&amp;gt;%
     ggplot(aes(!!xvar, !!yvar, col = !!gvar)) +
     geom_line()
 }
@@ -600,10 +598,10 @@ plot_growth_tree(Orange, age, circumference, Tree)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Some trees grow faster than others.&lt;/p&gt;
 &lt;p&gt;In fact, ggplot2 is a great use case because it allows us to quickly built helper functions if we need to repeat a certain plot for many similar features. Individual modification to those templates can be added using the ggplot2 grammar. Here is a histogram example where we add a custom title to the second plot&lt;a href=&#34;#fn2&#34; class=&#34;footnoteRef&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_hist &amp;lt;- function(df, var, bins, bcol){
-  
+
   var &amp;lt;- enquo(var)
-  
-  df %&amp;gt;% 
+
+  df %&amp;gt;%
     ggplot(aes(!!var)) +
     geom_histogram(bins = bins, fill = bcol, col = &amp;quot;black&amp;quot;)
 }&lt;/code&gt;&lt;/pre&gt;
@@ -635,6 +633,6 @@ grid.arrange(p1, p2, layout_matrix = rbind(c(1,2)))&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 </description>
     </item>
-    
+
   </channel>
 </rss>
