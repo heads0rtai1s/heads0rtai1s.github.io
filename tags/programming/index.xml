@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Programming on head spin - the Heads or Tails blog</title>
-    <link>/tags/programming/</link>
+    <link>https://heads0rtai1s.github.io/tags/programming/</link>
     <description>Recent content in Programming on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 22 Aug 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/programming/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://heads0rtai1s.github.io/tags/programming/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Tidy evaluation in R: Part 2 - Complex use cases (feat. facet zoom)</title>
-      <link>/2019/08/22/tidy-eval-examples-part2/</link>
+      <link>https://heads0rtai1s.github.io/2019/08/22/tidy-eval-examples-part2/</link>
       <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/08/22/tidy-eval-examples-part2/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/08/22/tidy-eval-examples-part2/</guid>
       <description>In an earlier post I gave a gentle introduction to tidy evaluation in the R tidyverse using simple examples. I covered quoting with enquo and unquoting with !! in brief dplyr and ggplot2 snippets. Today, I aim to build a collection of more complex use cases involving additional tools.
 Those are our libraries:
 libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;stringr&amp;#39;, # wrangling &amp;#39;knitr&amp;#39;,&amp;#39;kableExtra&amp;#39;, # table styling &amp;#39;ggplot2&amp;#39;,&amp;#39;ggforce&amp;#39;) # plots invisible(lapply(libs, library, character.</description>
@@ -24,10 +24,10 @@ libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;stringr&amp;#39;, # wrangling
     
     <item>
       <title>Tidy evaluation in R - Simple Examples</title>
-      <link>/2019/04/24/tidy-eval-examples/</link>
+      <link>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</link>
       <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/04/24/tidy-eval-examples/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</guid>
       <description>The tidyverse philosophy introduced by Hadley Wickham has been a game changer for the R community. It is based on intuitive rules of what a tidy data set should look like: each variable is a column, each observation is a row (Wickham 2014). At its core, the tidyverse collection of R packages is powered by a consistent grammar of data manipulation and visualisation.
 The tidyverse grammar makes it easier to manipulate data sets using simple expressions that reduce the syntactic overhead and allow you to focus on the data.</description>
     </item>

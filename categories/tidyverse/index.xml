@@ -3,23 +3,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tidyverse on head spin - the Heads or Tails blog</title>
-    <link>/categories/tidyverse/</link>
+    <link>https://heads0rtai1s.github.io/categories/tidyverse/</link>
     <description>Recent content in Tidyverse on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 22 Aug 2019 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="/categories/tidyverse/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://heads0rtai1s.github.io/categories/tidyverse/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Tidy evaluation in R: Part 2 - Complex use cases (feat. facet zoom)</title>
-      <link>/2019/08/22/tidy-eval-examples-part2/</link>
+      <link>https://heads0rtai1s.github.io/2019/08/22/tidy-eval-examples-part2/</link>
       <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/08/22/tidy-eval-examples-part2/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/08/22/tidy-eval-examples-part2/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;In an &lt;a href=&#34;https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/&#34;&gt;earlier post&lt;/a&gt; I gave a gentle introduction to &lt;a href=&#34;https://tidyeval.tidyverse.org/&#34;&gt;tidy evaluation&lt;/a&gt; in the R &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; using simple examples. I covered quoting with &lt;code&gt;enquo&lt;/code&gt; and unquoting with &lt;code&gt;!!&lt;/code&gt; in brief &lt;code&gt;dplyr&lt;/code&gt; and &lt;code&gt;ggplot2&lt;/code&gt; snippets. Today, I aim to build a collection of more complex use cases involving additional tools.&lt;/p&gt;
@@ -293,7 +293,7 @@ group_mean(diamonds, price, mean_price, cut, color) %&amp;gt;%
 }
 
 plot_xy(diamonds, carat, price, clarity, &amp;quot;IF&amp;quot;, color, cut)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-08-22-tidy-eval-complex-examples_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2019-08-22-tidy-eval-complex-examples_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Let’s break it down:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;The &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt; features are encoded using &lt;code&gt;enquo&lt;/code&gt; and &lt;code&gt;!!&lt;/code&gt;, as covered in the &lt;a href=&#34;https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/&#34;&gt;previous post&lt;/a&gt;. Those variables will form our scatter plot. But now, they are also encoded using &lt;code&gt;ensym&lt;/code&gt; as &lt;code&gt;xname&lt;/code&gt; and &lt;code&gt;yname&lt;/code&gt;. Those are symbols that we can now use in string functions to build custom plot titles and labels.&lt;/p&gt;&lt;/li&gt;
@@ -314,12 +314,12 @@ plot_xy(diamonds, carat, price, clarity, &amp;quot;IF&amp;quot;, color, cut)&lt;
     
     <item>
       <title>Data flow visuals - alluvial vs ggalluvial in R</title>
-      <link>/2019/06/06/visuals-alluvial-ggalluvial/</link>
+      <link>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</link>
       <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/06/06/visuals-alluvial-ggalluvial/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;I have long been a fan of creative data visualisation techniques. For me, the choice of visual representation is driven by both the type of data and the kind of question one wants to examine.&lt;/p&gt;
@@ -417,7 +417,7 @@ alluvial(fly %&amp;gt;% select(-n),
          cex=0.75,
          axis_labels = c(&amp;quot;Origin&amp;quot;, &amp;quot;Carrier&amp;quot;, &amp;quot;Destination&amp;quot;),
          hide = fly$n &amp;lt; 150)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;The features are arranged horizontally, with their value counts stacked vertically. This corresponds to a stacked barplot: e.g. for the destinations “BOS” has fewer flights than “LAX”. Here we only look at the top 5 destination and their top 4 carriers (that’s the first two segments of the code above).&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;The “alluvia” are the bands that connect the features from left to right. Alluvia break down all feature combinations, with complexity increasing also from left to right. These sub-segments are called “flows”.&lt;/p&gt;&lt;/li&gt;
@@ -445,7 +445,7 @@ alluvial(fly %&amp;gt;% select(-n),
   theme_minimal() +
   theme(legend.position = &amp;quot;none&amp;quot;) +
   ggtitle(&amp;quot;NYC flights volume for top destinations and airlines&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Here I purposefully choose the styling parameters to (broadly) reproduce the above plot. It is evident that &lt;code&gt;ggalluvial&lt;/code&gt; integrates much more smoothly into the &lt;code&gt;ggplot2&lt;/code&gt; grammar. Specifically:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;The alluvia and the vertical features (the “strata”; here: origin, carrier, and destination) are implemented as different geometry layers. Note, that the default order of the strata features is reversed compared to &lt;code&gt;alluvial&lt;/code&gt;. Also: there are no gaps between the strata here compared to what &lt;code&gt;alluvial&lt;/code&gt; does. This makes it easier to add a y-axis.&lt;/p&gt;&lt;/li&gt;
@@ -462,12 +462,12 @@ alluvial(fly %&amp;gt;% select(-n),
     
     <item>
       <title>Tidy evaluation in R - Simple Examples</title>
-      <link>/2019/04/24/tidy-eval-examples/</link>
+      <link>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</link>
       <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/04/24/tidy-eval-examples/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;The &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; philosophy introduced by &lt;a href=&#34;http://hadley.nz/&#34;&gt;Hadley Wickham&lt;/a&gt; has been a game changer for the &lt;a href=&#34;https://www.r-project.org/&#34;&gt;R&lt;/a&gt; community. It is based on intuitive rules of what a &lt;em&gt;tidy&lt;/em&gt; data set should look like: &lt;em&gt;each variable is a column, each observation is a row&lt;/em&gt; (&lt;a href=&#34;https://www.jstatsoft.org/article/view/v059i10&#34;&gt;Wickham 2014&lt;/a&gt;). At its core, the tidyverse collection of R packages is powered by a consistent grammar of data manipulation and visualisation.&lt;/p&gt;
@@ -596,7 +596,7 @@ median_minus_mean(Orange, circumference)&lt;/code&gt;&lt;/pre&gt;
 }
 
 plot_growth_tree(Orange, age, circumference, Tree)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Some trees grow faster than others.&lt;/p&gt;
 &lt;p&gt;In fact, ggplot2 is a great use case because it allows us to quickly built helper functions if we need to repeat a certain plot for many similar features. Individual modification to those templates can be added using the ggplot2 grammar. Here is a histogram example where we add a custom title to the second plot&lt;a href=&#34;#fn2&#34; class=&#34;footnoteRef&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_hist &amp;lt;- function(df, var, bins, bcol){
@@ -612,7 +612,7 @@ p2 &amp;lt;- plot_hist(Orange, circumference, 7, &amp;quot;red&amp;quot;) +
   ggtitle(&amp;quot;A custom title&amp;quot;)
 
 grid.arrange(p1, p2, layout_matrix = rbind(c(1,2)))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;You see that here the number of histogram bins and the plot colour are being passed to the function as normal integer and string - without need of being quoted. This works because these parameters are not R expressions.&lt;/p&gt;
 &lt;p&gt;There will be a second post soon about more complex tidy evaluation examples. If you’re interested, watch this space.&lt;/p&gt;
 &lt;p&gt;In the meantime: Curious about the bigger picture?&lt;/p&gt;

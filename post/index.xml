@@ -3,23 +3,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on head spin - the Heads or Tails blog</title>
-    <link>/post/</link>
+    <link>https://heads0rtai1s.github.io/post/</link>
     <description>Recent content in Posts on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 22 Aug 2019 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://heads0rtai1s.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Tidy evaluation in R: Part 2 - Complex use cases (feat. facet zoom)</title>
-      <link>/2019/08/22/tidy-eval-examples-part2/</link>
+      <link>https://heads0rtai1s.github.io/2019/08/22/tidy-eval-examples-part2/</link>
       <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/08/22/tidy-eval-examples-part2/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/08/22/tidy-eval-examples-part2/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;In an &lt;a href=&#34;https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/&#34;&gt;earlier post&lt;/a&gt; I gave a gentle introduction to &lt;a href=&#34;https://tidyeval.tidyverse.org/&#34;&gt;tidy evaluation&lt;/a&gt; in the R &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; using simple examples. I covered quoting with &lt;code&gt;enquo&lt;/code&gt; and unquoting with &lt;code&gt;!!&lt;/code&gt; in brief &lt;code&gt;dplyr&lt;/code&gt; and &lt;code&gt;ggplot2&lt;/code&gt; snippets. Today, I aim to build a collection of more complex use cases involving additional tools.&lt;/p&gt;
@@ -293,7 +293,7 @@ group_mean(diamonds, price, mean_price, cut, color) %&amp;gt;%
 }
 
 plot_xy(diamonds, carat, price, clarity, &amp;quot;IF&amp;quot;, color, cut)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-08-22-tidy-eval-complex-examples_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2019-08-22-tidy-eval-complex-examples_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Let’s break it down:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;The &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt; features are encoded using &lt;code&gt;enquo&lt;/code&gt; and &lt;code&gt;!!&lt;/code&gt;, as covered in the &lt;a href=&#34;https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/&#34;&gt;previous post&lt;/a&gt;. Those variables will form our scatter plot. But now, they are also encoded using &lt;code&gt;ensym&lt;/code&gt; as &lt;code&gt;xname&lt;/code&gt; and &lt;code&gt;yname&lt;/code&gt;. Those are symbols that we can now use in string functions to build custom plot titles and labels.&lt;/p&gt;&lt;/li&gt;
@@ -314,12 +314,12 @@ plot_xy(diamonds, carat, price, clarity, &amp;quot;IF&amp;quot;, color, cut)&lt;
     
     <item>
       <title>Data flow visuals - alluvial vs ggalluvial in R</title>
-      <link>/2019/06/06/visuals-alluvial-ggalluvial/</link>
+      <link>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</link>
       <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/06/06/visuals-alluvial-ggalluvial/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;I have long been a fan of creative data visualisation techniques. For me, the choice of visual representation is driven by both the type of data and the kind of question one wants to examine.&lt;/p&gt;
@@ -417,7 +417,7 @@ alluvial(fly %&amp;gt;% select(-n),
          cex=0.75,
          axis_labels = c(&amp;quot;Origin&amp;quot;, &amp;quot;Carrier&amp;quot;, &amp;quot;Destination&amp;quot;),
          hide = fly$n &amp;lt; 150)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;The features are arranged horizontally, with their value counts stacked vertically. This corresponds to a stacked barplot: e.g. for the destinations “BOS” has fewer flights than “LAX”. Here we only look at the top 5 destination and their top 4 carriers (that’s the first two segments of the code above).&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;The “alluvia” are the bands that connect the features from left to right. Alluvia break down all feature combinations, with complexity increasing also from left to right. These sub-segments are called “flows”.&lt;/p&gt;&lt;/li&gt;
@@ -445,7 +445,7 @@ alluvial(fly %&amp;gt;% select(-n),
   theme_minimal() +
   theme(legend.position = &amp;quot;none&amp;quot;) +
   ggtitle(&amp;quot;NYC flights volume for top destinations and airlines&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Here I purposefully choose the styling parameters to (broadly) reproduce the above plot. It is evident that &lt;code&gt;ggalluvial&lt;/code&gt; integrates much more smoothly into the &lt;code&gt;ggplot2&lt;/code&gt; grammar. Specifically:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;The alluvia and the vertical features (the “strata”; here: origin, carrier, and destination) are implemented as different geometry layers. Note, that the default order of the strata features is reversed compared to &lt;code&gt;alluvial&lt;/code&gt;. Also: there are no gaps between the strata here compared to what &lt;code&gt;alluvial&lt;/code&gt; does. This makes it easier to add a y-axis.&lt;/p&gt;&lt;/li&gt;
@@ -462,12 +462,12 @@ alluvial(fly %&amp;gt;% select(-n),
     
     <item>
       <title>Tidy evaluation in R - Simple Examples</title>
-      <link>/2019/04/24/tidy-eval-examples/</link>
+      <link>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</link>
       <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/04/24/tidy-eval-examples/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;The &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; philosophy introduced by &lt;a href=&#34;http://hadley.nz/&#34;&gt;Hadley Wickham&lt;/a&gt; has been a game changer for the &lt;a href=&#34;https://www.r-project.org/&#34;&gt;R&lt;/a&gt; community. It is based on intuitive rules of what a &lt;em&gt;tidy&lt;/em&gt; data set should look like: &lt;em&gt;each variable is a column, each observation is a row&lt;/em&gt; (&lt;a href=&#34;https://www.jstatsoft.org/article/view/v059i10&#34;&gt;Wickham 2014&lt;/a&gt;). At its core, the tidyverse collection of R packages is powered by a consistent grammar of data manipulation and visualisation.&lt;/p&gt;
@@ -596,7 +596,7 @@ median_minus_mean(Orange, circumference)&lt;/code&gt;&lt;/pre&gt;
 }
 
 plot_growth_tree(Orange, age, circumference, Tree)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Some trees grow faster than others.&lt;/p&gt;
 &lt;p&gt;In fact, ggplot2 is a great use case because it allows us to quickly built helper functions if we need to repeat a certain plot for many similar features. Individual modification to those templates can be added using the ggplot2 grammar. Here is a histogram example where we add a custom title to the second plot&lt;a href=&#34;#fn2&#34; class=&#34;footnoteRef&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_hist &amp;lt;- function(df, var, bins, bcol){
@@ -612,7 +612,7 @@ p2 &amp;lt;- plot_hist(Orange, circumference, 7, &amp;quot;red&amp;quot;) +
   ggtitle(&amp;quot;A custom title&amp;quot;)
 
 grid.arrange(p1, p2, layout_matrix = rbind(c(1,2)))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;You see that here the number of histogram bins and the plot colour are being passed to the function as normal integer and string - without need of being quoted. This works because these parameters are not R expressions.&lt;/p&gt;
 &lt;p&gt;There will be a second post soon about more complex tidy evaluation examples. If you’re interested, watch this space.&lt;/p&gt;
 &lt;p&gt;In the meantime: Curious about the bigger picture?&lt;/p&gt;
@@ -638,29 +638,29 @@ grid.arrange(p1, p2, layout_matrix = rbind(c(1,2)))&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>What makes a community great?</title>
-      <link>/2019/04/19/great-community-kaggledays19/</link>
+      <link>https://heads0rtai1s.github.io/2019/04/19/great-community-kaggledays19/</link>
       <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/04/19/great-community-kaggledays19/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/04/19/great-community-kaggledays19/</guid>
       <description>
 
 
 &lt;p&gt;The easy answer to this question is: the people. Great people build great communities. Case not quite closed yet, though, because there is more to it. Even the most promising group of individuals needs certain conditions in order to grow into a strong and thriving community. The kind of community that lifts up its members beyond their individual capabilities and becomes more than the sum of their proverbial skills and contributions. I believe that such communities are the cornerstones of all scientific fields, including data science, and that those fields succeed or fail depending on their communities.&lt;/p&gt;
 &lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;/pics/kdays19_1.jpg&#34; alt=&#34;Kaggle Days audience for welcome talks&#34; style=&#34;width:100.0%&#34; /&gt;
+&lt;img src=&#34;https://heads0rtai1s.github.io/pics/kdays19_1.jpg&#34; alt=&#34;Kaggle Days audience for welcome talks&#34; style=&#34;width:100.0%&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;&lt;em&gt;Kaggle Days audience for welcome talks&lt;/em&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;p&gt;Here is the case study that prompted this post: last week I took part in the &lt;a href=&#34;https://kaggledays.com/sanfrancisco/&#34;&gt;Kaggle Days meeting in San Francisco&lt;/a&gt;. Kaggle Days are a new series of local meetings which aim to bring together members of the international, virtual &lt;a href=&#34;https://www.kaggle.com/&#34;&gt;Kaggle&lt;/a&gt; community for in-person workshops, presentations, and competitions. Over the last few years, Kaggle itself has transformed from being “merely” the go-to place for sophisticated machine learning competitions to a multi-faceted online community. The range and depth of user-hosted datasets continues to grow rapidly from month to month, as does a unique repository of machine learning and data science code templates in the form of Kaggle &lt;a href=&#34;https://www.kaggle.com/kernels&#34;&gt;Kernels&lt;/a&gt;: reproducible R/Python notebooks or scripts in a self-contained, cloud-based environment. There really is something for everyone.&lt;/p&gt;
 &lt;p&gt;It is fair to say that Kaggle has been a main catalyst for my career change. Joining the platform in early 2017, two years ago, opened my eyes to the multitude of fascinating challenges and problem-solving strategies beyond my narrow academic field. One year later, I had become the first ever &lt;a href=&#34;http://blog.kaggle.com/2018/06/19/tales-from-my-first-year-inside-the-head-of-a-recent-kaggle-addict/&#34;&gt;Kaggle Kernels Grandmaster&lt;/a&gt; - a journey that I plan to revisit in a future post. What drew me into Kaggle, beyond the fun competitions, was a remarkably friendly and supportive community. It’s a rare occurrence to find people who are both extremely smart and happy to help a newcomer in an approachable and relaxed way. Machine Learning can be intimidating, but the people on Kaggle made it fun. Sooner than expected, I started to feel that I had become part of a community which, despite being very competitive, was remarkably efficient at working together to solve hard problems. Especially considering that we all worked on these challenges in our free-time and in different corners of the world.&lt;/p&gt;
 &lt;p&gt;All this back story might help to illustrate why I felt rather excited to finally encounter many of my fellow Kagglers in person at the Kaggle Days meetup. Excited and a bit nervous as to how the virtual collaboration would translate to the real world. I had high expectations - which were exceeded spectacularly. Kaggle Days was a blast! Almost the entire &lt;a href=&#34;https://www.kaggle.com/about/team&#34;&gt;Kaggle Team&lt;/a&gt; was present, including CEO &lt;a href=&#34;https://twitter.com/antgoldbloom&#34;&gt;Anthony Goldblum&lt;/a&gt; and Co-Founder &lt;a href=&#34;https://twitter.com/benhamner&#34;&gt;Ben Hamner&lt;/a&gt;. Top Kagglers such as &lt;a href=&#34;https://twitter.com/tunguz&#34;&gt;Bojan Tunguz&lt;/a&gt; and &lt;a href=&#34;https://twitter.com/DmitryLarko&#34;&gt;Dmitry Larko&lt;/a&gt; gave presentations and workshops alongside Machine Learning gurus like &lt;a href=&#34;https://twitter.com/fchollet&#34;&gt;Francois Chollet&lt;/a&gt; (Keras) or &lt;a href=&#34;https://twitter.com/quocleix&#34;&gt;Quoc Le&lt;/a&gt; (Google Brain / AutoML). So many super smart people to listen and talk to! It was great fun.&lt;/p&gt;
 &lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;/pics/kdays19_2.jpg&#34; alt=&#34;Kaggle Days brainstorming sessions&#34; style=&#34;width:100.0%&#34; /&gt;
+&lt;img src=&#34;https://heads0rtai1s.github.io/pics/kdays19_2.jpg&#34; alt=&#34;Kaggle Days brainstorming sessions&#34; style=&#34;width:100.0%&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;&lt;em&gt;Kaggle Days brainstorming sessions&lt;/em&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;p&gt;Interestingly, as a side effect of my initial Kaggle anonymity (I did not use my real name at all during my first year) I quickly found it more useful to introduce myself as “Heads or Tails”, even though my badge had my actual name on it. I only forgot this when I first met almost the entire Kaggle team at once and needed a second take for a more useful introduction. As this blog shows, I still prefer the “Heads or Tails” moniker for my Data Science personality. Let’s hope that no psychologists read this.&lt;/p&gt;
 &lt;p&gt;Ever the hands-on community, the second (and final) day of the Kaggle Days meetup gave us the opportunity to form small teams to participate in an on-site competition. This was particularly interesting for me, since I had never teamed up with others to tackle a Kaggle problem. In a team, there is much more code sharing and discussion than in the open Kaggle forum. And even though there were a few small hiccups in this particular competition (Want a change in metric plus additional data halfway through? Say no more!) working with my team mates was a lot of fun. Shout-out to &lt;a href=&#34;https://www.kaggle.com/thawatt&#34;&gt;Michael&lt;/a&gt; and &lt;a href=&#34;https://www.kaggle.com/gtoubassi&#34;&gt;Garrick&lt;/a&gt; - you guys rock! As a result of Kaggle Days I’m definitely more motivated to team up with others in future competitions. Not just that: I’m more motivated in general to spend time on Kaggle.&lt;/p&gt;
 &lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;/pics/kdays19_3.jpg&#34; alt=&#34;Kaggle Days competition winners&#34; style=&#34;width:100.0%&#34; /&gt;
+&lt;img src=&#34;https://heads0rtai1s.github.io/pics/kdays19_3.jpg&#34; alt=&#34;Kaggle Days competition winners&#34; style=&#34;width:100.0%&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;&lt;em&gt;Kaggle Days competition winners&lt;/em&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;p&gt;Now, why is that exactly? What makes the Kaggle community such a fun place? For me, there are several different factors that all enhance each other when combined:&lt;/p&gt;
@@ -683,10 +683,10 @@ grid.arrange(p1, p2, layout_matrix = rbind(c(1,2)))&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Prologue</title>
-      <link>/2019/04/08/prologue/</link>
+      <link>https://heads0rtai1s.github.io/2019/04/08/prologue/</link>
       <pubDate>Mon, 08 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/04/08/prologue/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/04/08/prologue/</guid>
       <description>
 
 
