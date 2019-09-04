@@ -3,56 +3,56 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on head spin - the Heads or Tails blog</title>
-    <link>https://heads0rtai1s.github.io/categories/</link>
+    <link>/categories/</link>
     <description>Recent content in Categories on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-        <atom:link href="https://heads0rtai1s.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Journey</title>
-      <link>https://heads0rtai1s.github.io/categories/journey/</link>
+      <link>/categories/journey/</link>
       <pubDate>Mon, 08 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://heads0rtai1s.github.io/categories/journey/</guid>
+      <guid>/categories/journey/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Kaggle</title>
-      <link>https://heads0rtai1s.github.io/categories/kaggle/</link>
+      <link>/categories/kaggle/</link>
       <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://heads0rtai1s.github.io/categories/kaggle/</guid>
+      <guid>/categories/kaggle/</guid>
       <description></description>
     </item>
     
     <item>
       <title>R</title>
-      <link>https://heads0rtai1s.github.io/categories/r/</link>
+      <link>/categories/r/</link>
       <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://heads0rtai1s.github.io/categories/r/</guid>
+      <guid>/categories/r/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Tidyverse</title>
-      <link>https://heads0rtai1s.github.io/categories/tidyverse/</link>
+      <link>/categories/tidyverse/</link>
       <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://heads0rtai1s.github.io/categories/tidyverse/</guid>
+      <guid>/categories/tidyverse/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Visualisation</title>
-      <link>https://heads0rtai1s.github.io/categories/visualisation/</link>
+      <link>/categories/visualisation/</link>
       <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://heads0rtai1s.github.io/categories/visualisation/</guid>
+      <guid>/categories/visualisation/</guid>
       <description></description>
     </item>
     
