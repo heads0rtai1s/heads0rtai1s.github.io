@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Journey on head spin - the Heads or Tails blog</title>
-    <link>/categories/journey/</link>
+    <link>https://heads0rtai1s.github.io/categories/journey/</link>
     <description>Recent content in Journey on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 08 Apr 2019 00:00:00 +0000</lastBuildDate>
-
-        <atom:link href="/categories/journey/index.xml" rel="self" type="application/rss+xml" />
-
-
+    
+        <atom:link href="https://heads0rtai1s.github.io/categories/journey/index.xml" rel="self" type="application/rss+xml" />
+    
+    
     <item>
       <title>Prologue</title>
-      <link>/2019/04/08/prologue/</link>
+      <link>https://heads0rtai1s.github.io/2019/04/08/prologue/</link>
       <pubDate>Mon, 08 Apr 2019 00:00:00 +0000</pubDate>
-
-      <guid>/2019/04/08/prologue/</guid>
+      
+      <guid>https://heads0rtai1s.github.io/2019/04/08/prologue/</guid>
       <description>
 
 
@@ -31,6 +31,6 @@
 &lt;p&gt;So this is where I come from. Now let’s see what happens next.&lt;/p&gt;
 </description>
     </item>
-
+    
   </channel>
 </rss>
