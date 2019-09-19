@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.54.0" />
+
+
+<title>Astronomy to Data Science - A Travel Journal - head spin - the Heads or Tails blog</title>
+<meta property="og:title" content="Astronomy to Data Science - A Travel Journal - head spin - the Heads or Tails blog">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/avatar.png"
+         width="50"
+         height="50"
+         alt="Heads or Tails">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="/blogroll/">Blogroll</a></li>
+    
+    <li><a href="https://twitter.com/heads0rtai1s">Twitter</a></li>
+    
+    <li><a href="https://www.kaggle.com/headsortails">Kaggle</a></li>
+    
+    <li><a href="https://www.linkedin.com/in/martin-henze">LinkedIn</a></li>
+    
+    <li><a href="https://github.com/heads0rtai1s">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">7 min read</span>
+    
+
+    <h1 class="article-title">Astronomy to Data Science - A Travel Journal</h1>
+
+    
+    <span class="article-date">2019-09-19</span>
+    
+
+    <div class="article-content">
+      
+
+
+<p>The first six months as a Data Scientist have gone by in a blur of new tools, techniques, and experiences. In my new job, I’m lucky to be (once again) part of a great team of people who are not just smart, but always happy to share their knowledge and feedback in a productive and thoughtful way. A supportive environment helps a lot. <em>Surprising insight - I know.</em> Worth repeating nonetheless. Now it’s time to look back and reflect on the main challenges and lessons learnt during this initial stage in my journey from <a href="https://ui.adsabs.harvard.edu/search/fq=%7B!type%3Daqp%20v%3D%24fq_database%7D&amp;fq_database=database%3A%20astronomy&amp;q=author%3A(%22Henze%2C%20Martin%22)&amp;sort=date%20desc%2C%20bibcode%20desc&amp;p_=0">Academic Astronomy</a> to <a href="https://www.linkedin.com/in/martin-henze">Data Science in the Real World</a>.</p>
+<p><img src="https://media.giphy.com/media/55gMT6FcZiOHiauVt8/giphy.gif" title="It&#39;s not just fantasy" /></p>
+<p>This post is mainly aimed at astronomers who are interested in making the switch. <em>As always, I’m doing a stellar job in choosing the largest possible target audience.</em> Still, I think that my thoughts might also be interesting for other academics, young students, or anyone interested in Data Science or Machine Learning. <em>Yeah…, that should cover enough people to propel my fame.</em></p>
+<p>First, let’s start with the tools of the trade:</p>
+<p><strong>Programming languages:</strong> If you want to learn one language then learn <a href="https://www.python.org/about/gettingstarted/">Python</a>. And that’s a hard thing for me to write, because personally I prefer the <a href="https://www.rstudio.com/online-learning/#r-programming">R language</a> with its <a href="https://www.tidyverse.org">tidyverse</a> collection of packages. But Python has a lot going for it: firstly, it has the appeal of being a general purpose programming language and as such is accessible to a vast audience from many different backgrounds. Secondly, it also has an immense repository of specialised libraries. For instance, in astrophysics we have the great <a href="https://www.astropy.org">astropy</a> package. For Machine Learning basics there’s the ubiquitous <a href="https://scikit-learn.org/">scikit-learn</a>. And thirdly: a lot of cutting-edge methods from Neural Network research are being quickly ported into Python frameworks. Those factors mean that today most Data Science teams communicate in Python, and this trend is likely to continue in the near future.</p>
+<p>Straight talk: R is a powerful language but it’s a bit more idiosyncratic (with a somewhat steeper learning curve) and currently less widely used, which gives Python the <a href="https://www.kaggle.com/headsortails/what-we-do-in-the-kernels-a-kaggle-survey-story">edge in popularity</a>. And now is a crucial time for popularity to drive adoption: <a href="https://stackoverflow.blog/2017/09/06/incredible-growth-python/">Both R and Python are growing</a>, yet Python’s growth is exceptional.</p>
+<p>Objectively, R can do everything that Python can do (including e.g. <a href="https://tensorflow.rstudio.com/">Tensorflow</a> and <a href="https://keras.rstudio.com/">Keras</a> wrappers). Many things it can do better, such as beautiful visualisations (e.g. with <a href="https://www.r-graph-gallery.com/ggplot2-package.html">ggplot2</a>) or all the statistics you could possibly ever need in your life. Sometimes it might do things a little slower. But if you really need speed then native Python won’t cut it either. I digress. More importantly: astronomers: forget about IDL. Outside astronomy, no one even knows it exists - and all that legacy code is a weakness rather than a strength. MATLAB is not very popular either. Forget about Fortran (unless you want to write your own Deep Learning Nets or Gradient Boosted Trees). Some C might come in handy. And certainly forget about IRAF and MIDAS. <em>A lot of 80s things are back in fashion but even nostalgia has its limits.</em> Even if you plan to stay in academia, do your career a favour and learn Python. If you have the resources, learn R and Python.</p>
+<p><img src="https://media.giphy.com/media/3o7aCRloybJlXpNjSU/giphy.gif" title="See also the next post..." /></p>
+<p><strong>Data bases:</strong> You will need at least basic skills in one data query language; ideally advanced skills in several ones to boost your productivity. An SQL flavour will be very useful; <a href="https://www.sqlite.org/">those</a> <a href="https://www.mysql.com/">are</a> <a href="https://www.postgresql.org/">relatively</a> <a href="https://www.microsoft.com/en-us/sql-server/default.aspx">similar</a> and transitions between them will be easy. NoSQL tools like <a href="https://www.elastic.co/products/elasticsearch">Elasticsearch</a> can be required, too. Some astrophysics projects have used these frameworks for a while, but in my field we mainly relied on sending fits files back and forth. Having well-designed data base schemata is an immense advantage. Almost all industry jobs will involve the <em>Notorious BFD (Big Freaking Data)</em> - which will be stored in those very data bases. The more of data selection, cleaning, and merging you can do on those servers, the more efficient is your work. This also includes software like <a href="https://spark.apache.org/">Spark</a>. Successful data preparation is more than half the battle.</p>
+<p><strong>Environments:</strong> Most people in Data Science use <a href="https://jupyter.org">Jupyter Notebooks</a> to share Exploratory Data Analysis, code samples, or proof of concept software snippets. I know that those tools have already achieved some popularity in Astronomy, but it’s worth emphasising how valuable they are for analysing data as a team. As an R user, in addition to using Jupyter, you can have an even smoother experience with <a href="https://rmarkdown.rstudio.com">Rmarkdown</a> - ideally in <a href="https://www.rstudio.com">Rstudio</a> which I can strongly recommend as an IDE. Here is also a good place to mention version control: <a href="https://git-scm.com">git</a> has become the most popular tool, and places like <a href="https://github.com">github</a> or <a href="https://about.gitlab.com">gitlab</a> provide convenient hosting space. These shared spaces are pretty much indispensable for having multiple people working on the same project, but even for your individual projects <code>git</code> is well worth the <a href="https://www.codecademy.com/learn/learn-git">couple hours investment to learn</a>.</p>
+<p>In the second part, let’s talk about workflow:</p>
+<p><strong>Data Science projects</strong> can span from a few hours to several weeks. They can also involve only yourself, several data scientists, or other parts of the company such as software engineering or sales. Which aspects dominate depends on your actual position in the team and on your company’s business. Similarly, you can spend different amounts of your time on data cleaning, exploratory analysis, visualisation, or machine learning. In my case, projects typically last weeks - with the occasional request for a couple of hours or days. Coming from an observational astrophysics field focussed on transient sources, I was already used to quickly switching my attention to a new project (when an interesting nova eruption was found). There are obvious parallels here in the shape of client requests, news stories, financial IPOs or similar (semi-) unexpected events that warrant immediate attention. Multi-tasking is important. Month-long projects are rare. The iteration loops are much quicker than what I had known in academia. It’s a bit of a cliché by now, but you really want to fail fast. Time is of the essence and it rarely seems to move linearly.</p>
+<p><img src="https://media.giphy.com/media/efU9WbFkGP9NAkLOWn/giphy.gif" title="Trust me; I am a doctor" /></p>
+<p><strong>Time budgets:</strong> Within a typical data science project, expect to spend more of your time on data cleaning and quality control than you would have liked. Probably upwards of 50%, including several iterations of identifying outliers and fixing data errors. Real-world data is considerably messier than astrophysical data. <em>Yes, that is possible.</em> And yes: I have worked with multi-wavelength, multi-telescope projects that produced messy data. A random set of typical industry projects have less in common among them than their astronomical counterparts; and sources of uncertainty and systematics can be plentiful. Data exploration will take up another maybe 25% of your time, including visualisations. The remaining 25% will likely go towards documenting and communicating your findings. I’m including here the time it will take to include your results into a production environment. If you are aiming to be a Machine Learning engineer these tasks will take up a larger chunk of your time.</p>
+<p><strong>Soft skills:</strong> Let me stress that it is a valuable and non-trivial skill to be able to communicate your results clearly and succinctly to a variety of audiences. Your team members will care about which statistical tests you used - management or clients will probably not. At academic conferences, we’ve all sat through those presentations that had slides upon slides filled with text and equations and intricate findings, yet little mention of the bigger picture or what can be learned from it. This is what you want to avoid - <em>both as a speaker and an audience member, incidentally.</em> Adjust your slides to your audience. Together with (well-documented) code samples, the major deliverable of your project is an efficient communication of its results.</p>
+<p>Thus concludes this communication of my impressions and experiences; at least for the moment. There will be more detailed updates on certain key aspects as time progresses. Let’s see what the next 6 months will bring.</p>
+<p><img src="https://media.giphy.com/media/4XPaiZh5DchLG/giphy.gif" title="Well, next week. Hopefully." /></p>
+<p>PS: I’m trying out <em>italics</em> as a sarcasm/humour indicator. Since written text has no tone; and so on. <em>But I’m sure that was abundantly clear from context.</em></p>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//headsortails.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137904077-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+  </body>
+</html>
+
