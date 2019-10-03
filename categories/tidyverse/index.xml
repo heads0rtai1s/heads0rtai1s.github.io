@@ -541,7 +541,7 @@ circumference
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;Personally, I’m learning most efficiently by first looking at examples that show the code in action and then tweaking them to fit my needs. After playing with the code for a bit and inevitably breaking something I turn to the docs to understand more about the syntax and additional arguments of the function. Thus, all my posts on tools or methodology will follow the same pattern: I will jump right into the action by looking at a useful yet simple example or two. Next, I dissect this example, maybe break something, and explain the arguments. In closing, there will be a few more complex examples, caveats, pointers, and/or resources. Sounds good? Here we go:&lt;/p&gt;
-&lt;p&gt;The first example is a function that takes as &lt;em&gt;input&lt;/em&gt; a data frame &lt;code&gt;df&lt;/code&gt; and a variable &lt;code&gt;var&lt;/code&gt; from that data frame (i.e. a column/feature). The &lt;em&gt;output&lt;/em&gt; is the difference between the (global) median and the mean of the variable. This is a realistic example of a concise helper function, since it goes beyond basic in-built tools and provides a quick check on whether a distribution is symmetric&lt;a href=&#34;#fn1&#34; class=&#34;footnoteRef&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;The first example is a function that takes as &lt;em&gt;input&lt;/em&gt; a data frame &lt;code&gt;df&lt;/code&gt; and a variable &lt;code&gt;var&lt;/code&gt; from that data frame (i.e. a column/feature). The &lt;em&gt;output&lt;/em&gt; is the difference between the (global) median and the mean of the variable. This is a realistic example of a concise helper function, since it goes beyond basic in-built tools and provides a quick check on whether a distribution is symmetric&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;median_minus_mean &amp;lt;- function(df, var){
   
   var &amp;lt;- enquo(var)
@@ -597,7 +597,7 @@ median_minus_mean(Orange, circumference)&lt;/code&gt;&lt;/pre&gt;
 plot_growth_tree(Orange, age, circumference, Tree)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Some trees grow faster than others.&lt;/p&gt;
-&lt;p&gt;In fact, ggplot2 is a great use case because it allows us to quickly built helper functions if we need to repeat a certain plot for many similar features. Individual modification to those templates can be added using the ggplot2 grammar. Here is a histogram example where we add a custom title to the second plot&lt;a href=&#34;#fn2&#34; class=&#34;footnoteRef&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;In fact, ggplot2 is a great use case because it allows us to quickly built helper functions if we need to repeat a certain plot for many similar features. Individual modification to those templates can be added using the ggplot2 grammar. Here is a histogram example where we add a custom title to the second plot&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_hist &amp;lt;- function(df, var, bins, bcol){
   
   var &amp;lt;- enquo(var)
@@ -628,8 +628,8 @@ grid.arrange(p1, p2, layout_matrix = rbind(c(1,2)))&lt;/code&gt;&lt;/pre&gt;
 &lt;div class=&#34;footnotes&#34;&gt;
 &lt;hr /&gt;
 &lt;ol&gt;
-&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;If you are actually interested in the skewness of a distribution you can find a &lt;code&gt;skewness&lt;/code&gt; function in the &lt;a href=&#34;https://cran.r-project.org/package=e1071&#34;&gt;&lt;code&gt;e1071&lt;/code&gt; package&lt;/a&gt;.&lt;a href=&#34;#fnref1&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li id=&#34;fn2&#34;&gt;&lt;p&gt;The arranging of plots into panel layouts is done by the &lt;a href=&#34;https://cran.r-project.org/web/packages/gridExtra/vignettes/arrangeGrob.html&#34;&gt;&lt;code&gt;grid.arrange&lt;/code&gt;&lt;/a&gt; function of the &lt;a href=&#34;https://cran.r-project.org/web/packages/gridExtra/index.html&#34;&gt;&lt;code&gt;gridExtra&lt;/code&gt;&lt;/a&gt; package.&lt;a href=&#34;#fnref2&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;If you are actually interested in the skewness of a distribution you can find a &lt;code&gt;skewness&lt;/code&gt; function in the &lt;a href=&#34;https://cran.r-project.org/package=e1071&#34;&gt;&lt;code&gt;e1071&lt;/code&gt; package&lt;/a&gt;.&lt;a href=&#34;#fnref1&#34; class=&#34;footnote-back&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn2&#34;&gt;&lt;p&gt;The arranging of plots into panel layouts is done by the &lt;a href=&#34;https://cran.r-project.org/web/packages/gridExtra/vignettes/arrangeGrob.html&#34;&gt;&lt;code&gt;grid.arrange&lt;/code&gt;&lt;/a&gt; function of the &lt;a href=&#34;https://cran.r-project.org/web/packages/gridExtra/index.html&#34;&gt;&lt;code&gt;gridExtra&lt;/code&gt;&lt;/a&gt; package.&lt;a href=&#34;#fnref2&#34; class=&#34;footnote-back&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
 </description>

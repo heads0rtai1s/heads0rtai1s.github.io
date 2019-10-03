@@ -154,7 +154,7 @@ circumference
 </tbody>
 </table>
 <p>Personally, I’m learning most efficiently by first looking at examples that show the code in action and then tweaking them to fit my needs. After playing with the code for a bit and inevitably breaking something I turn to the docs to understand more about the syntax and additional arguments of the function. Thus, all my posts on tools or methodology will follow the same pattern: I will jump right into the action by looking at a useful yet simple example or two. Next, I dissect this example, maybe break something, and explain the arguments. In closing, there will be a few more complex examples, caveats, pointers, and/or resources. Sounds good? Here we go:</p>
-<p>The first example is a function that takes as <em>input</em> a data frame <code>df</code> and a variable <code>var</code> from that data frame (i.e. a column/feature). The <em>output</em> is the difference between the (global) median and the mean of the variable. This is a realistic example of a concise helper function, since it goes beyond basic in-built tools and provides a quick check on whether a distribution is symmetric<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>:</p>
+<p>The first example is a function that takes as <em>input</em> a data frame <code>df</code> and a variable <code>var</code> from that data frame (i.e. a column/feature). The <em>output</em> is the difference between the (global) median and the mean of the variable. This is a realistic example of a concise helper function, since it goes beyond basic in-built tools and provides a quick check on whether a distribution is symmetric<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>:</p>
 <pre class="r"><code>median_minus_mean &lt;- function(df, var){
   
   var &lt;- enquo(var)
@@ -210,7 +210,7 @@ median_minus_mean(Orange, circumference)</code></pre>
 plot_growth_tree(Orange, age, circumference, Tree)</code></pre>
 <p><img src="/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>Some trees grow faster than others.</p>
-<p>In fact, ggplot2 is a great use case because it allows us to quickly built helper functions if we need to repeat a certain plot for many similar features. Individual modification to those templates can be added using the ggplot2 grammar. Here is a histogram example where we add a custom title to the second plot<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>:</p>
+<p>In fact, ggplot2 is a great use case because it allows us to quickly built helper functions if we need to repeat a certain plot for many similar features. Individual modification to those templates can be added using the ggplot2 grammar. Here is a histogram example where we add a custom title to the second plot<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>:</p>
 <pre class="r"><code>plot_hist &lt;- function(df, var, bins, bcol){
   
   var &lt;- enquo(var)
@@ -241,8 +241,8 @@ grid.arrange(p1, p2, layout_matrix = rbind(c(1,2)))</code></pre>
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>If you are actually interested in the skewness of a distribution you can find a <code>skewness</code> function in the <a href="https://cran.r-project.org/package=e1071"><code>e1071</code> package</a>.<a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>The arranging of plots into panel layouts is done by the <a href="https://cran.r-project.org/web/packages/gridExtra/vignettes/arrangeGrob.html"><code>grid.arrange</code></a> function of the <a href="https://cran.r-project.org/web/packages/gridExtra/index.html"><code>gridExtra</code></a> package.<a href="#fnref2">↩</a></p></li>
+<li id="fn1"><p>If you are actually interested in the skewness of a distribution you can find a <code>skewness</code> function in the <a href="https://cran.r-project.org/package=e1071"><code>e1071</code> package</a>.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>The arranging of plots into panel layouts is done by the <a href="https://cran.r-project.org/web/packages/gridExtra/vignettes/arrangeGrob.html"><code>grid.arrange</code></a> function of the <a href="https://cran.r-project.org/web/packages/gridExtra/index.html"><code>gridExtra</code></a> package.<a href="#fnref2" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
 
