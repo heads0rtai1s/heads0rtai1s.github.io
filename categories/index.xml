@@ -49,16 +49,25 @@
     <item>
       <title>R</title>
       <link>/categories/r/</link>
-      <pubDate>Thu, 03 Oct 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
       
       <guid>/categories/r/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>Tidytuesday</title>
+      <link>/categories/tidytuesday/</link>
+      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/tidytuesday/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Tidyverse</title>
       <link>/categories/tidyverse/</link>
-      <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
       
       <guid>/categories/tidyverse/</guid>
       <description></description>
@@ -67,7 +76,7 @@
     <item>
       <title>Visualisation</title>
       <link>/categories/visualisation/</link>
-      <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
       
       <guid>/categories/visualisation/</guid>
       <description></description>

@@ -6,10 +6,19 @@
     <description>Recent content on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 03 Oct 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 07 Nov 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Tidyverse evolutions: curly-curly operator and pivoting (feat. tidytuesday data &amp; leaflet visuals)</title>
+      <link>/2019/11/07/tidy-curly-pivot-leaflet/</link>
+      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/11/07/tidy-curly-pivot-leaflet/</guid>
+      <description>The tidyverse ecosystem is steadily growing and adapting to the needs of its users. As part of this evolution, existing tools are being replaced by new and better methods. As useful as this flexibility is to the strength of the system, sometimes it can be hard to keep track of all the changes. This blogpost will deal with two new developments: the ‘curly-curly’ operator for tidy evaluation and the new ‘pivot’ functions for data reshaping.</description>
+    </item>
     
     <item>
       <title>The best of both worlds: R meets Python via reticulate</title>

@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.54.0" />
+
+
+<title>Tidyverse evolutions: curly-curly operator and pivoting (feat. tidytuesday data &amp; leaflet visuals) - head spin - the Heads or Tails blog</title>
+<meta property="og:title" content="Tidyverse evolutions: curly-curly operator and pivoting (feat. tidytuesday data &amp; leaflet visuals) - head spin - the Heads or Tails blog">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/avatar.png"
+         width="50"
+         height="50"
+         alt="Heads or Tails">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="/blogroll/">Blogroll</a></li>
+    
+    <li><a href="https://twitter.com/heads0rtai1s">Twitter</a></li>
+    
+    <li><a href="https://www.kaggle.com/headsortails">Kaggle</a></li>
+    
+    <li><a href="https://www.linkedin.com/in/martin-henze">LinkedIn</a></li>
+    
+    <li><a href="https://github.com/heads0rtai1s">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">10 min read</span>
+    
+
+    <h1 class="article-title">Tidyverse evolutions: curly-curly operator and pivoting (feat. tidytuesday data &amp; leaflet visuals)</h1>
+
+    
+    <span class="article-date">2019-11-07</span>
+    
+
+    <div class="article-content">
+      
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="/rmarkdown-libs/leaflet/leaflet.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/leaflet/leaflet.js"></script>
+<link href="/rmarkdown-libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="/rmarkdown-libs/Proj4Leaflet/proj4leaflet.js"></script>
+<link href="/rmarkdown-libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/leaflet-binding/leaflet.js"></script>
+<script src="/rmarkdown-libs/leaflet-providers/leaflet-providers.js"></script>
+<script src="/rmarkdown-libs/leaflet-providers-plugin/leaflet-providers-plugin.js"></script>
+
+
+<p>The <a href="https://www.tidyverse.org/">tidyverse</a> ecosystem is steadily growing and adapting to the needs of its users. As part of this evolution, existing tools are being replaced by new and better methods. As useful as this flexibility is to the strength of the system, sometimes it can be hard to keep track of all the changes. <strong>This blogpost will deal with two new developments: the ‘curly-curly’ operator for tidy evaluation and the new ‘pivot’ functions for data reshaping.</strong></p>
+<p>We will need the following libraries; in particular make sure that you have installed at least <code>tidyr</code> version 1.0:</p>
+<pre class="r"><code>libs &lt;- c(&#39;dplyr&#39;, &#39;tidyr&#39;,          # wrangling
+          &#39;readr&#39;, &#39;stringr&#39;,        # wrangling
+          &#39;knitr&#39;,&#39;kableExtra&#39;,      # table styling
+          &#39;ggplot2&#39;,&#39;gridExtra&#39;,     # plots
+          &#39;leaflet&#39;)                 # interactive maps
+invisible(lapply(libs, library, character.only = TRUE))</code></pre>
+<p>For this post’s dataset we’ll be doing something different than sampling the usual in-built tables. We will work with the <a href="https://www.nationalgeographic.com/animals/2019/06/squirrel-census-new-york-city-central-park/">famous</a> <a href="https://www.thesquirrelcensus.com">NYC Squirrel Census</a> - cataloguing the squirrel population of New York’s Central Park in October 2018. The squirrel census is a great example for a citizen science project that’s both accessible fun and useful scientific contribution.</p>
+<p>Talking about fun community projects: the specific dataset we’re using has been prepared by the <a href="https://github.com/rfordatascience/tidytuesday">TidyTuesday project</a>, a weekly social exercise to test our tidyverse skills and provide inspiration. TidyTuesday is run by the <a href="https://www.rfordatasci.com">R for Data Science</a> Online Learning Community. All datasets are available on github:</p>
+<pre class="r"><code>squirrels &lt;- read_csv(str_c(
+  &quot;https://raw.githubusercontent.com/&quot;,
+  &quot;rfordatascience/tidytuesday/master/&quot;,
+  &quot;data/2019/2019-10-29/nyc_squirrels.csv&quot;))</code></pre>
+<pre class="r"><code>squirrels %&gt;% 
+  select(lat, long, date, running, climbing, eating) %&gt;% 
+  head(5) %&gt;% 
+  kable() %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+lat
+</th>
+<th style="text-align:right;">
+long
+</th>
+<th style="text-align:right;">
+date
+</th>
+<th style="text-align:left;">
+running
+</th>
+<th style="text-align:left;">
+climbing
+</th>
+<th style="text-align:left;">
+eating
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+40.79408
+</td>
+<td style="text-align:right;">
+-73.95613
+</td>
+<td style="text-align:right;">
+10142018
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+40.79485
+</td>
+<td style="text-align:right;">
+-73.95704
+</td>
+<td style="text-align:right;">
+10062018
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+40.76672
+</td>
+<td style="text-align:right;">
+-73.97683
+</td>
+<td style="text-align:right;">
+10102018
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+40.76970
+</td>
+<td style="text-align:right;">
+-73.97572
+</td>
+<td style="text-align:right;">
+10182018
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+40.79753
+</td>
+<td style="text-align:right;">
+-73.95931
+</td>
+<td style="text-align:right;">
+10182018
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+</tr>
+</tbody>
+</table>
+<p>Among other features, the squirrels data includes the latitude and longitude of the sighting, the date, and flags that indicate whether this squirrel was spotted running, climbing, or eating. True to tidy form, each row corresponds to one squirrel. There are many more features in the full dataset, but we will focus on the ones above in the following examples.</p>
+<p><strong>First, we will cover tidy evaluation with the <code>{{ }}</code> operator aka ‘curly-curly’.</strong></p>
+<p>Introduced as part of <a href="https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/">rlang version 0.4.0</a> back in June, curly-curly replaces the approach of quoting with <code>enquo</code> and unquoting with <code>!!</code> (aka ‘bang-bang’). Instead of two operations it provides a compact shorthand for simple cases. Here is a brief example for counting groups of distinct feature values:</p>
+<pre class="r"><code># new style
+count_groups &lt;- function(df, groupvar){
+  df %&gt;% 
+    group_by({{ groupvar }}) %&gt;% 
+    count()
+}
+
+count_groups(squirrels, climbing) %&gt;% 
+  kable() %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+climbing
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:right;">
+2365
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+658
+</td>
+</tr>
+</tbody>
+</table>
+<p>In this example, <code>{{ groupvar }}</code> splices the value of <code>groupvar</code> into the <code>group_by</code> call, rather than its name. This is equivalent to the quote-unquote style of <code>!! enquo(groupvar)</code>:</p>
+<pre class="r"><code># old style
+count_groups_old &lt;- function(df, groupvar){
+  df %&gt;% 
+    group_by(!! enquo(groupvar)) %&gt;% 
+    count()
+}
+
+count_groups_old(squirrels, climbing) %&gt;% 
+  kable() %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+climbing
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:right;">
+2365
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+658
+</td>
+</tr>
+</tbody>
+</table>
+<p>The advantage of <code>{{ }}</code> lies in its relative cognitive ease: think of it as inserting the value of the variable into the expression. No intermediate quoting or unquoting needed.</p>
+<p><strong>Next, we will look at how to reshape data with the <a href="https://tidyr.tidyverse.org/articles/pivot.html">new functions</a> <code>pivot_wider</code> and <code>pivot_longer</code></strong>, which are replacing the previous <code>spread</code> and <code>gather</code> tools. Most importantly: <code>pivot_wider</code> is the inverse function to <code>pivot_longer</code>, and vice versa.</p>
+<p>As the name suggests, <code>pivot_wider</code> makes a tibble wider by turning a single categorical column into multiple columns, one for each category.</p>
+<p>Let’s look at this aggregated data frame of sightings of climbing squirrels per day:</p>
+<pre class="r"><code>squirrels %&gt;% 
+  count(date, climbing) %&gt;% 
+  head(4) %&gt;% 
+  kable() %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+date
+</th>
+<th style="text-align:left;">
+climbing
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+10062018
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:right;">
+253
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10062018
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+84
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10072018
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:right;">
+283
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10072018
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+122
+</td>
+</tr>
+</tbody>
+</table>
+<p>Pivoting to a wider format allows us to compare the numbers of climbing and non-climbing squirrels directly next to each other:</p>
+<pre class="r"><code># new style with pivot_wider
+squirrels %&gt;% 
+  count(date, climbing) %&gt;% 
+  pivot_wider(names_from = climbing, values_from = n, names_prefix = &quot;climbing_&quot;) %&gt;% 
+  head(2) %&gt;% 
+  kable() %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+date
+</th>
+<th style="text-align:right;">
+climbing_FALSE
+</th>
+<th style="text-align:right;">
+climbing_TRUE
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+10062018
+</td>
+<td style="text-align:right;">
+253
+</td>
+<td style="text-align:right;">
+84
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10072018
+</td>
+<td style="text-align:right;">
+283
+</td>
+<td style="text-align:right;">
+122
+</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>The <code>names_from</code> argument indicates which column supplies the new column names. The values of this column are being picked from the feature defined via the <code>values_from</code> keyword. Here, we pick the names from the binary feature <code>climbing</code> and the values from the count column <code>n</code>.</p></li>
+<li><p>Among the additional keywords, <code>names_prefix</code> allows us to assign meaningful names to the new columns (which would otherwise simply be the rather generic ‘FALSE’ and ‘TRUE’ here). Another useful keyword is <code>values_fill</code>, which specifies a global replacement for any missing values.</p></li>
+<li><p>The new <code>pivot_wider</code> replaces the old <code>spread</code> function, which had comparable yet possibly more confusing parameters. For comparison, here is the same result with <code>spread</code>:</p></li>
+</ul>
+<pre class="r"><code># old style with spread
+squirrels %&gt;% 
+  count(date, climbing) %&gt;% 
+  spread(key = climbing, value = n) %&gt;% 
+  head(2) %&gt;% 
+  kable() %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+date
+</th>
+<th style="text-align:right;">
+FALSE
+</th>
+<th style="text-align:right;">
+TRUE
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+10062018
+</td>
+<td style="text-align:right;">
+253
+</td>
+<td style="text-align:right;">
+84
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10072018
+</td>
+<td style="text-align:right;">
+283
+</td>
+<td style="text-align:right;">
+122
+</td>
+</tr>
+</tbody>
+</table>
+<p>The syntax is very similar, which should make it easy for those familiar with <code>spread</code> to switch to <code>pivot_wider</code>. Note, that <code>spread</code> had no <code>names_prefix</code> argument.</p>
+<p>In most tutorials, <code>pivot_wider</code> is somewhat overshadowed by <code>pivot_longer</code>; but I use it frequently to quickly compute proportions for grouped columns. For instance, here are the top 3 days for spotting squirrels climbing:</p>
+<pre class="r"><code>squirrels %&gt;% 
+  count(date, climbing) %&gt;% 
+  pivot_wider(names_from = climbing, values_from = n, names_prefix = &quot;climbing_&quot;) %&gt;%
+  mutate(climbing_percentage = climbing_TRUE/(climbing_TRUE + climbing_FALSE)*100) %&gt;% 
+  arrange(desc(climbing_percentage)) %&gt;% 
+  head(3) %&gt;% 
+  kable() %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+date
+</th>
+<th style="text-align:right;">
+climbing_FALSE
+</th>
+<th style="text-align:right;">
+climbing_TRUE
+</th>
+<th style="text-align:right;">
+climbing_percentage
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+10072018
+</td>
+<td style="text-align:right;">
+283
+</td>
+<td style="text-align:right;">
+122
+</td>
+<td style="text-align:right;">
+30.12346
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10062018
+</td>
+<td style="text-align:right;">
+253
+</td>
+<td style="text-align:right;">
+84
+</td>
+<td style="text-align:right;">
+24.92582
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10082018
+</td>
+<td style="text-align:right;">
+220
+</td>
+<td style="text-align:right;">
+65
+</td>
+<td style="text-align:right;">
+22.80702
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Let’s move on to <code>pivot_longer</code></strong>. Being the inverse function to <code>pivot_wider</code>, this tool (often) reduces the number of columns by turning some of the columns into a single new (typically) categorical feature alongside an (often times) numerical feature. The different levels of the categorical column now describe the numerical column in a unique way (similarly to the wider column structure previously). This is all a bit abstract, so let’s do a quick example:</p>
+<p>Imagine we’ve extracted both the proportion of climbing squirrels and non-climbing squirrels for each day with the help of <code>pivot_wider</code>. (Of course, one number determines the other but let’s use it as a simple illustration).</p>
+<pre class="r"><code>squirrels %&gt;% 
+  count(date, climbing) %&gt;% 
+  pivot_wider(names_from = climbing, values_from = n, names_prefix = &quot;climbing_&quot;) %&gt;%
+  mutate(prop_true = climbing_TRUE/(climbing_TRUE + climbing_FALSE)*100,
+         prop_false = climbing_FALSE/(climbing_TRUE + climbing_FALSE)*100) %&gt;% 
+  head(2) %&gt;% 
+  kable() %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+date
+</th>
+<th style="text-align:right;">
+climbing_FALSE
+</th>
+<th style="text-align:right;">
+climbing_TRUE
+</th>
+<th style="text-align:right;">
+prop_true
+</th>
+<th style="text-align:right;">
+prop_false
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+10062018
+</td>
+<td style="text-align:right;">
+253
+</td>
+<td style="text-align:right;">
+84
+</td>
+<td style="text-align:right;">
+24.92582
+</td>
+<td style="text-align:right;">
+75.07418
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10072018
+</td>
+<td style="text-align:right;">
+283
+</td>
+<td style="text-align:right;">
+122
+</td>
+<td style="text-align:right;">
+30.12346
+</td>
+<td style="text-align:right;">
+69.87654
+</td>
+</tr>
+</tbody>
+</table>
+<p>Now we will use <code>pivot_longer</code> to turn those two <code>prop_</code> columns into a categorical <code>climbing</code> and a numerical <code>percentage</code> feature. Here, we drop the <code>climbing_FALSE</code> and <code>climbing_TRUE</code> columns, so the pivoting doesn’t change the number of columns but it changes the structure of the dataset:</p>
+<pre class="r"><code>squirrels %&gt;% 
+  count(date, climbing) %&gt;% 
+  pivot_wider(names_from = climbing, values_from = n, names_prefix = &quot;climbing_&quot;) %&gt;%
+  mutate(prop_true = climbing_TRUE/(climbing_TRUE + climbing_FALSE),
+         prop_false = climbing_FALSE/(climbing_TRUE + climbing_FALSE)) %&gt;%
+  select(date, prop_true, prop_false) %&gt;% 
+  pivot_longer(cols = c(&quot;prop_true&quot;, &quot;prop_false&quot;),
+               names_to = &quot;climbing&quot;, values_to = &quot;percentage&quot;) %&gt;% 
+  head(4)  %&gt;% 
+  kable() %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+date
+</th>
+<th style="text-align:left;">
+climbing
+</th>
+<th style="text-align:right;">
+percentage
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+10062018
+</td>
+<td style="text-align:left;">
+prop_true
+</td>
+<td style="text-align:right;">
+0.2492582
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10062018
+</td>
+<td style="text-align:left;">
+prop_false
+</td>
+<td style="text-align:right;">
+0.7507418
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10072018
+</td>
+<td style="text-align:left;">
+prop_true
+</td>
+<td style="text-align:right;">
+0.3012346
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10072018
+</td>
+<td style="text-align:left;">
+prop_false
+</td>
+<td style="text-align:right;">
+0.6987654
+</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>The <code>cols</code> argument specifies the columns that will be pivoted. Then, <code>names_to</code> gives the name of the new feature that will hold the (categorical) names of the original columns. And <code>values_to</code> is the new feature that hold their values (here the percentages).</p></li>
+<li><p>Note, that as with the older <code>gather</code> method, the new column names have to be passed as strings.</p></li>
+<li><p>The resulting data structure is often much better suited for plotting with <code>ggplot2</code>. The categorical feature can directly become a colour, fill, or faceting variable.</p></li>
+</ul>
+<p><strong>Finally, let’s combine curly-curly and pivoting into a comprehensive example.</strong> Here, we build a function that takes as arguments the name of a data frame and the name of a logical column, here a squirrel action, and then extracts the percentage of this action per coordinate bin. This is it:</p>
+<pre class="r"><code>extract_percentage &lt;- function(df, col) {
+  
+  df %&gt;% 
+    mutate(lat = round(lat*5, 2)/5,
+         long = round(long*5, 2)/5) %&gt;% 
+    count(lat, long, {{ col }}) %&gt;% 
+    pivot_wider(names_from = {{ col }}, values_from = n,
+                values_fill = list(n = 0)) %&gt;%
+    mutate(true = `TRUE`/(`TRUE` + `FALSE`)*100,
+           false = `FALSE`/(`TRUE` + `FALSE`)*100) %&gt;%
+    select(lat, long, true, false) %&gt;% 
+    pivot_longer(cols = c(&quot;true&quot;, &quot;false&quot;),
+                 names_to = &quot;action&quot;, values_to = &quot;percentage&quot;) %&gt;% 
+    filter(action == &quot;true&quot;)
+}
+
+extract_percentage(squirrels, climbing) %&gt;% 
+  head(3)  %&gt;% 
+  kable() %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+lat
+</th>
+<th style="text-align:right;">
+long
+</th>
+<th style="text-align:left;">
+action
+</th>
+<th style="text-align:right;">
+percentage
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+40.764
+</td>
+<td style="text-align:right;">
+-73.974
+</td>
+<td style="text-align:left;">
+true
+</td>
+<td style="text-align:right;">
+50.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+40.766
+</td>
+<td style="text-align:right;">
+-73.978
+</td>
+<td style="text-align:left;">
+true
+</td>
+<td style="text-align:right;">
+21.73913
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+40.766
+</td>
+<td style="text-align:right;">
+-73.976
+</td>
+<td style="text-align:left;">
+true
+</td>
+<td style="text-align:right;">
+19.23077
+</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>The coordinates are rounded the nearest 0.02 degrees to provide the sample size for summary statistics.</p></li>
+<li><p>We only keep the percentage of positive sightings for each action.</p></li>
+</ul>
+<p>We’re now using this function to extract the proportions of squirrels that were observed eating, climbing, or running. Then we visualise those proportions on an interactive map of Manhattan centred on Central Park. The map is constructed using the wonderful <a href="https://rstudio.github.io/leaflet/">leaflet</a> package. Such a map could be used to find locations in the park that might be more promising than others for spotting certain squirrel shenanigans.</p>
+<pre class="r"><code>loc &lt;- extract_percentage(squirrels, eating)
+
+pal &lt;- colorNumeric(palette = &quot;RdBu&quot;, domain = seq(0,100), reverse = TRUE)
+
+leaflet(loc) %&gt;%
+  setView(lng = median(loc$long), lat = median(loc$lat), zoom = 13) %&gt;% 
+  #addProviderTiles(&quot;Esri.NatGeoWorldMap&quot;) %&gt;%
+  addProviderTiles(providers$CartoDB.DarkMatter) %&gt;%
+  addCircleMarkers(~ long, ~ lat,
+                   data = extract_percentage(squirrels, eating),
+                   group = &quot;Eating&quot;,
+                   color = ~ pal(percentage),
+                   radius = 6, fillOpacity = 0.7, stroke = FALSE) %&gt;% 
+  addCircleMarkers(~ long, ~ lat,
+                   data = extract_percentage(squirrels, climbing),
+                   group = &quot;Climbing&quot;,
+                   color = ~ pal(percentage),
+                   radius = 6, fillOpacity = 0.7, stroke = FALSE) %&gt;%
+  addCircleMarkers(~ long, ~ lat,
+                   data = extract_percentage(squirrels, running),
+                   group = &quot;Running&quot;,
+                   color = ~ pal(percentage),
+                   radius = 6, fillOpacity = 0.7, stroke = FALSE) %&gt;%
+  addLayersControl(baseGroups = c(&quot;Eating&quot;, &quot;Climbing&quot;, &quot;Running&quot;),
+                   options = layersControlOptions(collapsed = FALSE)) %&gt;%
+  addLegend(&quot;bottomright&quot;, pal = pal, values = ~ percentage,
+            title = &quot;Percentage&quot;, labFormat = labelFormat(suffix = &quot;%&quot;),) %&gt;% 
+  addScaleBar(&quot;bottomleft&quot;)</code></pre>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[40.782,-73.966],13,[]],"calls":[{"method":"addProviderTiles","args":["CartoDB.DarkMatter",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[40.764,40.766,40.766,40.766,40.766,40.768,40.768,40.768,40.768,40.768,40.768,40.768,40.77,40.77,40.77,40.77,40.77,40.77,40.77,40.772,40.772,40.772,40.772,40.772,40.772,40.772,40.774,40.774,40.774,40.774,40.774,40.774,40.774,40.776,40.776,40.776,40.776,40.776,40.776,40.776,40.778,40.778,40.778,40.778,40.778,40.778,40.78,40.78,40.78,40.78,40.78,40.78,40.78,40.782,40.782,40.782,40.782,40.782,40.782,40.782,40.784,40.784,40.784,40.784,40.784,40.784,40.786,40.786,40.786,40.788,40.788,40.788,40.788,40.788,40.788,40.788,40.79,40.79,40.79,40.79,40.79,40.79,40.79,40.792,40.792,40.792,40.792,40.792,40.792,40.792,40.794,40.794,40.794,40.794,40.794,40.794,40.794,40.794,40.796,40.796,40.796,40.796,40.796,40.796,40.796,40.798,40.798,40.798,40.798,40.798,40.798,40.8,40.8],[-73.974,-73.978,-73.976,-73.974,-73.972,-73.982,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.966,-73.976,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.962,-73.972,-73.97,-73.968,-73.966,-73.964,-73.962,-73.96,-73.97,-73.968,-73.966,-73.964,-73.96,-73.958,-73.97,-73.968,-73.958,-73.968,-73.966,-73.964,-73.962,-73.96,-73.958,-73.956,-73.966,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.958,-73.956],6,null,"Eating",{"interactive":true,"className":"","stroke":false,"color":["#053061","#2D73B3","#E9F0F4","#8FC3DD","#4996C5","#3984BB","#94C6DF","#3780BA","#3C87BD","#96C7DF","#97C7DF","#A8D0E4","#408DC0","#C9E1EE","#75B0D3","#62A4CD","#6EACD1","#7BB4D5","#053061","#F8B799","#3279B6","#408DC0","#CAE1EE","#88BEDA","#6EACD1","#3D89BE","#A8D0E4","#73AFD2","#E0ECF3","#C0DCEB","#90C4DD","#4190C2","#6EACD1","#FAECE4","#3781BA","#529BC7","#E1ECF3","#61A4CC","#B7D7E8","#053061","#286DB0","#88BEDA","#96C7DF","#5EA1CB","#6EACD1","#88BEDA","#053061","#3E8BBF","#A8D0E4","#3279B6","#C9E1EE","#EFF3F5","#053061","#F7F7F7","#519AC7","#4996C5","#8EC2DC","#94C6DE","#357EB8","#4393C3","#76B1D3","#347CB8","#408FC1","#053061","#7AB4D5","#053061","#67001F","#357EB8","#3E8BBF","#053061","#7FB7D7","#3279B6","#4393C3","#053061","#1E61A5","#154F8C","#6EACD1","#E7EFF4","#7FB7D7","#A3CDE3","#6EACD1","#17518F","#1E61A5","#B9D8E9","#3D89BE","#94C6DF","#8FC3DD","#1E61A5","#3E8BBF","#B7D7E8","#053061","#64A6CD","#357DB8","#529BC7","#A8D0E4","#418FC1","#BEDBEA","#67001F","#3E8BBF","#5DA1CB","#8DC1DC","#134A86","#4A96C5","#C2DDEC","#3984BB","#579EC9","#4291C2","#3178B5","#3B86BD","#1E61A5","#3279B6","#286DB0","#3E8BBF"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#053061","#2D73B3","#E9F0F4","#8FC3DD","#4996C5","#3984BB","#94C6DF","#3780BA","#3C87BD","#96C7DF","#97C7DF","#A8D0E4","#408DC0","#C9E1EE","#75B0D3","#62A4CD","#6EACD1","#7BB4D5","#053061","#F8B799","#3279B6","#408DC0","#CAE1EE","#88BEDA","#6EACD1","#3D89BE","#A8D0E4","#73AFD2","#E0ECF3","#C0DCEB","#90C4DD","#4190C2","#6EACD1","#FAECE4","#3781BA","#529BC7","#E1ECF3","#61A4CC","#B7D7E8","#053061","#286DB0","#88BEDA","#96C7DF","#5EA1CB","#6EACD1","#88BEDA","#053061","#3E8BBF","#A8D0E4","#3279B6","#C9E1EE","#EFF3F5","#053061","#F7F7F7","#519AC7","#4996C5","#8EC2DC","#94C6DE","#357EB8","#4393C3","#76B1D3","#347CB8","#408FC1","#053061","#7AB4D5","#053061","#67001F","#357EB8","#3E8BBF","#053061","#7FB7D7","#3279B6","#4393C3","#053061","#1E61A5","#154F8C","#6EACD1","#E7EFF4","#7FB7D7","#A3CDE3","#6EACD1","#17518F","#1E61A5","#B9D8E9","#3D89BE","#94C6DF","#8FC3DD","#1E61A5","#3E8BBF","#B7D7E8","#053061","#64A6CD","#357DB8","#529BC7","#A8D0E4","#418FC1","#BEDBEA","#67001F","#3E8BBF","#5DA1CB","#8DC1DC","#134A86","#4A96C5","#C2DDEC","#3984BB","#579EC9","#4291C2","#3178B5","#3B86BD","#1E61A5","#3279B6","#286DB0","#3E8BBF"],"fillOpacity":0.7},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircleMarkers","args":[[40.764,40.766,40.766,40.766,40.766,40.768,40.768,40.768,40.768,40.768,40.768,40.768,40.77,40.77,40.77,40.77,40.77,40.77,40.77,40.772,40.772,40.772,40.772,40.772,40.772,40.772,40.774,40.774,40.774,40.774,40.774,40.774,40.774,40.776,40.776,40.776,40.776,40.776,40.776,40.776,40.778,40.778,40.778,40.778,40.778,40.778,40.78,40.78,40.78,40.78,40.78,40.78,40.78,40.782,40.782,40.782,40.782,40.782,40.782,40.782,40.784,40.784,40.784,40.784,40.784,40.784,40.786,40.786,40.786,40.788,40.788,40.788,40.788,40.788,40.788,40.788,40.79,40.79,40.79,40.79,40.79,40.79,40.79,40.792,40.792,40.792,40.792,40.792,40.792,40.792,40.794,40.794,40.794,40.794,40.794,40.794,40.794,40.794,40.796,40.796,40.796,40.796,40.796,40.796,40.796,40.798,40.798,40.798,40.798,40.798,40.798,40.8,40.8],[-73.974,-73.978,-73.976,-73.974,-73.972,-73.982,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.966,-73.976,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.962,-73.972,-73.97,-73.968,-73.966,-73.964,-73.962,-73.96,-73.97,-73.968,-73.966,-73.964,-73.96,-73.958,-73.97,-73.968,-73.958,-73.968,-73.966,-73.964,-73.962,-73.96,-73.958,-73.956,-73.966,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.958,-73.956],6,null,"Climbing",{"interactive":true,"className":"","stroke":false,"color":["#F7F7F7","#539BC8","#418FC1","#3F8CC0","#4996C5","#3984BB","#337AB7","#3780BA","#71AED2","#579EC9","#357EB8","#3984BB","#408DC0","#74B0D3","#579EC9","#154F8C","#2B71B2","#2C72B2","#DCEAF2","#F8B799","#D1E5F0","#6EACD1","#3077B5","#519AC7","#4E99C6","#A0CCE2","#E2EDF3","#68A8CF","#84BBD9","#4393C3","#3882BA","#2D73B3","#E68367","#1B599A","#84BBD9","#8EC2DC","#195696","#72AED2","#64A6CD","#DCEAF2","#7CB5D6","#3279B6","#4190C2","#5EA1CB","#F7F7F7","#DCEAF2","#A8D0E4","#5CA0CA","#4B97C5","#195696","#B5D6E8","#B1D4E7","#053061","#E68367","#053061","#A1CCE2","#62A4CD","#4C98C6","#97C7DF","#D1E5F0","#76B1D3","#2B71B2","#C5DFED","#A8D0E4","#A8D0E4","#F7F7F7","#053061","#5FA2CB","#7FB7D7","#2B71B2","#BBD9E9","#3279B6","#7AB4D5","#A8D0E4","#FAEAE1","#D6E7F1","#3984BB","#9BCAE1","#3E8BBF","#65A6CE","#6EACD1","#F7F7F7","#7FB7D7","#1C5D9F","#6EACD1","#7FB7D7","#3F8CC0","#BBD9E9","#5CA0CA","#3279B6","#053061","#77B2D4","#68A8CE","#408EC1","#2A6FB1","#2C72B2","#3780B9","#053061","#053061","#1D5EA1","#4291C2","#347CB8","#4A96C5","#2B71B2","#053061","#579EC9","#65A6CE","#3178B5","#3B86BD","#3E8BBF","#3279B6","#E9F0F4","#7FB7D7"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#F7F7F7","#539BC8","#418FC1","#3F8CC0","#4996C5","#3984BB","#337AB7","#3780BA","#71AED2","#579EC9","#357EB8","#3984BB","#408DC0","#74B0D3","#579EC9","#154F8C","#2B71B2","#2C72B2","#DCEAF2","#F8B799","#D1E5F0","#6EACD1","#3077B5","#519AC7","#4E99C6","#A0CCE2","#E2EDF3","#68A8CF","#84BBD9","#4393C3","#3882BA","#2D73B3","#E68367","#1B599A","#84BBD9","#8EC2DC","#195696","#72AED2","#64A6CD","#DCEAF2","#7CB5D6","#3279B6","#4190C2","#5EA1CB","#F7F7F7","#DCEAF2","#A8D0E4","#5CA0CA","#4B97C5","#195696","#B5D6E8","#B1D4E7","#053061","#E68367","#053061","#A1CCE2","#62A4CD","#4C98C6","#97C7DF","#D1E5F0","#76B1D3","#2B71B2","#C5DFED","#A8D0E4","#A8D0E4","#F7F7F7","#053061","#5FA2CB","#7FB7D7","#2B71B2","#BBD9E9","#3279B6","#7AB4D5","#A8D0E4","#FAEAE1","#D6E7F1","#3984BB","#9BCAE1","#3E8BBF","#65A6CE","#6EACD1","#F7F7F7","#7FB7D7","#1C5D9F","#6EACD1","#7FB7D7","#3F8CC0","#BBD9E9","#5CA0CA","#3279B6","#053061","#77B2D4","#68A8CE","#408EC1","#2A6FB1","#2C72B2","#3780B9","#053061","#053061","#1D5EA1","#4291C2","#347CB8","#4A96C5","#2B71B2","#053061","#579EC9","#65A6CE","#3178B5","#3B86BD","#3E8BBF","#3279B6","#E9F0F4","#7FB7D7"],"fillOpacity":0.7},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircleMarkers","args":[[40.764,40.766,40.766,40.766,40.766,40.768,40.768,40.768,40.768,40.768,40.768,40.768,40.77,40.77,40.77,40.77,40.77,40.77,40.77,40.772,40.772,40.772,40.772,40.772,40.772,40.772,40.774,40.774,40.774,40.774,40.774,40.774,40.774,40.776,40.776,40.776,40.776,40.776,40.776,40.776,40.778,40.778,40.778,40.778,40.778,40.778,40.78,40.78,40.78,40.78,40.78,40.78,40.78,40.782,40.782,40.782,40.782,40.782,40.782,40.782,40.784,40.784,40.784,40.784,40.784,40.784,40.786,40.786,40.786,40.788,40.788,40.788,40.788,40.788,40.788,40.788,40.79,40.79,40.79,40.79,40.79,40.79,40.79,40.792,40.792,40.792,40.792,40.792,40.792,40.792,40.794,40.794,40.794,40.794,40.794,40.794,40.794,40.794,40.796,40.796,40.796,40.796,40.796,40.796,40.796,40.798,40.798,40.798,40.798,40.798,40.798,40.8,40.8],[-73.974,-73.978,-73.976,-73.974,-73.972,-73.982,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.966,-73.976,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.962,-73.972,-73.97,-73.968,-73.966,-73.964,-73.962,-73.96,-73.97,-73.968,-73.966,-73.964,-73.96,-73.958,-73.97,-73.968,-73.958,-73.968,-73.966,-73.964,-73.962,-73.96,-73.958,-73.956,-73.966,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.958,-73.956],6,null,"Running",{"interactive":true,"className":"","stroke":false,"color":["#F7F7F7","#2D73B3","#5FA2CB","#3F8CC0","#79B3D4","#A8D0E4","#3D8ABE","#ACD2E5","#64A6CD","#3077B5","#C8E0ED","#D7E8F1","#367FB9","#B5D6E8","#3F8CC0","#79B3D4","#8CC1DC","#4E98C6","#88BEDA","#053061","#4393C3","#85BBD9","#6EACD1","#296EB0","#3B87BD","#88BEDA","#F8B799","#73AFD2","#296FB1","#4393C3","#408EC1","#2064A9","#F7F7F7","#C8E0ED","#66A7CE","#529BC7","#3984BB","#ACD2E5","#A8D0E4","#3279B6","#357EB8","#519AC7","#4190C2","#77B2D4","#F7F7F7","#408FC1","#053061","#3E8BBF","#6EACD1","#B7D7E8","#4190C2","#539BC8","#053061","#6EACD1","#3D89BE","#C6DFED","#154F8C","#3F8DC0","#5FA2CB","#D1E5F0","#2D73B3","#6EACD1","#408FC1","#A8D0E4","#2E75B4","#053061","#053061","#E9F0F4","#BBD9E9","#053061","#7FB7D7","#DCEAF2","#2E75B4","#053061","#3E8BBF","#3C88BE","#6EACD1","#88BEDA","#7FB7D7","#2D73B3","#88BEDA","#17518F","#5CA0CA","#4190C2","#519AC7","#68A8CE","#3F8CC0","#BBD9E9","#5CA0CA","#519AC7","#053061","#DCEAF2","#68A8CE","#2F76B4","#68A8CE","#4F99C6","#2368AD","#053061","#BBD9E9","#C0DCEB","#9DCAE1","#6EACD1","#E4EEF3","#C2DDEC","#F8B799","#579EC9","#3C87BD","#E8F0F4","#81B9D7","#E6EFF4","#DCEAF2","#E9F0F4","#053061"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#F7F7F7","#2D73B3","#5FA2CB","#3F8CC0","#79B3D4","#A8D0E4","#3D8ABE","#ACD2E5","#64A6CD","#3077B5","#C8E0ED","#D7E8F1","#367FB9","#B5D6E8","#3F8CC0","#79B3D4","#8CC1DC","#4E98C6","#88BEDA","#053061","#4393C3","#85BBD9","#6EACD1","#296EB0","#3B87BD","#88BEDA","#F8B799","#73AFD2","#296FB1","#4393C3","#408EC1","#2064A9","#F7F7F7","#C8E0ED","#66A7CE","#529BC7","#3984BB","#ACD2E5","#A8D0E4","#3279B6","#357EB8","#519AC7","#4190C2","#77B2D4","#F7F7F7","#408FC1","#053061","#3E8BBF","#6EACD1","#B7D7E8","#4190C2","#539BC8","#053061","#6EACD1","#3D89BE","#C6DFED","#154F8C","#3F8DC0","#5FA2CB","#D1E5F0","#2D73B3","#6EACD1","#408FC1","#A8D0E4","#2E75B4","#053061","#053061","#E9F0F4","#BBD9E9","#053061","#7FB7D7","#DCEAF2","#2E75B4","#053061","#3E8BBF","#3C88BE","#6EACD1","#88BEDA","#7FB7D7","#2D73B3","#88BEDA","#17518F","#5CA0CA","#4190C2","#519AC7","#68A8CE","#3F8CC0","#BBD9E9","#5CA0CA","#519AC7","#053061","#DCEAF2","#68A8CE","#2F76B4","#68A8CE","#4F99C6","#2368AD","#053061","#BBD9E9","#C0DCEB","#9DCAE1","#6EACD1","#E4EEF3","#C2DDEC","#F8B799","#579EC9","#3C87BD","#E8F0F4","#81B9D7","#E6EFF4","#DCEAF2","#E9F0F4","#053061"],"fillOpacity":0.7},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLayersControl","args":[["Eating","Climbing","Running"],[],{"collapsed":false,"autoZIndex":true,"position":"topright"}]},{"method":"addLegend","args":[{"colors":["#053061 , #053061 0%, #4393C3 20%, #D1E5F0 40%, #FDDBC7 60%, #D6604D 80%, #67001F 100%, #67001F "],"labels":["0%","20%","40%","60%","80%","100%"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"bottomright","type":"numeric","title":"Percentage","extra":{"p_1":0,"p_n":1},"layerId":null,"className":"info legend","group":null}]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]}],"limits":{"lat":[40.764,40.8],"lng":[-73.982,-73.95]}},"evals":[],"jsHooks":[]}</script>
+<ul>
+<li><p>This is an interactive map that is fully movable and zoomable, provided you are connected to the internet. <em>If you aren’t connected to the internet: how did you reach this website? Teach me your dark and mysterious skills.</em> Speaking of dark: I chose a dark background map because I like the way it contrasts with the colours of the circles. Looks especially sweet in dark mode. Click on the subgroups in the upper right corner to see the spatial distributions of their percentages.</p></li>
+<li><p>The code is pretty self explanatory, and I will save a more detailed exploration of leaflet for a future blog post. The different sub-datasets for each action are added as <code>CircleMarkers</code> using our <code>èxtract_percentages</code> function. For the colour-coding we define a diverging palette. Each dataset is a layer with a <code>group</code> attribute which is used to define the switch between them.</p></li>
+<li><p>Among the things we see in the data, there is a tendency for sightings of squirrels eating to be located in the inner part of the park vs the edges. A lot of climbing happens on the east side; and there’s more running in the north. <em>Feel free to supply fitting stereotypes or jokes about Manhattan here - I’m blissfully unaware of any.</em></p></li>
+<li><p>For a more serious analysis there would the caveat that some of the spatial bins will have small numbers of squirrels overall, which leads to large uncertainties for those percentages. This is something that would need to be taken into account in a deeper analysis.</p></li>
+</ul>
+<p>More resources:</p>
+<ul>
+<li><p>Read the <a href="https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/">announcement for curly-curly</a> and the <a href="https://tidyr.tidyverse.org/articles/pivot.html">new pivoting vignette</a>.</p></li>
+<li><p>At the moment, situations where one or more variables are simply quoted are the best use cases for <code>{{ }}</code>. Beyond that, <a href="https://stackoverflow.com/questions/56936372/curly-curly-tidy-evaluation-and-modifying-inputs-or-their-names">operations that require modification of variables</a> still need <code>enquo</code>. This might <a href="http://rpubs.com/lionel-/superstache">change in the near future</a>.</p></li>
+<li><p>A great introduction to the capabilities of leaflet can be found <a href="https://rstudio.github.io/leaflet/">here</a>. It is also a popular tool for exploratory Kernels on Kaggle, for instance on <a href="https://www.kaggle.com/headsortails/be-my-guest-recruit-restaurant-eda">restaurants in Japan</a> or <a href="https://www.kaggle.com/headsortails/nyc-taxi-eda-update-the-fast-the-curious">Taxi rides in NYC</a> (<em>for an unknown number of squirrel passengers</em>).</p></li>
+<li><p>As you might expect, Tidy Tuesday is a weekly challenge with tons of interesting data and many talented participants. Make sure to check out #tidytuesday on Twitter for frequent examples of creative visuals.</p></li>
+</ul>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//headsortails.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137904077-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+  </body>
+</html>
+

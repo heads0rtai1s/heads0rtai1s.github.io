@@ -7,10 +7,779 @@
     <description>Recent content in Posts on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 03 Oct 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 07 Nov 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Tidyverse evolutions: curly-curly operator and pivoting (feat. tidytuesday data &amp; leaflet visuals)</title>
+      <link>/2019/11/07/tidy-curly-pivot-leaflet/</link>
+      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/11/07/tidy-curly-pivot-leaflet/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/leaflet/leaflet.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/leaflet/leaflet.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/leafletfix/leafletfix.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/Proj4Leaflet/proj4-compressed.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/Proj4Leaflet/proj4leaflet.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/rstudio_leaflet/rstudio_leaflet.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/leaflet-binding/leaflet.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/leaflet-providers/leaflet-providers.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/rmarkdown-libs/leaflet-providers-plugin/leaflet-providers-plugin.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;The &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; ecosystem is steadily growing and adapting to the needs of its users. As part of this evolution, existing tools are being replaced by new and better methods. As useful as this flexibility is to the strength of the system, sometimes it can be hard to keep track of all the changes. &lt;strong&gt;This blogpost will deal with two new developments: the ‘curly-curly’ operator for tidy evaluation and the new ‘pivot’ functions for data reshaping.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;We will need the following libraries; in particular make sure that you have installed at least &lt;code&gt;tidyr&lt;/code&gt; version 1.0:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;tidyr&amp;#39;,          # wrangling
+          &amp;#39;readr&amp;#39;, &amp;#39;stringr&amp;#39;,        # wrangling
+          &amp;#39;knitr&amp;#39;,&amp;#39;kableExtra&amp;#39;,      # table styling
+          &amp;#39;ggplot2&amp;#39;,&amp;#39;gridExtra&amp;#39;,     # plots
+          &amp;#39;leaflet&amp;#39;)                 # interactive maps
+invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For this post’s dataset we’ll be doing something different than sampling the usual in-built tables. We will work with the &lt;a href=&#34;https://www.nationalgeographic.com/animals/2019/06/squirrel-census-new-york-city-central-park/&#34;&gt;famous&lt;/a&gt; &lt;a href=&#34;https://www.thesquirrelcensus.com&#34;&gt;NYC Squirrel Census&lt;/a&gt; - cataloguing the squirrel population of New York’s Central Park in October 2018. The squirrel census is a great example for a citizen science project that’s both accessible fun and useful scientific contribution.&lt;/p&gt;
+&lt;p&gt;Talking about fun community projects: the specific dataset we’re using has been prepared by the &lt;a href=&#34;https://github.com/rfordatascience/tidytuesday&#34;&gt;TidyTuesday project&lt;/a&gt;, a weekly social exercise to test our tidyverse skills and provide inspiration. TidyTuesday is run by the &lt;a href=&#34;https://www.rfordatasci.com&#34;&gt;R for Data Science&lt;/a&gt; Online Learning Community. All datasets are available on github:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;squirrels &amp;lt;- read_csv(str_c(
+  &amp;quot;https://raw.githubusercontent.com/&amp;quot;,
+  &amp;quot;rfordatascience/tidytuesday/master/&amp;quot;,
+  &amp;quot;data/2019/2019-10-29/nyc_squirrels.csv&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;squirrels %&amp;gt;% 
+  select(lat, long, date, running, climbing, eating) %&amp;gt;% 
+  head(5) %&amp;gt;% 
+  kable() %&amp;gt;% 
+  kable_styling()&lt;/code&gt;&lt;/pre&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+lat
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+long
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+date
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+running
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+climbing
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+eating
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+40.79408
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+-73.95613
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10142018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+FALSE
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+FALSE
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+FALSE
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+40.79485
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+-73.95704
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10062018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+TRUE
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+FALSE
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+FALSE
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+40.76672
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+-73.97683
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10102018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+FALSE
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+TRUE
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+FALSE
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+40.76970
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+-73.97572
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10182018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+FALSE
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+TRUE
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+FALSE
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+40.79753
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+-73.95931
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10182018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+FALSE
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+FALSE
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+FALSE
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Among other features, the squirrels data includes the latitude and longitude of the sighting, the date, and flags that indicate whether this squirrel was spotted running, climbing, or eating. True to tidy form, each row corresponds to one squirrel. There are many more features in the full dataset, but we will focus on the ones above in the following examples.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;First, we will cover tidy evaluation with the &lt;code&gt;{{ }}&lt;/code&gt; operator aka ‘curly-curly’.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Introduced as part of &lt;a href=&#34;https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/&#34;&gt;rlang version 0.4.0&lt;/a&gt; back in June, curly-curly replaces the approach of quoting with &lt;code&gt;enquo&lt;/code&gt; and unquoting with &lt;code&gt;!!&lt;/code&gt; (aka ‘bang-bang’). Instead of two operations it provides a compact shorthand for simple cases. Here is a brief example for counting groups of distinct feature values:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# new style
+count_groups &amp;lt;- function(df, groupvar){
+  df %&amp;gt;% 
+    group_by({{ groupvar }}) %&amp;gt;% 
+    count()
+}
+
+count_groups(squirrels, climbing) %&amp;gt;% 
+  kable() %&amp;gt;% 
+  kable_styling()&lt;/code&gt;&lt;/pre&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+climbing
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+n
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+FALSE
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2365
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+TRUE
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+658
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;In this example, &lt;code&gt;{{ groupvar }}&lt;/code&gt; splices the value of &lt;code&gt;groupvar&lt;/code&gt; into the &lt;code&gt;group_by&lt;/code&gt; call, rather than its name. This is equivalent to the quote-unquote style of &lt;code&gt;!! enquo(groupvar)&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# old style
+count_groups_old &amp;lt;- function(df, groupvar){
+  df %&amp;gt;% 
+    group_by(!! enquo(groupvar)) %&amp;gt;% 
+    count()
+}
+
+count_groups_old(squirrels, climbing) %&amp;gt;% 
+  kable() %&amp;gt;% 
+  kable_styling()&lt;/code&gt;&lt;/pre&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+climbing
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+n
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+FALSE
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2365
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+TRUE
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+658
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The advantage of &lt;code&gt;{{ }}&lt;/code&gt; lies in its relative cognitive ease: think of it as inserting the value of the variable into the expression. No intermediate quoting or unquoting needed.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Next, we will look at how to reshape data with the &lt;a href=&#34;https://tidyr.tidyverse.org/articles/pivot.html&#34;&gt;new functions&lt;/a&gt; &lt;code&gt;pivot_wider&lt;/code&gt; and &lt;code&gt;pivot_longer&lt;/code&gt;&lt;/strong&gt;, which are replacing the previous &lt;code&gt;spread&lt;/code&gt; and &lt;code&gt;gather&lt;/code&gt; tools. Most importantly: &lt;code&gt;pivot_wider&lt;/code&gt; is the inverse function to &lt;code&gt;pivot_longer&lt;/code&gt;, and vice versa.&lt;/p&gt;
+&lt;p&gt;As the name suggests, &lt;code&gt;pivot_wider&lt;/code&gt; makes a tibble wider by turning a single categorical column into multiple columns, one for each category.&lt;/p&gt;
+&lt;p&gt;Let’s look at this aggregated data frame of sightings of climbing squirrels per day:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;squirrels %&amp;gt;% 
+  count(date, climbing) %&amp;gt;% 
+  head(4) %&amp;gt;% 
+  kable() %&amp;gt;% 
+  kable_styling()&lt;/code&gt;&lt;/pre&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+date
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+climbing
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+n
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10062018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+FALSE
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+253
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10062018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+TRUE
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+84
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10072018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+FALSE
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+283
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10072018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+TRUE
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+122
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Pivoting to a wider format allows us to compare the numbers of climbing and non-climbing squirrels directly next to each other:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# new style with pivot_wider
+squirrels %&amp;gt;% 
+  count(date, climbing) %&amp;gt;% 
+  pivot_wider(names_from = climbing, values_from = n, names_prefix = &amp;quot;climbing_&amp;quot;) %&amp;gt;% 
+  head(2) %&amp;gt;% 
+  kable() %&amp;gt;% 
+  kable_styling()&lt;/code&gt;&lt;/pre&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+date
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+climbing_FALSE
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+climbing_TRUE
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10062018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+253
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+84
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10072018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+283
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+122
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;The &lt;code&gt;names_from&lt;/code&gt; argument indicates which column supplies the new column names. The values of this column are being picked from the feature defined via the &lt;code&gt;values_from&lt;/code&gt; keyword. Here, we pick the names from the binary feature &lt;code&gt;climbing&lt;/code&gt; and the values from the count column &lt;code&gt;n&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Among the additional keywords, &lt;code&gt;names_prefix&lt;/code&gt; allows us to assign meaningful names to the new columns (which would otherwise simply be the rather generic ‘FALSE’ and ‘TRUE’ here). Another useful keyword is &lt;code&gt;values_fill&lt;/code&gt;, which specifies a global replacement for any missing values.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The new &lt;code&gt;pivot_wider&lt;/code&gt; replaces the old &lt;code&gt;spread&lt;/code&gt; function, which had comparable yet possibly more confusing parameters. For comparison, here is the same result with &lt;code&gt;spread&lt;/code&gt;:&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# old style with spread
+squirrels %&amp;gt;% 
+  count(date, climbing) %&amp;gt;% 
+  spread(key = climbing, value = n) %&amp;gt;% 
+  head(2) %&amp;gt;% 
+  kable() %&amp;gt;% 
+  kable_styling()&lt;/code&gt;&lt;/pre&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+date
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+FALSE
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+TRUE
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10062018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+253
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+84
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10072018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+283
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+122
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The syntax is very similar, which should make it easy for those familiar with &lt;code&gt;spread&lt;/code&gt; to switch to &lt;code&gt;pivot_wider&lt;/code&gt;. Note, that &lt;code&gt;spread&lt;/code&gt; had no &lt;code&gt;names_prefix&lt;/code&gt; argument.&lt;/p&gt;
+&lt;p&gt;In most tutorials, &lt;code&gt;pivot_wider&lt;/code&gt; is somewhat overshadowed by &lt;code&gt;pivot_longer&lt;/code&gt;; but I use it frequently to quickly compute proportions for grouped columns. For instance, here are the top 3 days for spotting squirrels climbing:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;squirrels %&amp;gt;% 
+  count(date, climbing) %&amp;gt;% 
+  pivot_wider(names_from = climbing, values_from = n, names_prefix = &amp;quot;climbing_&amp;quot;) %&amp;gt;%
+  mutate(climbing_percentage = climbing_TRUE/(climbing_TRUE + climbing_FALSE)*100) %&amp;gt;% 
+  arrange(desc(climbing_percentage)) %&amp;gt;% 
+  head(3) %&amp;gt;% 
+  kable() %&amp;gt;% 
+  kable_styling()&lt;/code&gt;&lt;/pre&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+date
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+climbing_FALSE
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+climbing_TRUE
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+climbing_percentage
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10072018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+283
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+122
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+30.12346
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10062018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+253
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+84
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+24.92582
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10082018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+220
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+65
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+22.80702
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Let’s move on to &lt;code&gt;pivot_longer&lt;/code&gt;&lt;/strong&gt;. Being the inverse function to &lt;code&gt;pivot_wider&lt;/code&gt;, this tool (often) reduces the number of columns by turning some of the columns into a single new (typically) categorical feature alongside an (often times) numerical feature. The different levels of the categorical column now describe the numerical column in a unique way (similarly to the wider column structure previously). This is all a bit abstract, so let’s do a quick example:&lt;/p&gt;
+&lt;p&gt;Imagine we’ve extracted both the proportion of climbing squirrels and non-climbing squirrels for each day with the help of &lt;code&gt;pivot_wider&lt;/code&gt;. (Of course, one number determines the other but let’s use it as a simple illustration).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;squirrels %&amp;gt;% 
+  count(date, climbing) %&amp;gt;% 
+  pivot_wider(names_from = climbing, values_from = n, names_prefix = &amp;quot;climbing_&amp;quot;) %&amp;gt;%
+  mutate(prop_true = climbing_TRUE/(climbing_TRUE + climbing_FALSE)*100,
+         prop_false = climbing_FALSE/(climbing_TRUE + climbing_FALSE)*100) %&amp;gt;% 
+  head(2) %&amp;gt;% 
+  kable() %&amp;gt;% 
+  kable_styling()&lt;/code&gt;&lt;/pre&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+date
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+climbing_FALSE
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+climbing_TRUE
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+prop_true
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+prop_false
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10062018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+253
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+84
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+24.92582
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+75.07418
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10072018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+283
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+122
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+30.12346
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+69.87654
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Now we will use &lt;code&gt;pivot_longer&lt;/code&gt; to turn those two &lt;code&gt;prop_&lt;/code&gt; columns into a categorical &lt;code&gt;climbing&lt;/code&gt; and a numerical &lt;code&gt;percentage&lt;/code&gt; feature. Here, we drop the &lt;code&gt;climbing_FALSE&lt;/code&gt; and &lt;code&gt;climbing_TRUE&lt;/code&gt; columns, so the pivoting doesn’t change the number of columns but it changes the structure of the dataset:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;squirrels %&amp;gt;% 
+  count(date, climbing) %&amp;gt;% 
+  pivot_wider(names_from = climbing, values_from = n, names_prefix = &amp;quot;climbing_&amp;quot;) %&amp;gt;%
+  mutate(prop_true = climbing_TRUE/(climbing_TRUE + climbing_FALSE),
+         prop_false = climbing_FALSE/(climbing_TRUE + climbing_FALSE)) %&amp;gt;%
+  select(date, prop_true, prop_false) %&amp;gt;% 
+  pivot_longer(cols = c(&amp;quot;prop_true&amp;quot;, &amp;quot;prop_false&amp;quot;),
+               names_to = &amp;quot;climbing&amp;quot;, values_to = &amp;quot;percentage&amp;quot;) %&amp;gt;% 
+  head(4)  %&amp;gt;% 
+  kable() %&amp;gt;% 
+  kable_styling()&lt;/code&gt;&lt;/pre&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+date
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+climbing
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+percentage
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10062018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+prop_true
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.2492582
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10062018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+prop_false
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.7507418
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10072018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+prop_true
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.3012346
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10072018
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+prop_false
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.6987654
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;The &lt;code&gt;cols&lt;/code&gt; argument specifies the columns that will be pivoted. Then, &lt;code&gt;names_to&lt;/code&gt; gives the name of the new feature that will hold the (categorical) names of the original columns. And &lt;code&gt;values_to&lt;/code&gt; is the new feature that hold their values (here the percentages).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Note, that as with the older &lt;code&gt;gather&lt;/code&gt; method, the new column names have to be passed as strings.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The resulting data structure is often much better suited for plotting with &lt;code&gt;ggplot2&lt;/code&gt;. The categorical feature can directly become a colour, fill, or faceting variable.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Finally, let’s combine curly-curly and pivoting into a comprehensive example.&lt;/strong&gt; Here, we build a function that takes as arguments the name of a data frame and the name of a logical column, here a squirrel action, and then extracts the percentage of this action per coordinate bin. This is it:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;extract_percentage &amp;lt;- function(df, col) {
+  
+  df %&amp;gt;% 
+    mutate(lat = round(lat*5, 2)/5,
+         long = round(long*5, 2)/5) %&amp;gt;% 
+    count(lat, long, {{ col }}) %&amp;gt;% 
+    pivot_wider(names_from = {{ col }}, values_from = n,
+                values_fill = list(n = 0)) %&amp;gt;%
+    mutate(true = `TRUE`/(`TRUE` + `FALSE`)*100,
+           false = `FALSE`/(`TRUE` + `FALSE`)*100) %&amp;gt;%
+    select(lat, long, true, false) %&amp;gt;% 
+    pivot_longer(cols = c(&amp;quot;true&amp;quot;, &amp;quot;false&amp;quot;),
+                 names_to = &amp;quot;action&amp;quot;, values_to = &amp;quot;percentage&amp;quot;) %&amp;gt;% 
+    filter(action == &amp;quot;true&amp;quot;)
+}
+
+extract_percentage(squirrels, climbing) %&amp;gt;% 
+  head(3)  %&amp;gt;% 
+  kable() %&amp;gt;% 
+  kable_styling()&lt;/code&gt;&lt;/pre&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+lat
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+long
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+action
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+percentage
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+40.764
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+-73.974
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+true
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+50.00000
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+40.766
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+-73.978
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+true
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+21.73913
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+40.766
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+-73.976
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+true
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+19.23077
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;The coordinates are rounded the nearest 0.02 degrees to provide the sample size for summary statistics.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;We only keep the percentage of positive sightings for each action.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We’re now using this function to extract the proportions of squirrels that were observed eating, climbing, or running. Then we visualise those proportions on an interactive map of Manhattan centred on Central Park. The map is constructed using the wonderful &lt;a href=&#34;https://rstudio.github.io/leaflet/&#34;&gt;leaflet&lt;/a&gt; package. Such a map could be used to find locations in the park that might be more promising than others for spotting certain squirrel shenanigans.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;loc &amp;lt;- extract_percentage(squirrels, eating)
+
+pal &amp;lt;- colorNumeric(palette = &amp;quot;RdBu&amp;quot;, domain = seq(0,100), reverse = TRUE)
+
+leaflet(loc) %&amp;gt;%
+  setView(lng = median(loc$long), lat = median(loc$lat), zoom = 13) %&amp;gt;% 
+  #addProviderTiles(&amp;quot;Esri.NatGeoWorldMap&amp;quot;) %&amp;gt;%
+  addProviderTiles(providers$CartoDB.DarkMatter) %&amp;gt;%
+  addCircleMarkers(~ long, ~ lat,
+                   data = extract_percentage(squirrels, eating),
+                   group = &amp;quot;Eating&amp;quot;,
+                   color = ~ pal(percentage),
+                   radius = 6, fillOpacity = 0.7, stroke = FALSE) %&amp;gt;% 
+  addCircleMarkers(~ long, ~ lat,
+                   data = extract_percentage(squirrels, climbing),
+                   group = &amp;quot;Climbing&amp;quot;,
+                   color = ~ pal(percentage),
+                   radius = 6, fillOpacity = 0.7, stroke = FALSE) %&amp;gt;%
+  addCircleMarkers(~ long, ~ lat,
+                   data = extract_percentage(squirrels, running),
+                   group = &amp;quot;Running&amp;quot;,
+                   color = ~ pal(percentage),
+                   radius = 6, fillOpacity = 0.7, stroke = FALSE) %&amp;gt;%
+  addLayersControl(baseGroups = c(&amp;quot;Eating&amp;quot;, &amp;quot;Climbing&amp;quot;, &amp;quot;Running&amp;quot;),
+                   options = layersControlOptions(collapsed = FALSE)) %&amp;gt;%
+  addLegend(&amp;quot;bottomright&amp;quot;, pal = pal, values = ~ percentage,
+            title = &amp;quot;Percentage&amp;quot;, labFormat = labelFormat(suffix = &amp;quot;%&amp;quot;),) %&amp;gt;% 
+  addScaleBar(&amp;quot;bottomleft&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;htmlwidget-1&#34; style=&#34;width:672px;height:480px;&#34; class=&#34;leaflet html-widget&#34;&gt;&lt;/div&gt;
+&lt;script type=&#34;application/json&#34; data-for=&#34;htmlwidget-1&#34;&gt;{&#34;x&#34;:{&#34;options&#34;:{&#34;crs&#34;:{&#34;crsClass&#34;:&#34;L.CRS.EPSG3857&#34;,&#34;code&#34;:null,&#34;proj4def&#34;:null,&#34;projectedBounds&#34;:null,&#34;options&#34;:{}}},&#34;setView&#34;:[[40.782,-73.966],13,[]],&#34;calls&#34;:[{&#34;method&#34;:&#34;addProviderTiles&#34;,&#34;args&#34;:[&#34;CartoDB.DarkMatter&#34;,null,null,{&#34;errorTileUrl&#34;:&#34;&#34;,&#34;noWrap&#34;:false,&#34;detectRetina&#34;:false}]},{&#34;method&#34;:&#34;addCircleMarkers&#34;,&#34;args&#34;:[[40.764,40.766,40.766,40.766,40.766,40.768,40.768,40.768,40.768,40.768,40.768,40.768,40.77,40.77,40.77,40.77,40.77,40.77,40.77,40.772,40.772,40.772,40.772,40.772,40.772,40.772,40.774,40.774,40.774,40.774,40.774,40.774,40.774,40.776,40.776,40.776,40.776,40.776,40.776,40.776,40.778,40.778,40.778,40.778,40.778,40.778,40.78,40.78,40.78,40.78,40.78,40.78,40.78,40.782,40.782,40.782,40.782,40.782,40.782,40.782,40.784,40.784,40.784,40.784,40.784,40.784,40.786,40.786,40.786,40.788,40.788,40.788,40.788,40.788,40.788,40.788,40.79,40.79,40.79,40.79,40.79,40.79,40.79,40.792,40.792,40.792,40.792,40.792,40.792,40.792,40.794,40.794,40.794,40.794,40.794,40.794,40.794,40.794,40.796,40.796,40.796,40.796,40.796,40.796,40.796,40.798,40.798,40.798,40.798,40.798,40.798,40.8,40.8],[-73.974,-73.978,-73.976,-73.974,-73.972,-73.982,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.966,-73.976,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.962,-73.972,-73.97,-73.968,-73.966,-73.964,-73.962,-73.96,-73.97,-73.968,-73.966,-73.964,-73.96,-73.958,-73.97,-73.968,-73.958,-73.968,-73.966,-73.964,-73.962,-73.96,-73.958,-73.956,-73.966,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.958,-73.956],6,null,&#34;Eating&#34;,{&#34;interactive&#34;:true,&#34;className&#34;:&#34;&#34;,&#34;stroke&#34;:false,&#34;color&#34;:[&#34;#053061&#34;,&#34;#2D73B3&#34;,&#34;#E9F0F4&#34;,&#34;#8FC3DD&#34;,&#34;#4996C5&#34;,&#34;#3984BB&#34;,&#34;#94C6DF&#34;,&#34;#3780BA&#34;,&#34;#3C87BD&#34;,&#34;#96C7DF&#34;,&#34;#97C7DF&#34;,&#34;#A8D0E4&#34;,&#34;#408DC0&#34;,&#34;#C9E1EE&#34;,&#34;#75B0D3&#34;,&#34;#62A4CD&#34;,&#34;#6EACD1&#34;,&#34;#7BB4D5&#34;,&#34;#053061&#34;,&#34;#F8B799&#34;,&#34;#3279B6&#34;,&#34;#408DC0&#34;,&#34;#CAE1EE&#34;,&#34;#88BEDA&#34;,&#34;#6EACD1&#34;,&#34;#3D89BE&#34;,&#34;#A8D0E4&#34;,&#34;#73AFD2&#34;,&#34;#E0ECF3&#34;,&#34;#C0DCEB&#34;,&#34;#90C4DD&#34;,&#34;#4190C2&#34;,&#34;#6EACD1&#34;,&#34;#FAECE4&#34;,&#34;#3781BA&#34;,&#34;#529BC7&#34;,&#34;#E1ECF3&#34;,&#34;#61A4CC&#34;,&#34;#B7D7E8&#34;,&#34;#053061&#34;,&#34;#286DB0&#34;,&#34;#88BEDA&#34;,&#34;#96C7DF&#34;,&#34;#5EA1CB&#34;,&#34;#6EACD1&#34;,&#34;#88BEDA&#34;,&#34;#053061&#34;,&#34;#3E8BBF&#34;,&#34;#A8D0E4&#34;,&#34;#3279B6&#34;,&#34;#C9E1EE&#34;,&#34;#EFF3F5&#34;,&#34;#053061&#34;,&#34;#F7F7F7&#34;,&#34;#519AC7&#34;,&#34;#4996C5&#34;,&#34;#8EC2DC&#34;,&#34;#94C6DE&#34;,&#34;#357EB8&#34;,&#34;#4393C3&#34;,&#34;#76B1D3&#34;,&#34;#347CB8&#34;,&#34;#408FC1&#34;,&#34;#053061&#34;,&#34;#7AB4D5&#34;,&#34;#053061&#34;,&#34;#67001F&#34;,&#34;#357EB8&#34;,&#34;#3E8BBF&#34;,&#34;#053061&#34;,&#34;#7FB7D7&#34;,&#34;#3279B6&#34;,&#34;#4393C3&#34;,&#34;#053061&#34;,&#34;#1E61A5&#34;,&#34;#154F8C&#34;,&#34;#6EACD1&#34;,&#34;#E7EFF4&#34;,&#34;#7FB7D7&#34;,&#34;#A3CDE3&#34;,&#34;#6EACD1&#34;,&#34;#17518F&#34;,&#34;#1E61A5&#34;,&#34;#B9D8E9&#34;,&#34;#3D89BE&#34;,&#34;#94C6DF&#34;,&#34;#8FC3DD&#34;,&#34;#1E61A5&#34;,&#34;#3E8BBF&#34;,&#34;#B7D7E8&#34;,&#34;#053061&#34;,&#34;#64A6CD&#34;,&#34;#357DB8&#34;,&#34;#529BC7&#34;,&#34;#A8D0E4&#34;,&#34;#418FC1&#34;,&#34;#BEDBEA&#34;,&#34;#67001F&#34;,&#34;#3E8BBF&#34;,&#34;#5DA1CB&#34;,&#34;#8DC1DC&#34;,&#34;#134A86&#34;,&#34;#4A96C5&#34;,&#34;#C2DDEC&#34;,&#34;#3984BB&#34;,&#34;#579EC9&#34;,&#34;#4291C2&#34;,&#34;#3178B5&#34;,&#34;#3B86BD&#34;,&#34;#1E61A5&#34;,&#34;#3279B6&#34;,&#34;#286DB0&#34;,&#34;#3E8BBF&#34;],&#34;weight&#34;:5,&#34;opacity&#34;:0.5,&#34;fill&#34;:true,&#34;fillColor&#34;:[&#34;#053061&#34;,&#34;#2D73B3&#34;,&#34;#E9F0F4&#34;,&#34;#8FC3DD&#34;,&#34;#4996C5&#34;,&#34;#3984BB&#34;,&#34;#94C6DF&#34;,&#34;#3780BA&#34;,&#34;#3C87BD&#34;,&#34;#96C7DF&#34;,&#34;#97C7DF&#34;,&#34;#A8D0E4&#34;,&#34;#408DC0&#34;,&#34;#C9E1EE&#34;,&#34;#75B0D3&#34;,&#34;#62A4CD&#34;,&#34;#6EACD1&#34;,&#34;#7BB4D5&#34;,&#34;#053061&#34;,&#34;#F8B799&#34;,&#34;#3279B6&#34;,&#34;#408DC0&#34;,&#34;#CAE1EE&#34;,&#34;#88BEDA&#34;,&#34;#6EACD1&#34;,&#34;#3D89BE&#34;,&#34;#A8D0E4&#34;,&#34;#73AFD2&#34;,&#34;#E0ECF3&#34;,&#34;#C0DCEB&#34;,&#34;#90C4DD&#34;,&#34;#4190C2&#34;,&#34;#6EACD1&#34;,&#34;#FAECE4&#34;,&#34;#3781BA&#34;,&#34;#529BC7&#34;,&#34;#E1ECF3&#34;,&#34;#61A4CC&#34;,&#34;#B7D7E8&#34;,&#34;#053061&#34;,&#34;#286DB0&#34;,&#34;#88BEDA&#34;,&#34;#96C7DF&#34;,&#34;#5EA1CB&#34;,&#34;#6EACD1&#34;,&#34;#88BEDA&#34;,&#34;#053061&#34;,&#34;#3E8BBF&#34;,&#34;#A8D0E4&#34;,&#34;#3279B6&#34;,&#34;#C9E1EE&#34;,&#34;#EFF3F5&#34;,&#34;#053061&#34;,&#34;#F7F7F7&#34;,&#34;#519AC7&#34;,&#34;#4996C5&#34;,&#34;#8EC2DC&#34;,&#34;#94C6DE&#34;,&#34;#357EB8&#34;,&#34;#4393C3&#34;,&#34;#76B1D3&#34;,&#34;#347CB8&#34;,&#34;#408FC1&#34;,&#34;#053061&#34;,&#34;#7AB4D5&#34;,&#34;#053061&#34;,&#34;#67001F&#34;,&#34;#357EB8&#34;,&#34;#3E8BBF&#34;,&#34;#053061&#34;,&#34;#7FB7D7&#34;,&#34;#3279B6&#34;,&#34;#4393C3&#34;,&#34;#053061&#34;,&#34;#1E61A5&#34;,&#34;#154F8C&#34;,&#34;#6EACD1&#34;,&#34;#E7EFF4&#34;,&#34;#7FB7D7&#34;,&#34;#A3CDE3&#34;,&#34;#6EACD1&#34;,&#34;#17518F&#34;,&#34;#1E61A5&#34;,&#34;#B9D8E9&#34;,&#34;#3D89BE&#34;,&#34;#94C6DF&#34;,&#34;#8FC3DD&#34;,&#34;#1E61A5&#34;,&#34;#3E8BBF&#34;,&#34;#B7D7E8&#34;,&#34;#053061&#34;,&#34;#64A6CD&#34;,&#34;#357DB8&#34;,&#34;#529BC7&#34;,&#34;#A8D0E4&#34;,&#34;#418FC1&#34;,&#34;#BEDBEA&#34;,&#34;#67001F&#34;,&#34;#3E8BBF&#34;,&#34;#5DA1CB&#34;,&#34;#8DC1DC&#34;,&#34;#134A86&#34;,&#34;#4A96C5&#34;,&#34;#C2DDEC&#34;,&#34;#3984BB&#34;,&#34;#579EC9&#34;,&#34;#4291C2&#34;,&#34;#3178B5&#34;,&#34;#3B86BD&#34;,&#34;#1E61A5&#34;,&#34;#3279B6&#34;,&#34;#286DB0&#34;,&#34;#3E8BBF&#34;],&#34;fillOpacity&#34;:0.7},null,null,null,null,null,{&#34;interactive&#34;:false,&#34;permanent&#34;:false,&#34;direction&#34;:&#34;auto&#34;,&#34;opacity&#34;:1,&#34;offset&#34;:[0,0],&#34;textsize&#34;:&#34;10px&#34;,&#34;textOnly&#34;:false,&#34;className&#34;:&#34;&#34;,&#34;sticky&#34;:true},null]},{&#34;method&#34;:&#34;addCircleMarkers&#34;,&#34;args&#34;:[[40.764,40.766,40.766,40.766,40.766,40.768,40.768,40.768,40.768,40.768,40.768,40.768,40.77,40.77,40.77,40.77,40.77,40.77,40.77,40.772,40.772,40.772,40.772,40.772,40.772,40.772,40.774,40.774,40.774,40.774,40.774,40.774,40.774,40.776,40.776,40.776,40.776,40.776,40.776,40.776,40.778,40.778,40.778,40.778,40.778,40.778,40.78,40.78,40.78,40.78,40.78,40.78,40.78,40.782,40.782,40.782,40.782,40.782,40.782,40.782,40.784,40.784,40.784,40.784,40.784,40.784,40.786,40.786,40.786,40.788,40.788,40.788,40.788,40.788,40.788,40.788,40.79,40.79,40.79,40.79,40.79,40.79,40.79,40.792,40.792,40.792,40.792,40.792,40.792,40.792,40.794,40.794,40.794,40.794,40.794,40.794,40.794,40.794,40.796,40.796,40.796,40.796,40.796,40.796,40.796,40.798,40.798,40.798,40.798,40.798,40.798,40.8,40.8],[-73.974,-73.978,-73.976,-73.974,-73.972,-73.982,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.966,-73.976,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.962,-73.972,-73.97,-73.968,-73.966,-73.964,-73.962,-73.96,-73.97,-73.968,-73.966,-73.964,-73.96,-73.958,-73.97,-73.968,-73.958,-73.968,-73.966,-73.964,-73.962,-73.96,-73.958,-73.956,-73.966,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.958,-73.956],6,null,&#34;Climbing&#34;,{&#34;interactive&#34;:true,&#34;className&#34;:&#34;&#34;,&#34;stroke&#34;:false,&#34;color&#34;:[&#34;#F7F7F7&#34;,&#34;#539BC8&#34;,&#34;#418FC1&#34;,&#34;#3F8CC0&#34;,&#34;#4996C5&#34;,&#34;#3984BB&#34;,&#34;#337AB7&#34;,&#34;#3780BA&#34;,&#34;#71AED2&#34;,&#34;#579EC9&#34;,&#34;#357EB8&#34;,&#34;#3984BB&#34;,&#34;#408DC0&#34;,&#34;#74B0D3&#34;,&#34;#579EC9&#34;,&#34;#154F8C&#34;,&#34;#2B71B2&#34;,&#34;#2C72B2&#34;,&#34;#DCEAF2&#34;,&#34;#F8B799&#34;,&#34;#D1E5F0&#34;,&#34;#6EACD1&#34;,&#34;#3077B5&#34;,&#34;#519AC7&#34;,&#34;#4E99C6&#34;,&#34;#A0CCE2&#34;,&#34;#E2EDF3&#34;,&#34;#68A8CF&#34;,&#34;#84BBD9&#34;,&#34;#4393C3&#34;,&#34;#3882BA&#34;,&#34;#2D73B3&#34;,&#34;#E68367&#34;,&#34;#1B599A&#34;,&#34;#84BBD9&#34;,&#34;#8EC2DC&#34;,&#34;#195696&#34;,&#34;#72AED2&#34;,&#34;#64A6CD&#34;,&#34;#DCEAF2&#34;,&#34;#7CB5D6&#34;,&#34;#3279B6&#34;,&#34;#4190C2&#34;,&#34;#5EA1CB&#34;,&#34;#F7F7F7&#34;,&#34;#DCEAF2&#34;,&#34;#A8D0E4&#34;,&#34;#5CA0CA&#34;,&#34;#4B97C5&#34;,&#34;#195696&#34;,&#34;#B5D6E8&#34;,&#34;#B1D4E7&#34;,&#34;#053061&#34;,&#34;#E68367&#34;,&#34;#053061&#34;,&#34;#A1CCE2&#34;,&#34;#62A4CD&#34;,&#34;#4C98C6&#34;,&#34;#97C7DF&#34;,&#34;#D1E5F0&#34;,&#34;#76B1D3&#34;,&#34;#2B71B2&#34;,&#34;#C5DFED&#34;,&#34;#A8D0E4&#34;,&#34;#A8D0E4&#34;,&#34;#F7F7F7&#34;,&#34;#053061&#34;,&#34;#5FA2CB&#34;,&#34;#7FB7D7&#34;,&#34;#2B71B2&#34;,&#34;#BBD9E9&#34;,&#34;#3279B6&#34;,&#34;#7AB4D5&#34;,&#34;#A8D0E4&#34;,&#34;#FAEAE1&#34;,&#34;#D6E7F1&#34;,&#34;#3984BB&#34;,&#34;#9BCAE1&#34;,&#34;#3E8BBF&#34;,&#34;#65A6CE&#34;,&#34;#6EACD1&#34;,&#34;#F7F7F7&#34;,&#34;#7FB7D7&#34;,&#34;#1C5D9F&#34;,&#34;#6EACD1&#34;,&#34;#7FB7D7&#34;,&#34;#3F8CC0&#34;,&#34;#BBD9E9&#34;,&#34;#5CA0CA&#34;,&#34;#3279B6&#34;,&#34;#053061&#34;,&#34;#77B2D4&#34;,&#34;#68A8CE&#34;,&#34;#408EC1&#34;,&#34;#2A6FB1&#34;,&#34;#2C72B2&#34;,&#34;#3780B9&#34;,&#34;#053061&#34;,&#34;#053061&#34;,&#34;#1D5EA1&#34;,&#34;#4291C2&#34;,&#34;#347CB8&#34;,&#34;#4A96C5&#34;,&#34;#2B71B2&#34;,&#34;#053061&#34;,&#34;#579EC9&#34;,&#34;#65A6CE&#34;,&#34;#3178B5&#34;,&#34;#3B86BD&#34;,&#34;#3E8BBF&#34;,&#34;#3279B6&#34;,&#34;#E9F0F4&#34;,&#34;#7FB7D7&#34;],&#34;weight&#34;:5,&#34;opacity&#34;:0.5,&#34;fill&#34;:true,&#34;fillColor&#34;:[&#34;#F7F7F7&#34;,&#34;#539BC8&#34;,&#34;#418FC1&#34;,&#34;#3F8CC0&#34;,&#34;#4996C5&#34;,&#34;#3984BB&#34;,&#34;#337AB7&#34;,&#34;#3780BA&#34;,&#34;#71AED2&#34;,&#34;#579EC9&#34;,&#34;#357EB8&#34;,&#34;#3984BB&#34;,&#34;#408DC0&#34;,&#34;#74B0D3&#34;,&#34;#579EC9&#34;,&#34;#154F8C&#34;,&#34;#2B71B2&#34;,&#34;#2C72B2&#34;,&#34;#DCEAF2&#34;,&#34;#F8B799&#34;,&#34;#D1E5F0&#34;,&#34;#6EACD1&#34;,&#34;#3077B5&#34;,&#34;#519AC7&#34;,&#34;#4E99C6&#34;,&#34;#A0CCE2&#34;,&#34;#E2EDF3&#34;,&#34;#68A8CF&#34;,&#34;#84BBD9&#34;,&#34;#4393C3&#34;,&#34;#3882BA&#34;,&#34;#2D73B3&#34;,&#34;#E68367&#34;,&#34;#1B599A&#34;,&#34;#84BBD9&#34;,&#34;#8EC2DC&#34;,&#34;#195696&#34;,&#34;#72AED2&#34;,&#34;#64A6CD&#34;,&#34;#DCEAF2&#34;,&#34;#7CB5D6&#34;,&#34;#3279B6&#34;,&#34;#4190C2&#34;,&#34;#5EA1CB&#34;,&#34;#F7F7F7&#34;,&#34;#DCEAF2&#34;,&#34;#A8D0E4&#34;,&#34;#5CA0CA&#34;,&#34;#4B97C5&#34;,&#34;#195696&#34;,&#34;#B5D6E8&#34;,&#34;#B1D4E7&#34;,&#34;#053061&#34;,&#34;#E68367&#34;,&#34;#053061&#34;,&#34;#A1CCE2&#34;,&#34;#62A4CD&#34;,&#34;#4C98C6&#34;,&#34;#97C7DF&#34;,&#34;#D1E5F0&#34;,&#34;#76B1D3&#34;,&#34;#2B71B2&#34;,&#34;#C5DFED&#34;,&#34;#A8D0E4&#34;,&#34;#A8D0E4&#34;,&#34;#F7F7F7&#34;,&#34;#053061&#34;,&#34;#5FA2CB&#34;,&#34;#7FB7D7&#34;,&#34;#2B71B2&#34;,&#34;#BBD9E9&#34;,&#34;#3279B6&#34;,&#34;#7AB4D5&#34;,&#34;#A8D0E4&#34;,&#34;#FAEAE1&#34;,&#34;#D6E7F1&#34;,&#34;#3984BB&#34;,&#34;#9BCAE1&#34;,&#34;#3E8BBF&#34;,&#34;#65A6CE&#34;,&#34;#6EACD1&#34;,&#34;#F7F7F7&#34;,&#34;#7FB7D7&#34;,&#34;#1C5D9F&#34;,&#34;#6EACD1&#34;,&#34;#7FB7D7&#34;,&#34;#3F8CC0&#34;,&#34;#BBD9E9&#34;,&#34;#5CA0CA&#34;,&#34;#3279B6&#34;,&#34;#053061&#34;,&#34;#77B2D4&#34;,&#34;#68A8CE&#34;,&#34;#408EC1&#34;,&#34;#2A6FB1&#34;,&#34;#2C72B2&#34;,&#34;#3780B9&#34;,&#34;#053061&#34;,&#34;#053061&#34;,&#34;#1D5EA1&#34;,&#34;#4291C2&#34;,&#34;#347CB8&#34;,&#34;#4A96C5&#34;,&#34;#2B71B2&#34;,&#34;#053061&#34;,&#34;#579EC9&#34;,&#34;#65A6CE&#34;,&#34;#3178B5&#34;,&#34;#3B86BD&#34;,&#34;#3E8BBF&#34;,&#34;#3279B6&#34;,&#34;#E9F0F4&#34;,&#34;#7FB7D7&#34;],&#34;fillOpacity&#34;:0.7},null,null,null,null,null,{&#34;interactive&#34;:false,&#34;permanent&#34;:false,&#34;direction&#34;:&#34;auto&#34;,&#34;opacity&#34;:1,&#34;offset&#34;:[0,0],&#34;textsize&#34;:&#34;10px&#34;,&#34;textOnly&#34;:false,&#34;className&#34;:&#34;&#34;,&#34;sticky&#34;:true},null]},{&#34;method&#34;:&#34;addCircleMarkers&#34;,&#34;args&#34;:[[40.764,40.766,40.766,40.766,40.766,40.768,40.768,40.768,40.768,40.768,40.768,40.768,40.77,40.77,40.77,40.77,40.77,40.77,40.77,40.772,40.772,40.772,40.772,40.772,40.772,40.772,40.774,40.774,40.774,40.774,40.774,40.774,40.774,40.776,40.776,40.776,40.776,40.776,40.776,40.776,40.778,40.778,40.778,40.778,40.778,40.778,40.78,40.78,40.78,40.78,40.78,40.78,40.78,40.782,40.782,40.782,40.782,40.782,40.782,40.782,40.784,40.784,40.784,40.784,40.784,40.784,40.786,40.786,40.786,40.788,40.788,40.788,40.788,40.788,40.788,40.788,40.79,40.79,40.79,40.79,40.79,40.79,40.79,40.792,40.792,40.792,40.792,40.792,40.792,40.792,40.794,40.794,40.794,40.794,40.794,40.794,40.794,40.794,40.796,40.796,40.796,40.796,40.796,40.796,40.796,40.798,40.798,40.798,40.798,40.798,40.798,40.8,40.8],[-73.974,-73.978,-73.976,-73.974,-73.972,-73.982,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.966,-73.976,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.962,-73.972,-73.97,-73.968,-73.966,-73.964,-73.962,-73.96,-73.97,-73.968,-73.966,-73.964,-73.96,-73.958,-73.97,-73.968,-73.958,-73.968,-73.966,-73.964,-73.962,-73.96,-73.958,-73.956,-73.966,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.958,-73.956],6,null,&#34;Running&#34;,{&#34;interactive&#34;:true,&#34;className&#34;:&#34;&#34;,&#34;stroke&#34;:false,&#34;color&#34;:[&#34;#F7F7F7&#34;,&#34;#2D73B3&#34;,&#34;#5FA2CB&#34;,&#34;#3F8CC0&#34;,&#34;#79B3D4&#34;,&#34;#A8D0E4&#34;,&#34;#3D8ABE&#34;,&#34;#ACD2E5&#34;,&#34;#64A6CD&#34;,&#34;#3077B5&#34;,&#34;#C8E0ED&#34;,&#34;#D7E8F1&#34;,&#34;#367FB9&#34;,&#34;#B5D6E8&#34;,&#34;#3F8CC0&#34;,&#34;#79B3D4&#34;,&#34;#8CC1DC&#34;,&#34;#4E98C6&#34;,&#34;#88BEDA&#34;,&#34;#053061&#34;,&#34;#4393C3&#34;,&#34;#85BBD9&#34;,&#34;#6EACD1&#34;,&#34;#296EB0&#34;,&#34;#3B87BD&#34;,&#34;#88BEDA&#34;,&#34;#F8B799&#34;,&#34;#73AFD2&#34;,&#34;#296FB1&#34;,&#34;#4393C3&#34;,&#34;#408EC1&#34;,&#34;#2064A9&#34;,&#34;#F7F7F7&#34;,&#34;#C8E0ED&#34;,&#34;#66A7CE&#34;,&#34;#529BC7&#34;,&#34;#3984BB&#34;,&#34;#ACD2E5&#34;,&#34;#A8D0E4&#34;,&#34;#3279B6&#34;,&#34;#357EB8&#34;,&#34;#519AC7&#34;,&#34;#4190C2&#34;,&#34;#77B2D4&#34;,&#34;#F7F7F7&#34;,&#34;#408FC1&#34;,&#34;#053061&#34;,&#34;#3E8BBF&#34;,&#34;#6EACD1&#34;,&#34;#B7D7E8&#34;,&#34;#4190C2&#34;,&#34;#539BC8&#34;,&#34;#053061&#34;,&#34;#6EACD1&#34;,&#34;#3D89BE&#34;,&#34;#C6DFED&#34;,&#34;#154F8C&#34;,&#34;#3F8DC0&#34;,&#34;#5FA2CB&#34;,&#34;#D1E5F0&#34;,&#34;#2D73B3&#34;,&#34;#6EACD1&#34;,&#34;#408FC1&#34;,&#34;#A8D0E4&#34;,&#34;#2E75B4&#34;,&#34;#053061&#34;,&#34;#053061&#34;,&#34;#E9F0F4&#34;,&#34;#BBD9E9&#34;,&#34;#053061&#34;,&#34;#7FB7D7&#34;,&#34;#DCEAF2&#34;,&#34;#2E75B4&#34;,&#34;#053061&#34;,&#34;#3E8BBF&#34;,&#34;#3C88BE&#34;,&#34;#6EACD1&#34;,&#34;#88BEDA&#34;,&#34;#7FB7D7&#34;,&#34;#2D73B3&#34;,&#34;#88BEDA&#34;,&#34;#17518F&#34;,&#34;#5CA0CA&#34;,&#34;#4190C2&#34;,&#34;#519AC7&#34;,&#34;#68A8CE&#34;,&#34;#3F8CC0&#34;,&#34;#BBD9E9&#34;,&#34;#5CA0CA&#34;,&#34;#519AC7&#34;,&#34;#053061&#34;,&#34;#DCEAF2&#34;,&#34;#68A8CE&#34;,&#34;#2F76B4&#34;,&#34;#68A8CE&#34;,&#34;#4F99C6&#34;,&#34;#2368AD&#34;,&#34;#053061&#34;,&#34;#BBD9E9&#34;,&#34;#C0DCEB&#34;,&#34;#9DCAE1&#34;,&#34;#6EACD1&#34;,&#34;#E4EEF3&#34;,&#34;#C2DDEC&#34;,&#34;#F8B799&#34;,&#34;#579EC9&#34;,&#34;#3C87BD&#34;,&#34;#E8F0F4&#34;,&#34;#81B9D7&#34;,&#34;#E6EFF4&#34;,&#34;#DCEAF2&#34;,&#34;#E9F0F4&#34;,&#34;#053061&#34;],&#34;weight&#34;:5,&#34;opacity&#34;:0.5,&#34;fill&#34;:true,&#34;fillColor&#34;:[&#34;#F7F7F7&#34;,&#34;#2D73B3&#34;,&#34;#5FA2CB&#34;,&#34;#3F8CC0&#34;,&#34;#79B3D4&#34;,&#34;#A8D0E4&#34;,&#34;#3D8ABE&#34;,&#34;#ACD2E5&#34;,&#34;#64A6CD&#34;,&#34;#3077B5&#34;,&#34;#C8E0ED&#34;,&#34;#D7E8F1&#34;,&#34;#367FB9&#34;,&#34;#B5D6E8&#34;,&#34;#3F8CC0&#34;,&#34;#79B3D4&#34;,&#34;#8CC1DC&#34;,&#34;#4E98C6&#34;,&#34;#88BEDA&#34;,&#34;#053061&#34;,&#34;#4393C3&#34;,&#34;#85BBD9&#34;,&#34;#6EACD1&#34;,&#34;#296EB0&#34;,&#34;#3B87BD&#34;,&#34;#88BEDA&#34;,&#34;#F8B799&#34;,&#34;#73AFD2&#34;,&#34;#296FB1&#34;,&#34;#4393C3&#34;,&#34;#408EC1&#34;,&#34;#2064A9&#34;,&#34;#F7F7F7&#34;,&#34;#C8E0ED&#34;,&#34;#66A7CE&#34;,&#34;#529BC7&#34;,&#34;#3984BB&#34;,&#34;#ACD2E5&#34;,&#34;#A8D0E4&#34;,&#34;#3279B6&#34;,&#34;#357EB8&#34;,&#34;#519AC7&#34;,&#34;#4190C2&#34;,&#34;#77B2D4&#34;,&#34;#F7F7F7&#34;,&#34;#408FC1&#34;,&#34;#053061&#34;,&#34;#3E8BBF&#34;,&#34;#6EACD1&#34;,&#34;#B7D7E8&#34;,&#34;#4190C2&#34;,&#34;#539BC8&#34;,&#34;#053061&#34;,&#34;#6EACD1&#34;,&#34;#3D89BE&#34;,&#34;#C6DFED&#34;,&#34;#154F8C&#34;,&#34;#3F8DC0&#34;,&#34;#5FA2CB&#34;,&#34;#D1E5F0&#34;,&#34;#2D73B3&#34;,&#34;#6EACD1&#34;,&#34;#408FC1&#34;,&#34;#A8D0E4&#34;,&#34;#2E75B4&#34;,&#34;#053061&#34;,&#34;#053061&#34;,&#34;#E9F0F4&#34;,&#34;#BBD9E9&#34;,&#34;#053061&#34;,&#34;#7FB7D7&#34;,&#34;#DCEAF2&#34;,&#34;#2E75B4&#34;,&#34;#053061&#34;,&#34;#3E8BBF&#34;,&#34;#3C88BE&#34;,&#34;#6EACD1&#34;,&#34;#88BEDA&#34;,&#34;#7FB7D7&#34;,&#34;#2D73B3&#34;,&#34;#88BEDA&#34;,&#34;#17518F&#34;,&#34;#5CA0CA&#34;,&#34;#4190C2&#34;,&#34;#519AC7&#34;,&#34;#68A8CE&#34;,&#34;#3F8CC0&#34;,&#34;#BBD9E9&#34;,&#34;#5CA0CA&#34;,&#34;#519AC7&#34;,&#34;#053061&#34;,&#34;#DCEAF2&#34;,&#34;#68A8CE&#34;,&#34;#2F76B4&#34;,&#34;#68A8CE&#34;,&#34;#4F99C6&#34;,&#34;#2368AD&#34;,&#34;#053061&#34;,&#34;#BBD9E9&#34;,&#34;#C0DCEB&#34;,&#34;#9DCAE1&#34;,&#34;#6EACD1&#34;,&#34;#E4EEF3&#34;,&#34;#C2DDEC&#34;,&#34;#F8B799&#34;,&#34;#579EC9&#34;,&#34;#3C87BD&#34;,&#34;#E8F0F4&#34;,&#34;#81B9D7&#34;,&#34;#E6EFF4&#34;,&#34;#DCEAF2&#34;,&#34;#E9F0F4&#34;,&#34;#053061&#34;],&#34;fillOpacity&#34;:0.7},null,null,null,null,null,{&#34;interactive&#34;:false,&#34;permanent&#34;:false,&#34;direction&#34;:&#34;auto&#34;,&#34;opacity&#34;:1,&#34;offset&#34;:[0,0],&#34;textsize&#34;:&#34;10px&#34;,&#34;textOnly&#34;:false,&#34;className&#34;:&#34;&#34;,&#34;sticky&#34;:true},null]},{&#34;method&#34;:&#34;addLayersControl&#34;,&#34;args&#34;:[[&#34;Eating&#34;,&#34;Climbing&#34;,&#34;Running&#34;],[],{&#34;collapsed&#34;:false,&#34;autoZIndex&#34;:true,&#34;position&#34;:&#34;topright&#34;}]},{&#34;method&#34;:&#34;addLegend&#34;,&#34;args&#34;:[{&#34;colors&#34;:[&#34;#053061 , #053061 0%, #4393C3 20%, #D1E5F0 40%, #FDDBC7 60%, #D6604D 80%, #67001F 100%, #67001F &#34;],&#34;labels&#34;:[&#34;0%&#34;,&#34;20%&#34;,&#34;40%&#34;,&#34;60%&#34;,&#34;80%&#34;,&#34;100%&#34;],&#34;na_color&#34;:null,&#34;na_label&#34;:&#34;NA&#34;,&#34;opacity&#34;:0.5,&#34;position&#34;:&#34;bottomright&#34;,&#34;type&#34;:&#34;numeric&#34;,&#34;title&#34;:&#34;Percentage&#34;,&#34;extra&#34;:{&#34;p_1&#34;:0,&#34;p_n&#34;:1},&#34;layerId&#34;:null,&#34;className&#34;:&#34;info legend&#34;,&#34;group&#34;:null}]},{&#34;method&#34;:&#34;addScaleBar&#34;,&#34;args&#34;:[{&#34;maxWidth&#34;:100,&#34;metric&#34;:true,&#34;imperial&#34;:true,&#34;updateWhenIdle&#34;:true,&#34;position&#34;:&#34;bottomleft&#34;}]}],&#34;limits&#34;:{&#34;lat&#34;:[40.764,40.8],&#34;lng&#34;:[-73.982,-73.95]}},&#34;evals&#34;:[],&#34;jsHooks&#34;:[]}&lt;/script&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;This is an interactive map that is fully movable and zoomable, provided you are connected to the internet. &lt;em&gt;If you aren’t connected to the internet: how did you reach this website? Teach me your dark and mysterious skills.&lt;/em&gt; Speaking of dark: I chose a dark background map because I like the way it contrasts with the colours of the circles. Looks especially sweet in dark mode. Click on the subgroups in the upper right corner to see the spatial distributions of their percentages.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The code is pretty self explanatory, and I will save a more detailed exploration of leaflet for a future blog post. The different sub-datasets for each action are added as &lt;code&gt;CircleMarkers&lt;/code&gt; using our &lt;code&gt;èxtract_percentages&lt;/code&gt; function. For the colour-coding we define a diverging palette. Each dataset is a layer with a &lt;code&gt;group&lt;/code&gt; attribute which is used to define the switch between them.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Among the things we see in the data, there is a tendency for sightings of squirrels eating to be located in the inner part of the park vs the edges. A lot of climbing happens on the east side; and there’s more running in the north. &lt;em&gt;Feel free to supply fitting stereotypes or jokes about Manhattan here - I’m blissfully unaware of any.&lt;/em&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;For a more serious analysis there would the caveat that some of the spatial bins will have small numbers of squirrels overall, which leads to large uncertainties for those percentages. This is something that would need to be taken into account in a deeper analysis.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;More resources:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Read the &lt;a href=&#34;https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/&#34;&gt;announcement for curly-curly&lt;/a&gt; and the &lt;a href=&#34;https://tidyr.tidyverse.org/articles/pivot.html&#34;&gt;new pivoting vignette&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;At the moment, situations where one or more variables are simply quoted are the best use cases for &lt;code&gt;{{ }}&lt;/code&gt;. Beyond that, &lt;a href=&#34;https://stackoverflow.com/questions/56936372/curly-curly-tidy-evaluation-and-modifying-inputs-or-their-names&#34;&gt;operations that require modification of variables&lt;/a&gt; still need &lt;code&gt;enquo&lt;/code&gt;. This might &lt;a href=&#34;http://rpubs.com/lionel-/superstache&#34;&gt;change in the near future&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;A great introduction to the capabilities of leaflet can be found &lt;a href=&#34;https://rstudio.github.io/leaflet/&#34;&gt;here&lt;/a&gt;. It is also a popular tool for exploratory Kernels on Kaggle, for instance on &lt;a href=&#34;https://www.kaggle.com/headsortails/be-my-guest-recruit-restaurant-eda&#34;&gt;restaurants in Japan&lt;/a&gt; or &lt;a href=&#34;https://www.kaggle.com/headsortails/nyc-taxi-eda-update-the-fast-the-curious&#34;&gt;Taxi rides in NYC&lt;/a&gt; (&lt;em&gt;for an unknown number of squirrel passengers&lt;/em&gt;).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;As you might expect, Tidy Tuesday is a weekly challenge with tons of interesting data and many talented participants. Make sure to check out #tidytuesday on Twitter for frequent examples of creative visuals.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>The best of both worlds: R meets Python via reticulate</title>
