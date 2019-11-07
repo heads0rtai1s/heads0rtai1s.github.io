@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R on head spin - the Heads or Tails blog</title>
-    <link>/categories/r/</link>
+    <link>https://heads0rtai1s.github.io/categories/r/</link>
     <description>Recent content in R on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -782,10 +782,10 @@ leaflet(loc) %&amp;gt;%
 
     <item>
       <title>The best of both worlds: R meets Python via reticulate</title>
-      <link>/2019/10/03/reticulate-intro/</link>
+      <link>https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/</link>
       <pubDate>Thu, 03 Oct 2019 00:00:00 +0000</pubDate>
 
-      <guid>/2019/10/03/reticulate-intro/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/</guid>
       <description>
 &lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
@@ -1447,10 +1447,10 @@ plot_xy(diamonds, carat, price, clarity, &amp;quot;IF&amp;quot;, color, cut)&lt;
 
     <item>
       <title>Data flow visuals - alluvial vs ggalluvial in R</title>
-      <link>/2019/06/06/visuals-alluvial-ggalluvial/</link>
+      <link>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</link>
       <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
 
-      <guid>/2019/06/06/visuals-alluvial-ggalluvial/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</guid>
       <description>
 &lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
@@ -1595,10 +1595,10 @@ alluvial(fly %&amp;gt;% select(-n),
 
     <item>
       <title>Tidy evaluation in R - Simple Examples</title>
-      <link>/2019/04/24/tidy-eval-examples/</link>
+      <link>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</link>
       <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
 
-      <guid>/2019/04/24/tidy-eval-examples/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</guid>
       <description>
 &lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
