@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+ <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R on head spin - the Heads or Tails blog</title>
@@ -7,16 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 07 Nov 2019 00:00:00 +0000</lastBuildDate>
-    
-        <atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+
+        <atom:link href="https://heads0rtai1s.github.io/categories/r/index.xml" rel="self" type="application/rss+xml" />
+
+
     <item>
       <title>Tidyverse evolutions: curly-curly operator and pivoting (feat. tidytuesday data &amp; leaflet visuals)</title>
-      <link>/2019/11/07/tidy-curly-pivot-leaflet/</link>
+      <link>https://heads0rtai1s.github.io/2019/11/07/tidy-curly-pivot-leaflet/</link>
       <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/2019/11/07/tidy-curly-pivot-leaflet/</guid>
+
+      <guid>https://heads0rtai1s.github.io/2019/11/07/tidy-curly-pivot-leaflet/</guid>
       <description>
 &lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 &lt;script src=&#34;/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
@@ -46,10 +46,10 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   &amp;quot;https://raw.githubusercontent.com/&amp;quot;,
   &amp;quot;rfordatascience/tidytuesday/master/&amp;quot;,
   &amp;quot;data/2019/2019-10-29/nyc_squirrels.csv&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;squirrels %&amp;gt;% 
-  select(lat, long, date, running, climbing, eating) %&amp;gt;% 
-  head(5) %&amp;gt;% 
-  kable() %&amp;gt;% 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;squirrels %&amp;gt;%
+  select(lat, long, date, running, climbing, eating) %&amp;gt;%
+  head(5) %&amp;gt;%
+  kable() %&amp;gt;%
   kable_styling()&lt;/code&gt;&lt;/pre&gt;
 &lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
 &lt;thead&gt;
@@ -182,13 +182,13 @@ FALSE
 &lt;p&gt;Introduced as part of &lt;a href=&#34;https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/&#34;&gt;rlang version 0.4.0&lt;/a&gt; back in June, curly-curly replaces the approach of quoting with &lt;code&gt;enquo&lt;/code&gt; and unquoting with &lt;code&gt;!!&lt;/code&gt; (aka ‘bang-bang’). Instead of two operations it provides a compact shorthand for simple cases. Here is a brief example for counting groups of distinct feature values:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# new style
 count_groups &amp;lt;- function(df, groupvar){
-  df %&amp;gt;% 
-    group_by({{ groupvar }}) %&amp;gt;% 
+  df %&amp;gt;%
+    group_by({{ groupvar }}) %&amp;gt;%
     count()
 }
 
-count_groups(squirrels, climbing) %&amp;gt;% 
-  kable() %&amp;gt;% 
+count_groups(squirrels, climbing) %&amp;gt;%
+  kable() %&amp;gt;%
   kable_styling()&lt;/code&gt;&lt;/pre&gt;
 &lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
 &lt;thead&gt;
@@ -223,13 +223,13 @@ TRUE
 &lt;p&gt;In this example, &lt;code&gt;{{ groupvar }}&lt;/code&gt; splices the value of &lt;code&gt;groupvar&lt;/code&gt; into the &lt;code&gt;group_by&lt;/code&gt; call, rather than its name. This is equivalent to the quote-unquote style of &lt;code&gt;!! enquo(groupvar)&lt;/code&gt;:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# old style
 count_groups_old &amp;lt;- function(df, groupvar){
-  df %&amp;gt;% 
-    group_by(!! enquo(groupvar)) %&amp;gt;% 
+  df %&amp;gt;%
+    group_by(!! enquo(groupvar)) %&amp;gt;%
     count()
 }
 
-count_groups_old(squirrels, climbing) %&amp;gt;% 
-  kable() %&amp;gt;% 
+count_groups_old(squirrels, climbing) %&amp;gt;%
+  kable() %&amp;gt;%
   kable_styling()&lt;/code&gt;&lt;/pre&gt;
 &lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
 &lt;thead&gt;
@@ -265,10 +265,10 @@ TRUE
 &lt;p&gt;&lt;strong&gt;Next, we will look at how to reshape data with the &lt;a href=&#34;https://tidyr.tidyverse.org/articles/pivot.html&#34;&gt;new functions&lt;/a&gt; &lt;code&gt;pivot_wider&lt;/code&gt; and &lt;code&gt;pivot_longer&lt;/code&gt;&lt;/strong&gt;, which are replacing the previous &lt;code&gt;spread&lt;/code&gt; and &lt;code&gt;gather&lt;/code&gt; tools. Most importantly: &lt;code&gt;pivot_wider&lt;/code&gt; is the inverse function to &lt;code&gt;pivot_longer&lt;/code&gt;, and vice versa.&lt;/p&gt;
 &lt;p&gt;As the name suggests, &lt;code&gt;pivot_wider&lt;/code&gt; makes a tibble wider by turning a single categorical column into multiple columns, one for each category.&lt;/p&gt;
 &lt;p&gt;Let’s look at this aggregated data frame of sightings of climbing squirrels per day:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;squirrels %&amp;gt;% 
-  count(date, climbing) %&amp;gt;% 
-  head(4) %&amp;gt;% 
-  kable() %&amp;gt;% 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;squirrels %&amp;gt;%
+  count(date, climbing) %&amp;gt;%
+  head(4) %&amp;gt;%
+  kable() %&amp;gt;%
   kable_styling()&lt;/code&gt;&lt;/pre&gt;
 &lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
 &lt;thead&gt;
@@ -333,11 +333,11 @@ TRUE
 &lt;/table&gt;
 &lt;p&gt;Pivoting to a wider format allows us to compare the numbers of climbing and non-climbing squirrels directly next to each other:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# new style with pivot_wider
-squirrels %&amp;gt;% 
-  count(date, climbing) %&amp;gt;% 
-  pivot_wider(names_from = climbing, values_from = n, names_prefix = &amp;quot;climbing_&amp;quot;) %&amp;gt;% 
-  head(2) %&amp;gt;% 
-  kable() %&amp;gt;% 
+squirrels %&amp;gt;%
+  count(date, climbing) %&amp;gt;%
+  pivot_wider(names_from = climbing, values_from = n, names_prefix = &amp;quot;climbing_&amp;quot;) %&amp;gt;%
+  head(2) %&amp;gt;%
+  kable() %&amp;gt;%
   kable_styling()&lt;/code&gt;&lt;/pre&gt;
 &lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
 &lt;thead&gt;
@@ -384,11 +384,11 @@ climbing_TRUE
 &lt;li&gt;&lt;p&gt;The new &lt;code&gt;pivot_wider&lt;/code&gt; replaces the old &lt;code&gt;spread&lt;/code&gt; function, which had comparable yet possibly more confusing parameters. For comparison, here is the same result with &lt;code&gt;spread&lt;/code&gt;:&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# old style with spread
-squirrels %&amp;gt;% 
-  count(date, climbing) %&amp;gt;% 
-  spread(key = climbing, value = n) %&amp;gt;% 
-  head(2) %&amp;gt;% 
-  kable() %&amp;gt;% 
+squirrels %&amp;gt;%
+  count(date, climbing) %&amp;gt;%
+  spread(key = climbing, value = n) %&amp;gt;%
+  head(2) %&amp;gt;%
+  kable() %&amp;gt;%
   kable_styling()&lt;/code&gt;&lt;/pre&gt;
 &lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
 &lt;thead&gt;
@@ -431,13 +431,13 @@ TRUE
 &lt;/table&gt;
 &lt;p&gt;The syntax is very similar, which should make it easy for those familiar with &lt;code&gt;spread&lt;/code&gt; to switch to &lt;code&gt;pivot_wider&lt;/code&gt;. Note, that &lt;code&gt;spread&lt;/code&gt; had no &lt;code&gt;names_prefix&lt;/code&gt; argument.&lt;/p&gt;
 &lt;p&gt;In most tutorials, &lt;code&gt;pivot_wider&lt;/code&gt; is somewhat overshadowed by &lt;code&gt;pivot_longer&lt;/code&gt;; but I use it frequently to quickly compute proportions for grouped columns. For instance, here are the top 3 days for spotting squirrels climbing:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;squirrels %&amp;gt;% 
-  count(date, climbing) %&amp;gt;% 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;squirrels %&amp;gt;%
+  count(date, climbing) %&amp;gt;%
   pivot_wider(names_from = climbing, values_from = n, names_prefix = &amp;quot;climbing_&amp;quot;) %&amp;gt;%
-  mutate(climbing_percentage = climbing_TRUE/(climbing_TRUE + climbing_FALSE)*100) %&amp;gt;% 
-  arrange(desc(climbing_percentage)) %&amp;gt;% 
-  head(3) %&amp;gt;% 
-  kable() %&amp;gt;% 
+  mutate(climbing_percentage = climbing_TRUE/(climbing_TRUE + climbing_FALSE)*100) %&amp;gt;%
+  arrange(desc(climbing_percentage)) %&amp;gt;%
+  head(3) %&amp;gt;%
+  kable() %&amp;gt;%
   kable_styling()&lt;/code&gt;&lt;/pre&gt;
 &lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
 &lt;thead&gt;
@@ -503,13 +503,13 @@ climbing_percentage
 &lt;/table&gt;
 &lt;p&gt;&lt;strong&gt;Let’s move on to &lt;code&gt;pivot_longer&lt;/code&gt;&lt;/strong&gt;. Being the inverse function to &lt;code&gt;pivot_wider&lt;/code&gt;, this tool (often) reduces the number of columns by turning some of the columns into a single new (typically) categorical feature alongside an (often times) numerical feature. The different levels of the categorical column now describe the numerical column in a unique way (similarly to the wider column structure previously). This is all a bit abstract, so let’s do a quick example:&lt;/p&gt;
 &lt;p&gt;Imagine we’ve extracted both the proportion of climbing squirrels and non-climbing squirrels for each day with the help of &lt;code&gt;pivot_wider&lt;/code&gt;. (Of course, one number determines the other but let’s use it as a simple illustration).&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;squirrels %&amp;gt;% 
-  count(date, climbing) %&amp;gt;% 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;squirrels %&amp;gt;%
+  count(date, climbing) %&amp;gt;%
   pivot_wider(names_from = climbing, values_from = n, names_prefix = &amp;quot;climbing_&amp;quot;) %&amp;gt;%
   mutate(prop_true = climbing_TRUE/(climbing_TRUE + climbing_FALSE)*100,
-         prop_false = climbing_FALSE/(climbing_TRUE + climbing_FALSE)*100) %&amp;gt;% 
-  head(2) %&amp;gt;% 
-  kable() %&amp;gt;% 
+         prop_false = climbing_FALSE/(climbing_TRUE + climbing_FALSE)*100) %&amp;gt;%
+  head(2) %&amp;gt;%
+  kable() %&amp;gt;%
   kable_styling()&lt;/code&gt;&lt;/pre&gt;
 &lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
 &lt;thead&gt;
@@ -569,16 +569,16 @@ prop_false
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;Now we will use &lt;code&gt;pivot_longer&lt;/code&gt; to turn those two &lt;code&gt;prop_&lt;/code&gt; columns into a categorical &lt;code&gt;climbing&lt;/code&gt; and a numerical &lt;code&gt;percentage&lt;/code&gt; feature. Here, we drop the &lt;code&gt;climbing_FALSE&lt;/code&gt; and &lt;code&gt;climbing_TRUE&lt;/code&gt; columns, so the pivoting doesn’t change the number of columns but it changes the structure of the dataset:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;squirrels %&amp;gt;% 
-  count(date, climbing) %&amp;gt;% 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;squirrels %&amp;gt;%
+  count(date, climbing) %&amp;gt;%
   pivot_wider(names_from = climbing, values_from = n, names_prefix = &amp;quot;climbing_&amp;quot;) %&amp;gt;%
   mutate(prop_true = climbing_TRUE/(climbing_TRUE + climbing_FALSE),
          prop_false = climbing_FALSE/(climbing_TRUE + climbing_FALSE)) %&amp;gt;%
-  select(date, prop_true, prop_false) %&amp;gt;% 
+  select(date, prop_true, prop_false) %&amp;gt;%
   pivot_longer(cols = c(&amp;quot;prop_true&amp;quot;, &amp;quot;prop_false&amp;quot;),
-               names_to = &amp;quot;climbing&amp;quot;, values_to = &amp;quot;percentage&amp;quot;) %&amp;gt;% 
-  head(4)  %&amp;gt;% 
-  kable() %&amp;gt;% 
+               names_to = &amp;quot;climbing&amp;quot;, values_to = &amp;quot;percentage&amp;quot;) %&amp;gt;%
+  head(4)  %&amp;gt;%
+  kable() %&amp;gt;%
   kable_styling()&lt;/code&gt;&lt;/pre&gt;
 &lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
 &lt;thead&gt;
@@ -648,24 +648,24 @@ prop_false
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;Finally, let’s combine curly-curly and pivoting into a comprehensive example.&lt;/strong&gt; Here, we build a function that takes as arguments the name of a data frame and the name of a logical column, here a squirrel action, and then extracts the percentage of this action per coordinate bin. This is it:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;extract_percentage &amp;lt;- function(df, col) {
-  
-  df %&amp;gt;% 
+
+  df %&amp;gt;%
     mutate(lat = round(lat*5, 2)/5,
-         long = round(long*5, 2)/5) %&amp;gt;% 
-    count(lat, long, {{ col }}) %&amp;gt;% 
+         long = round(long*5, 2)/5) %&amp;gt;%
+    count(lat, long, {{ col }}) %&amp;gt;%
     pivot_wider(names_from = {{ col }}, values_from = n,
                 values_fill = list(n = 0)) %&amp;gt;%
     mutate(true = `TRUE`/(`TRUE` + `FALSE`)*100,
            false = `FALSE`/(`TRUE` + `FALSE`)*100) %&amp;gt;%
-    select(lat, long, true, false) %&amp;gt;% 
+    select(lat, long, true, false) %&amp;gt;%
     pivot_longer(cols = c(&amp;quot;true&amp;quot;, &amp;quot;false&amp;quot;),
-                 names_to = &amp;quot;action&amp;quot;, values_to = &amp;quot;percentage&amp;quot;) %&amp;gt;% 
+                 names_to = &amp;quot;action&amp;quot;, values_to = &amp;quot;percentage&amp;quot;) %&amp;gt;%
     filter(action == &amp;quot;true&amp;quot;)
 }
 
-extract_percentage(squirrels, climbing) %&amp;gt;% 
-  head(3)  %&amp;gt;% 
-  kable() %&amp;gt;% 
+extract_percentage(squirrels, climbing) %&amp;gt;%
+  head(3)  %&amp;gt;%
+  kable() %&amp;gt;%
   kable_styling()&lt;/code&gt;&lt;/pre&gt;
 &lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
 &lt;thead&gt;
@@ -739,14 +739,14 @@ true
 pal &amp;lt;- colorNumeric(palette = &amp;quot;RdBu&amp;quot;, domain = seq(0,100), reverse = TRUE)
 
 leaflet(loc) %&amp;gt;%
-  setView(lng = median(loc$long), lat = median(loc$lat), zoom = 13) %&amp;gt;% 
+  setView(lng = median(loc$long), lat = median(loc$lat), zoom = 13) %&amp;gt;%
   #addProviderTiles(&amp;quot;Esri.NatGeoWorldMap&amp;quot;) %&amp;gt;%
   addProviderTiles(providers$CartoDB.DarkMatter) %&amp;gt;%
   addCircleMarkers(~ long, ~ lat,
                    data = extract_percentage(squirrels, eating),
                    group = &amp;quot;Eating&amp;quot;,
                    color = ~ pal(percentage),
-                   radius = 6, fillOpacity = 0.7, stroke = FALSE) %&amp;gt;% 
+                   radius = 6, fillOpacity = 0.7, stroke = FALSE) %&amp;gt;%
   addCircleMarkers(~ long, ~ lat,
                    data = extract_percentage(squirrels, climbing),
                    group = &amp;quot;Climbing&amp;quot;,
@@ -760,7 +760,7 @@ leaflet(loc) %&amp;gt;%
   addLayersControl(baseGroups = c(&amp;quot;Eating&amp;quot;, &amp;quot;Climbing&amp;quot;, &amp;quot;Running&amp;quot;),
                    options = layersControlOptions(collapsed = FALSE)) %&amp;gt;%
   addLegend(&amp;quot;bottomright&amp;quot;, pal = pal, values = ~ percentage,
-            title = &amp;quot;Percentage&amp;quot;, labFormat = labelFormat(suffix = &amp;quot;%&amp;quot;),) %&amp;gt;% 
+            title = &amp;quot;Percentage&amp;quot;, labFormat = labelFormat(suffix = &amp;quot;%&amp;quot;),) %&amp;gt;%
   addScaleBar(&amp;quot;bottomleft&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;div id=&#34;htmlwidget-1&#34; style=&#34;width:672px;height:480px;&#34; class=&#34;leaflet html-widget&#34;&gt;&lt;/div&gt;
 &lt;script type=&#34;application/json&#34; data-for=&#34;htmlwidget-1&#34;&gt;{&#34;x&#34;:{&#34;options&#34;:{&#34;crs&#34;:{&#34;crsClass&#34;:&#34;L.CRS.EPSG3857&#34;,&#34;code&#34;:null,&#34;proj4def&#34;:null,&#34;projectedBounds&#34;:null,&#34;options&#34;:{}}},&#34;setView&#34;:[[40.782,-73.966],13,[]],&#34;calls&#34;:[{&#34;method&#34;:&#34;addProviderTiles&#34;,&#34;args&#34;:[&#34;CartoDB.DarkMatter&#34;,null,null,{&#34;errorTileUrl&#34;:&#34;&#34;,&#34;noWrap&#34;:false,&#34;detectRetina&#34;:false}]},{&#34;method&#34;:&#34;addCircleMarkers&#34;,&#34;args&#34;:[[40.764,40.766,40.766,40.766,40.766,40.768,40.768,40.768,40.768,40.768,40.768,40.768,40.77,40.77,40.77,40.77,40.77,40.77,40.77,40.772,40.772,40.772,40.772,40.772,40.772,40.772,40.774,40.774,40.774,40.774,40.774,40.774,40.774,40.776,40.776,40.776,40.776,40.776,40.776,40.776,40.778,40.778,40.778,40.778,40.778,40.778,40.78,40.78,40.78,40.78,40.78,40.78,40.78,40.782,40.782,40.782,40.782,40.782,40.782,40.782,40.784,40.784,40.784,40.784,40.784,40.784,40.786,40.786,40.786,40.788,40.788,40.788,40.788,40.788,40.788,40.788,40.79,40.79,40.79,40.79,40.79,40.79,40.79,40.792,40.792,40.792,40.792,40.792,40.792,40.792,40.794,40.794,40.794,40.794,40.794,40.794,40.794,40.794,40.796,40.796,40.796,40.796,40.796,40.796,40.796,40.798,40.798,40.798,40.798,40.798,40.798,40.8,40.8],[-73.974,-73.978,-73.976,-73.974,-73.972,-73.982,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.966,-73.976,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.962,-73.972,-73.97,-73.968,-73.966,-73.964,-73.962,-73.96,-73.97,-73.968,-73.966,-73.964,-73.96,-73.958,-73.97,-73.968,-73.958,-73.968,-73.966,-73.964,-73.962,-73.96,-73.958,-73.956,-73.966,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.958,-73.956],6,null,&#34;Eating&#34;,{&#34;interactive&#34;:true,&#34;className&#34;:&#34;&#34;,&#34;stroke&#34;:false,&#34;color&#34;:[&#34;#053061&#34;,&#34;#2D73B3&#34;,&#34;#E9F0F4&#34;,&#34;#8FC3DD&#34;,&#34;#4996C5&#34;,&#34;#3984BB&#34;,&#34;#94C6DF&#34;,&#34;#3780BA&#34;,&#34;#3C87BD&#34;,&#34;#96C7DF&#34;,&#34;#97C7DF&#34;,&#34;#A8D0E4&#34;,&#34;#408DC0&#34;,&#34;#C9E1EE&#34;,&#34;#75B0D3&#34;,&#34;#62A4CD&#34;,&#34;#6EACD1&#34;,&#34;#7BB4D5&#34;,&#34;#053061&#34;,&#34;#F8B799&#34;,&#34;#3279B6&#34;,&#34;#408DC0&#34;,&#34;#CAE1EE&#34;,&#34;#88BEDA&#34;,&#34;#6EACD1&#34;,&#34;#3D89BE&#34;,&#34;#A8D0E4&#34;,&#34;#73AFD2&#34;,&#34;#E0ECF3&#34;,&#34;#C0DCEB&#34;,&#34;#90C4DD&#34;,&#34;#4190C2&#34;,&#34;#6EACD1&#34;,&#34;#FAECE4&#34;,&#34;#3781BA&#34;,&#34;#529BC7&#34;,&#34;#E1ECF3&#34;,&#34;#61A4CC&#34;,&#34;#B7D7E8&#34;,&#34;#053061&#34;,&#34;#286DB0&#34;,&#34;#88BEDA&#34;,&#34;#96C7DF&#34;,&#34;#5EA1CB&#34;,&#34;#6EACD1&#34;,&#34;#88BEDA&#34;,&#34;#053061&#34;,&#34;#3E8BBF&#34;,&#34;#A8D0E4&#34;,&#34;#3279B6&#34;,&#34;#C9E1EE&#34;,&#34;#EFF3F5&#34;,&#34;#053061&#34;,&#34;#F7F7F7&#34;,&#34;#519AC7&#34;,&#34;#4996C5&#34;,&#34;#8EC2DC&#34;,&#34;#94C6DE&#34;,&#34;#357EB8&#34;,&#34;#4393C3&#34;,&#34;#76B1D3&#34;,&#34;#347CB8&#34;,&#34;#408FC1&#34;,&#34;#053061&#34;,&#34;#7AB4D5&#34;,&#34;#053061&#34;,&#34;#67001F&#34;,&#34;#357EB8&#34;,&#34;#3E8BBF&#34;,&#34;#053061&#34;,&#34;#7FB7D7&#34;,&#34;#3279B6&#34;,&#34;#4393C3&#34;,&#34;#053061&#34;,&#34;#1E61A5&#34;,&#34;#154F8C&#34;,&#34;#6EACD1&#34;,&#34;#E7EFF4&#34;,&#34;#7FB7D7&#34;,&#34;#A3CDE3&#34;,&#34;#6EACD1&#34;,&#34;#17518F&#34;,&#34;#1E61A5&#34;,&#34;#B9D8E9&#34;,&#34;#3D89BE&#34;,&#34;#94C6DF&#34;,&#34;#8FC3DD&#34;,&#34;#1E61A5&#34;,&#34;#3E8BBF&#34;,&#34;#B7D7E8&#34;,&#34;#053061&#34;,&#34;#64A6CD&#34;,&#34;#357DB8&#34;,&#34;#529BC7&#34;,&#34;#A8D0E4&#34;,&#34;#418FC1&#34;,&#34;#BEDBEA&#34;,&#34;#67001F&#34;,&#34;#3E8BBF&#34;,&#34;#5DA1CB&#34;,&#34;#8DC1DC&#34;,&#34;#134A86&#34;,&#34;#4A96C5&#34;,&#34;#C2DDEC&#34;,&#34;#3984BB&#34;,&#34;#579EC9&#34;,&#34;#4291C2&#34;,&#34;#3178B5&#34;,&#34;#3B86BD&#34;,&#34;#1E61A5&#34;,&#34;#3279B6&#34;,&#34;#286DB0&#34;,&#34;#3E8BBF&#34;],&#34;weight&#34;:5,&#34;opacity&#34;:0.5,&#34;fill&#34;:true,&#34;fillColor&#34;:[&#34;#053061&#34;,&#34;#2D73B3&#34;,&#34;#E9F0F4&#34;,&#34;#8FC3DD&#34;,&#34;#4996C5&#34;,&#34;#3984BB&#34;,&#34;#94C6DF&#34;,&#34;#3780BA&#34;,&#34;#3C87BD&#34;,&#34;#96C7DF&#34;,&#34;#97C7DF&#34;,&#34;#A8D0E4&#34;,&#34;#408DC0&#34;,&#34;#C9E1EE&#34;,&#34;#75B0D3&#34;,&#34;#62A4CD&#34;,&#34;#6EACD1&#34;,&#34;#7BB4D5&#34;,&#34;#053061&#34;,&#34;#F8B799&#34;,&#34;#3279B6&#34;,&#34;#408DC0&#34;,&#34;#CAE1EE&#34;,&#34;#88BEDA&#34;,&#34;#6EACD1&#34;,&#34;#3D89BE&#34;,&#34;#A8D0E4&#34;,&#34;#73AFD2&#34;,&#34;#E0ECF3&#34;,&#34;#C0DCEB&#34;,&#34;#90C4DD&#34;,&#34;#4190C2&#34;,&#34;#6EACD1&#34;,&#34;#FAECE4&#34;,&#34;#3781BA&#34;,&#34;#529BC7&#34;,&#34;#E1ECF3&#34;,&#34;#61A4CC&#34;,&#34;#B7D7E8&#34;,&#34;#053061&#34;,&#34;#286DB0&#34;,&#34;#88BEDA&#34;,&#34;#96C7DF&#34;,&#34;#5EA1CB&#34;,&#34;#6EACD1&#34;,&#34;#88BEDA&#34;,&#34;#053061&#34;,&#34;#3E8BBF&#34;,&#34;#A8D0E4&#34;,&#34;#3279B6&#34;,&#34;#C9E1EE&#34;,&#34;#EFF3F5&#34;,&#34;#053061&#34;,&#34;#F7F7F7&#34;,&#34;#519AC7&#34;,&#34;#4996C5&#34;,&#34;#8EC2DC&#34;,&#34;#94C6DE&#34;,&#34;#357EB8&#34;,&#34;#4393C3&#34;,&#34;#76B1D3&#34;,&#34;#347CB8&#34;,&#34;#408FC1&#34;,&#34;#053061&#34;,&#34;#7AB4D5&#34;,&#34;#053061&#34;,&#34;#67001F&#34;,&#34;#357EB8&#34;,&#34;#3E8BBF&#34;,&#34;#053061&#34;,&#34;#7FB7D7&#34;,&#34;#3279B6&#34;,&#34;#4393C3&#34;,&#34;#053061&#34;,&#34;#1E61A5&#34;,&#34;#154F8C&#34;,&#34;#6EACD1&#34;,&#34;#E7EFF4&#34;,&#34;#7FB7D7&#34;,&#34;#A3CDE3&#34;,&#34;#6EACD1&#34;,&#34;#17518F&#34;,&#34;#1E61A5&#34;,&#34;#B9D8E9&#34;,&#34;#3D89BE&#34;,&#34;#94C6DF&#34;,&#34;#8FC3DD&#34;,&#34;#1E61A5&#34;,&#34;#3E8BBF&#34;,&#34;#B7D7E8&#34;,&#34;#053061&#34;,&#34;#64A6CD&#34;,&#34;#357DB8&#34;,&#34;#529BC7&#34;,&#34;#A8D0E4&#34;,&#34;#418FC1&#34;,&#34;#BEDBEA&#34;,&#34;#67001F&#34;,&#34;#3E8BBF&#34;,&#34;#5DA1CB&#34;,&#34;#8DC1DC&#34;,&#34;#134A86&#34;,&#34;#4A96C5&#34;,&#34;#C2DDEC&#34;,&#34;#3984BB&#34;,&#34;#579EC9&#34;,&#34;#4291C2&#34;,&#34;#3178B5&#34;,&#34;#3B86BD&#34;,&#34;#1E61A5&#34;,&#34;#3279B6&#34;,&#34;#286DB0&#34;,&#34;#3E8BBF&#34;],&#34;fillOpacity&#34;:0.7},null,null,null,null,null,{&#34;interactive&#34;:false,&#34;permanent&#34;:false,&#34;direction&#34;:&#34;auto&#34;,&#34;opacity&#34;:1,&#34;offset&#34;:[0,0],&#34;textsize&#34;:&#34;10px&#34;,&#34;textOnly&#34;:false,&#34;className&#34;:&#34;&#34;,&#34;sticky&#34;:true},null]},{&#34;method&#34;:&#34;addCircleMarkers&#34;,&#34;args&#34;:[[40.764,40.766,40.766,40.766,40.766,40.768,40.768,40.768,40.768,40.768,40.768,40.768,40.77,40.77,40.77,40.77,40.77,40.77,40.77,40.772,40.772,40.772,40.772,40.772,40.772,40.772,40.774,40.774,40.774,40.774,40.774,40.774,40.774,40.776,40.776,40.776,40.776,40.776,40.776,40.776,40.778,40.778,40.778,40.778,40.778,40.778,40.78,40.78,40.78,40.78,40.78,40.78,40.78,40.782,40.782,40.782,40.782,40.782,40.782,40.782,40.784,40.784,40.784,40.784,40.784,40.784,40.786,40.786,40.786,40.788,40.788,40.788,40.788,40.788,40.788,40.788,40.79,40.79,40.79,40.79,40.79,40.79,40.79,40.792,40.792,40.792,40.792,40.792,40.792,40.792,40.794,40.794,40.794,40.794,40.794,40.794,40.794,40.794,40.796,40.796,40.796,40.796,40.796,40.796,40.796,40.798,40.798,40.798,40.798,40.798,40.798,40.8,40.8],[-73.974,-73.978,-73.976,-73.974,-73.972,-73.982,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.966,-73.976,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.962,-73.972,-73.97,-73.968,-73.966,-73.964,-73.962,-73.96,-73.97,-73.968,-73.966,-73.964,-73.96,-73.958,-73.97,-73.968,-73.958,-73.968,-73.966,-73.964,-73.962,-73.96,-73.958,-73.956,-73.966,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.958,-73.956],6,null,&#34;Climbing&#34;,{&#34;interactive&#34;:true,&#34;className&#34;:&#34;&#34;,&#34;stroke&#34;:false,&#34;color&#34;:[&#34;#F7F7F7&#34;,&#34;#539BC8&#34;,&#34;#418FC1&#34;,&#34;#3F8CC0&#34;,&#34;#4996C5&#34;,&#34;#3984BB&#34;,&#34;#337AB7&#34;,&#34;#3780BA&#34;,&#34;#71AED2&#34;,&#34;#579EC9&#34;,&#34;#357EB8&#34;,&#34;#3984BB&#34;,&#34;#408DC0&#34;,&#34;#74B0D3&#34;,&#34;#579EC9&#34;,&#34;#154F8C&#34;,&#34;#2B71B2&#34;,&#34;#2C72B2&#34;,&#34;#DCEAF2&#34;,&#34;#F8B799&#34;,&#34;#D1E5F0&#34;,&#34;#6EACD1&#34;,&#34;#3077B5&#34;,&#34;#519AC7&#34;,&#34;#4E99C6&#34;,&#34;#A0CCE2&#34;,&#34;#E2EDF3&#34;,&#34;#68A8CF&#34;,&#34;#84BBD9&#34;,&#34;#4393C3&#34;,&#34;#3882BA&#34;,&#34;#2D73B3&#34;,&#34;#E68367&#34;,&#34;#1B599A&#34;,&#34;#84BBD9&#34;,&#34;#8EC2DC&#34;,&#34;#195696&#34;,&#34;#72AED2&#34;,&#34;#64A6CD&#34;,&#34;#DCEAF2&#34;,&#34;#7CB5D6&#34;,&#34;#3279B6&#34;,&#34;#4190C2&#34;,&#34;#5EA1CB&#34;,&#34;#F7F7F7&#34;,&#34;#DCEAF2&#34;,&#34;#A8D0E4&#34;,&#34;#5CA0CA&#34;,&#34;#4B97C5&#34;,&#34;#195696&#34;,&#34;#B5D6E8&#34;,&#34;#B1D4E7&#34;,&#34;#053061&#34;,&#34;#E68367&#34;,&#34;#053061&#34;,&#34;#A1CCE2&#34;,&#34;#62A4CD&#34;,&#34;#4C98C6&#34;,&#34;#97C7DF&#34;,&#34;#D1E5F0&#34;,&#34;#76B1D3&#34;,&#34;#2B71B2&#34;,&#34;#C5DFED&#34;,&#34;#A8D0E4&#34;,&#34;#A8D0E4&#34;,&#34;#F7F7F7&#34;,&#34;#053061&#34;,&#34;#5FA2CB&#34;,&#34;#7FB7D7&#34;,&#34;#2B71B2&#34;,&#34;#BBD9E9&#34;,&#34;#3279B6&#34;,&#34;#7AB4D5&#34;,&#34;#A8D0E4&#34;,&#34;#FAEAE1&#34;,&#34;#D6E7F1&#34;,&#34;#3984BB&#34;,&#34;#9BCAE1&#34;,&#34;#3E8BBF&#34;,&#34;#65A6CE&#34;,&#34;#6EACD1&#34;,&#34;#F7F7F7&#34;,&#34;#7FB7D7&#34;,&#34;#1C5D9F&#34;,&#34;#6EACD1&#34;,&#34;#7FB7D7&#34;,&#34;#3F8CC0&#34;,&#34;#BBD9E9&#34;,&#34;#5CA0CA&#34;,&#34;#3279B6&#34;,&#34;#053061&#34;,&#34;#77B2D4&#34;,&#34;#68A8CE&#34;,&#34;#408EC1&#34;,&#34;#2A6FB1&#34;,&#34;#2C72B2&#34;,&#34;#3780B9&#34;,&#34;#053061&#34;,&#34;#053061&#34;,&#34;#1D5EA1&#34;,&#34;#4291C2&#34;,&#34;#347CB8&#34;,&#34;#4A96C5&#34;,&#34;#2B71B2&#34;,&#34;#053061&#34;,&#34;#579EC9&#34;,&#34;#65A6CE&#34;,&#34;#3178B5&#34;,&#34;#3B86BD&#34;,&#34;#3E8BBF&#34;,&#34;#3279B6&#34;,&#34;#E9F0F4&#34;,&#34;#7FB7D7&#34;],&#34;weight&#34;:5,&#34;opacity&#34;:0.5,&#34;fill&#34;:true,&#34;fillColor&#34;:[&#34;#F7F7F7&#34;,&#34;#539BC8&#34;,&#34;#418FC1&#34;,&#34;#3F8CC0&#34;,&#34;#4996C5&#34;,&#34;#3984BB&#34;,&#34;#337AB7&#34;,&#34;#3780BA&#34;,&#34;#71AED2&#34;,&#34;#579EC9&#34;,&#34;#357EB8&#34;,&#34;#3984BB&#34;,&#34;#408DC0&#34;,&#34;#74B0D3&#34;,&#34;#579EC9&#34;,&#34;#154F8C&#34;,&#34;#2B71B2&#34;,&#34;#2C72B2&#34;,&#34;#DCEAF2&#34;,&#34;#F8B799&#34;,&#34;#D1E5F0&#34;,&#34;#6EACD1&#34;,&#34;#3077B5&#34;,&#34;#519AC7&#34;,&#34;#4E99C6&#34;,&#34;#A0CCE2&#34;,&#34;#E2EDF3&#34;,&#34;#68A8CF&#34;,&#34;#84BBD9&#34;,&#34;#4393C3&#34;,&#34;#3882BA&#34;,&#34;#2D73B3&#34;,&#34;#E68367&#34;,&#34;#1B599A&#34;,&#34;#84BBD9&#34;,&#34;#8EC2DC&#34;,&#34;#195696&#34;,&#34;#72AED2&#34;,&#34;#64A6CD&#34;,&#34;#DCEAF2&#34;,&#34;#7CB5D6&#34;,&#34;#3279B6&#34;,&#34;#4190C2&#34;,&#34;#5EA1CB&#34;,&#34;#F7F7F7&#34;,&#34;#DCEAF2&#34;,&#34;#A8D0E4&#34;,&#34;#5CA0CA&#34;,&#34;#4B97C5&#34;,&#34;#195696&#34;,&#34;#B5D6E8&#34;,&#34;#B1D4E7&#34;,&#34;#053061&#34;,&#34;#E68367&#34;,&#34;#053061&#34;,&#34;#A1CCE2&#34;,&#34;#62A4CD&#34;,&#34;#4C98C6&#34;,&#34;#97C7DF&#34;,&#34;#D1E5F0&#34;,&#34;#76B1D3&#34;,&#34;#2B71B2&#34;,&#34;#C5DFED&#34;,&#34;#A8D0E4&#34;,&#34;#A8D0E4&#34;,&#34;#F7F7F7&#34;,&#34;#053061&#34;,&#34;#5FA2CB&#34;,&#34;#7FB7D7&#34;,&#34;#2B71B2&#34;,&#34;#BBD9E9&#34;,&#34;#3279B6&#34;,&#34;#7AB4D5&#34;,&#34;#A8D0E4&#34;,&#34;#FAEAE1&#34;,&#34;#D6E7F1&#34;,&#34;#3984BB&#34;,&#34;#9BCAE1&#34;,&#34;#3E8BBF&#34;,&#34;#65A6CE&#34;,&#34;#6EACD1&#34;,&#34;#F7F7F7&#34;,&#34;#7FB7D7&#34;,&#34;#1C5D9F&#34;,&#34;#6EACD1&#34;,&#34;#7FB7D7&#34;,&#34;#3F8CC0&#34;,&#34;#BBD9E9&#34;,&#34;#5CA0CA&#34;,&#34;#3279B6&#34;,&#34;#053061&#34;,&#34;#77B2D4&#34;,&#34;#68A8CE&#34;,&#34;#408EC1&#34;,&#34;#2A6FB1&#34;,&#34;#2C72B2&#34;,&#34;#3780B9&#34;,&#34;#053061&#34;,&#34;#053061&#34;,&#34;#1D5EA1&#34;,&#34;#4291C2&#34;,&#34;#347CB8&#34;,&#34;#4A96C5&#34;,&#34;#2B71B2&#34;,&#34;#053061&#34;,&#34;#579EC9&#34;,&#34;#65A6CE&#34;,&#34;#3178B5&#34;,&#34;#3B86BD&#34;,&#34;#3E8BBF&#34;,&#34;#3279B6&#34;,&#34;#E9F0F4&#34;,&#34;#7FB7D7&#34;],&#34;fillOpacity&#34;:0.7},null,null,null,null,null,{&#34;interactive&#34;:false,&#34;permanent&#34;:false,&#34;direction&#34;:&#34;auto&#34;,&#34;opacity&#34;:1,&#34;offset&#34;:[0,0],&#34;textsize&#34;:&#34;10px&#34;,&#34;textOnly&#34;:false,&#34;className&#34;:&#34;&#34;,&#34;sticky&#34;:true},null]},{&#34;method&#34;:&#34;addCircleMarkers&#34;,&#34;args&#34;:[[40.764,40.766,40.766,40.766,40.766,40.768,40.768,40.768,40.768,40.768,40.768,40.768,40.77,40.77,40.77,40.77,40.77,40.77,40.77,40.772,40.772,40.772,40.772,40.772,40.772,40.772,40.774,40.774,40.774,40.774,40.774,40.774,40.774,40.776,40.776,40.776,40.776,40.776,40.776,40.776,40.778,40.778,40.778,40.778,40.778,40.778,40.78,40.78,40.78,40.78,40.78,40.78,40.78,40.782,40.782,40.782,40.782,40.782,40.782,40.782,40.784,40.784,40.784,40.784,40.784,40.784,40.786,40.786,40.786,40.788,40.788,40.788,40.788,40.788,40.788,40.788,40.79,40.79,40.79,40.79,40.79,40.79,40.79,40.792,40.792,40.792,40.792,40.792,40.792,40.792,40.794,40.794,40.794,40.794,40.794,40.794,40.794,40.794,40.796,40.796,40.796,40.796,40.796,40.796,40.796,40.798,40.798,40.798,40.798,40.798,40.798,40.8,40.8],[-73.974,-73.978,-73.976,-73.974,-73.972,-73.982,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.98,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.978,-73.976,-73.974,-73.972,-73.97,-73.968,-73.966,-73.976,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.974,-73.972,-73.97,-73.968,-73.966,-73.964,-73.962,-73.972,-73.97,-73.968,-73.966,-73.964,-73.962,-73.96,-73.97,-73.968,-73.966,-73.964,-73.96,-73.958,-73.97,-73.968,-73.958,-73.968,-73.966,-73.964,-73.962,-73.96,-73.958,-73.956,-73.966,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.964,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.962,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.96,-73.958,-73.956,-73.954,-73.952,-73.95,-73.958,-73.956],6,null,&#34;Running&#34;,{&#34;interactive&#34;:true,&#34;className&#34;:&#34;&#34;,&#34;stroke&#34;:false,&#34;color&#34;:[&#34;#F7F7F7&#34;,&#34;#2D73B3&#34;,&#34;#5FA2CB&#34;,&#34;#3F8CC0&#34;,&#34;#79B3D4&#34;,&#34;#A8D0E4&#34;,&#34;#3D8ABE&#34;,&#34;#ACD2E5&#34;,&#34;#64A6CD&#34;,&#34;#3077B5&#34;,&#34;#C8E0ED&#34;,&#34;#D7E8F1&#34;,&#34;#367FB9&#34;,&#34;#B5D6E8&#34;,&#34;#3F8CC0&#34;,&#34;#79B3D4&#34;,&#34;#8CC1DC&#34;,&#34;#4E98C6&#34;,&#34;#88BEDA&#34;,&#34;#053061&#34;,&#34;#4393C3&#34;,&#34;#85BBD9&#34;,&#34;#6EACD1&#34;,&#34;#296EB0&#34;,&#34;#3B87BD&#34;,&#34;#88BEDA&#34;,&#34;#F8B799&#34;,&#34;#73AFD2&#34;,&#34;#296FB1&#34;,&#34;#4393C3&#34;,&#34;#408EC1&#34;,&#34;#2064A9&#34;,&#34;#F7F7F7&#34;,&#34;#C8E0ED&#34;,&#34;#66A7CE&#34;,&#34;#529BC7&#34;,&#34;#3984BB&#34;,&#34;#ACD2E5&#34;,&#34;#A8D0E4&#34;,&#34;#3279B6&#34;,&#34;#357EB8&#34;,&#34;#519AC7&#34;,&#34;#4190C2&#34;,&#34;#77B2D4&#34;,&#34;#F7F7F7&#34;,&#34;#408FC1&#34;,&#34;#053061&#34;,&#34;#3E8BBF&#34;,&#34;#6EACD1&#34;,&#34;#B7D7E8&#34;,&#34;#4190C2&#34;,&#34;#539BC8&#34;,&#34;#053061&#34;,&#34;#6EACD1&#34;,&#34;#3D89BE&#34;,&#34;#C6DFED&#34;,&#34;#154F8C&#34;,&#34;#3F8DC0&#34;,&#34;#5FA2CB&#34;,&#34;#D1E5F0&#34;,&#34;#2D73B3&#34;,&#34;#6EACD1&#34;,&#34;#408FC1&#34;,&#34;#A8D0E4&#34;,&#34;#2E75B4&#34;,&#34;#053061&#34;,&#34;#053061&#34;,&#34;#E9F0F4&#34;,&#34;#BBD9E9&#34;,&#34;#053061&#34;,&#34;#7FB7D7&#34;,&#34;#DCEAF2&#34;,&#34;#2E75B4&#34;,&#34;#053061&#34;,&#34;#3E8BBF&#34;,&#34;#3C88BE&#34;,&#34;#6EACD1&#34;,&#34;#88BEDA&#34;,&#34;#7FB7D7&#34;,&#34;#2D73B3&#34;,&#34;#88BEDA&#34;,&#34;#17518F&#34;,&#34;#5CA0CA&#34;,&#34;#4190C2&#34;,&#34;#519AC7&#34;,&#34;#68A8CE&#34;,&#34;#3F8CC0&#34;,&#34;#BBD9E9&#34;,&#34;#5CA0CA&#34;,&#34;#519AC7&#34;,&#34;#053061&#34;,&#34;#DCEAF2&#34;,&#34;#68A8CE&#34;,&#34;#2F76B4&#34;,&#34;#68A8CE&#34;,&#34;#4F99C6&#34;,&#34;#2368AD&#34;,&#34;#053061&#34;,&#34;#BBD9E9&#34;,&#34;#C0DCEB&#34;,&#34;#9DCAE1&#34;,&#34;#6EACD1&#34;,&#34;#E4EEF3&#34;,&#34;#C2DDEC&#34;,&#34;#F8B799&#34;,&#34;#579EC9&#34;,&#34;#3C87BD&#34;,&#34;#E8F0F4&#34;,&#34;#81B9D7&#34;,&#34;#E6EFF4&#34;,&#34;#DCEAF2&#34;,&#34;#E9F0F4&#34;,&#34;#053061&#34;],&#34;weight&#34;:5,&#34;opacity&#34;:0.5,&#34;fill&#34;:true,&#34;fillColor&#34;:[&#34;#F7F7F7&#34;,&#34;#2D73B3&#34;,&#34;#5FA2CB&#34;,&#34;#3F8CC0&#34;,&#34;#79B3D4&#34;,&#34;#A8D0E4&#34;,&#34;#3D8ABE&#34;,&#34;#ACD2E5&#34;,&#34;#64A6CD&#34;,&#34;#3077B5&#34;,&#34;#C8E0ED&#34;,&#34;#D7E8F1&#34;,&#34;#367FB9&#34;,&#34;#B5D6E8&#34;,&#34;#3F8CC0&#34;,&#34;#79B3D4&#34;,&#34;#8CC1DC&#34;,&#34;#4E98C6&#34;,&#34;#88BEDA&#34;,&#34;#053061&#34;,&#34;#4393C3&#34;,&#34;#85BBD9&#34;,&#34;#6EACD1&#34;,&#34;#296EB0&#34;,&#34;#3B87BD&#34;,&#34;#88BEDA&#34;,&#34;#F8B799&#34;,&#34;#73AFD2&#34;,&#34;#296FB1&#34;,&#34;#4393C3&#34;,&#34;#408EC1&#34;,&#34;#2064A9&#34;,&#34;#F7F7F7&#34;,&#34;#C8E0ED&#34;,&#34;#66A7CE&#34;,&#34;#529BC7&#34;,&#34;#3984BB&#34;,&#34;#ACD2E5&#34;,&#34;#A8D0E4&#34;,&#34;#3279B6&#34;,&#34;#357EB8&#34;,&#34;#519AC7&#34;,&#34;#4190C2&#34;,&#34;#77B2D4&#34;,&#34;#F7F7F7&#34;,&#34;#408FC1&#34;,&#34;#053061&#34;,&#34;#3E8BBF&#34;,&#34;#6EACD1&#34;,&#34;#B7D7E8&#34;,&#34;#4190C2&#34;,&#34;#539BC8&#34;,&#34;#053061&#34;,&#34;#6EACD1&#34;,&#34;#3D89BE&#34;,&#34;#C6DFED&#34;,&#34;#154F8C&#34;,&#34;#3F8DC0&#34;,&#34;#5FA2CB&#34;,&#34;#D1E5F0&#34;,&#34;#2D73B3&#34;,&#34;#6EACD1&#34;,&#34;#408FC1&#34;,&#34;#A8D0E4&#34;,&#34;#2E75B4&#34;,&#34;#053061&#34;,&#34;#053061&#34;,&#34;#E9F0F4&#34;,&#34;#BBD9E9&#34;,&#34;#053061&#34;,&#34;#7FB7D7&#34;,&#34;#DCEAF2&#34;,&#34;#2E75B4&#34;,&#34;#053061&#34;,&#34;#3E8BBF&#34;,&#34;#3C88BE&#34;,&#34;#6EACD1&#34;,&#34;#88BEDA&#34;,&#34;#7FB7D7&#34;,&#34;#2D73B3&#34;,&#34;#88BEDA&#34;,&#34;#17518F&#34;,&#34;#5CA0CA&#34;,&#34;#4190C2&#34;,&#34;#519AC7&#34;,&#34;#68A8CE&#34;,&#34;#3F8CC0&#34;,&#34;#BBD9E9&#34;,&#34;#5CA0CA&#34;,&#34;#519AC7&#34;,&#34;#053061&#34;,&#34;#DCEAF2&#34;,&#34;#68A8CE&#34;,&#34;#2F76B4&#34;,&#34;#68A8CE&#34;,&#34;#4F99C6&#34;,&#34;#2368AD&#34;,&#34;#053061&#34;,&#34;#BBD9E9&#34;,&#34;#C0DCEB&#34;,&#34;#9DCAE1&#34;,&#34;#6EACD1&#34;,&#34;#E4EEF3&#34;,&#34;#C2DDEC&#34;,&#34;#F8B799&#34;,&#34;#579EC9&#34;,&#34;#3C87BD&#34;,&#34;#E8F0F4&#34;,&#34;#81B9D7&#34;,&#34;#E6EFF4&#34;,&#34;#DCEAF2&#34;,&#34;#E9F0F4&#34;,&#34;#053061&#34;],&#34;fillOpacity&#34;:0.7},null,null,null,null,null,{&#34;interactive&#34;:false,&#34;permanent&#34;:false,&#34;direction&#34;:&#34;auto&#34;,&#34;opacity&#34;:1,&#34;offset&#34;:[0,0],&#34;textsize&#34;:&#34;10px&#34;,&#34;textOnly&#34;:false,&#34;className&#34;:&#34;&#34;,&#34;sticky&#34;:true},null]},{&#34;method&#34;:&#34;addLayersControl&#34;,&#34;args&#34;:[[&#34;Eating&#34;,&#34;Climbing&#34;,&#34;Running&#34;],[],{&#34;collapsed&#34;:false,&#34;autoZIndex&#34;:true,&#34;position&#34;:&#34;topright&#34;}]},{&#34;method&#34;:&#34;addLegend&#34;,&#34;args&#34;:[{&#34;colors&#34;:[&#34;#053061 , #053061 0%, #4393C3 20%, #D1E5F0 40%, #FDDBC7 60%, #D6604D 80%, #67001F 100%, #67001F &#34;],&#34;labels&#34;:[&#34;0%&#34;,&#34;20%&#34;,&#34;40%&#34;,&#34;60%&#34;,&#34;80%&#34;,&#34;100%&#34;],&#34;na_color&#34;:null,&#34;na_label&#34;:&#34;NA&#34;,&#34;opacity&#34;:0.5,&#34;position&#34;:&#34;bottomright&#34;,&#34;type&#34;:&#34;numeric&#34;,&#34;title&#34;:&#34;Percentage&#34;,&#34;extra&#34;:{&#34;p_1&#34;:0,&#34;p_n&#34;:1},&#34;layerId&#34;:null,&#34;className&#34;:&#34;info legend&#34;,&#34;group&#34;:null}]},{&#34;method&#34;:&#34;addScaleBar&#34;,&#34;args&#34;:[{&#34;maxWidth&#34;:100,&#34;metric&#34;:true,&#34;imperial&#34;:true,&#34;updateWhenIdle&#34;:true,&#34;position&#34;:&#34;bottomleft&#34;}]}],&#34;limits&#34;:{&#34;lat&#34;:[40.764,40.8],&#34;lng&#34;:[-73.982,-73.95]}},&#34;evals&#34;:[],&#34;jsHooks&#34;:[]}&lt;/script&gt;
@@ -779,12 +779,12 @@ leaflet(loc) %&amp;gt;%
 &lt;/ul&gt;
 </description>
     </item>
-    
+
     <item>
       <title>The best of both worlds: R meets Python via reticulate</title>
       <link>/2019/10/03/reticulate-intro/</link>
       <pubDate>Thu, 03 Oct 2019 00:00:00 +0000</pubDate>
-      
+
       <guid>/2019/10/03/reticulate-intro/</guid>
       <description>
 &lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
@@ -894,7 +894,7 @@ setosa
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;This is a small dataset with 50 instances each per species of iris flower:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;iris %&amp;gt;% 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;iris %&amp;gt;%
   count(Species)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## # A tibble: 3 x 2
 ##   Species        n
@@ -903,7 +903,7 @@ setosa
 ## 2 versicolor    50
 ## 3 virginica     50&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;As a simple example for exploratory data analysis plots we will look at the differences between those 3 species in terms of petal and sepal dimensions. Here, the &lt;a href=&#34;https://cran.r-project.org/web/packages/gridExtra/index.html&#34;&gt;gridExtra&lt;/a&gt; package provides the side-by-side layout:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p1 &amp;lt;- iris %&amp;gt;%  
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p1 &amp;lt;- iris %&amp;gt;%
   ggplot(aes(Petal.Length, Petal.Width, color = Species)) +
   geom_point(size = 4) +
   labs(x = &amp;quot;Petal Length&amp;quot;, y = &amp;quot;Petal Width&amp;quot;) +
@@ -915,7 +915,7 @@ setosa
                            &amp;quot;\n&amp;quot;,
                            &amp;quot;significantly between species&amp;quot;))
 
-p2 &amp;lt;- iris %&amp;gt;% 
+p2 &amp;lt;- iris %&amp;gt;%
   ggplot(aes(Sepal.Length, Sepal.Width, color = Species)) +
   geom_point(size = 4) +
   labs(x = &amp;quot;Sepal Length&amp;quot;, y = &amp;quot;Sepal Width&amp;quot;) +
@@ -970,16 +970,16 @@ y_test = test.loc[:, &amp;#39;Species&amp;#39;].values&lt;/code&gt;&lt;/pre&gt;
 clf = tree.fit(X, y)
 pred = clf.predict(X_test)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Finally, we bring the test predictions back to R and plot some results.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;foo &amp;lt;- py$test %&amp;gt;% 
-  as_tibble() %&amp;gt;% 
-  rename(truth = Species) %&amp;gt;% 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;foo &amp;lt;- py$test %&amp;gt;%
+  as_tibble() %&amp;gt;%
+  rename(truth = Species) %&amp;gt;%
   mutate(predicted = as.factor(py$pred),
          correct = (truth == predicted))
 
-foo %&amp;gt;% 
-  head(4) %&amp;gt;% 
-  select(-Petal.Length, -Petal.Width) %&amp;gt;% 
-  kable() %&amp;gt;% 
+foo %&amp;gt;%
+  head(4) %&amp;gt;%
+  select(-Petal.Length, -Petal.Width) %&amp;gt;%
+  kable() %&amp;gt;%
   kable_styling()&lt;/code&gt;&lt;/pre&gt;
 &lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
 &lt;thead&gt;
@@ -1072,9 +1072,9 @@ TRUE
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p1  &amp;lt;- foo %&amp;gt;% 
-  select(-correct) %&amp;gt;% 
-  gather(truth, predicted, key = type, value = species) %&amp;gt;% 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p1  &amp;lt;- foo %&amp;gt;%
+  select(-correct) %&amp;gt;%
+  gather(truth, predicted, key = type, value = species) %&amp;gt;%
   ggplot(aes(Petal.Length, Petal.Width, color = species)) +
   geom_point(data = foo %&amp;gt;% filter(correct == FALSE),
              col = &amp;quot;black&amp;quot;, size = 5) +
@@ -1085,9 +1085,9 @@ TRUE
         text = element_text(size = 16)) +
   facet_wrap(~ type)
 
-p2 &amp;lt;- foo %&amp;gt;% 
-  select(-correct) %&amp;gt;% 
-  gather(truth, predicted, key = type, value = species) %&amp;gt;% 
+p2 &amp;lt;- foo %&amp;gt;%
+  select(-correct) %&amp;gt;%
+  gather(truth, predicted, key = type, value = species) %&amp;gt;%
   ggplot(aes(Sepal.Length, Sepal.Width, color = species)) +
   geom_point(data = foo %&amp;gt;%
                filter(correct == FALSE),
@@ -1101,12 +1101,12 @@ p2 &amp;lt;- foo %&amp;gt;%
         text = element_text(size = 16)) +
   facet_wrap(~ type)
 
-p3 &amp;lt;- foo %&amp;gt;% 
+p3 &amp;lt;- foo %&amp;gt;%
   count(truth, predicted) %&amp;gt;%
-  complete(truth, predicted, fill = list(n = 0)) %&amp;gt;% 
-  group_by(truth) %&amp;gt;% 
-  add_tally(n, name = &amp;quot;true&amp;quot;) %&amp;gt;% 
-  mutate(accuracy = n/true * 100) %&amp;gt;% 
+  complete(truth, predicted, fill = list(n = 0)) %&amp;gt;%
+  group_by(truth) %&amp;gt;%
+  add_tally(n, name = &amp;quot;true&amp;quot;) %&amp;gt;%
+  mutate(accuracy = n/true * 100) %&amp;gt;%
   ggplot(aes(truth, predicted, fill = accuracy, label = n)) +
   geom_tile() +
   geom_text(size = 5, color = &amp;quot;grey60&amp;quot;) +
@@ -1144,12 +1144,12 @@ grid.arrange(p1, p2, p3,
 &lt;/ul&gt;
 </description>
     </item>
-    
+
     <item>
       <title>Tidy evaluation in R: Part 2 - Complex use cases (feat. facet zoom)</title>
       <link>/2019/08/22/tidy-eval-examples-part2/</link>
       <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
-      
+
       <guid>/2019/08/22/tidy-eval-examples-part2/</guid>
       <description>
 &lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
@@ -1330,15 +1330,15 @@ VS2
 &lt;/table&gt;
 &lt;p&gt;&lt;strong&gt;Meet &lt;code&gt;enqous&lt;/code&gt; and &lt;code&gt;!!!&lt;/code&gt;:&lt;/strong&gt; The equivalent to &lt;code&gt;enquo&lt;/code&gt; for &lt;strong&gt;quoting more than one variable&lt;/strong&gt; is called &lt;code&gt;enquos&lt;/code&gt;. So far, so plural. The corresponding &lt;strong&gt;unquoting&lt;/strong&gt; method is &lt;code&gt;!!!&lt;/code&gt; - the &lt;em&gt;big bang&lt;/em&gt; operator (remember that &lt;code&gt;!!&lt;/code&gt; is &lt;em&gt;bang-bang&lt;/em&gt;). The tidyverse certainly doesn’t shy away from cosmological superlatives. (The &lt;a href=&#34;https://www.rstudio.com/resources/cheatsheets/&#34;&gt;tidyeval cheat sheet&lt;/a&gt; calls it &lt;em&gt;bang-bang-bang&lt;/em&gt;, which makes more intuitive sense but is less poetic; as a trained astronomer my choice is clear.) Here we see both operators in action:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;group_mean &amp;lt;- function(df, g, x, y){
-  
+
   group_cols &amp;lt;- enquos(x, y)
   mean_col &amp;lt;- enquo(g)
-  df %&amp;gt;% 
-    group_by(!!! group_cols) %&amp;gt;% 
+  df %&amp;gt;%
+    group_by(!!! group_cols) %&amp;gt;%
     summarise(mean = mean(!! mean_col))
 }
 
-group_mean(diamonds, price, cut, color) %&amp;gt;% 
+group_mean(diamonds, price, cut, color) %&amp;gt;%
   head(5)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## # A tibble: 5 x 3
 ## # Groups:   cut [1]
@@ -1351,14 +1351,14 @@ group_mean(diamonds, price, cut, color) %&amp;gt;%
 ## 5 Fair  H     5136.&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;strong&gt;Alternative: use &lt;code&gt;...&lt;/code&gt; aka dots:&lt;/strong&gt; Note, that if all you need to do is group together a bunch of variables (or to treat them as one group in any other way) then R offers the nifty &lt;code&gt;...&lt;/code&gt; operator. You might have seen this style in function definitions or help pages already. With the dots you can capture everything that is not explicitely named and refer to it as one entity. This simplifies our above function in the following way:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;group_mean &amp;lt;- function(df, g, ...){
-  
+
   mean_col &amp;lt;- enquo(g)
-  df %&amp;gt;% 
-    group_by(...) %&amp;gt;% 
+  df %&amp;gt;%
+    group_by(...) %&amp;gt;%
     summarise(mean = mean(!! mean_col))
 }
 
-group_mean(diamonds, price, cut, color) %&amp;gt;% 
+group_mean(diamonds, price, cut, color) %&amp;gt;%
   head(5)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## # A tibble: 5 x 3
 ## # Groups:   cut [1]
@@ -1372,16 +1372,16 @@ group_mean(diamonds, price, cut, color) %&amp;gt;%
 &lt;p&gt;It’s important to note that &lt;code&gt;!!!&lt;/code&gt; currently doesn’t work in &lt;code&gt;ggplot(aes())&lt;/code&gt;. &lt;a href=&#34;https://stackoverflow.com/questions/55815963/tidyeval-splice-operator-fails-with-ggplots-aes&#34;&gt;There is a workaround&lt;/a&gt; and hopefully soon a fix that I will cover in a future post.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;The &lt;code&gt;:=&lt;/code&gt; operator:&lt;/strong&gt; to &lt;strong&gt;rename a variable to a quoted name&lt;/strong&gt; you need the &lt;code&gt;:=&lt;/code&gt; operator. Think of it as a maths-style definition if that helps you to remember the syntax. Here’s how it works, giving our mean price variable a custom name:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;group_mean &amp;lt;- function(df, g, n, ...){
-  
+
   mean_col &amp;lt;- enquo(g)
   new_name &amp;lt;- enquo(n)
-  
-  df %&amp;gt;% 
-    group_by(...) %&amp;gt;% 
+
+  df %&amp;gt;%
+    group_by(...) %&amp;gt;%
     summarise(!! new_name := mean(!! mean_col))
 }
 
-group_mean(diamonds, price, mean_price, cut, color) %&amp;gt;% 
+group_mean(diamonds, price, mean_price, cut, color) %&amp;gt;%
   head(5)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## # A tibble: 5 x 3
 ## # Groups:   cut [1]
@@ -1396,23 +1396,23 @@ group_mean(diamonds, price, mean_price, cut, color) %&amp;gt;%
 &lt;p&gt;&lt;strong&gt;Encoding strings with &lt;code&gt;ensym&lt;/code&gt;:&lt;/strong&gt; In some scenarios you want to quote your input not as an expression but a symbol. In the context of helper functions this will often involve strings - and a common use case is &lt;code&gt;ggplot2&lt;/code&gt; wrappers. The strings can then be further manipulated for instance with the tidy &lt;a href=&#34;https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html&#34;&gt;&lt;code&gt;stringr&lt;/code&gt;&lt;/a&gt; package.&lt;/p&gt;
 &lt;p&gt;In this final example of the post I will showcase the use of &lt;code&gt;ensym&lt;/code&gt; alongside the other main &lt;code&gt;tidyeval&lt;/code&gt; operators. The function will be a &lt;code&gt;ggplot2&lt;/code&gt; convenience wrapper that build a scatter plot of two numerical features colour-coded by a categorical variable. Custom axes labels and plot title will be added. For a little extra flourish, I will add a zoom view on one particular category using the powerful &lt;code&gt;facet_zoom&lt;/code&gt; function from the &lt;a href=&#34;https://cran.r-project.org/web/packages/ggforce/index.html&#34;&gt;&lt;code&gt;ggforce&lt;/code&gt;&lt;/a&gt; package. Here’s what it looks like:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_xy &amp;lt;- function(df, x, y, col, var_zoom, ...){
-  
+
   x &amp;lt;- enquo(x)
   y &amp;lt;- enquo(y)
   col &amp;lt;- enquo(col)
   group_vars &amp;lt;- enquos(...)
-  
+
   dfname &amp;lt;- ensym(df) %&amp;gt;% str_to_sentence()
   xname &amp;lt;- ensym(x) %&amp;gt;% str_to_sentence()
   yname &amp;lt;- ensym(y) %&amp;gt;% str_to_sentence()
   colname &amp;lt;- ensym(col) %&amp;gt;% str_to_sentence()
-  
-  df %&amp;gt;% 
-    mutate(!! col := as.factor(!! col)) %&amp;gt;% 
-    group_by(!! col, !!! group_vars) %&amp;gt;% 
+
+  df %&amp;gt;%
+    mutate(!! col := as.factor(!! col)) %&amp;gt;%
+    group_by(!! col, !!! group_vars) %&amp;gt;%
     summarise(mean_x = mean(!!x),
-              mean_y = mean(!!y)) %&amp;gt;% 
-    ungroup() %&amp;gt;% 
+              mean_y = mean(!!y)) %&amp;gt;%
+    ungroup() %&amp;gt;%
     ggplot(aes(mean_x, mean_y, col = !!col)) +
     geom_point() +
     scale_color_brewer(type = &amp;quot;qual&amp;quot;, palette = &amp;quot;Set1&amp;quot;) +
@@ -1444,12 +1444,12 @@ plot_xy(diamonds, carat, price, clarity, &amp;quot;IF&amp;quot;, color, cut)&lt;
 &lt;/ul&gt;
 </description>
     </item>
-    
+
     <item>
       <title>Data flow visuals - alluvial vs ggalluvial in R</title>
       <link>/2019/06/06/visuals-alluvial-ggalluvial/</link>
       <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
-      
+
       <guid>/2019/06/06/visuals-alluvial-ggalluvial/</guid>
       <description>
 &lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
@@ -1526,20 +1526,20 @@ BQN
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;The &lt;a href=&#34;https://github.com/mbojan/alluvial&#34;&gt;alluvial package&lt;/a&gt; was &lt;a href=&#34;http://bc.bojanorama.pl/2014/03/alluvial-diagrams/&#34;&gt;introduced in 2014&lt;/a&gt; to fill a niché in the landscape of visualisations. I have enjoyed using it in the past in &lt;a href=&#34;https://www.kaggle.com/headsortails/treemap-house-of-horror-spooky-eda-lda-features&#34;&gt;several&lt;/a&gt; &lt;a href=&#34;https://www.kaggle.com/headsortails/nyc-taxi-eda-update-the-fast-the-curious&#34;&gt;Kaggle&lt;/a&gt; &lt;a href=&#34;https://www.kaggle.com/headsortails/steering-wheel-of-fortune-porto-seguro-eda&#34;&gt;Kernels&lt;/a&gt;. Here’s what a plot looks like:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;top_dest &amp;lt;- flights %&amp;gt;% 
-  count(dest) %&amp;gt;% 
-  top_n(5, n) %&amp;gt;% 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;top_dest &amp;lt;- flights %&amp;gt;%
+  count(dest) %&amp;gt;%
+  top_n(5, n) %&amp;gt;%
   pull(dest)
 
-top_carrier &amp;lt;- flights %&amp;gt;% 
-  filter(dest %in% top_dest) %&amp;gt;% 
-  count(carrier) %&amp;gt;% 
-  top_n(4, n) %&amp;gt;% 
+top_carrier &amp;lt;- flights %&amp;gt;%
+  filter(dest %in% top_dest) %&amp;gt;%
+  count(carrier) %&amp;gt;%
+  top_n(4, n) %&amp;gt;%
   pull(carrier)
 
-fly &amp;lt;- flights %&amp;gt;% 
-  filter(dest %in% top_dest &amp;amp; carrier %in% top_carrier) %&amp;gt;% 
-  count(origin, carrier, dest) %&amp;gt;% 
+fly &amp;lt;- flights %&amp;gt;%
+  filter(dest %in% top_dest &amp;amp; carrier %in% top_carrier) %&amp;gt;%
+  count(origin, carrier, dest) %&amp;gt;%
   mutate(origin = fct_relevel(as.factor(origin), c(&amp;quot;EWR&amp;quot;, &amp;quot;LGA&amp;quot;, &amp;quot;JFK&amp;quot;)))
 
 alluvial(fly %&amp;gt;% select(-n),
@@ -1562,11 +1562,11 @@ alluvial(fly %&amp;gt;% select(-n),
 &lt;/ul&gt;
 &lt;p&gt;So, other than looking pretty, what insights does it give us? Well, for instance we see that (for this subset) EWR is dominated by UA (United Airlines) and has almost no AA (American Airlines flights). In turn, UA flights are not frequent in LGA or JFK. Both Boston (BOS) and Los Angeles (LAX) are not connected to LGA (orange). &lt;strong&gt;Thus, the alluvial plot shows us - pretty literally in this case - the flow of flight volume between airports through airline carriers.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;Now, the &lt;code&gt;alluvial&lt;/code&gt; tool has a rather specific syntax and doesn’t integrate seamlessly with the tidyverse. Enter the &lt;a href=&#34;https://github.com/corybrunson/ggalluvial&#34;&gt;&lt;code&gt;ggalluvial&lt;/code&gt; library&lt;/a&gt;:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fly %&amp;gt;% 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fly %&amp;gt;%
   mutate(origin = fct_rev(as.factor(origin)),
          carrier = fct_rev(as.factor(carrier)),
-         dest = fct_rev(as.factor(dest))) %&amp;gt;% 
-  filter(n &amp;gt; 150) %&amp;gt;% 
+         dest = fct_rev(as.factor(dest))) %&amp;gt;%
+  filter(n &amp;gt; 150) %&amp;gt;%
   ggplot(aes(y = n, axis1 = origin, axis2 = carrier, axis3 = dest)) +
   geom_alluvium(aes(fill = origin), aes.bind=TRUE, width = 1/12) +
   geom_stratum(width = 1/4, fill = &amp;quot;white&amp;quot;, color = &amp;quot;black&amp;quot;) +
@@ -1592,12 +1592,12 @@ alluvial(fly %&amp;gt;% select(-n),
 &lt;p&gt;Have fun!&lt;/p&gt;
 </description>
     </item>
-    
+
     <item>
       <title>Tidy evaluation in R - Simple Examples</title>
       <link>/2019/04/24/tidy-eval-examples/</link>
       <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
-      
+
       <guid>/2019/04/24/tidy-eval-examples/</guid>
       <description>
 &lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
@@ -1677,11 +1677,11 @@ circumference
 &lt;p&gt;Personally, I’m learning most efficiently by first looking at examples that show the code in action and then tweaking them to fit my needs. After playing with the code for a bit and inevitably breaking something I turn to the docs to understand more about the syntax and additional arguments of the function. Thus, all my posts on tools or methodology will follow the same pattern: I will jump right into the action by looking at a useful yet simple example or two. Next, I dissect this example, maybe break something, and explain the arguments. In closing, there will be a few more complex examples, caveats, pointers, and/or resources. Sounds good? Here we go:&lt;/p&gt;
 &lt;p&gt;The first example is a function that takes as &lt;em&gt;input&lt;/em&gt; a data frame &lt;code&gt;df&lt;/code&gt; and a variable &lt;code&gt;var&lt;/code&gt; from that data frame (i.e. a column/feature). The &lt;em&gt;output&lt;/em&gt; is the difference between the (global) median and the mean of the variable. This is a realistic example of a concise helper function, since it goes beyond basic in-built tools and provides a quick check on whether a distribution is symmetric&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;median_minus_mean &amp;lt;- function(df, var){
-  
+
   var &amp;lt;- enquo(var)
-  
-  df %&amp;gt;% 
-    summarise(foo = median(!!var) - mean(!!var)) %&amp;gt;% 
+
+  df %&amp;gt;%
+    summarise(foo = median(!!var) - mean(!!var)) %&amp;gt;%
     .$foo
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Now we apply it to the circumference of trees to find that the mean is larger than the median:&lt;/p&gt;
@@ -1696,21 +1696,21 @@ circumference
 &lt;p&gt;(Talking about details: &lt;code&gt;foo&lt;/code&gt; or &lt;code&gt;bar&lt;/code&gt; are popular names for dummy variables in many programming languages. It’s just something that needs a name for the moment but can immediately be forgotten once its time-limited purpose is fulfilled.)&lt;/p&gt;
 &lt;p&gt;Also: yes, this works:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;median_minus_mean &amp;lt;- function(df, var){
-  df %&amp;gt;% 
-    summarise(foo = median(!!enquo(var)) - mean(!!enquo(var))) %&amp;gt;% 
+  df %&amp;gt;%
+    summarise(foo = median(!!enquo(var)) - mean(!!enquo(var))) %&amp;gt;%
     .$foo
 }
 median_minus_mean(Orange, circumference)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## [1] -0.8571429&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;You can quote and unquote in the same step. Let’s go a bit further and include grouping by another variable, here the &lt;code&gt;age&lt;/code&gt; of the trees:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;median_minus_mean &amp;lt;- function(df, var, gvar){
-  
+
   var &amp;lt;- enquo(var)
   gvar &amp;lt;- enquo(gvar)
-  
-  df %&amp;gt;% 
-    group_by(!!gvar) %&amp;gt;% 
-    summarise(foo = median(!!var) - mean(!!var)) %&amp;gt;% 
+
+  df %&amp;gt;%
+    group_by(!!gvar) %&amp;gt;%
+    summarise(foo = median(!!var) - mean(!!var)) %&amp;gt;%
     .$foo
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;median_minus_mean(Orange, circumference, age)&lt;/code&gt;&lt;/pre&gt;
@@ -1718,12 +1718,12 @@ median_minus_mean(Orange, circumference)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Turns out that for some ages the mean circumference is smaller than the median.&lt;/p&gt;
 &lt;p&gt;Good news: quote/unquote also works for ggplot2. Here we quote the x, y, and colour-group variables of our plot:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_growth_tree &amp;lt;- function(df, xvar, yvar, gvar){
-  
+
   xvar &amp;lt;- enquo(xvar)
   yvar &amp;lt;- enquo(yvar)
   gvar &amp;lt;- enquo(gvar)
-  
-  df %&amp;gt;% 
+
+  df %&amp;gt;%
     ggplot(aes(!!xvar, !!yvar, col = !!gvar)) +
     geom_line()
 }
@@ -1733,10 +1733,10 @@ plot_growth_tree(Orange, age, circumference, Tree)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Some trees grow faster than others.&lt;/p&gt;
 &lt;p&gt;In fact, ggplot2 is a great use case because it allows us to quickly built helper functions if we need to repeat a certain plot for many similar features. Individual modification to those templates can be added using the ggplot2 grammar. Here is a histogram example where we add a custom title to the second plot&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_hist &amp;lt;- function(df, var, bins, bcol){
-  
+
   var &amp;lt;- enquo(var)
-  
-  df %&amp;gt;% 
+
+  df %&amp;gt;%
     ggplot(aes(!!var)) +
     geom_histogram(bins = bins, fill = bcol, col = &amp;quot;black&amp;quot;)
 }&lt;/code&gt;&lt;/pre&gt;
@@ -1768,6 +1768,6 @@ grid.arrange(p1, p2, layout_matrix = rbind(c(1,2)))&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 </description>
     </item>
-    
+
   </channel>
 </rss>
