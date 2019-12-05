@@ -49,9 +49,27 @@
     <item>
       <title>R</title>
       <link>/categories/r/</link>
-      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 05 Dec 2019 00:00:00 +0000</pubDate>
       
       <guid>/categories/r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Shiny</title>
+      <link>/categories/shiny/</link>
+      <pubDate>Thu, 05 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/shiny/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Starter Code</title>
+      <link>/categories/starter-code/</link>
+      <pubDate>Thu, 05 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/starter-code/</guid>
       <description></description>
     </item>
     
@@ -67,7 +85,7 @@
     <item>
       <title>Tidyverse</title>
       <link>/categories/tidyverse/</link>
-      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 05 Dec 2019 00:00:00 +0000</pubDate>
       
       <guid>/categories/tidyverse/</guid>
       <description></description>
@@ -76,7 +94,7 @@
     <item>
       <title>Visualisation</title>
       <link>/categories/visualisation/</link>
-      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 05 Dec 2019 00:00:00 +0000</pubDate>
       
       <guid>/categories/visualisation/</guid>
       <description></description>

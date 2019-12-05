@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Starter Code on head spin - the Heads or Tails blog</title>
+    <link>/tags/starter-code/</link>
+    <description>Recent content in Starter Code on head spin - the Heads or Tails blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 05 Dec 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/starter-code/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>R Shiny for beginners: annotated starter code</title>
+      <link>/2019/12/05/shiny-starter-code/</link>
+      <pubDate>Thu, 05 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/12/05/shiny-starter-code/</guid>
+      <description>This week I decided to get started with the R shiny package for interactive web applications. As an absolute beginner, I want to document my learning journey in the hope that it will be useful for other first-time shiny users.
+This post assumes some basic familiarity with R and the tidyverse, but no prior knowledge of shiny is required. The content is digested from the official shiny tutorial which is great and definitely worth checking out for more details.</description>
+    </item>
+    
+  </channel>
+</rss>

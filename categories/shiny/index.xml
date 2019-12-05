@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Shiny on head spin - the Heads or Tails blog</title>
+    <link>/categories/shiny/</link>
+    <description>Recent content in Shiny on head spin - the Heads or Tails blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 05 Dec 2019 00:00:00 +0000</lastBuildDate>
+    
+        <atom:link href="/categories/shiny/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>R Shiny for beginners: annotated starter code</title>
+      <link>/2019/12/05/shiny-starter-code/</link>
+      <pubDate>Thu, 05 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/12/05/shiny-starter-code/</guid>
+      <description>
+
+
+&lt;p&gt;This week I decided to get started with the &lt;a href=&#34;https://shiny.rstudio.com&#34;&gt;R shiny&lt;/a&gt; package for interactive web applications. As an absolute beginner, I want to document my learning journey in the hope that it will be useful for other first-time shiny users.&lt;/p&gt;
+&lt;p&gt;This post assumes some basic familiarity with &lt;a href=&#34;https://www.r-project.org&#34;&gt;R&lt;/a&gt; and the &lt;a href=&#34;https://www.tidyverse.org&#34;&gt;tidyverse&lt;/a&gt;, but no prior knowledge of shiny is required. The content is digested from the &lt;a href=&#34;https://shiny.rstudio.com/tutorial/&#34;&gt;official shiny tutorial&lt;/a&gt; which is great and definitely worth checking out for more details. All credit goes to them; I’m just trying to boil it down to the essentials to get you started within minutes.&lt;/p&gt;
+&lt;p&gt;Below is the complete code for my first shiny app. Only 56 lines (a good chunk of which are comments and styling) in hopefully readable formatting. I considered it fitting to base it on the classic coin flip experiment which results in either Heads or Tails:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# preparations; required libraries
+library(shiny)
+library(dplyr)
+library(tibble)
+library(stringr)
+library(ggplot2)
+
+# the post url
+post &amp;lt;- &amp;quot;https://heads0rtai1s.github.io/2019/12/05/shiny-starter-code/&amp;quot;
+
+# user interface elements and layout
+ui &amp;lt;- fluidPage(
+  titlePanel(&amp;quot;Heads or Tails&amp;quot;),
+  sidebarLayout(
+    sidebarPanel(
+      
+      sliderInput(inputId = &amp;quot;n&amp;quot;, label = &amp;quot;Number of flips:&amp;quot;,
+                  min = 10, max = 1000, value = 500),
+      sliderInput(inputId = &amp;quot;prob&amp;quot;, label = &amp;quot;Success rate:&amp;quot;,
+                  min = 0, max = 1, value = 0.5),
+      
+      tags$div(tags$p(HTML(&amp;quot;&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;
+                        Find the annotated code&amp;quot;)),
+               tags$a(href=post, &amp;quot;in this blog post.&amp;quot;))
+      
+    ),
+    mainPanel(plotOutput(outputId = &amp;quot;bars&amp;quot;))
+  )
+)
+
+# server-side computations
+server &amp;lt;- function(input, output) {
+  
+  # the bar plot
+  output$bars &amp;lt;- renderPlot({
+    
+    # most of this is for ggplot2; note the input$x syntax
+    flips &amp;lt;- tibble(flips = rbinom(input$n, 1, input$prob)) %&amp;gt;% 
+      mutate(flips = if_else(flips == 1, &amp;quot;Heads&amp;quot;, &amp;quot;Tails&amp;quot;))  
+    
+    flips %&amp;gt;% 
+      count(flips) %&amp;gt;% 
+      ggplot(aes(flips, n, fill = flips)) +
+      geom_col() +
+      geom_label(aes(flips, n, label = n), size = 5) +
+      theme(legend.position = &amp;quot;none&amp;quot;,
+            axis.text = element_text(size = 15)) +
+      labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;) +
+      ggtitle(str_c(&amp;quot;Results of &amp;quot;, input$n,
+                    &amp;quot; flips with Heads probability &amp;quot;,
+                    sprintf(&amp;quot;%.2f&amp;quot;, input$prob)))
+  })
+}
+
+# run it all
+shinyApp(ui = ui, server = server)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;All you need to do at this stage is to (have the required libraries installed and) copy/paste the code above into an active R session. Try it out!&lt;/p&gt;
+&lt;p&gt;This is the result you will get:&lt;/p&gt;
+&lt;iframe src=&#34;https://headsortails.shinyapps.io/headsortails/&#34; width=&#34;900&#34; height=&#34;500&#34; frameborder=&#34;no&#34; scrolling=&#34;no&#34;&gt;
+&lt;/iframe&gt;
+&lt;p&gt;This app is embedded via &lt;a href=&#34;https://headsortails.shinyapps.io/headsortails/&#34;&gt;shinyapps.io&lt;/a&gt;. More about that later.&lt;/p&gt;
+&lt;p&gt;The app allows you to choose the number of coin flips as well as the probability for Heads using slider bars. It visualises the resulting total numbers of Heads vs Tails as a reactive bar plot. Given the functionality of this app, 56 lines is not too bad, is it? Let’s dissect the code element by element!&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Preparations:&lt;/strong&gt; Before we get to the interesting parts, the first five lines define and load the packages the script needs. This is unrelated to shiny (other than loading it):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;library(shiny)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Note, that shiny web apps on shinyapps.io apparently need explicit &lt;code&gt;library&lt;/code&gt; calls and that my &lt;a href=&#34;https://heads0rtai1s.github.io/2019/11/07/tidy-curly-pivot-leaflet/&#34;&gt;normal approach&lt;/a&gt; of using &lt;code&gt;invisible(lapply())&lt;/code&gt; led to some confusing errors before I figured it out. Besides the libraries, I’m also including the url for this post as part of the preparation.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The shiny code&lt;/strong&gt; is structured into two main elements: (i) a &lt;strong&gt;user interface (UI)&lt;/strong&gt; definition and layout, and (ii) the &lt;strong&gt;server-side computations&lt;/strong&gt; producing the data for plots (or tables, or other output elements). At the end, there is always a &lt;strong&gt;call to the &lt;code&gt;shinyApp&lt;/code&gt; function&lt;/strong&gt; which renders the whole thing.&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;UI setup&lt;/strong&gt; starts with:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ui &amp;lt;- fluidPage(&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;which defines the internal name of the UI as &lt;code&gt;ui&lt;/code&gt; (&lt;em&gt;very surprising; I know&lt;/em&gt;). The &lt;a href=&#34;https://shiny.rstudio.com/reference/shiny/0.14/fluidPage.html&#34;&gt;fluidPage&lt;/a&gt; environment creates an output html that automatically adjusts to the size and shape of your viewer window. This seems to be the layout you would choose most often. The 2 alternatives are a &lt;a href=&#34;https://shiny.rstudio.com/reference/shiny/0.14/fixedPage.html&#34;&gt;fixedPage&lt;/a&gt; or a &lt;a href=&#34;https://shiny.rstudio.com/reference/shiny/0.14/navbarPage.html&#34;&gt;navbarPage&lt;/a&gt; which gives you a top-level navigation bar.&lt;/p&gt;
+&lt;p&gt;Inside our &lt;code&gt;fluidPage&lt;/code&gt; we have the UI elements. The first one gives your app a title:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;titlePanel(&amp;quot;Heads or Tails&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Nothing too complex here. The next element is the &lt;code&gt;sidebarLayout&lt;/code&gt;; as in “a layout that contains a sidebar” (as opposed to “a layout for the sidebar only”).&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sidebarLayout(
+    sidebarPanel(...),
+    mainPanel(...)
+  )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This layout has always two elements: the &lt;code&gt;sidebarPanel&lt;/code&gt; and the &lt;code&gt;mainPanel&lt;/code&gt;. You can browse other layout options &lt;a href=&#34;https://shiny.rstudio.com/articles/layout-guide.html&#34;&gt;here&lt;/a&gt;, including grids and tabs.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;sidebarPanel&lt;/code&gt; typically contains the &lt;a href=&#34;https://shiny.rstudio.com/tutorial/written-tutorial/lesson3/&#34;&gt;control widgets&lt;/a&gt;. Those widgets are what the users interact with.&lt;/p&gt;
+&lt;p&gt;Here, we are using a &lt;a href=&#34;https://shiny.rstudio.com/reference/shiny/latest/sliderInput.html&#34;&gt;sliderInput&lt;/a&gt; to allow the user to select the number of coin flips (in a range from 10 - 1000) and the probability for Heads (in a range from 0 - 1):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sidebarPanel(
+  sliderInput(inputId = &amp;quot;n&amp;quot;, label = &amp;quot;Number of flips:&amp;quot;,
+              min = 10, max = 1000, value = 500),
+  sliderInput(inputId = &amp;quot;prob&amp;quot;, label = &amp;quot;Success rate:&amp;quot;,
+              min = 0, max = 1, value = 0.5),
+  
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Both sliders have the same syntax:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;min&lt;/code&gt;, &lt;code&gt;max&lt;/code&gt;, and &lt;code&gt;value&lt;/code&gt; define the slider range and the default value at which the slider sits upon loading the app. Those parameters are specific to the slider widget.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;label&lt;/code&gt; is the text explaining to the user what the slider is being used for.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the &lt;code&gt;inputID&lt;/code&gt; is important, since it will be used in the server-side part of the app to assign inputs to outputs. Note, that we call the number of flips &lt;code&gt;n&lt;/code&gt; and the probability for Heads &lt;code&gt;prob&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Other &lt;a href=&#34;https://shiny.rstudio.com/gallery/widget-gallery.html&#34;&gt;available widgets&lt;/a&gt; include checkboxes, radio buttons, or text input; each with their own specific parameters besides &lt;code&gt;InputID&lt;/code&gt; and &lt;code&gt;label&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Ǹote, that besides widgets and plots, &lt;a href=&#34;https://shiny.rstudio.com/articles/tag-glossary.html&#34;&gt;html content or formatting&lt;/a&gt; can be added inside a &lt;code&gt;Panel&lt;/code&gt; method. In the code I’m inserting a short paragraph and the hyperlink to this blog post:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;tags$div(tags$p(HTML(&amp;quot;&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;
+                        Find the annotated code&amp;quot;)),
+               tags$a(href=post, &amp;quot;in this blog post.&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Shiny tags like &lt;code&gt;tag$p&lt;/code&gt; or &lt;code&gt;tag$a&lt;/code&gt; are named after their HTML equivalents. Raw HTML needs to wrapped via the &lt;code&gt;HTML()&lt;/code&gt; function (thanks &lt;a href=&#34;https://stackoverflow.com/questions/46882025/r-shiny-break-line-in-button-label/46882196#46882196&#34;&gt;stackoverflow&lt;/a&gt;!). The line breaks are there for aesthetic reasons, to make the height of the sidebar and main boxes roughly the same.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;mainPanel&lt;/code&gt; typically contains the rendered reactive output. This object will change immediately when the user selects a different input (here via the sliders). We choose a plot because plots are awesome:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mainPanel(plotOutput(outputId = &amp;quot;bars&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;similar to the &lt;code&gt;inputID&lt;/code&gt; above, the &lt;code&gt;outputID&lt;/code&gt; connects UI elements to server computations.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;besides the &lt;code&gt;plotOutput&lt;/code&gt; function, there are &lt;a href=&#34;https://shiny.rstudio.com/tutorial/written-tutorial/lesson4/&#34;&gt;other functions&lt;/a&gt; to produce tables, images, text, and more.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Now the 2nd part: the &lt;strong&gt;server setup&lt;/strong&gt;. Here is where all the computations happen that produce the data for our output elements based on the input parameters. This part is close to a typical R workflow, in that you build your plots or tables to communicate insights. The only difference is that parameters are passed from the input UI, and that none of the possible parameters should break your plots.&lt;/p&gt;
+&lt;p&gt;In the code, the &lt;code&gt;server&lt;/code&gt; function builds a list-like object &lt;code&gt;output&lt;/code&gt; based on the user &lt;code&gt;input&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;server &amp;lt;- function(input, output) {
+  
+  output$bars &amp;lt;- renderPlot({})
+
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;We define a single output: a plot via &lt;code&gt;renderPlot&lt;/code&gt;. Other &lt;a href=&#34;https://shiny.rstudio.com/reference/shiny/1.0.5/&#34;&gt;render function&lt;/a&gt; include &lt;code&gt;renderImage&lt;/code&gt; or &lt;code&gt;renderTable&lt;/code&gt;. You can add as many output elements as you need.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The plot is assigned to &lt;code&gt;output$bars&lt;/code&gt;. This means that it becomes an element in the &lt;code&gt;output&lt;/code&gt; list (the only element in our case). The name &lt;code&gt;bars&lt;/code&gt; needs to match the &lt;code&gt;outputId = &amp;quot;bars&amp;quot;&lt;/code&gt; in our UI &lt;code&gt;mainPanel&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Now, the code inside &lt;code&gt;renderPlot&lt;/code&gt; is re-run every time the user changes the input parameters. In our example, I used some ggplot2 styling to make the plot look nicer. Here is an alternative one-liner using only base R, to emphasise the shiny elements. Go on and replace the &lt;code&gt;renderPlot&lt;/code&gt; call in the starter code with this one to see what happens:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;output$bars &amp;lt;- renderPlot({
+    barplot(table( rbinom(input$n, 1, input$prob) ))
+  })&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;In both versions, the &lt;code&gt;rbinom&lt;/code&gt; function does all the work by creating a list of &lt;code&gt;n&lt;/code&gt; random numbers following a &lt;a href=&#34;https://en.wikipedia.org/wiki/Binomial_distribution&#34;&gt;binomial distribution&lt;/a&gt; with a success probability of &lt;code&gt;prob&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Note, how the two input parameters are being passed as elements of the &lt;code&gt;input&lt;/code&gt; object. Their names, &lt;code&gt;n&lt;/code&gt; and &lt;code&gt;prob&lt;/code&gt; need to match the respective &lt;code&gt;inputId&lt;/code&gt;s in the UI part.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Finally, don’t forget the line that &lt;strong&gt;runs the whole thing:&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;shinyApp(ui = ui, server = server)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And that’s it! This is the main technical concept. The rest is the creative part: figuring out what to display with which user inputs. (Well, there’s also &lt;a href=&#34;https://shiny.rstudio.com/tutorial/written-tutorial/lesson5/&#34;&gt;loading datasets and R scripts&lt;/a&gt; as well as &lt;a href=&#34;https://shiny.rstudio.com/tutorial/written-tutorial/lesson6/&#34;&gt;streamlining bulky apps&lt;/a&gt;.)&lt;/p&gt;
+&lt;p&gt;Except, we’re not quite done yet. Copy/pasting code into the R console is &lt;em&gt;not quite&lt;/em&gt; the best way to &lt;a href=&#34;https://shiny.rstudio.com/tutorial/written-tutorial/lesson7/&#34;&gt;showcase your app&lt;/a&gt;. Here’s how to do it properly:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Paste all the starter code above into a single file called &lt;code&gt;app.R&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Put that file into a sub-directory of your choice (e.g. &lt;code&gt;./headsortails/&lt;/code&gt;).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;And call &lt;code&gt;shiny::runApp(&amp;quot;headsortails&amp;quot;)&lt;/code&gt; from an R session running in the parent directory of that subdirectory.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Each &lt;code&gt;app.R&lt;/code&gt; should live in its own sub-directory. They are called via the names of their sub-directories. (Note, that the convenience of having both UI and server in the same file was not always possible. Old shiny versions required two separate &lt;code&gt;ui.R&lt;/code&gt; and &lt;code&gt;server.R&lt;/code&gt; files; a structure that’s still supported).&lt;/p&gt;
+&lt;p&gt;Finally, shiny apps are ideal to be shared online since they are reactive HTML. You can run your own &lt;a href=&#34;https://github.com/rstudio/shiny-server/blob/master/README.md&#34;&gt;shiny server&lt;/a&gt; to do this, especially if you have many different apps to showcase. For your first steps, I recommend using &lt;a href=&#34;https://www.shinyapps.io&#34;&gt;shinyapps.io&lt;/a&gt;, run by the omipresent Rstudio folks. They have a &lt;a href=&#34;https://www.shinyapps.io/#pricing&#34;&gt;free tier&lt;/a&gt; allowing you to host 5 apps running for a maximum 25 hours per month. That’s plenty of resources to get your feet wet.&lt;/p&gt;
+&lt;p&gt;As indicated at the beginning, I’m using shinyapps.io to host the &lt;a href=&#34;https://headsortails.shinyapps.io/headsortails/&#34;&gt;version of the app&lt;/a&gt; that is included above. However, you cannot embed shiny elements directly into a &lt;a href=&#34;https://bookdown.org/yihui/blogdown/&#34;&gt;blogdown&lt;/a&gt; post like this one, since those posts are static. Above, I used the &lt;a href=&#34;https://stackoverflow.com/questions/46136141/incorporating-interactive-shiny-apps-into-rmarkdown-document-for-blogdown-hugo-b&#34;&gt;little trick&lt;/a&gt; of embedding the link to my shiny app via the HTML &lt;code&gt;iframe&lt;/code&gt; tag. Like this:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;&amp;lt;iframe src=&amp;quot;https://headsortails.shinyapps.io/headsortails/&amp;quot; width=&amp;quot;800&amp;quot; height=&amp;quot;500&amp;quot; frameborder=&amp;quot;no&amp;quot; scrolling=&amp;quot;no&amp;quot;&amp;gt;&amp;lt;/iframe&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;More info:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;The &lt;a href=&#34;https://shiny.rstudio.com/tutorial/&#34;&gt;official shiny tutorial&lt;/a&gt;, from which this post was digested, contains a list of &lt;a href=&#34;https://shiny.rstudio.com/tutorial/written-tutorial/lesson1/#Go%20Further&#34;&gt;11 example apps&lt;/a&gt; that demonstrate various use cases.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Check out the pretty comprehensive &lt;a href=&#34;https://shiny.rstudio.com/gallery/&#34;&gt;shiny gallery&lt;/a&gt; for plenty of inspiration. As for many Rstudio/tidyverse tools there’s also a handy &lt;a href=&#34;https://shiny.rstudio.com/articles/cheatsheet.html&#34;&gt;cheat sheet&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;If you’re primarily interested in reactive dashboards have a look at &lt;a href=&#34;https://rstudio.github.io/shinydashboard/&#34;&gt;shiny dashboard&lt;/a&gt;. I played with it a bit and I like it so far.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

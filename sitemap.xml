@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/2019/12/05/shiny-starter-code/</loc>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/2019/11/07/tidy-curly-pivot-leaflet/</loc>
     <lastmod>2019-11-07T00:00:00+00:00</lastmod>
   </url>
@@ -76,6 +81,12 @@
   </url>
   
   <url>
+    <loc>/tags/interactive/</loc>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/journey/</loc>
     <lastmod>2019-09-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -125,7 +136,7 @@
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2019-11-07T00:00:00+00:00</lastmod>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -149,13 +160,37 @@
   
   <url>
     <loc>/tags/r/</loc>
-    <lastmod>2019-11-07T00:00:00+00:00</lastmod>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/categories/r/</loc>
-    <lastmod>2019-11-07T00:00:00+00:00</lastmod>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/shiny/</loc>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/shiny/</loc>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/starter-code/</loc>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/starter-code/</loc>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -179,31 +214,31 @@
   
   <url>
     <loc>/tags/tidyverse/</loc>
-    <lastmod>2019-11-07T00:00:00+00:00</lastmod>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/categories/tidyverse/</loc>
-    <lastmod>2019-11-07T00:00:00+00:00</lastmod>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/visualisation/</loc>
-    <lastmod>2019-11-07T00:00:00+00:00</lastmod>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/categories/visualisation/</loc>
-    <lastmod>2019-11-07T00:00:00+00:00</lastmod>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/</loc>
-    <lastmod>2019-11-07T00:00:00+00:00</lastmod>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

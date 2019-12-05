@@ -6,10 +6,20 @@
     <description>Recent content in Tidyverse on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 07 Nov 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 05 Dec 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/tidyverse/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>R Shiny for beginners: annotated starter code</title>
+      <link>/2019/12/05/shiny-starter-code/</link>
+      <pubDate>Thu, 05 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/12/05/shiny-starter-code/</guid>
+      <description>This week I decided to get started with the R shiny package for interactive web applications. As an absolute beginner, I want to document my learning journey in the hope that it will be useful for other first-time shiny users.
+This post assumes some basic familiarity with R and the tidyverse, but no prior knowledge of shiny is required. The content is digested from the official shiny tutorial which is great and definitely worth checking out for more details.</description>
+    </item>
     
     <item>
       <title>Tidyverse evolutions: curly-curly operator and pivoting (feat. tidytuesday data &amp; leaflet visuals)</title>
