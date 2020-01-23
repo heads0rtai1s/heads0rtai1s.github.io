@@ -40,12 +40,7 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;Among some other elements, this page has a prominent table which contains all &lt;em&gt;Swift&lt;/em&gt; observations that covered the position of our object on the sky. As you see, not all of those were pointed at M31N 2008-12a; some serendipitous observations featured our explosive friend somewhere near the edge of the field of view. But we’re not picky, we take all we can get. We download the entire page using the &lt;code&gt;read_html&lt;/code&gt; tool and store it in the variable &lt;code&gt;target_page&lt;/code&gt;. This might take a moment or two:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;target_page &amp;lt;- read_html(target_link)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The result isn’t very pretty, yet. It just shows us the HTML header and the HTML body and a whole lot of text and formatting associated with it.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;target_page&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## {html_document}
-## &amp;lt;html lang=&amp;quot;en&amp;quot; xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot;&amp;gt;
-## [1] &amp;lt;head&amp;gt;\n&amp;lt;title&amp;gt;UKSSDC | Data Access | Download Portal | Search Resul ...
-## [2] &amp;lt;body&amp;gt;\n    &amp;lt;div id=&amp;quot;holder&amp;quot;&amp;gt;\n    &amp;lt;p style=&amp;quot;visibility: hidden; dis ...&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The result isn’t very pretty, yet. It just shows us the HTML header and the HTML body and a whole lot of text and formatting associated with it. (I’m not showing it here because the output confuses some rss readers.)&lt;/p&gt;
 &lt;p&gt;Luckily, we don’t have to mess around with the HTML text in this unstructured form. In order to find out exactly which element we need, we can use the &lt;em&gt;Inspector&lt;/em&gt; tool of our browsers. Chances are, you just need to press &lt;code&gt;F12&lt;/code&gt; to launch it.&lt;/p&gt;
 &lt;p&gt;Now you should see something like this, with the Inspector tool taking up part of the screen. The Inspector window (here on the right) shows the HTML code of the website in the upper half of the window (plus some stuff we don’t care about in this post in the lower half):&lt;/p&gt;
 &lt;div class=&#34;figure&#34;&gt;
@@ -375,7 +370,7 @@ foo %&amp;gt;%
        caption = &amp;quot;The M31N 2008-12a monitoring collaboration&amp;quot;) +
   ggtitle(&amp;quot;Neil Gehrels Swift Observatory coverage of nova M31N 2008-12a&amp;quot;,
           subtitle = &amp;quot;Targeted observations began in 2013. In 2015 we conducted the\nX-ray flash monitoring campaign. In 2017 the eruption happened on NYE.&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-01-23-rvest-intro-swift_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-01-23-rvest-intro-swift_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Observations prior to 2013 did not detect the eruptions; in 2013 our targeted campaign &lt;a href=&#34;https://arxiv.org/abs/1401.2904&#34;&gt;began&lt;/a&gt;. 2015 was an odd year, because we were running a separate high-frequency campaign trying to catch an elusive &lt;a href=&#34;https://arxiv.org/abs/1607.07985&#34;&gt;X-ray flash&lt;/a&gt;, which had never been observed in any object. Unfortunately, it still hasn’t. In 2017 the eruption had the nerves to happen on New Year’s Eve, so almost all observations happened in early 2018 (and our NYE parties briefly got a bit hectic). The 2020 eruption will probably happen in October, but don’t bet too much money on it.&lt;/p&gt;
 &lt;p&gt;If you look at cumulative exposure time instead of number of observations you see that in 2015 most of those 112 observations were much shorter than usual:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;foo %&amp;gt;% 
@@ -392,7 +387,7 @@ foo %&amp;gt;%
   labs(x = &amp;quot;Year&amp;quot;, y = &amp;quot;Combined XRT Exposure [ks]&amp;quot;,
        caption = &amp;quot;The M31N 2008-12a monitoring collaboration&amp;quot;) +
   ggtitle(&amp;quot;Neil Gehrels Swift Observatory coverage of nova M31N 2008-12a&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-01-23-rvest-intro-swift_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-01-23-rvest-intro-swift_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Up to Jan 2020, we have used &lt;em&gt;Swift&lt;/em&gt; to look at M31N 2008-12a in the X-rays for a total of almost exactly 600 ks. Which is more than half a &lt;em&gt;mega second&lt;/em&gt;. Now that’s an impressive unit. Coincidentally, with Rstudio::conf 2020 coming up in San Francisco next week, my next post might happen within the next mega second. Watch this space ;-)&lt;/p&gt;
 &lt;p&gt;More info:&lt;/p&gt;
 &lt;ul&gt;

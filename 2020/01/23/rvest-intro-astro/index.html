@@ -100,12 +100,7 @@ invisible(lapply(libs, library, character.only = TRUE))</code></pre>
 </div>
 <p>Among some other elements, this page has a prominent table which contains all <em>Swift</em> observations that covered the position of our object on the sky. As you see, not all of those were pointed at M31N 2008-12a; some serendipitous observations featured our explosive friend somewhere near the edge of the field of view. But we’re not picky, we take all we can get. We download the entire page using the <code>read_html</code> tool and store it in the variable <code>target_page</code>. This might take a moment or two:</p>
 <pre class="r"><code>target_page &lt;- read_html(target_link)</code></pre>
-<p>The result isn’t very pretty, yet. It just shows us the HTML header and the HTML body and a whole lot of text and formatting associated with it.</p>
-<pre class="r"><code>target_page</code></pre>
-<pre><code>## {html_document}
-## &lt;html lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
-## [1] &lt;head&gt;\n&lt;title&gt;UKSSDC | Data Access | Download Portal | Search Resul ...
-## [2] &lt;body&gt;\n    &lt;div id=&quot;holder&quot;&gt;\n    &lt;p style=&quot;visibility: hidden; dis ...</code></pre>
+<p>The result isn’t very pretty, yet. It just shows us the HTML header and the HTML body and a whole lot of text and formatting associated with it. (I’m not showing it here because the output confuses some rss readers.)</p>
 <p>Luckily, we don’t have to mess around with the HTML text in this unstructured form. In order to find out exactly which element we need, we can use the <em>Inspector</em> tool of our browsers. Chances are, you just need to press <code>F12</code> to launch it.</p>
 <p>Now you should see something like this, with the Inspector tool taking up part of the screen. The Inspector window (here on the right) shows the HTML code of the website in the upper half of the window (plus some stuff we don’t care about in this post in the lower half):</p>
 <div class="figure">
@@ -435,7 +430,7 @@ foo %&gt;%
        caption = &quot;The M31N 2008-12a monitoring collaboration&quot;) +
   ggtitle(&quot;Neil Gehrels Swift Observatory coverage of nova M31N 2008-12a&quot;,
           subtitle = &quot;Targeted observations began in 2013. In 2015 we conducted the\nX-ray flash monitoring campaign. In 2017 the eruption happened on NYE.&quot;)</code></pre>
-<p><img src="/post/2020-01-23-rvest-intro-swift_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="/post/2020-01-23-rvest-intro-swift_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>Observations prior to 2013 did not detect the eruptions; in 2013 our targeted campaign <a href="https://arxiv.org/abs/1401.2904">began</a>. 2015 was an odd year, because we were running a separate high-frequency campaign trying to catch an elusive <a href="https://arxiv.org/abs/1607.07985">X-ray flash</a>, which had never been observed in any object. Unfortunately, it still hasn’t. In 2017 the eruption had the nerves to happen on New Year’s Eve, so almost all observations happened in early 2018 (and our NYE parties briefly got a bit hectic). The 2020 eruption will probably happen in October, but don’t bet too much money on it.</p>
 <p>If you look at cumulative exposure time instead of number of observations you see that in 2015 most of those 112 observations were much shorter than usual:</p>
 <pre class="r"><code>foo %&gt;% 
@@ -452,7 +447,7 @@ foo %&gt;%
   labs(x = &quot;Year&quot;, y = &quot;Combined XRT Exposure [ks]&quot;,
        caption = &quot;The M31N 2008-12a monitoring collaboration&quot;) +
   ggtitle(&quot;Neil Gehrels Swift Observatory coverage of nova M31N 2008-12a&quot;)</code></pre>
-<p><img src="/post/2020-01-23-rvest-intro-swift_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="/post/2020-01-23-rvest-intro-swift_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>Up to Jan 2020, we have used <em>Swift</em> to look at M31N 2008-12a in the X-rays for a total of almost exactly 600 ks. Which is more than half a <em>mega second</em>. Now that’s an impressive unit. Coincidentally, with Rstudio::conf 2020 coming up in San Francisco next week, my next post might happen within the next mega second. Watch this space ;-)</p>
 <p>More info:</p>
 <ul>
