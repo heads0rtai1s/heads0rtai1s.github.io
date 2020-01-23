@@ -1,8 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>tidyverse on head spin - the Heads or Tails blog</title>
+    <title>Tidyverse on head spin - the Heads or Tails blog</title>
     <link>/categories/tidyverse/</link>
-    <description>Recent content in tidyverse on head spin - the Heads or Tails blog</description>
+    <description>Recent content in Tidyverse on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 23 Jan 2020 00:00:00 +0000</lastBuildDate>
@@ -22,7 +23,7 @@
 
 &lt;p&gt;In my first post of the year I will provide &lt;strong&gt;a gentle introduction to web scraping&lt;/strong&gt; with the &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; package &lt;a href=&#34;https://github.com/tidyverse/rvest&#34;&gt;rvest&lt;/a&gt;. As the package name pun suggests, &lt;a href=&#34;https://en.wikipedia.org/wiki/Web_scraping&#34;&gt;web scraping&lt;/a&gt; is the process of harvesting, or extracting, data from websites. The extraction process is greatly simplified by the fact that websites are predominantly built using &lt;a href=&#34;https://en.wikipedia.org/wiki/HTML&#34;&gt;HTML&lt;/a&gt; (= Hyper Text Markup Language), which essentially uses a set of formatting and structuring rules to tell your browser how to display a website. By navigating the website structure and requesting the desired formatting element (e.g. a certain image, hyperlink, or bold-face text) we can scrape the underlying information. With more and more information stored online, web scraping is a valuable tool in your data science tool box. &lt;strong&gt;There’s not much background required to understand this post, other than &lt;code&gt;dplyr&lt;/code&gt; basics and a bit of HTML.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;This post will also provide a throwback to my former life as astronomer. The dataset we will scrape is related to an ongoing long-term project of observing a &lt;a href=&#34;https://www.universetoday.com/141536/this-star-has-been-going-nova-every-year-for-millions-of-years/&#34;&gt;fascinating exploding star&lt;/a&gt; in our neighbour galaxy &lt;a href=&#34;https://en.wikipedia.org/wiki/Andromeda_Galaxy&#34;&gt;Andromeda&lt;/a&gt;. Our star is one of a kind: it belongs to the class of &lt;a href=&#34;https://en.wikipedia.org/wiki/Nova&#34;&gt;Novae&lt;/a&gt; and erupts roughly once a year - much more frequently than any other nova.&lt;/p&gt;
-&lt;p&gt;The dataset is publicly available in the archives of NASA’s &lt;a href=&#34;https://swift.gsfc.nasa.gov/&#34;&gt;Neil Gehrels Swift Observatory&lt;/a&gt;. Fun fact: &lt;strong&gt;all&lt;/strong&gt; data of publicly founded astronomical observatories (e.g. from all &lt;a href=&#34;https://www.nasa.gov/&#34;&gt;NASA&lt;/a&gt; or &lt;a href=&#34;https://www.esa.int/&#34;&gt;ESA&lt;/a&gt; telescopes) is freely available to anyone (due to that very public funding); sometimes immediately after it was taken, sometimes a year or so later to give the observing team a head start. Lots of discovery space out there.&lt;/p&gt;
+&lt;p&gt;The dataset is publicly available in the archives of NASA’s &lt;a href=&#34;https://swift.gsfc.nasa.gov/&#34;&gt;Neil Gehrels Swift Observatory&lt;/a&gt;. Fun fact: &lt;strong&gt;all&lt;/strong&gt; data of publicly funded astronomical observatories (e.g. from all &lt;a href=&#34;https://www.nasa.gov/&#34;&gt;NASA&lt;/a&gt; or &lt;a href=&#34;https://www.esa.int/&#34;&gt;ESA&lt;/a&gt; telescopes) is freely available to anyone (due to that very public funding); sometimes immediately after it was taken, sometimes a year or so later to give the observing team a head start. Lots of discovery space out there.&lt;/p&gt;
 &lt;p&gt;To begin, as usual we load the required packages first:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;tibble&amp;#39;,      # wrangling
           &amp;#39;stringr&amp;#39;, &amp;#39;rvest&amp;#39;,     # strings, scraping
@@ -1939,7 +1940,7 @@ grid.arrange(p1, p2, layout_matrix = rbind(c(1,2)))&lt;/code&gt;&lt;/pre&gt;
 &lt;/ul&gt;
 
 &lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
-  &lt;iframe src=&#34;https://www.youtube.com/embed/nERXS3ssntw&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
+  &lt;iframe src=&#34;//www.youtube.com/embed/nERXS3ssntw&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 
 &lt;div class=&#34;footnotes&#34;&gt;

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>head spin - the Heads or Tails blog</title>
@@ -64,8 +64,8 @@ This post assumes some basic familiarity with R and the tidyverse, but no prior 
       
       <guid>/blogroll/</guid>
       <description>I enjoy reading these blogs:
-  R-bloggers - your one-stop shop for hundreds of R related blogs.
-  Hyndsight - Rob Hyndman&#39;s musings on forecasting and statistics research.
+ R-bloggers - your one-stop shop for hundreds of R related blogs.
+ Hyndsight - Rob Hyndman&amp;rsquo;s musings on forecasting and statistics research.
   </description>
     </item>
     
@@ -116,7 +116,7 @@ The tidyverse grammar makes it easier to manipulate data sets using simple expre
       
       <guid>/about/</guid>
       <description>head spin - the Heads or Tails blog
- Data Scientist - Astrophysicist by training - Kaggler in my free time - Optimist - Heavenly Body - Curious at heart</description>
+Data Scientist - Astrophysicist by training - Kaggler in my free time - Optimist - Heavenly Body - Curious at heart</description>
     </item>
     
     <item>

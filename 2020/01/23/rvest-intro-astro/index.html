@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Hugo 0.62.2" />
+<meta name="generator" content="Hugo 0.54.0" />
 
 
 <title>Web Scraping with rvest &#43; Astro Throwback - head spin - the Heads or Tails blog</title>
@@ -84,7 +84,7 @@
 
 <p>In my first post of the year I will provide <strong>a gentle introduction to web scraping</strong> with the <a href="https://www.tidyverse.org/">tidyverse</a> package <a href="https://github.com/tidyverse/rvest">rvest</a>. As the package name pun suggests, <a href="https://en.wikipedia.org/wiki/Web_scraping">web scraping</a> is the process of harvesting, or extracting, data from websites. The extraction process is greatly simplified by the fact that websites are predominantly built using <a href="https://en.wikipedia.org/wiki/HTML">HTML</a> (= Hyper Text Markup Language), which essentially uses a set of formatting and structuring rules to tell your browser how to display a website. By navigating the website structure and requesting the desired formatting element (e.g. a certain image, hyperlink, or bold-face text) we can scrape the underlying information. With more and more information stored online, web scraping is a valuable tool in your data science tool box. <strong>There’s not much background required to understand this post, other than <code>dplyr</code> basics and a bit of HTML.</strong></p>
 <p>This post will also provide a throwback to my former life as astronomer. The dataset we will scrape is related to an ongoing long-term project of observing a <a href="https://www.universetoday.com/141536/this-star-has-been-going-nova-every-year-for-millions-of-years/">fascinating exploding star</a> in our neighbour galaxy <a href="https://en.wikipedia.org/wiki/Andromeda_Galaxy">Andromeda</a>. Our star is one of a kind: it belongs to the class of <a href="https://en.wikipedia.org/wiki/Nova">Novae</a> and erupts roughly once a year - much more frequently than any other nova.</p>
-<p>The dataset is publicly available in the archives of NASA’s <a href="https://swift.gsfc.nasa.gov/">Neil Gehrels Swift Observatory</a>. Fun fact: <strong>all</strong> data of publicly founded astronomical observatories (e.g. from all <a href="https://www.nasa.gov/">NASA</a> or <a href="https://www.esa.int/">ESA</a> telescopes) is freely available to anyone (due to that very public funding); sometimes immediately after it was taken, sometimes a year or so later to give the observing team a head start. Lots of discovery space out there.</p>
+<p>The dataset is publicly available in the archives of NASA’s <a href="https://swift.gsfc.nasa.gov/">Neil Gehrels Swift Observatory</a>. Fun fact: <strong>all</strong> data of publicly funded astronomical observatories (e.g. from all <a href="https://www.nasa.gov/">NASA</a> or <a href="https://www.esa.int/">ESA</a> telescopes) is freely available to anyone (due to that very public funding); sometimes immediately after it was taken, sometimes a year or so later to give the observing team a head start. Lots of discovery space out there.</p>
 <p>To begin, as usual we load the required packages first:</p>
 <pre class="r"><code>libs &lt;- c(&#39;dplyr&#39;, &#39;tibble&#39;,      # wrangling
           &#39;stringr&#39;, &#39;rvest&#39;,     # strings, scraping
