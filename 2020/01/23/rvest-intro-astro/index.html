@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.62.2" />
+
+
+<title>Web Scraping with rvest &#43; Astro Throwback - head spin - the Heads or Tails blog</title>
+<meta property="og:title" content="Web Scraping with rvest &#43; Astro Throwback - head spin - the Heads or Tails blog">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/avatar.png"
+         width="50"
+         height="50"
+         alt="Heads or Tails">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="/blogroll/">Blogroll</a></li>
+    
+    <li><a href="https://twitter.com/heads0rtai1s">Twitter</a></li>
+    
+    <li><a href="https://www.kaggle.com/headsortails">Kaggle</a></li>
+    
+    <li><a href="https://www.linkedin.com/in/martin-henze">LinkedIn</a></li>
+    
+    <li><a href="https://github.com/heads0rtai1s">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">11 min read</span>
+    
+
+    <h1 class="article-title">Web Scraping with rvest &#43; Astro Throwback</h1>
+
+    
+    <span class="article-date">2020-01-23</span>
+    
+
+    <div class="article-content">
+      
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<p>In my first post of the year I will provide <strong>a gentle introduction to web scraping</strong> with the <a href="https://www.tidyverse.org/">tidyverse</a> package <a href="https://github.com/tidyverse/rvest">rvest</a>. As the package name pun suggests, <a href="https://en.wikipedia.org/wiki/Web_scraping">web scraping</a> is the process of harvesting, or extracting, data from websites. The extraction process is greatly simplified by the fact that websites are predominantly built using <a href="https://en.wikipedia.org/wiki/HTML">HTML</a> (= Hyper Text Markup Language), which essentially uses a set of formatting and structuring rules to tell your browser how to display a website. By navigating the website structure and requesting the desired formatting element (e.g. a certain image, hyperlink, or bold-face text) we can scrape the underlying information. With more and more information stored online, web scraping is a valuable tool in your data science tool box. <strong>There’s not much background required to understand this post, other than <code>dplyr</code> basics and a bit of HTML.</strong></p>
+<p>This post will also provide a throwback to my former life as astronomer. The dataset we will scrape is related to an ongoing long-term project of observing a <a href="https://www.universetoday.com/141536/this-star-has-been-going-nova-every-year-for-millions-of-years/">fascinating exploding star</a> in our neighbour galaxy <a href="https://en.wikipedia.org/wiki/Andromeda_Galaxy">Andromeda</a>. Our star is one of a kind: it belongs to the class of <a href="https://en.wikipedia.org/wiki/Nova">Novae</a> and erupts roughly once a year - much more frequently than any other nova.</p>
+<p>The dataset is publicly available in the archives of NASA’s <a href="https://swift.gsfc.nasa.gov/">Neil Gehrels Swift Observatory</a>. Fun fact: <strong>all</strong> data of publicly founded astronomical observatories (e.g. from all <a href="https://www.nasa.gov/">NASA</a> or <a href="https://www.esa.int/">ESA</a> telescopes) is freely available to anyone (due to that very public funding); sometimes immediately after it was taken, sometimes a year or so later to give the observing team a head start. Lots of discovery space out there.</p>
+<p>To begin, as usual we load the required packages first:</p>
+<pre class="r"><code>libs &lt;- c(&#39;dplyr&#39;, &#39;tibble&#39;,      # wrangling
+          &#39;stringr&#39;, &#39;rvest&#39;,     # strings, scraping
+          &#39;knitr&#39;, &#39;kableExtra&#39;,  # table styling
+          &#39;lubridate&#39;, &#39;ggplot2&#39;) # time, plots
+invisible(lapply(libs, library, character.only = TRUE))</code></pre>
+<p>This is the link for the page we’re starting with:</p>
+<pre class="r"><code>target_link &lt;- &quot;https://www.swift.ac.uk/swift_portal/getobject.php?name=m31n+2008-12a&amp;submit=Search+Names&quot;</code></pre>
+<p>We know that our star has the prosaic catalogue name “M31N 2008-12a” (or at least I still know that name in my sleep), so this is what we will plug into the search name syntax of the <a href="https://www.swift.ac.uk/">UK Swift Science Data Centre</a>. Below is the result:</p>
+<div class="figure">
+<img src="/pics/swift_name_search.jpg" alt="Search result for M31N 2008-12a" style="width:100.0%" />
+<p class="caption"><em>Search result for M31N 2008-12a</em></p>
+</div>
+<p>Among some other elements, this page has a prominent table which contains all <em>Swift</em> observations that covered the position of our object on the sky. As you see, not all of those were pointed at M31N 2008-12a; some serendipitous observations featured our explosive friend somewhere near the edge of the field of view. But we’re not picky, we take all we can get. We download the entire page using the <code>read_html</code> tool and store it in the variable <code>target_page</code>. This might take a moment or two:</p>
+<pre class="r"><code>target_page &lt;- read_html(target_link)</code></pre>
+<p>The result isn’t very pretty, yet. It just shows us the HTML header and the HTML body and a whole lot of text and formatting associated with it.</p>
+<pre class="r"><code>target_page</code></pre>
+<pre><code>## {html_document}
+## &lt;html lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+## [1] &lt;head&gt;\n&lt;title&gt;UKSSDC | Data Access | Download Portal | Search Resul ...
+## [2] &lt;body&gt;\n    &lt;div id=&quot;holder&quot;&gt;\n    &lt;p style=&quot;visibility: hidden; dis ...</code></pre>
+<p>Luckily, we don’t have to mess around with the HTML text in this unstructured form. In order to find out exactly which element we need, we can use the <em>Inspector</em> tool of our browsers. Chances are, you just need to press <code>F12</code> to launch it.</p>
+<p>Now you should see something like this, with the Inspector tool taking up part of the screen. The Inspector window (here on the right) shows the HTML code of the website in the upper half of the window (plus some stuff we don’t care about in this post in the lower half):</p>
+<div class="figure">
+<img src="/pics/swift_name_search_inspect.jpg" alt="Website with Inspector tool" style="width:100.0%" />
+<p class="caption"><em>Website with Inspector tool</em></p>
+</div>
+<p>To identify the <em>path</em> for the element we need (here the big table) we will go through the following 3 steps, which I’ve marked in the image above:</p>
+<ol style="list-style-type: decimal">
+<li><p>Click on the arrow in the top left corner of the Inspector window to get the element picker [1].</p></li>
+<li><p>Go to the website window and position your mouse pointer so that the selection mask covers the entire element you’re interested in, but not more [2]. In the image above, my mouse pointer masks the entire table with a blue shade but doesn’t select “Coordinate style” or the “Local Archives” box on the top right. (Ignore the yellow shade; there are no elements there.) Once you’re happy with the selection confirm it with a left click.</p></li>
+<li><p>Upon clicking, the Inspector code window will automatically navigate to the selected element and highlight it in blue [3]. Now all you have to do is go anywhere on that blue background, do a right click, and select “Copy -&gt; XPath”. In our case, the result is <code>/html/body/div/table</code>. This is the path that navigates through the HTML hierarchy to our table.</p></li>
+</ol>
+<p>Now we can use the tool <code>html_nodes</code> to extract the element. This gives us the HTML code; including the formatting. Because it is a table, we then use <code>html_table</code> to extract only the table itself. Other extraction tools include <code>html_text</code> or <code>html_form</code>. This <a href="https://rpubs.com/ryanthomas/webscraping-with-rvest">great tutorial</a> by Ryan Thomas contains a list of the various extraction functions (and much more).</p>
+<p>The rest of the code cell below turns the table into a tidy tibble and does a bit of formatting. Then we print the result:</p>
+<pre class="r"><code>target &lt;- target_page %&gt;% 
+  html_nodes(xpath = &quot;/html/body/div/table&quot;) %&gt;% 
+  html_table()
+
+target &lt;- target[[1]] %&gt;% 
+  as_tibble() %&gt;% 
+  rename(target = Name,
+         num_obs = `Number of observations`,
+         target_id = `Target ID`,
+         coords = `RA, Dec (J2000)`) %&gt;% 
+  select(-`Download(target)`) %&gt;% 
+  filter(target != &quot;All of the above&quot;)
+
+target %&gt;% 
+  select(-coords) %&gt;% 
+  kable() %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+target
+</th>
+<th style="text-align:left;">
+num_obs
+</th>
+<th style="text-align:left;">
+target_id
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+M31N2008-12a
+</td>
+<td style="text-align:left;">
+21
+</td>
+<td style="text-align:left;">
+00010498
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+M31N2008-12a
+</td>
+<td style="text-align:left;">
+20
+</td>
+<td style="text-align:left;">
+00010965
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+M31N2008-12a
+</td>
+<td style="text-align:left;">
+19
+</td>
+<td style="text-align:left;">
+00012176
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+M31N2012-10a
+</td>
+<td style="text-align:left;">
+190
+</td>
+<td style="text-align:left;">
+00032613
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+M31N2013-11e
+</td>
+<td style="text-align:left;">
+7
+</td>
+<td style="text-align:left;">
+00033061
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SWIFTJ0045.2+4151
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+00033800
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+M31UVOTSurvey2
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+00034903
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+M31_C7
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+00037722
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+M31_Field_E
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+00088182
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+M31_Field_G
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+00088184
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SWIFT J0045.2+4151
+</td>
+<td style="text-align:left;">
+14
+</td>
+<td style="text-align:left;">
+00633105
+</td>
+</tr>
+</tbody>
+</table>
+<p>As you can easily confirm we successfully extracted the entire table. Note: since this is an ongoing project and our star subject is prone to roughly yearly eruptions you can expect some of these numbers to change within less than a year from now (Jan 2020). Some stellar evolutions take billions of years, some are in a bit more of a hurry.</p>
+<p>But enough poetry - what have we actually done here? Well, the interesting part of the exercise was extracting the <code>target_id</code> values. You see: each position or object that <em>Swift</em> observes in the sky gets its own unique target ID; and sometimes even more than one (for internal housekeeping reasons). In order to get all the information about the 21 or 19 or 190 individual observations associated with a target ID we need to query a second website with these very same IDs.</p>
+<p>Before that: a quick primer on <strong>scraping best practices:</strong> first and foremost: <strong>respect the wishes and resources of the server</strong>. This means don’t overwhelm the server with lots of scraping requests in a very short time. Besides being rather impolite, such high-frequency requests will likely get your IP blocked. Most websites list the rules for scrapers and other bots in their <code>robots.txt</code> file (e.g. <a href="https://twitter.com/robots.txt">twitter</a>). Some sites may disallow scraping entirely. As always: be kind.</p>
+<p>So this first exercise was primarily a preparation for building the following link:</p>
+<pre class="r"><code>obsid_link_prefix &lt;- &quot;https://www.swift.ac.uk/archive/selectseq.php?tid=&quot;
+obsid_link_suffix &lt;- &quot;&amp;source=obs&amp;name=m31n%202008-12a&amp;reproc=1&quot;
+
+obsid_link_targets &lt;- target %&gt;% 
+  mutate(target_id = str_sub(target_id, start = 4)) %&gt;% 
+  pull(target_id) %&gt;% 
+  str_c(collapse = &quot;,&quot;)
+
+obsid_link &lt;- str_c(obsid_link_prefix,
+                    obsid_link_targets,
+                    obsid_link_suffix)
+
+obsid_link</code></pre>
+<pre><code>## [1] &quot;https://www.swift.ac.uk/archive/selectseq.php?tid=10498,10965,12176,32613,33061,33800,34903,37722,88182,88184,33105&amp;source=obs&amp;name=m31n%202008-12a&amp;reproc=1&quot;</code></pre>
+<p>You see that the link contains all the <code>target_id</code> values that we just scraped from the big table. Following this link gets us to an even bigger table which lists all the individual observations for each <code>target_id</code> together with some meta data. From that page, we could even directly download the data and start playing with it.</p>
+<p>For now, we will follow the exact same strategy as above: we scrape the page, extract the table using its XPath, turn it into a tidy tibble, and apply some slight adjustments. If you feel like doing a mini challenge then try to find the relevant XPath (or even build the entire extraction) without looking at the code below.</p>
+<pre class="r"><code># download the data
+obsid_page &lt;- read_html(obsid_link)
+
+# copy the xpath from the site&#39;s html, extract table
+obsid &lt;- obsid_page %&gt;% 
+  html_nodes(xpath = &#39;/html/body/div/form/div/div[3]/table&#39;) %&gt;% 
+  html_table()
+
+# table is first element, turn into tibble
+obsid &lt;- obsid[[1]] %&gt;% 
+  as_tibble(.name_repair = &quot;unique&quot;)
+
+# change names, remove rows for download all of 1 target ID
+obsid &lt;- obsid %&gt;% 
+  select(-...1) %&gt;% 
+  rename(obsid = ObsID,
+         hea_ver = `HEASoft Ver`,
+         start_time = `Start time (UT)`,
+         exp_xrt = `XRT exposure (s)`) %&gt;% 
+  filter(!str_detect(hea_ver, &quot;000&quot;)) %&gt;% 
+  select(-hea_ver) %&gt;% 
+  mutate(obsid = str_c(&quot;000&quot;, as.character(obsid))) %&gt;% 
+  mutate(target_id = str_sub(obsid, 4, 8))</code></pre>
+<p>And those are the first 5 rows:</p>
+<pre class="r"><code>obsid %&gt;% 
+  head(5) %&gt;% 
+  kable() %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+obsid
+</th>
+<th style="text-align:left;">
+start_time
+</th>
+<th style="text-align:right;">
+exp_xrt
+</th>
+<th style="text-align:left;">
+target_id
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+00010498001
+</td>
+<td style="text-align:left;">
+2018-01-01T05:07:09
+</td>
+<td style="text-align:right;">
+990.4
+</td>
+<td style="text-align:left;">
+10498
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+00010498002
+</td>
+<td style="text-align:left;">
+2018-01-02T08:26:27
+</td>
+<td style="text-align:right;">
+995.4
+</td>
+<td style="text-align:left;">
+10498
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+00010498003
+</td>
+<td style="text-align:left;">
+2018-01-03T19:20:57
+</td>
+<td style="text-align:right;">
+682.0
+</td>
+<td style="text-align:left;">
+10498
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+00010498004
+</td>
+<td style="text-align:left;">
+2018-01-04T11:31:57
+</td>
+<td style="text-align:right;">
+1271.2
+</td>
+<td style="text-align:left;">
+10498
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+00010498005
+</td>
+<td style="text-align:left;">
+2018-01-05T11:22:57
+</td>
+<td style="text-align:right;">
+5218.7
+</td>
+<td style="text-align:left;">
+10498
+</td>
+</tr>
+</tbody>
+</table>
+<p>We now have an <code>ObsID</code>, which uniquely identifies each observation, the start date &amp; time of the observation, the <code>target_id</code> from the previous table (which is part of the <code>obsid</code>), and also <code>exp_xrt</code>: the exposure time of <em>Swift</em>’s <a href="https://swift.gsfc.nasa.gov/about_swift/xrt_desc.html">X-ray Telescope</a>. This exposure time measures how long the X-ray detector of the telescope was exposed to light from the star. Units are in seconds.</p>
+<p>Another fun fact: X-ray astronomers like me love it to measure (exposure) time in <em>kilo seconds</em> (ks), i.e. <span class="math inline">\(10^3~s\)</span>. This could be considered the ultimate triumph of the metric system (who needs minutes or hours anyway?), but then we’d also use weird units like <a href="https://en.wikipedia.org/wiki/Erg">erg</a> or, and I kid you not, <a href="https://en.wikipedia.org/wiki/Crab_(unit)">Crab</a>. So, overall it’s probably a tie when it comes to the progress of metric units … .</p>
+<p>Anyway, here’s some plots on what that data we just scraped tells us about the X-ray observations. First, the number of observations per year up to now:</p>
+<pre class="r"><code>foo &lt;- obsid %&gt;% 
+  mutate(start_date = date(start_time)) %&gt;% 
+  mutate(year = as.integer(year(start_date)),
+         month = month(start_date, label = TRUE, abbr = TRUE))
+
+foo %&gt;% 
+  count(year) %&gt;% 
+  ggplot(aes(year, n, fill = n)) +
+  geom_col() +
+  geom_label(aes(label = n), col = &quot;black&quot;) +
+  scale_fill_viridis_c(option = &quot;viridis&quot;,
+                       begin = 0.5, end = 0.9) +
+  theme(legend.position = &quot;none&quot;) +
+  scale_x_continuous(breaks = seq(min(foo$year),
+                                  max(foo$year), 1)) +
+  labs(x = &quot;Year&quot;, y = &quot;Number of observations&quot;,
+       caption = &quot;The M31N 2008-12a monitoring collaboration&quot;) +
+  ggtitle(&quot;Neil Gehrels Swift Observatory coverage of nova M31N 2008-12a&quot;,
+          subtitle = &quot;Targeted observations began in 2013. In 2015 we conducted the\nX-ray flash monitoring campaign. In 2017 the eruption happened on NYE.&quot;)</code></pre>
+<p><img src="/post/2020-01-23-rvest-intro-swift_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Observations prior to 2013 did not detect the eruptions; in 2013 our targeted campaign <a href="https://arxiv.org/abs/1401.2904">began</a>. 2015 was an odd year, because we were running a separate high-frequency campaign trying to catch an elusive <a href="https://arxiv.org/abs/1607.07985">X-ray flash</a>, which had never been observed in any object. Unfortunately, it still hasn’t. In 2017 the eruption had the nerves to happen on New Year’s Eve, so almost all observations happened in early 2018 (and our NYE parties briefly got a bit hectic). The 2020 eruption will probably happen in October, but don’t bet too much money on it.</p>
+<p>If you look at cumulative exposure time instead of number of observations you see that in 2015 most of those 112 observations were much shorter than usual:</p>
+<pre class="r"><code>foo %&gt;% 
+  group_by(year) %&gt;% 
+  summarise(exp_xrt = sum(exp_xrt)/1e3) %&gt;% 
+  ggplot(aes(year, exp_xrt, fill = exp_xrt)) +
+  geom_col() +
+  #geom_label(aes(label = n), col = &quot;black&quot;) +
+  scale_fill_viridis_c(option = &quot;magma&quot;,
+                       begin = 0.5, end = 0.9) +
+  theme(legend.position = &quot;none&quot;) +
+  scale_x_continuous(breaks = seq(min(foo$year),
+                                  max(foo$year), 1)) +
+  labs(x = &quot;Year&quot;, y = &quot;Combined XRT Exposure [ks]&quot;,
+       caption = &quot;The M31N 2008-12a monitoring collaboration&quot;) +
+  ggtitle(&quot;Neil Gehrels Swift Observatory coverage of nova M31N 2008-12a&quot;)</code></pre>
+<p><img src="/post/2020-01-23-rvest-intro-swift_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Up to Jan 2020, we have used <em>Swift</em> to look at M31N 2008-12a in the X-rays for a total of almost exactly 600 ks. Which is more than half a <em>mega second</em>. Now that’s an impressive unit. Coincidentally, with Rstudio::conf 2020 coming up in San Francisco next week, my next post might happen within the next mega second. Watch this space ;-)</p>
+<p>More info:</p>
+<ul>
+<li><p>While rvest works great for static websites, sometimes you encounter pages that are built dynamically or require interaction like filling in a form or clicking a button. In those cases, <a href="https://github.com/ropensci/RSelenium">Rselenium</a> is the right tool. I might do a post on it in the future.</p></li>
+<li><p>Shout-out to my good friend and colleague <a href="https://twitter.com/mattdarnley">Matt Darnley</a>, together with whom I built and led this astro project for several years and who continues to do exciting work at the frontiers of astrophysics. He’s a great person to follow if you want to learn more about exploding stars.</p></li>
+<li><p>If you’re interested you can also check out our recent <a href="https://www.nature.com/articles/s41586-018-0825-4?">Nature publication</a>, led by Matt, for another highlight produced by the mercurial nova M31N 2008-12a.</p></li>
+<li><p>If you are an astronomy enthusiast and want to contribute to cutting edge research on variable stars, here’s my advice: join the international <a href="https://www.aavso.org/">AAVSO</a>. Whether you have a telescope, some binoculars, or no instruments at all; they have tons of advice on how anyone can get involved in variable star astronomy.</p></li>
+</ul>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//headsortails.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137904077-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+  </body>
+</html>
+

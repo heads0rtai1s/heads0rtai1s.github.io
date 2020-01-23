@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R on head spin - the Heads or Tails blog</title>
@@ -6,10 +6,19 @@
     <description>Recent content in R on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Dec 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 23 Jan 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Web Scraping with rvest &#43; Astro Throwback</title>
+      <link>/2020/01/23/rvest-intro-astro/</link>
+      <pubDate>Thu, 23 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/01/23/rvest-intro-astro/</guid>
+      <description>In my first post of the year I will provide a gentle introduction to web scraping with the tidyverse package rvest. As the package name pun suggests, web scraping is the process of harvesting, or extracting, data from websites. The extraction process is greatly simplified by the fact that websites are predominantly built using HTML (= Hyper Text Markup Language), which essentially uses a set of formatting and structuring rules to tell your browser how to display a website.</description>
+    </item>
     
     <item>
       <title>R Shiny for beginners: annotated starter code</title>
