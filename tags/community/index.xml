@@ -6,10 +6,19 @@
     <description>Recent content in Community on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 19 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 13 Feb 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/community/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>rstudio::conf retrospective</title>
+      <link>/2020/02/13/rstudio-conf/</link>
+      <pubDate>Thu, 13 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/02/13/rstudio-conf/</guid>
+      <description>Two weeks ago, I was fortunate to attend my very first Rstudio conference. Spoiler: it was an amazing event - packed to the brim with new ideas, tools, impressions, and most important of all: smart and kind people. This was the first time that San Francisco was hosting “rstudio::conf” (the affectionate shorthand is mirroring R’s package::tool syntax). Having moved to the Bay Area not long ago I really counted myself lucky to have such a promising event in my neighbourhood.</description>
+    </item>
     
     <item>
       <title>What makes a community great?</title>

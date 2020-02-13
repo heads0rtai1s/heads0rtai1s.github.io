@@ -7,10 +7,47 @@
     <description>Recent content in Posts on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 23 Jan 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 13 Feb 2020 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>rstudio::conf retrospective</title>
+      <link>/2020/02/13/rstudio-conf/</link>
+      <pubDate>Thu, 13 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/02/13/rstudio-conf/</guid>
+      <description>
+
+
+&lt;p&gt;Two weeks ago, I was fortunate to attend my very first &lt;a href=&#34;https://rstudio.com/conference/&#34;&gt;Rstudio conference&lt;/a&gt;. Spoiler: it was an amazing event - packed to the brim with new ideas, tools, impressions, and most important of all: smart and kind people. This was the first time that San Francisco was hosting “rstudio::conf” (the affectionate shorthand is mirroring R’s package::tool syntax). Having moved to the Bay Area not long ago I really counted myself lucky to have such a promising event in my neighbourhood.&lt;/p&gt;
+&lt;p&gt;I have written about the importance of a strong and supportive community once before: in &lt;a href=&#34;https://heads0rtai1s.github.io/2019/04/19/great-community-kaggledays19/&#34;&gt;last year’s post&lt;/a&gt; on meeting my favourite &lt;a href=&#34;https://www.kaggle.com&#34;&gt;Kaggle&lt;/a&gt; crowd for the first time in real life. The rstudio::conf confirmed my belief that progress in any field is greatly boosted by having friendly and competent people around to support you and lift you up.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/pics/rstudioconf20_1.jpg&#34; alt=&#34;rstudio::conf opening; with about 20% of the audience visible&#34; style=&#34;width:100.0%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;&lt;em&gt;rstudio::conf opening; with about 20% of the audience visible&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Nothing exemplifies this attitude better than the way in which the R community has embraced the &lt;a href=&#34;https://www.ericholscher.com/blog/2017/aug/2/pacman-rule-conferences/&#34;&gt;Pac-Man rule&lt;/a&gt;: “When standing as a group of people, always leave room for 1 person to join your group.” In other words, if you’re talking as a group then don’t stand in a closed circle but leave a bit of free space for anyone who’d like to participate in the conversation. At rstudio::conf I saw this concept work extremely well and it allowed me (and many others) to quickly connect with new people and have fun and inspiring conversations. It may have also helped that we all had at least one thing in common to talk about.&lt;/p&gt;
+&lt;p&gt;Another key aspect the R community excels in is to actively champion diversity and inclusion. This diversity within the community is mirrored by, and without a doubt contributes to, the richness and variety of the growing R ecosystem. In a tech sector that is still predominantly white and/or male, I strongly believe that the more a community welcomes all strata of society the better it can evolve and strive.&lt;/p&gt;
+&lt;p&gt;And the R universe, including the tidyverse, is growing rapidly indeed. I learned lots of new tricks from seasoned expeRts (like the unpacking operator &lt;code&gt;%&amp;lt;-%&lt;/code&gt; from the &lt;a href=&#34;https://rdrr.io/cran/zeallot/man/operator.html&#34;&gt;zeallot package&lt;/a&gt;) and discovered so many cool packages I hadn’t been aware of. To name only three, in no particular order:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/HenrikBengtsson/future&#34;&gt;future&lt;/a&gt;: the promising heir to the popular &lt;a href=&#34;https://cran.r-project.org/web/packages/foreach/index.html&#34;&gt;foreach package&lt;/a&gt; in the parallel processing domain; developed by &lt;a href=&#34;https://github.com/HenrikBengtsson&#34;&gt;Henrik Bengtsson&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/EvaMaeRey/flipbookr&#34;&gt;flipbookr&lt;/a&gt;: &lt;a href=&#34;https://github.com/EvaMaeRey&#34;&gt;Gina Reynolds’&lt;/a&gt; side-by-side and step-by-step tool to illustrate how code turns into output. Great resource for teaching and demonstrations.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/tidymodels/tune&#34;&gt;tune&lt;/a&gt;: the newest &lt;a href=&#34;https://github.com/tidymodels&#34;&gt;tidymodels&lt;/a&gt; family member; responsible for tuning hyperparameters. Presented by mastermind &lt;a href=&#34;https://github.com/topepo&#34;&gt;Max Kuhn&lt;/a&gt;, it was great to see how the individual tidymodels components come together to soon form a powerful and consistent machine learning workflow. Exciting times ahead!&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;But of course the most important consequence of the healthy expansion of the R ecosystem is the existence of many new hex stickers ;-) . This was my first opportunity to become a hunter and gatherer of those colourful collectibles, and I managed to ultimately design a whole new look for my laptop:&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/pics/rstudioconf20_2.jpg&#34; alt=&#34;I’m gonna need a bigger laptop&#34; style=&#34;width:100.0%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;&lt;em&gt;I’m gonna need a bigger laptop&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;More resources:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;For all your R and Data Science needs check out the R for Data Science (R4DS) online learning community on &lt;a href=&#34;https://twitter.com/R4DScommunity&#34;&gt;twitter&lt;/a&gt; and slack!&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;You’re probably not surprised to hear that there is an R package that lets you design your own hex stickers. It is called &lt;a href=&#34;https://github.com/GuangchuangYu/hexSticker&#34;&gt;hexSticker&lt;/a&gt;. That name is probably even less surprising.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;If you’re interested to meet fellow R enthusiasts you can &lt;a href=&#34;https://jumpingrivers.github.io/meetingsR/&#34;&gt;find here&lt;/a&gt; a pretty comprehensive list of events and user groups.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>Web Scraping with rvest &#43; Astro Throwback</title>
