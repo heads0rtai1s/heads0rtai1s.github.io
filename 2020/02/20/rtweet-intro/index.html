@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.54.0" />
+
+
+<title>Analysing tweets with the rtweet package - head spin - the Heads or Tails blog</title>
+<meta property="og:title" content="Analysing tweets with the rtweet package - head spin - the Heads or Tails blog">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/avatar.png"
+         width="50"
+         height="50"
+         alt="Heads or Tails">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="/blogroll/">Blogroll</a></li>
+    
+    <li><a href="https://twitter.com/heads0rtai1s">Twitter</a></li>
+    
+    <li><a href="https://www.kaggle.com/headsortails">Kaggle</a></li>
+    
+    <li><a href="https://www.linkedin.com/in/martin-henze">LinkedIn</a></li>
+    
+    <li><a href="https://github.com/heads0rtai1s">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">4 min read</span>
+    
+
+    <h1 class="article-title">Analysing tweets with the rtweet package</h1>
+
+    
+    <span class="article-date">2020-02-20</span>
+    
+
+    <div class="article-content">
+      
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<p>This is a brief post on collecting and analysing tweets. I will show how to use the <a href="https://github.com/ropensci/rtweet">rtweet</a> package to extract Twitter posts about the R community. This ties into last weeks post on <a href="https://heads0rtai1s.github.io/2020/02/13/rstudio-conf/">rstudio::conf and community values</a>, and is also related to my previous <a href="https://heads0rtai1s.github.io/2020/01/23/rvest-intro-astro/">intro post on web scraping</a>.</p>
+<p>First, we load <code>rtweet</code> and other (<a href="https://www.tidyverse.org/">tidyverse</a>) packages we will need:</p>
+<pre class="r"><code>libs &lt;- c(&#39;dplyr&#39;, &#39;tibble&#39;,      # wrangling
+          &#39;stringr&#39;, &#39;rtweet&#39;,    # strings, tweets
+          &#39;knitr&#39;, &#39;kableExtra&#39;,  # table styling
+          &#39;lubridate&#39;,            # time
+          &#39;ggplot2&#39;, &#39;ggthemes&#39;)  # plots
+invisible(lapply(libs, library, character.only = TRUE))</code></pre>
+<p>In order to use the <code>rtweet</code> package you need a <a href="https://twitter.com">Twitter</a> account and the package needs to be authorised to access that account. The authorisation process is very smooth: just run a command like the one below and an authorisation tab will open in your browser (via <code>rstats2twitter</code>). Approving the authorisation will store a credential token on your machine (called <code>.rtweet_token.rds</code>) for a all future requests. This token should end up safe in your home directory, but you might still want to double check that it doesn’t get pushed to any public github repos.</p>
+<p>This is how we search for recent tweets about “rstats” + “community”:</p>
+<pre class="r"><code>rt &lt;- search_tweets(
+  &quot;rstats community&quot;, n = 1000, include_rts = FALSE
+)</code></pre>
+<p>In the search string, white space acts like “AND” and order doesn’t matter. To search for either term (inclusive) you can use “OR”. To search for specific sequences of terms wrap them in single quotes (e.g. ‘rstats community’). The <code>search_tweets</code> <a href="https://www.rdocumentation.org/packages/rtweet/versions/0.7.0/topics/search_tweets">help page</a> has further and more detailed query instructions.</p>
+<p><strong>Note: the free Twitter API only allows you to access tweets from the last 6-9 days.</strong> For anything more you need a paid API. I was originally planning to search for <code>#rstudioconf</code> tweets, but the conference is 3 weeks ago now. So I guess that’s what I get for taking so long with this post.</p>
+<p>Twitter’s <em>request limit is 18k tweets per 15 minute interval</em>. To download more tweets in one go you can set the parameter <code>retryonratelimit = TRUE</code>, but you would have to wait 15 min for the retry. This is a convenience function, so that you don’t need to run individual 18k queries and stack them together by yourself.</p>
+<p>With <code>search_tweets</code> we can derive pretty much all the information about a tweet, its author, and any quoted tweets: the full text, retweet count, hashtags, mentions, author bio; you name it. A total of 90 columns. Not all of them will always have values, but it looks like a very comprehensive set of features to me. Here is a small subset of those features: the date-time of the tweet (in UT), the user name, and the number of followers:</p>
+<pre class="r"><code>rt %&gt;% 
+  select(tweeted = created_at,
+         screen_name,
+         followers = followers_count) %&gt;% 
+  head(5) %&gt;% 
+  kable() %&gt;% 
+  column_spec(1:3, width = c(&quot;45%&quot;, &quot;35%&quot;, &quot;20%&quot;)) %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+tweeted
+</th>
+<th style="text-align:left;">
+screen_name
+</th>
+<th style="text-align:right;">
+followers
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;width: 45%; ">
+2020-02-20 18:32:47
+</td>
+<td style="text-align:left;width: 45%; ">
+danicassol
+</td>
+<td style="text-align:right;width: 45%; ">
+157
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 45%; ">
+2020-02-20 17:51:03
+</td>
+<td style="text-align:left;width: 45%; ">
+LK_Fitzpatrick
+</td>
+<td style="text-align:right;width: 45%; ">
+511
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 45%; ">
+2020-02-20 17:40:19
+</td>
+<td style="text-align:left;width: 45%; ">
+PyData
+</td>
+<td style="text-align:right;width: 45%; ">
+48209
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 45%; ">
+2020-02-20 16:34:52
+</td>
+<td style="text-align:left;width: 45%; ">
+rOpenSci
+</td>
+<td style="text-align:right;width: 45%; ">
+28207
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 45%; ">
+2020-02-20 13:24:03
+</td>
+<td style="text-align:left;width: 45%; ">
+GiusCalamita
+</td>
+<td style="text-align:right;width: 45%; ">
+38
+</td>
+</tr>
+</tbody>
+</table>
+<p>We’ll conclude with some (small number) statistics about “rstats” “community” posts. The <a href="https://rtweet.info/">rtweet docs</a> include many more examples and inspiration for projects. This is the frequency of tweets over the last week:</p>
+<pre class="r"><code>rt %&gt;% 
+  mutate(date = date(created_at)) %&gt;% 
+  count(date) %&gt;% 
+  ggplot(aes(date, n)) +
+  geom_line(col = &quot;blue&quot;) +
+  labs(x = &quot;&quot;, y = &quot;&quot;) +
+  theme_fivethirtyeight() +
+  theme(legend.position = &quot;none&quot;) +
+  ggtitle(&quot;Daily number of tweets about the &#39;rstats community&#39;&quot;,
+          subtitle = &quot;Extracted using the rtweet package&quot;)</code></pre>
+<p><img src="/post/2020-02-20-rtweet-intro_files/figure-html/unnamed-chunk-7-1.png" width="100%" /></p>
+<p>The notable spike on Feb 12 was caused by <code>@kierisi</code> asking about people’s experiences with the community. I’m looking forward to her blog post:</p>
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">I&#39;m working on a presentation about the R Community (yes, yes I&#39;ll make a blog post!) and while I have *my* opinions, I&#39;d really love to showcase your experiences!<br><br>What motivated you to join the <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> community? Why do you participate? What makes you stay?<br><br>(DMs are OK, too!) <a href="https://t.co/7h3xKZ0Cg2">pic.twitter.com/7h3xKZ0Cg2</a></p>&mdash; Jesse Mostipak (@kierisi) <a href="https://twitter.com/kierisi/status/1227666597860577281?ref_src=twsrc%5Etfw">February 12, 2020</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//headsortails.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137904077-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+  </body>
+</html>
+

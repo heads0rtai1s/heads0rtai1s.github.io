@@ -6,10 +6,21 @@
     <description>Recent content in Community on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 13 Feb 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 20 Feb 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/community/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Analysing tweets with the rtweet package</title>
+      <link>/2020/02/20/rtweet-intro/</link>
+      <pubDate>Thu, 20 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/02/20/rtweet-intro/</guid>
+      <description>This is a brief post on collecting and analysing tweets. I will show how to use the rtweet package to extract Twitter posts about the R community. This ties into last weeks post on rstudio::conf and community values, and is also related to my previous intro post on web scraping.
+First, we load rtweet and other (tidyverse) packages we will need:
+libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;tibble&amp;#39;, # wrangling &amp;#39;stringr&amp;#39;, &amp;#39;rtweet&amp;#39;, # strings, tweets &amp;#39;knitr&amp;#39;, &amp;#39;kableExtra&amp;#39;, # table styling &amp;#39;lubridate&amp;#39;, # time &amp;#39;ggplot2&amp;#39;, &amp;#39;ggthemes&amp;#39;) # plots invisible(lapply(libs, library, character.</description>
+    </item>
     
     <item>
       <title>rstudio::conf retrospective</title>
