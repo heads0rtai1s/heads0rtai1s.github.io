@@ -6,10 +6,316 @@
     <description>Recent content in Visualisation on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Dec 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 30 Apr 2020 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="/categories/visualisation/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Animations in the time of Coronavirus</title>
+      <link>/2020/04/30/animate-map-covid/</link>
+      <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/04/30/animate-map-covid/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;The first four months of 2020 have been dominated by the Coronavirus pandemic (aka COVID-19), which has transformed global life in an unprecedented way. Societies and economies struggle to adapt to the new conditions and necessary contraints. A reassuringly large fraction of governments around the world continue to take evidence-based approaches to this crisis that are grounded in large scale data collection efforts. Most of this data is being made publicly available and can be studied in real time. This post will describe how to extract and prepare the necessary data to animate the spread of the virus over time within my native country of Germany.&lt;/p&gt;
+&lt;p&gt;I have published a pre-processed version of the relevant data for this project as a &lt;a href=&#34;https://www.kaggle.com/headsortails/covid19-tracking-germany&#34;&gt;Kaggle dataset&lt;/a&gt;, together with the geospatial shape files you need to plot the resulting map. This post outlines how to build that dataset from the original source data using a set of &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; tools. Then we will use the &lt;a href=&#34;https://github.com/thomasp85/gganimate&#34;&gt;gganimate&lt;/a&gt; and &lt;a href=&#34;https://cran.r-project.org/web/packages/sf/index.html&#34;&gt;sf&lt;/a&gt; packages to create animated map visuals.&lt;/p&gt;
+&lt;p&gt;Those are the packages we need:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;tibble&amp;#39;,      # wrangling
+          &amp;#39;stringr&amp;#39;, &amp;#39;readr&amp;#39;,     # strings, input
+          &amp;#39;lubridate&amp;#39;, &amp;#39;tidyr&amp;#39;,   # time, wrangling
+          &amp;#39;knitr&amp;#39;, &amp;#39;kableExtra&amp;#39;,  # table styling
+          &amp;#39;ggplot2&amp;#39;, &amp;#39;viridis&amp;#39;,   # visuals
+          &amp;#39;gganimate&amp;#39;, &amp;#39;sf&amp;#39;,      # animations, maps
+          &amp;#39;ggthemes&amp;#39;)             # visuals
+invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The COVID-19 data for Germany are being collected by the &lt;a href=&#34;https://www.rki.de/EN/Home/homepage_node.html&#34;&gt;Robert Koch Institute&lt;/a&gt; and can be download through the &lt;a href=&#34;https://npgeo-corona-npgeo-de.hub.arcgis.com/&#34;&gt;National Platform for Geographic Data&lt;/a&gt; (which also hosts an interactive dashboard). The earliest recorded cases are from 2020-01-24. Here we define the corresponding link and read the dataset:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;infile &amp;lt;- &amp;quot;https://opendata.arcgis.com/datasets/dd4580c810204019a7b8eb3e0b329dd6_0.csv&amp;quot;
+covid_de &amp;lt;- read_csv(infile, col_types = cols())&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This data contains a number of columns which are, unsurprisingly, named in German:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;covid_de %&amp;gt;% 
+  head(5) %&amp;gt;% 
+  glimpse()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Observations: 5
+## Variables: 18
+## $ FID                  &amp;lt;dbl&amp;gt; 4281356, 4281357, 4281358, 4281359, 4281360
+## $ IdBundesland         &amp;lt;dbl&amp;gt; 1, 1, 1, 1, 1
+## $ Bundesland           &amp;lt;chr&amp;gt; &amp;quot;Schleswig-Holstein&amp;quot;, &amp;quot;Schleswig-Holstein&amp;quot;,…
+## $ Landkreis            &amp;lt;chr&amp;gt; &amp;quot;SK Flensburg&amp;quot;, &amp;quot;SK Flensburg&amp;quot;, &amp;quot;SK Flensbu…
+## $ Altersgruppe         &amp;lt;chr&amp;gt; &amp;quot;A15-A34&amp;quot;, &amp;quot;A15-A34&amp;quot;, &amp;quot;A15-A34&amp;quot;, &amp;quot;A15-A34&amp;quot;,…
+## $ Geschlecht           &amp;lt;chr&amp;gt; &amp;quot;M&amp;quot;, &amp;quot;M&amp;quot;, &amp;quot;M&amp;quot;, &amp;quot;M&amp;quot;, &amp;quot;M&amp;quot;
+## $ AnzahlFall           &amp;lt;dbl&amp;gt; 1, 1, 1, 1, 1
+## $ AnzahlTodesfall      &amp;lt;dbl&amp;gt; 0, 0, 0, 0, 0
+## $ Meldedatum           &amp;lt;chr&amp;gt; &amp;quot;2020/03/14 00:00:00&amp;quot;, &amp;quot;2020/03/19 00:00:00…
+## $ IdLandkreis          &amp;lt;chr&amp;gt; &amp;quot;01001&amp;quot;, &amp;quot;01001&amp;quot;, &amp;quot;01001&amp;quot;, &amp;quot;01001&amp;quot;, &amp;quot;01001&amp;quot;
+## $ Datenstand           &amp;lt;chr&amp;gt; &amp;quot;30.04.2020, 00:00 Uhr&amp;quot;, &amp;quot;30.04.2020, 00:00…
+## $ NeuerFall            &amp;lt;dbl&amp;gt; 0, 0, 0, 0, 0
+## $ NeuerTodesfall       &amp;lt;dbl&amp;gt; -9, -9, -9, -9, -9
+## $ Refdatum             &amp;lt;chr&amp;gt; &amp;quot;2020/03/16 00:00:00&amp;quot;, &amp;quot;2020/03/13 00:00:00…
+## $ NeuGenesen           &amp;lt;dbl&amp;gt; 0, 0, 0, 0, 0
+## $ AnzahlGenesen        &amp;lt;dbl&amp;gt; 1, 1, 1, 1, 1
+## $ IstErkrankungsbeginn &amp;lt;dbl&amp;gt; 1, 1, 1, 1, 1
+## $ Altersgruppe2        &amp;lt;chr&amp;gt; &amp;quot;nicht übermittelt&amp;quot;, &amp;quot;nicht übermittelt&amp;quot;, &amp;quot;…&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The following code block reshapes and translates the data to make it better accessible. This includes replacing our beloved German umlauts with simplified diphthongs, creating age groups, and aggregating COVID-19 numbers by county, age group, gender, and date:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;covid_de &amp;lt;- covid_de %&amp;gt;% 
+  select(state = Bundesland,
+         county = Landkreis,
+         age_group = Altersgruppe,
+         gender = Geschlecht,
+         cases = AnzahlFall,
+         deaths = AnzahlTodesfall,
+         recovered = AnzahlGenesen,
+         date = Meldedatum) %&amp;gt;% 
+  mutate(date = date(date)) %&amp;gt;% 
+  mutate(age_group = str_remove_all(age_group, &amp;quot;A&amp;quot;)) %&amp;gt;% 
+  mutate(age_group = case_when(
+    age_group == &amp;quot;unbekannt&amp;quot; ~ NA_character_,
+    age_group == &amp;quot;80+&amp;quot; ~ &amp;quot;80-99&amp;quot;,
+    TRUE ~ age_group
+  )) %&amp;gt;% 
+  mutate(gender = case_when(
+    gender == &amp;quot;W&amp;quot; ~ &amp;quot;F&amp;quot;,
+    gender == &amp;quot;unbekannt&amp;quot; ~ NA_character_,
+    TRUE ~ gender
+  )) %&amp;gt;% 
+  group_by(state, county, age_group, gender, date) %&amp;gt;% 
+  summarise(cases = sum(cases),
+            deaths = sum(deaths),
+            recovered = sum(recovered)) %&amp;gt;% 
+  ungroup() %&amp;gt;% 
+  filter(cases &amp;gt;= 0 &amp;amp; deaths &amp;gt;= 0) %&amp;gt;%
+  filter(date &amp;lt; today()) %&amp;gt;% 
+  mutate(state = str_replace_all(state, &amp;quot;ü&amp;quot;, &amp;quot;ue&amp;quot;)) %&amp;gt;% 
+  mutate(state = str_replace_all(state, &amp;quot;ä&amp;quot;, &amp;quot;ae&amp;quot;)) %&amp;gt;% 
+  mutate(state = str_replace_all(state, &amp;quot;ö&amp;quot;, &amp;quot;oe&amp;quot;)) %&amp;gt;% 
+  mutate(state = str_replace_all(state, &amp;quot;ß&amp;quot;, &amp;quot;ss&amp;quot;)) %&amp;gt;% 
+  mutate(county = str_replace_all(county, &amp;quot;ü&amp;quot;, &amp;quot;ue&amp;quot;)) %&amp;gt;% 
+  mutate(county = str_replace_all(county, &amp;quot;ä&amp;quot;, &amp;quot;ae&amp;quot;)) %&amp;gt;% 
+  mutate(county = str_replace_all(county, &amp;quot;ö&amp;quot;, &amp;quot;oe&amp;quot;)) %&amp;gt;% 
+  mutate(county = str_replace_all(county, &amp;quot;ß&amp;quot;, &amp;quot;ss&amp;quot;)) %&amp;gt;% 
+  mutate(county = str_remove(county, &amp;quot;\\(.+\\)&amp;quot;)) %&amp;gt;% 
+  mutate(county = str_trim(county)) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The result is a dataset that lists daily (&lt;em&gt;not cumulative!&lt;/em&gt;) cases, deaths, and recovered cases for 6 age groups, gender, and the German counties and their corresponding federal states. Similar to the US, Germany has a federal system in which the 16 federal states have a large amout of legislative power. The German equivalent of the US county is the “Kreis”, which can either be associated with a city (“Stadtkreis” = “SK”) or the country side (“Landkreis” = “LK”). Here only a subset of columns are shown for reasons of clarity:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;covid_de %&amp;gt;%
+  filter(state == &amp;quot;Sachsen&amp;quot;) %&amp;gt;% 
+  select(-deaths, -recovered) %&amp;gt;% 
+  head(5) %&amp;gt;% 
+  kable() %&amp;gt;% 
+  column_spec(1:6, width = c(&amp;quot;15%&amp;quot;, &amp;quot;25%&amp;quot;, &amp;quot;15%&amp;quot;, &amp;quot;10%&amp;quot;, &amp;quot;25%&amp;quot;, &amp;quot;10%&amp;quot;)) %&amp;gt;% 
+  kable_styling()&lt;/code&gt;&lt;/pre&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+state
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+county
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+age_group
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+gender
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+date
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+cases
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+Sachsen
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+LK Bautzen
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+00-04
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+F
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+2020-03-20
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;width: 15%; &#34;&gt;
+1
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+Sachsen
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+LK Bautzen
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+00-04
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+F
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+2020-04-07
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;width: 15%; &#34;&gt;
+2
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+Sachsen
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+LK Bautzen
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+00-04
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+M
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+2020-03-21
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;width: 15%; &#34;&gt;
+1
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+Sachsen
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+LK Bautzen
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+05-14
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+F
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+2020-03-20
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;width: 15%; &#34;&gt;
+1
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+Sachsen
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+LK Bautzen
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+05-14
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+F
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;width: 15%; &#34;&gt;
+2020-03-21
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;width: 15%; &#34;&gt;
+1
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;This is the cleaned dataset which is available on &lt;a href=&#34;https://www.kaggle.com/headsortails/covid19-tracking-germany&#34;&gt;Kaggle&lt;/a&gt; as &lt;code&gt;covid_de.csv&lt;/code&gt;. With this data, you can already already slice and analyse Germany’s COVID-19 characteristics by various demographic and geographical features.&lt;/p&gt;
+&lt;p&gt;However, for the maps that we’re interested in one more input is missing: shapefiles. A &lt;a href=&#34;https://en.wikipedia.org/wiki/Shapefile&#34;&gt;shapefile&lt;/a&gt; uses a standard vector format for specifying spatial geometries. It packages the map boundary data of the required entities (like countries, federal states) into a small set of related files. For this project, I found publicly available shapefiles on the state and county level provided by Germany’s &lt;a href=&#34;https://www.bkg.bund.de/EN/Home/home.html&#34;&gt;Federal Agency for Cartography and Geodesy&lt;/a&gt;. Both levels are available in the Kaggle dataset. Here I put the county level files (&lt;code&gt;de_county.*&lt;/code&gt;) into a local, static directory.&lt;/p&gt;
+&lt;p&gt;Shapefiles can be read into R using the &lt;code&gt;sf&lt;/code&gt; package tool &lt;code&gt;st_read&lt;/code&gt;. In order to soon join them to our COVID-19 data, we need to do a bit of string translating and wrangling again. The &lt;code&gt;tidyr&lt;/code&gt; tool &lt;code&gt;unite&lt;/code&gt; is being used to combine the county type (&lt;code&gt;BEZ in c(&amp;quot;LK&amp;quot;, &amp;quot;SK&amp;quot;)&lt;/code&gt;) and county name into the format we have in our COVID-19 data:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;shape_county &amp;lt;- st_read(str_c(&amp;quot;../../static/files/&amp;quot;, &amp;quot;de_county.shp&amp;quot;), quiet = TRUE) %&amp;gt;% 
+  rename(county = GEN) %&amp;gt;% 
+  select(county, BEZ, geometry) %&amp;gt;% 
+  mutate(county = as.character(county)) %&amp;gt;% 
+  mutate(county = str_replace_all(county, &amp;quot;ü&amp;quot;, &amp;quot;ue&amp;quot;)) %&amp;gt;% 
+  mutate(county = str_replace_all(county, &amp;quot;ä&amp;quot;, &amp;quot;ae&amp;quot;)) %&amp;gt;% 
+  mutate(county = str_replace_all(county, &amp;quot;ö&amp;quot;, &amp;quot;oe&amp;quot;)) %&amp;gt;% 
+  mutate(county = str_replace_all(county, &amp;quot;ß&amp;quot;, &amp;quot;ss&amp;quot;)) %&amp;gt;% 
+  mutate(county = str_remove(county, &amp;quot;\\(.+\\)&amp;quot;)) %&amp;gt;% 
+  mutate(county = str_trim(county)) %&amp;gt;% 
+  mutate(BEZ = case_when(
+    BEZ == &amp;quot;Kreis&amp;quot; ~ &amp;quot;LK&amp;quot;,
+    BEZ == &amp;quot;Landkreis&amp;quot; ~ &amp;quot;LK&amp;quot;,
+    BEZ == &amp;quot;Stadtkreis&amp;quot; ~ &amp;quot;SK&amp;quot;,
+    BEZ == &amp;quot;Kreisfreie Stadt&amp;quot; ~ &amp;quot;SK&amp;quot;
+  )) %&amp;gt;% 
+  unite(county, BEZ, county, sep = &amp;quot; &amp;quot;, remove = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;At this stage, there are still some county names that don’t match precisely. It would have been too easy, otherwise. These cases mostly come down to different styles of abbreviations being used for counties with longer names. A scalable way to deal with these wonders of the German language would be &lt;a href=&#34;https://cran.r-project.org/web/packages/fuzzyjoin/&#34;&gt;fuzzy matching&lt;/a&gt; by &lt;a href=&#34;https://cran.r-project.org/web/packages/stringdist/&#34;&gt;string distance&lt;/a&gt; similarities. Here, the number of mismatches is small and I decided to adjust them manually.&lt;/p&gt;
+&lt;p&gt;Then, I group everything by &lt;code&gt;county&lt;/code&gt; and &lt;code&gt;date&lt;/code&gt; and sum over the remaining features. One major issue here is that not all counties will report numbers for all days. Those are small areas, after all. In this dataset, these cases are implicitely missing; i.e. the corresponding rows are just not present. It is important to convert those cases into explicitely missing entries: rows that have a count of zero. Otherwise, our eventual map will have “holes” in it for specific days and specific counties. The elegant solution in the code is made possible by the &lt;code&gt;tidyr&lt;/code&gt; function &lt;code&gt;complete&lt;/code&gt;: simply name all the columns for which we want to have all the combinations and specify how they should be filled. This approach applies to any situation where we have a set of features and need a complete grid of all possible combinations.&lt;/p&gt;
+&lt;p&gt;Finally, we sum up the cumulative cases and deaths. Here, I also applied a &lt;code&gt;filter&lt;/code&gt; to extract data from March 1st - 31st only, to prevent the animation file from becoming too large. Feel free to expand this to a longer time frame:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;foo &amp;lt;- covid_de %&amp;gt;% 
+  mutate(county = case_when(
+    county == &amp;quot;Region Hannover&amp;quot; ~ &amp;quot;LK Region Hannover&amp;quot;,
+    county == &amp;quot;SK Muelheim a.d.Ruhr&amp;quot; ~ &amp;quot;SK Muelheim an der Ruhr&amp;quot;,
+    county == &amp;quot;StadtRegion Aachen&amp;quot; ~ &amp;quot;LK Staedteregion Aachen&amp;quot;,
+    county == &amp;quot;SK Offenbach&amp;quot; ~ &amp;quot;SK Offenbach am Main&amp;quot;,
+    county == &amp;quot;LK Bitburg-Pruem&amp;quot; ~ &amp;quot;LK Eifelkreis Bitburg-Pruem&amp;quot;,
+    county == &amp;quot;SK Landau i.d.Pfalz&amp;quot; ~ &amp;quot;SK Landau in der Pfalz&amp;quot;,
+    county == &amp;quot;SK Ludwigshafen&amp;quot; ~ &amp;quot;SK Ludwigshafen am Rhein&amp;quot;,
+    county == &amp;quot;SK Neustadt a.d.Weinstrasse&amp;quot; ~ &amp;quot;SK Neustadt an der Weinstrasse&amp;quot;,
+    county == &amp;quot;SK Freiburg i.Breisgau&amp;quot; ~ &amp;quot;SK Freiburg im Breisgau&amp;quot;,
+    county == &amp;quot;LK Landsberg a.Lech&amp;quot; ~ &amp;quot;LK Landsberg am Lech&amp;quot;,
+    county == &amp;quot;LK Muehldorf a.Inn&amp;quot; ~ &amp;quot;LK Muehldorf a. Inn&amp;quot;,
+    county == &amp;quot;LK Pfaffenhofen a.d.Ilm&amp;quot; ~ &amp;quot;LK Pfaffenhofen a.d. Ilm&amp;quot;,
+    county == &amp;quot;SK Weiden i.d.OPf.&amp;quot; ~ &amp;quot;SK Weiden i.d. OPf.&amp;quot;,
+    county == &amp;quot;LK Neumarkt i.d.OPf.&amp;quot; ~ &amp;quot;LK Neumarkt i.d. OPf.&amp;quot;,
+    county == &amp;quot;LK Neustadt a.d.Waldnaab&amp;quot; ~ &amp;quot;LK Neustadt a.d. Waldnaab&amp;quot;,
+    county == &amp;quot;LK Wunsiedel i.Fichtelgebirge&amp;quot; ~ &amp;quot;LK Wunsiedel i. Fichtelgebirge&amp;quot;,
+    county == &amp;quot;LK Neustadt a.d.Aisch-Bad Windsheim&amp;quot; ~ &amp;quot;LK Neustadt a.d. Aisch-Bad Windsheim&amp;quot;,
+    county == &amp;quot;LK Dillingen a.d.Donau&amp;quot; ~ &amp;quot;LK Dillingen a.d. Donau&amp;quot;,
+    county == &amp;quot;LK Stadtverband Saarbruecken&amp;quot; ~ &amp;quot;LK Regionalverband Saarbruecken&amp;quot;,
+    county == &amp;quot;LK Saar-Pfalz-Kreis&amp;quot; ~ &amp;quot;LK Saarpfalz-Kreis&amp;quot;,
+    county == &amp;quot;LK Sankt Wendel&amp;quot; ~ &amp;quot;LK St. Wendel&amp;quot;,
+    county == &amp;quot;SK Brandenburg a.d.Havel&amp;quot; ~ &amp;quot;SK Brandenburg an der Havel&amp;quot;,
+    str_detect(county, &amp;quot;Berlin&amp;quot;) ~ &amp;quot;SK Berlin&amp;quot;,
+    TRUE ~ county
+  )) %&amp;gt;% 
+  group_by(county, date) %&amp;gt;% 
+  summarise(cases = sum(cases),
+            deaths = sum(deaths)) %&amp;gt;% 
+  ungroup() %&amp;gt;% 
+  complete(county, date, fill = list(cases = 0, deaths = 0)) %&amp;gt;% 
+  group_by(county) %&amp;gt;% 
+  mutate(cumul_cases = cumsum(cases),
+         cumul_deaths = cumsum(deaths)) %&amp;gt;% 
+  ungroup() %&amp;gt;% 
+  filter(between(date, date(&amp;quot;2020-03-01&amp;quot;), date(&amp;quot;2020-03-31&amp;quot;)))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we have all the ingredients for animating a county-level map of cumulative cases. Here we first define the animation object by specifying &lt;code&gt;geom_sf()&lt;/code&gt; and &lt;code&gt;theme_map()&lt;/code&gt; for the map style, then providing the animation steps column &lt;code&gt;date&lt;/code&gt; to the &lt;code&gt;transition_time()&lt;/code&gt; method. The advantage of &lt;a href=&#34;https://rdrr.io/github/thomasp85/gganimate/man/transition_time.html&#34;&gt;transition_time&lt;/a&gt; is that the length of transitions between steps takes is proportional to the intrinsic time differences. Here, we have a very well behaved dataset and all our steps are of length 1 day. Thus, we could also use &lt;code&gt;transition_states()&lt;/code&gt; directly. However, I consider it good practice to use &lt;code&gt;transition_time&lt;/code&gt; whenever actual time steps are involved; to be prepared for unequal time intervals.&lt;/p&gt;
+&lt;p&gt;The animation parameters are provided in the &lt;code&gt;animate&lt;/code&gt; function, such as the transition style from one day to the next (&lt;code&gt;cubic-in-out&lt;/code&gt;), the animation speed (10 frames per s), or the size of the plot. For cumulative animations like this, it’s always a good idea to include an &lt;code&gt;end_pause&lt;/code&gt; freeze-frame, so that the reader can have a closer look at the final state before the loop begins anew:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gg &amp;lt;- shape_county %&amp;gt;% 
+  right_join(foo, by = &amp;quot;county&amp;quot;) %&amp;gt;% 
+  ggplot(aes(fill = cumul_cases)) +
+  geom_sf() +
+  scale_fill_viridis(trans = &amp;quot;log1p&amp;quot;, breaks = c(0, 10, 100, 1000)) +
+  theme_map() +
+  theme(title = element_text(size = 15), legend.text = element_text(size = 12),
+        legend.title = element_text(size = 15)) +
+  labs(title = &amp;quot;Total COVID-19 cases in Germany: {frame_time}&amp;quot;, fill = &amp;quot;Cases&amp;quot;) +
+  transition_time(date)
+
+animate(gg + ease_aes(&amp;#39;cubic-in-out&amp;#39;), fps = 10, end_pause = 25, height = 800, width = round(800/1.61803398875))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-04-30-animate-map-covid_files/figure-html/unnamed-chunk-8-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
+&lt;p&gt;Our final map shows how the number of COVID-19 cases in Germany first started to rise in the South and West, and how they spread to other parts of the country. The geographical middle of Germany appears to be lagging behind in case counts even at later times. Note the logarithmic colour scale.&lt;/p&gt;
+&lt;p&gt;More info:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;One caveat: This view does not take into account population density, which makes large cities like Berlin (north-east) stand out more towards the end. My Kaggle dataset currently includes population counts for the state-level only, but I’m planning to add county data in the near future.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;If you’re looking for further inspiration on how to analyse this dataset then check out the various &lt;a href=&#34;https://www.kaggle.com/headsortails/covid19-tracking-germany/kernels&#34;&gt;Notebooks&lt;/a&gt; (aka “Kernels”) which are associated with it on Kaggle. Kaggle has the big advantage that you can run R or Python scripts and notebooks in a pretty powerful cloud environment; and present your work alongside datasets and competitions.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Another Kaggle dataset of mine with daily COVID-19 cases, deaths, and recoveries in the US can be found &lt;a href=&#34;https://www.kaggle.com/headsortails/covid19-us-county-jhu-data-demographics&#34;&gt;here&lt;/a&gt;. This data also has a county-level resolution. It is based on &lt;a href=&#34;https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series&#34;&gt;Johns Hopkins University data&lt;/a&gt; and I’m updating it on a daily basis.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>R Shiny for beginners: annotated starter code</title>

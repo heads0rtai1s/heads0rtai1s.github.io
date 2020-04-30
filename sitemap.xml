@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/2020/04/30/animate-map-covid/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/2020/02/20/rtweet-intro/</loc>
     <lastmod>2020-02-20T00:00:00+00:00</lastmod>
   </url>
@@ -73,8 +78,14 @@
   </url>
   
   <url>
-    <loc>/categories/astro/</loc>
-    <lastmod>2020-01-23T00:00:00+00:00</lastmod>
+    <loc>/tags/animation/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/animation/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -85,14 +96,14 @@
   </url>
   
   <url>
-    <loc>/categories/</loc>
+    <loc>/categories/astro/</loc>
     <lastmod>2020-01-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/community/</loc>
-    <lastmod>2020-02-20T00:00:00+00:00</lastmod>
+    <loc>/categories/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -103,8 +114,32 @@
   </url>
   
   <url>
+    <loc>/categories/community/</loc>
+    <lastmod>2020-02-20T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/covid19/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/covid19/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/dataset/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/geospatial/</loc>
-    <lastmod>2019-11-07T00:00:00+00:00</lastmod>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -121,26 +156,26 @@
   </url>
   
   <url>
-    <loc>/categories/journey/</loc>
-    <lastmod>2019-09-19T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/tags/journey/</loc>
     <lastmod>2019-09-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/kaggle/</loc>
-    <lastmod>2019-04-19T00:00:00+00:00</lastmod>
+    <loc>/categories/journey/</loc>
+    <lastmod>2019-09-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/kaggle/</loc>
-    <lastmod>2019-04-19T00:00:00+00:00</lastmod>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/kaggle/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -151,14 +186,26 @@
   </url>
   
   <url>
+    <loc>/tags/machine-learning/</loc>
+    <lastmod>2019-10-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/categories/machine-learning/</loc>
     <lastmod>2019-10-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/tags/machine-learning/</loc>
-    <lastmod>2019-10-03T00:00:00+00:00</lastmod>
+    <loc>/tags/maps/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/maps/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -170,7 +217,7 @@
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2020-02-20T00:00:00+00:00</lastmod>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -181,25 +228,31 @@
   </url>
   
   <url>
-    <loc>/categories/python/</loc>
-    <lastmod>2019-10-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/tags/python/</loc>
     <lastmod>2019-10-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/r/</loc>
-    <lastmod>2020-02-20T00:00:00+00:00</lastmod>
+    <loc>/categories/python/</loc>
+    <lastmod>2019-10-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/r/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/r/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/scraping/</loc>
     <lastmod>2020-02-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -211,25 +264,13 @@
   </url>
   
   <url>
-    <loc>/tags/scraping/</loc>
-    <lastmod>2020-02-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/shiny/</loc>
-    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/tags/shiny/</loc>
     <lastmod>2019-12-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/starter-code/</loc>
+    <loc>/categories/shiny/</loc>
     <lastmod>2019-12-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -241,14 +282,14 @@
   </url>
   
   <url>
-    <loc>/tags/</loc>
-    <lastmod>2020-01-23T00:00:00+00:00</lastmod>
+    <loc>/categories/starter-code/</loc>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/tidytuesday/</loc>
-    <lastmod>2019-11-07T00:00:00+00:00</lastmod>
+    <loc>/tags/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -259,32 +300,38 @@
   </url>
   
   <url>
-    <loc>/categories/tidyverse/</loc>
-    <lastmod>2020-01-23T00:00:00+00:00</lastmod>
+    <loc>/categories/tidytuesday/</loc>
+    <lastmod>2019-11-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/tidyverse/</loc>
-    <lastmod>2020-01-23T00:00:00+00:00</lastmod>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/visualisation/</loc>
-    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
+    <loc>/categories/tidyverse/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/visualisation/</loc>
-    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/visualisation/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/</loc>
-    <lastmod>2020-02-20T00:00:00+00:00</lastmod>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
