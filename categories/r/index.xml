@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R on head spin - the Heads or Tails blog</title>
-    <link>https://heads0rtai1s.github.io/categories/r/</link>
+    <link>/categories/r/</link>
     <description>Recent content in R on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -306,7 +306,7 @@ F
   transition_time(date)
 
 animate(gg + ease_aes(&amp;#39;cubic-in-out&amp;#39;), fps = 10, end_pause = 25, height = 800, width = round(800/1.61803398875))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/posthttps://heads0rtai1s.github.io/2020-04-30-animate-map-covid_files/figure-html/unnamed-chunk-8-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-04-30-animate-map-covid_files/figure-html/unnamed-chunk-8-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
 &lt;p&gt;Our final map shows how the number of COVID-19 cases in Germany first started to rise in the South and West, and how they spread to other parts of the country. The geographical middle of Germany appears to be lagging behind in case counts even at later times. Note the logarithmic colour scale.&lt;/p&gt;
 &lt;p&gt;More info:&lt;/p&gt;
 &lt;ul&gt;
@@ -319,15 +319,15 @@ animate(gg + ease_aes(&amp;#39;cubic-in-out&amp;#39;), fps = 10, end_pause = 25,
 
     <item>
       <title>Analysing tweets with the rtweet package</title>
-      <link>https://heads0rtai1s.github.io/2020/02https://heads0rtai1s.github.io/20/rtweet-intro/</link>
+      <link>https://heads0rtai1s.github.io/2020/02/20/rtweet-intro/</link>
       <pubDate>Thu, 20 Feb 2020 23:00:00 +0000</pubDate>
 
-      <guid>https://heads0rtai1s.github.io/2020/02https://heads0rtai1s.github.io/20/rtweet-intro/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/02/20/rtweet-intro/</guid>
       <description>
 &lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
-&lt;p&gt;This is a brief post on collecting and analysing tweets. I will show how to use the &lt;a href=&#34;https://github.com/ropensci/rtweet&#34;&gt;rtweet&lt;/a&gt; package to extract Twitter posts about the R community. This ties into last weeks post on &lt;a href=&#34;https://heads0rtai1s.github.iohttps://heads0rtai1s.github.io/2020/02/13/rstudio-conf/&#34;&gt;rstudio::conf and community values&lt;/a&gt;, and is also related to my previous &lt;a href=&#34;https://heads0rtai1s.github.iohttps://heads0rtai1s.github.io/2020/01/23/rvest-intro-astro/&#34;&gt;intro post on web scraping&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This is a brief post on collecting and analysing tweets. I will show how to use the &lt;a href=&#34;https://github.com/ropensci/rtweet&#34;&gt;rtweet&lt;/a&gt; package to extract Twitter posts about the R community. This ties into last weeks post on &lt;a href=&#34;https://heads0rtai1s.github.io/2020/02/13/rstudio-conf/&#34;&gt;rstudio::conf and community values&lt;/a&gt;, and is also related to my previous &lt;a href=&#34;https://heads0rtai1s.github.io/2020/01/23/rvest-intro-astro/&#34;&gt;intro post on web scraping&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;First, we load &lt;code&gt;rtweet&lt;/code&gt; and other (&lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt;) packages we will need:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;tibble&amp;#39;,      # wrangling
           &amp;#39;stringr&amp;#39;, &amp;#39;rtweet&amp;#39;,    # strings, tweets
@@ -435,7 +435,7 @@ GiusCalamita
   theme(legend.position = &amp;quot;none&amp;quot;) +
   ggtitle(&amp;quot;Daily number of tweets about the &amp;#39;rstats community&amp;#39;&amp;quot;,
           subtitle = &amp;quot;Extracted using the rtweet package&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/posthttps://heads0rtai1s.github.io/2020-02-20-rtweet-intro_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-02-20-rtweet-intro_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The notable spike on Feb 12 was caused by &lt;code&gt;@kierisi&lt;/code&gt; asking about people’s experiences with the community. I’m looking forward to her blog post:&lt;/p&gt;
 &lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;I&amp;#39;m working on a presentation about the R Community (yes, yes I&amp;#39;ll make a blog post!) and while I have *my* opinions, I&amp;#39;d really love to showcase your experiences!&lt;br&gt;&lt;br&gt;What motivated you to join the &lt;a href=&#34;https://twitter.com/hashtag/rstats?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#rstats&lt;/a&gt; community? Why do you participate? What makes you stay?&lt;br&gt;&lt;br&gt;(DMs are OK, too!) &lt;a href=&#34;https://t.co/7h3xKZ0Cg2&#34;&gt;pic.twitter.com/7h3xKZ0Cg2&lt;/a&gt;&lt;/p&gt;&amp;mdash; Jesse Mostipak (@kierisi) &lt;a href=&#34;https://twitter.com/kierisi/status/1227666597860577281?ref_src=twsrc%5Etfw&#34;&gt;February 12, 2020&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
@@ -453,12 +453,12 @@ GiusCalamita
 
 
 &lt;p&gt;Two weeks ago, I was fortunate to attend my very first &lt;a href=&#34;https://rstudio.com/conference/&#34;&gt;Rstudio conference&lt;/a&gt;. Spoiler: it was an amazing event - packed to the brim with new ideas, tools, impressions, and most important of all: smart and kind people. This was the first time that San Francisco was hosting “rstudio::conf” (the affectionate shorthand is mirroring R’s package::tool syntax). Having moved to the Bay Area not long ago I really counted myself lucky to have such a promising event in my neighbourhood.&lt;/p&gt;
-&lt;p&gt;I have written about the importance of a strong and supportive community once before: in &lt;a href=&#34;https://heads0rtai1s.github.iohttps://heads0rtai1s.github.io/2019/04/19/great-community-kaggledays19/&#34;&gt;last year’s post&lt;/a&gt; on meeting my favourite &lt;a href=&#34;https://www.kaggle.com&#34;&gt;Kaggle&lt;/a&gt; crowd for the first time in real life. The rstudio::conf confirmed my belief that progress in any field is greatly boosted by having friendly and competent people around to support you and lift you up.&lt;/p&gt;
+&lt;p&gt;I have written about the importance of a strong and supportive community once before: in &lt;a href=&#34;https://heads0rtai1s.github.io/2019/04/19/great-community-kaggledays19/&#34;&gt;last year’s post&lt;/a&gt; on meeting my favourite &lt;a href=&#34;https://www.kaggle.com&#34;&gt;Kaggle&lt;/a&gt; crowd for the first time in real life. The rstudio::conf confirmed my belief that progress in any field is greatly boosted by having friendly and competent people around to support you and lift you up.&lt;/p&gt;
 &lt;div class=&#34;figure&#34;&gt;
 &lt;img src=&#34;/pics/rstudioconf20_1.jpg&#34; alt=&#34;rstudio::conf opening; with about 20% of the audience visible&#34; style=&#34;width:100.0%&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;&lt;em&gt;rstudio::conf opening; with about 20% of the audience visible&lt;/em&gt;&lt;/p&gt;
 &lt;/div&gt;
-&lt;p&gt;Nothing exemplifies this attitude better than the way in which the R community has embraced the &lt;a href=&#34;https://www.ericholscher.com/bloghttps://heads0rtai1s.github.io/2017/aug/2/pacman-rule-conferences/&#34;&gt;Pac-Man rule&lt;/a&gt;: “When standing as a group of people, always leave room for 1 person to join your group.” In other words, if you’re talking as a group then don’t stand in a closed circle but leave a bit of free space for anyone who’d like to participate in the conversation. At rstudio::conf I saw this concept work extremely well and it allowed me (and many others) to quickly connect with new people and have fun and inspiring conversations. It may have also helped that we all had at least one thing in common to talk about.&lt;/p&gt;
+&lt;p&gt;Nothing exemplifies this attitude better than the way in which the R community has embraced the &lt;a href=&#34;https://www.ericholscher.com/blog/2017/aug/2/pacman-rule-conferences/&#34;&gt;Pac-Man rule&lt;/a&gt;: “When standing as a group of people, always leave room for 1 person to join your group.” In other words, if you’re talking as a group then don’t stand in a closed circle but leave a bit of free space for anyone who’d like to participate in the conversation. At rstudio::conf I saw this concept work extremely well and it allowed me (and many others) to quickly connect with new people and have fun and inspiring conversations. It may have also helped that we all had at least one thing in common to talk about.&lt;/p&gt;
 &lt;p&gt;Another key aspect the R community excels in is to actively champion diversity and inclusion. This diversity within the community is mirrored by, and without a doubt contributes to, the richness and variety of the growing R ecosystem. In a tech sector that is still predominantly white and/or male, I strongly believe that the more a community welcomes all strata of society the better it can evolve and strive.&lt;/p&gt;
 &lt;p&gt;And the R universe, including the tidyverse, is growing rapidly indeed. I learned lots of new tricks from seasoned expeRts (like the unpacking operator &lt;code&gt;%&amp;lt;-%&lt;/code&gt; from the &lt;a href=&#34;https://rdrr.io/cran/zeallot/man/operator.html&#34;&gt;zeallot package&lt;/a&gt;) and discovered so many cool packages I hadn’t been aware of. To name only three, in no particular order:&lt;/p&gt;
 &lt;ul&gt;
@@ -838,7 +838,7 @@ foo %&amp;gt;%
        caption = &amp;quot;The M31N 2008-12a monitoring collaboration&amp;quot;) +
   ggtitle(&amp;quot;Neil Gehrels Swift Observatory coverage of nova M31N 2008-12a&amp;quot;,
           subtitle = &amp;quot;Targeted observations began in 2013. In 2015 we conducted the\nX-ray flash monitoring campaign. In 2017 the eruption happened on NYE.&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/posthttps://heads0rtai1s.github.io/2020-01-23-rvest-intro-swift_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-01-23-rvest-intro-swift_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Observations prior to 2013 did not detect the eruptions; in 2013 our targeted campaign &lt;a href=&#34;https://arxiv.org/abs/1401.2904&#34;&gt;began&lt;/a&gt;. 2015 was an odd year, because we were running a separate high-frequency campaign trying to catch an elusive &lt;a href=&#34;https://arxiv.org/abs/1607.07985&#34;&gt;X-ray flash&lt;/a&gt;, which had never been observed in any object. Unfortunately, it still hasn’t. In 2017 the eruption had the nerves to happen on New Year’s Eve, so almost all observations happened in early 2018 (and our NYE parties briefly got a bit hectic). The 2020 eruption will probably happen in October, but don’t bet too much money on it.&lt;/p&gt;
 &lt;p&gt;If you look at cumulative exposure time instead of number of observations you see that in 2015 most of those 112 observations were much shorter than usual:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;foo %&amp;gt;%
@@ -855,7 +855,7 @@ foo %&amp;gt;%
   labs(x = &amp;quot;Year&amp;quot;, y = &amp;quot;Combined XRT Exposure [ks]&amp;quot;,
        caption = &amp;quot;The M31N 2008-12a monitoring collaboration&amp;quot;) +
   ggtitle(&amp;quot;Neil Gehrels Swift Observatory coverage of nova M31N 2008-12a&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/posthttps://heads0rtai1s.github.io/2020-01-23-rvest-intro-swift_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-01-23-rvest-intro-swift_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Up to Jan 2020, we have used &lt;em&gt;Swift&lt;/em&gt; to look at M31N 2008-12a in the X-rays for a total of almost exactly 600 ks. Which is more than half a &lt;em&gt;mega second&lt;/em&gt;. Now that’s an impressive unit. Coincidentally, with Rstudio::conf 2020 coming up in San Francisco next week, my next post might happen within the next mega second. Watch this space ;-)&lt;/p&gt;
 &lt;p&gt;More info:&lt;/p&gt;
 &lt;ul&gt;
@@ -887,7 +887,7 @@ library(stringr)
 library(ggplot2)
 
 # the post url
-post &amp;lt;- &amp;quot;https://heads0rtai1s.github.iohttps://heads0rtai1s.github.io/2019/12/05/shiny-starter-code/&amp;quot;
+post &amp;lt;- &amp;quot;https://heads0rtai1s.github.io/2019/12/05/shiny-starter-code/&amp;quot;
 
 # user interface elements and layout
 ui &amp;lt;- fluidPage(
@@ -943,7 +943,7 @@ shinyApp(ui = ui, server = server)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;The app allows you to choose the number of coin flips as well as the probability for Heads using slider bars. It visualises the resulting total numbers of Heads vs Tails as a reactive bar plot. Given the functionality of this app, 56 lines is not too bad, is it? Let’s dissect the code element by element!&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Preparations:&lt;/strong&gt; Before we get to the interesting parts, the first five lines define and load the packages the script needs. This is unrelated to shiny (other than loading it):&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;library(shiny)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Note, that shiny web apps on shinyapps.io apparently need explicit &lt;code&gt;library&lt;/code&gt; calls and that my &lt;a href=&#34;https://heads0rtai1s.github.iohttps://heads0rtai1s.github.io/2019/11/07/tidy-curly-pivot-leaflet/&#34;&gt;normal approach&lt;/a&gt; of using &lt;code&gt;invisible(lapply())&lt;/code&gt; led to some confusing errors before I figured it out. Besides the libraries, I’m also including the url for this post as part of the preparation.&lt;/p&gt;
+&lt;p&gt;Note, that shiny web apps on shinyapps.io apparently need explicit &lt;code&gt;library&lt;/code&gt; calls and that my &lt;a href=&#34;https://heads0rtai1s.github.io/2019/11/07/tidy-curly-pivot-leaflet/&#34;&gt;normal approach&lt;/a&gt; of using &lt;code&gt;invisible(lapply())&lt;/code&gt; led to some confusing errors before I figured it out. Besides the libraries, I’m also including the url for this post as part of the preparation.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;The shiny code&lt;/strong&gt; is structured into two main elements: (i) a &lt;strong&gt;user interface (UI)&lt;/strong&gt; definition and layout, and (ii) the &lt;strong&gt;server-side computations&lt;/strong&gt; producing the data for plots (or tables, or other output elements). At the end, there is always a &lt;strong&gt;call to the &lt;code&gt;shinyApp&lt;/code&gt; function&lt;/strong&gt; which renders the whole thing.&lt;/p&gt;
 &lt;p&gt;The &lt;strong&gt;UI setup&lt;/strong&gt; starts with:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;ui &amp;lt;- fluidPage(&lt;/code&gt;&lt;/pre&gt;
@@ -1053,12 +1053,12 @@ shinyApp(ui = ui, server = server)&lt;/code&gt;&lt;/pre&gt;
           &amp;#39;ggplot2&amp;#39;,&amp;#39;gridExtra&amp;#39;,     # plots
           &amp;#39;leaflet&amp;#39;)                 # interactive maps
 invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;For this post’s dataset we’ll be doing something different than sampling the usual in-built tables. We will work with the &lt;a href=&#34;https://www.nationalgeographic.com/animalshttps://heads0rtai1s.github.io/2019/06/squirrel-census-new-york-city-central-park/&#34;&gt;famous&lt;/a&gt; &lt;a href=&#34;https://www.thesquirrelcensus.com&#34;&gt;NYC Squirrel Census&lt;/a&gt; - cataloguing the squirrel population of New York’s Central Park in October 2018. The squirrel census is a great example for a citizen science project that’s both accessible fun and useful scientific contribution.&lt;/p&gt;
+&lt;p&gt;For this post’s dataset we’ll be doing something different than sampling the usual in-built tables. We will work with the &lt;a href=&#34;https://www.nationalgeographic.com/animals/2019/06/squirrel-census-new-york-city-central-park/&#34;&gt;famous&lt;/a&gt; &lt;a href=&#34;https://www.thesquirrelcensus.com&#34;&gt;NYC Squirrel Census&lt;/a&gt; - cataloguing the squirrel population of New York’s Central Park in October 2018. The squirrel census is a great example for a citizen science project that’s both accessible fun and useful scientific contribution.&lt;/p&gt;
 &lt;p&gt;Talking about fun community projects: the specific dataset we’re using has been prepared by the &lt;a href=&#34;https://github.com/rfordatascience/tidytuesday&#34;&gt;TidyTuesday project&lt;/a&gt;, a weekly social exercise to test our tidyverse skills and provide inspiration. TidyTuesday is run by the &lt;a href=&#34;https://www.rfordatasci.com&#34;&gt;R for Data Science&lt;/a&gt; Online Learning Community. All datasets are available on github:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;squirrels &amp;lt;- read_csv(str_c(
   &amp;quot;https://raw.githubusercontent.com/&amp;quot;,
   &amp;quot;rfordatascience/tidytuesday/master/&amp;quot;,
-  &amp;quot;datahttps://heads0rtai1s.github.io/2019https://heads0rtai1s.github.io/2019-10-29/nyc_squirrels.csv&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+  &amp;quot;data/2019/2019-10-29/nyc_squirrels.csv&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;squirrels %&amp;gt;%
   select(lat, long, date, running, climbing, eating) %&amp;gt;%
   head(5) %&amp;gt;%
@@ -1192,7 +1192,7 @@ FALSE
 &lt;/table&gt;
 &lt;p&gt;Among other features, the squirrels data includes the latitude and longitude of the sighting, the date, and flags that indicate whether this squirrel was spotted running, climbing, or eating. True to tidy form, each row corresponds to one squirrel. There are many more features in the full dataset, but we will focus on the ones above in the following examples.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;First, we will cover tidy evaluation with the &lt;code&gt;{{ }}&lt;/code&gt; operator aka ‘curly-curly’.&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Introduced as part of &lt;a href=&#34;https://www.tidyverse.org/articleshttps://heads0rtai1s.github.io/2019/06/rlang-0-4-0/&#34;&gt;rlang version 0.4.0&lt;/a&gt; back in June, curly-curly replaces the approach of quoting with &lt;code&gt;enquo&lt;/code&gt; and unquoting with &lt;code&gt;!!&lt;/code&gt; (aka ‘bang-bang’). Instead of two operations it provides a compact shorthand for simple cases. Here is a brief example for counting groups of distinct feature values:&lt;/p&gt;
+&lt;p&gt;Introduced as part of &lt;a href=&#34;https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/&#34;&gt;rlang version 0.4.0&lt;/a&gt; back in June, curly-curly replaces the approach of quoting with &lt;code&gt;enquo&lt;/code&gt; and unquoting with &lt;code&gt;!!&lt;/code&gt; (aka ‘bang-bang’). Instead of two operations it provides a compact shorthand for simple cases. Here is a brief example for counting groups of distinct feature values:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# new style
 count_groups &amp;lt;- function(df, groupvar){
   df %&amp;gt;%
@@ -1785,7 +1785,7 @@ leaflet(loc) %&amp;gt;%
 &lt;/ul&gt;
 &lt;p&gt;More resources:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Read the &lt;a href=&#34;https://www.tidyverse.org/articleshttps://heads0rtai1s.github.io/2019/06/rlang-0-4-0/&#34;&gt;announcement for curly-curly&lt;/a&gt; and the &lt;a href=&#34;https://tidyr.tidyverse.org/articles/pivot.html&#34;&gt;new pivoting vignette&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Read the &lt;a href=&#34;https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/&#34;&gt;announcement for curly-curly&lt;/a&gt; and the &lt;a href=&#34;https://tidyr.tidyverse.org/articles/pivot.html&#34;&gt;new pivoting vignette&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;At the moment, situations where one or more variables are simply quoted are the best use cases for &lt;code&gt;{{ }}&lt;/code&gt;. Beyond that, &lt;a href=&#34;https://stackoverflow.com/questions/56936372/curly-curly-tidy-evaluation-and-modifying-inputs-or-their-names&#34;&gt;operations that require modification of variables&lt;/a&gt; still need &lt;code&gt;enquo&lt;/code&gt;. This might &lt;a href=&#34;http://rpubs.com/lionel-/superstache&#34;&gt;change in the near future&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;A great introduction to the capabilities of leaflet can be found &lt;a href=&#34;https://rstudio.github.io/leaflet/&#34;&gt;here&lt;/a&gt;. It is also a popular tool for exploratory Kernels on Kaggle, for instance on &lt;a href=&#34;https://www.kaggle.com/headsortails/be-my-guest-recruit-restaurant-eda&#34;&gt;restaurants in Japan&lt;/a&gt; or &lt;a href=&#34;https://www.kaggle.com/headsortails/nyc-taxi-eda-update-the-fast-the-curious&#34;&gt;Taxi rides in NYC&lt;/a&gt; (&lt;em&gt;for an unknown number of squirrel passengers&lt;/em&gt;).&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;As you might expect, Tidy Tuesday is a weekly challenge with tons of interesting data and many talented participants. Make sure to check out #tidytuesday on Twitter for frequent examples of creative visuals.&lt;/p&gt;&lt;/li&gt;
@@ -1937,7 +1937,7 @@ p2 &amp;lt;- iris %&amp;gt;%
   theme(legend.position = &amp;quot;top&amp;quot;)
 
 grid.arrange(p1, p2, layout_matrix = rbind(c(1,2)))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/posthttps://heads0rtai1s.github.io/2019-10-03-reticulate-intro_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-10-03-reticulate-intro_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We find that there are clear clusters for each of the species - especially for setosa and in the petal dimensions. A well-trained classifier should be able to distinguish the three iris species. Now, R is perfectly capable of performing this classification task, but for the sake of the excercise we will turn to Python. Given the popularity of both &lt;code&gt;ggplot2&lt;/code&gt; and &lt;code&gt;scikit-learn&lt;/code&gt;, such a workflow is certainly realistic.&lt;/p&gt;
 &lt;p&gt;First, we need to tell R where Python can be found. In &lt;code&gt;reticulate&lt;/code&gt;, the &lt;code&gt;use_python&lt;/code&gt; convenience function takes care of that; all we need is a path to the executable. On a Unix-based system, simply open a terminal and type &lt;code&gt;which python&lt;/code&gt;, then paste the resulting path below. (Or look for &lt;code&gt;python3&lt;/code&gt; instead, but this should really become your default version because for Python 2 the &lt;a href=&#34;https://pythonclock.org&#34;&gt;time is running out&lt;/a&gt;). This is my path:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;use_python(&amp;quot;/usr/bin/python&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
@@ -2140,7 +2140,7 @@ p3 &amp;lt;- foo %&amp;gt;%
 
 grid.arrange(p1, p2, p3,
         layout_matrix = cbind(c(3), c(rep(1,2), rep(2,3))))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/posthttps://heads0rtai1s.github.io/2019-10-03-reticulate-intro_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-10-03-reticulate-intro_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;This plot layout provides diagnostics for the performance of the classifier:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;On the left, there is a confusion matrix which shows how many test instances of each species were classified as one of the 3 species. The numbers are absolute numbers (remember that this is a small dataset) and the colours encode percentages. For instance, 100% of the 19 setosa instances were correctly classified as setosa. This is the classification accuracy, i.e. the number of true positives. The accuracies for the other two species are pretty high, too; with iris virginica having the lowest proportion of 20 out of 24 instances correctly classified.&lt;/p&gt;&lt;/li&gt;
@@ -2168,7 +2168,7 @@ grid.arrange(p1, p2, p3,
 &lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
-&lt;p&gt;In an &lt;a href=&#34;https://heads0rtai1s.github.iohttps://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/&#34;&gt;earlier post&lt;/a&gt; I gave a gentle introduction to &lt;a href=&#34;https://tidyeval.tidyverse.org/&#34;&gt;tidy evaluation&lt;/a&gt; in the R &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; using simple examples. I covered quoting with &lt;code&gt;enquo&lt;/code&gt; and unquoting with &lt;code&gt;!!&lt;/code&gt; in brief &lt;code&gt;dplyr&lt;/code&gt; and &lt;code&gt;ggplot2&lt;/code&gt; snippets. Today, I aim to build a collection of more complex use cases involving additional tools.&lt;/p&gt;
+&lt;p&gt;In an &lt;a href=&#34;https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/&#34;&gt;earlier post&lt;/a&gt; I gave a gentle introduction to &lt;a href=&#34;https://tidyeval.tidyverse.org/&#34;&gt;tidy evaluation&lt;/a&gt; in the R &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; using simple examples. I covered quoting with &lt;code&gt;enquo&lt;/code&gt; and unquoting with &lt;code&gt;!!&lt;/code&gt; in brief &lt;code&gt;dplyr&lt;/code&gt; and &lt;code&gt;ggplot2&lt;/code&gt; snippets. Today, I aim to build a collection of more complex use cases involving additional tools.&lt;/p&gt;
 &lt;p&gt;Those are our libraries:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;stringr&amp;#39;,             # wrangling
           &amp;#39;knitr&amp;#39;,&amp;#39;kableExtra&amp;#39;,           # table styling
@@ -2439,10 +2439,10 @@ group_mean(diamonds, price, mean_price, cut, color) %&amp;gt;%
 }
 
 plot_xy(diamonds, carat, price, clarity, &amp;quot;IF&amp;quot;, color, cut)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/posthttps://heads0rtai1s.github.io/2019-08-22-tidy-eval-complex-examples_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-08-22-tidy-eval-complex-examples_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Let’s break it down:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;The &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt; features are encoded using &lt;code&gt;enquo&lt;/code&gt; and &lt;code&gt;!!&lt;/code&gt;, as covered in the &lt;a href=&#34;https://heads0rtai1s.github.iohttps://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/&#34;&gt;previous post&lt;/a&gt;. Those variables will form our scatter plot. But now, they are also encoded using &lt;code&gt;ensym&lt;/code&gt; as &lt;code&gt;xname&lt;/code&gt; and &lt;code&gt;yname&lt;/code&gt;. Those are symbols that we can now use in string functions to build custom plot titles and labels.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt; features are encoded using &lt;code&gt;enquo&lt;/code&gt; and &lt;code&gt;!!&lt;/code&gt;, as covered in the &lt;a href=&#34;https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/&#34;&gt;previous post&lt;/a&gt;. Those variables will form our scatter plot. But now, they are also encoded using &lt;code&gt;ensym&lt;/code&gt; as &lt;code&gt;xname&lt;/code&gt; and &lt;code&gt;yname&lt;/code&gt;. Those are symbols that we can now use in string functions to build custom plot titles and labels.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;The &lt;code&gt;col&lt;/code&gt; feature is also encoded both as a quote and a symbol. This needs to be a categorical feature that we will use to colour-code the data points. The legend is the default style and position. Note, that we use &lt;code&gt;:=&lt;/code&gt; to preserve the column name when transforming this feature from character to factor.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;The &lt;code&gt;string_to_sentence&lt;/code&gt; tool, from the &lt;code&gt;stringr&lt;/code&gt; package, simply capitalises our input strings.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;Additional grouping variables are encoded using &lt;code&gt;enquos&lt;/code&gt; and spliced into the &lt;code&gt;group_by&lt;/code&gt; call via &lt;code&gt;!!!&lt;/code&gt;. By using the dots &lt;code&gt;...&lt;/code&gt; in the function call we give ourselves the option to use an arbitrary number of grouping features in this function.&lt;/p&gt;&lt;/li&gt;
@@ -2538,7 +2538,7 @@ BQN
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;The &lt;a href=&#34;https://github.com/mbojan/alluvial&#34;&gt;alluvial package&lt;/a&gt; was &lt;a href=&#34;http://bc.bojanorama.plhttps://heads0rtai1s.github.io/2014/03/alluvial-diagrams/&#34;&gt;introduced in 2014&lt;/a&gt; to fill a niché in the landscape of visualisations. I have enjoyed using it in the past in &lt;a href=&#34;https://www.kaggle.com/headsortails/treemap-house-of-horror-spooky-eda-lda-features&#34;&gt;several&lt;/a&gt; &lt;a href=&#34;https://www.kaggle.com/headsortails/nyc-taxi-eda-update-the-fast-the-curious&#34;&gt;Kaggle&lt;/a&gt; &lt;a href=&#34;https://www.kaggle.com/headsortails/steering-wheel-of-fortune-porto-seguro-eda&#34;&gt;Kernels&lt;/a&gt;. Here’s what a plot looks like:&lt;/p&gt;
+&lt;p&gt;The &lt;a href=&#34;https://github.com/mbojan/alluvial&#34;&gt;alluvial package&lt;/a&gt; was &lt;a href=&#34;http://bc.bojanorama.pl/2014/03/alluvial-diagrams/&#34;&gt;introduced in 2014&lt;/a&gt; to fill a niché in the landscape of visualisations. I have enjoyed using it in the past in &lt;a href=&#34;https://www.kaggle.com/headsortails/treemap-house-of-horror-spooky-eda-lda-features&#34;&gt;several&lt;/a&gt; &lt;a href=&#34;https://www.kaggle.com/headsortails/nyc-taxi-eda-update-the-fast-the-curious&#34;&gt;Kaggle&lt;/a&gt; &lt;a href=&#34;https://www.kaggle.com/headsortails/steering-wheel-of-fortune-porto-seguro-eda&#34;&gt;Kernels&lt;/a&gt;. Here’s what a plot looks like:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;top_dest &amp;lt;- flights %&amp;gt;%
   count(dest) %&amp;gt;%
   top_n(5, n) %&amp;gt;%
@@ -2563,7 +2563,7 @@ alluvial(fly %&amp;gt;% select(-n),
          cex=0.75,
          axis_labels = c(&amp;quot;Origin&amp;quot;, &amp;quot;Carrier&amp;quot;, &amp;quot;Destination&amp;quot;),
          hide = fly$n &amp;lt; 150)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/posthttps://heads0rtai1s.github.io/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;The features are arranged horizontally, with their value counts stacked vertically. This corresponds to a stacked barplot: e.g. for the destinations “BOS” has fewer flights than “LAX”. Here we only look at the top 5 destination and their top 4 carriers (that’s the first two segments of the code above).&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;The “alluvia” are the bands that connect the features from left to right. Alluvia break down all feature combinations, with complexity increasing also from left to right. These sub-segments are called “flows”.&lt;/p&gt;&lt;/li&gt;
@@ -2591,7 +2591,7 @@ alluvial(fly %&amp;gt;% select(-n),
   theme_minimal() +
   theme(legend.position = &amp;quot;none&amp;quot;) +
   ggtitle(&amp;quot;NYC flights volume for top destinations and airlines&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/posthttps://heads0rtai1s.github.io/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Here I purposefully choose the styling parameters to (broadly) reproduce the above plot. It is evident that &lt;code&gt;ggalluvial&lt;/code&gt; integrates much more smoothly into the &lt;code&gt;ggplot2&lt;/code&gt; grammar. Specifically:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;The alluvia and the vertical features (the “strata”; here: origin, carrier, and destination) are implemented as different geometry layers. Note, that the default order of the strata features is reversed compared to &lt;code&gt;alluvial&lt;/code&gt;. Also: there are no gaps between the strata here compared to what &lt;code&gt;alluvial&lt;/code&gt; does. This makes it easier to add a y-axis.&lt;/p&gt;&lt;/li&gt;
@@ -2742,7 +2742,7 @@ median_minus_mean(Orange, circumference)&lt;/code&gt;&lt;/pre&gt;
 }
 
 plot_growth_tree(Orange, age, circumference, Tree)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/posthttps://heads0rtai1s.github.io/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Some trees grow faster than others.&lt;/p&gt;
 &lt;p&gt;In fact, ggplot2 is a great use case because it allows us to quickly built helper functions if we need to repeat a certain plot for many similar features. Individual modification to those templates can be added using the ggplot2 grammar. Here is a histogram example where we add a custom title to the second plot&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_hist &amp;lt;- function(df, var, bins, bcol){
@@ -2758,7 +2758,7 @@ p2 &amp;lt;- plot_hist(Orange, circumference, 7, &amp;quot;red&amp;quot;) +
   ggtitle(&amp;quot;A custom title&amp;quot;)
 
 grid.arrange(p1, p2, layout_matrix = rbind(c(1,2)))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/posthttps://heads0rtai1s.github.io/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;You see that here the number of histogram bins and the plot colour are being passed to the function as normal integer and string - without need of being quoted. This works because these parameters are not R expressions.&lt;/p&gt;
 &lt;p&gt;There will be a second post soon about more complex tidy evaluation examples. If you’re interested, watch this space.&lt;/p&gt;
 &lt;p&gt;In the meantime: Curious about the bigger picture?&lt;/p&gt;
