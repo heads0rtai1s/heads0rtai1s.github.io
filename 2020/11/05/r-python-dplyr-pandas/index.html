@@ -81,16 +81,11 @@
       
 
 
-<style type="text/css">
-.rCode {
-background-color: lightblue;
-}
-</style>
 <p>This is the first post in a new series featuring translations between R and Python code for common data science and machine learning tasks. A <a href="https://en.wikipedia.org/wiki/Rosetta_Stone">Rosetta Stone</a>, if you will. I’m writing this mainly as a documented cheat sheet for myself, as I’m frequently switching between the two languages. Personally, I have learned Python and R around the same time, several years ago, but tidy R is much more intuitive to me than any other language. Hopefully, these posts can be useful to others in a similar situation. My point of reference is primarily R - with the aim to provide equivalent Python code - but occasionally I will look at translations of Python features into R.</p>
 <p>The first post will focus on the <a href="https://www.tidyverse.org/">tidyverse</a> backbone <a href="https://dplyr.tidyverse.org/">dplyr</a> and compare it to Python’s data science workhorse <a href="https://pandas.pydata.org/">pandas</a>.</p>
 <p>As with all my blog posts, the code will run in <a href="https://rmarkdown.rstudio.com/">Rmarkdown</a> through the fantastic <a href="https://rstudio.com/">Rstudio IDE</a>. All the output will be reproducible. Rstudio provides Python support via the great <a href="https://rstudio.github.io/reticulate/">reticulate</a> package. If you haven’t heard of it yet, check out my <a href="https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/">intro post on reticulate</a> to get started.</p>
 <p><strong>Note: you need at least RStudio version 1.2 to be able to pass objects between R and Python.</strong> In addition, as always, here are the required packages. We are also setting the python path (see the <a href="https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/">intro post</a> for more details on the path) and importing <em>pandas</em>:</p>
-<pre class="r bg-info"><code># R
+<pre class="r"><code># R
 libs &lt;- c(&#39;dplyr&#39;,                # wrangling
           &#39;palmerpenguins&#39;,       # data
           &#39;knitr&#39;,&#39;kableExtra&#39;,   # table styling
@@ -101,7 +96,7 @@ use_python(&quot;/usr/bin/python&quot;)
 
 df &lt;- penguins %&gt;% 
   mutate_if(is.integer, as.double)</code></pre>
-<pre class="python bg-success"><code># Python
+<pre class="python"><code># Python
 import pandas as pd
 pd.set_option(&#39;display.max_columns&#39;, None)</code></pre>
 <p>We will be using the <a href="https://www.kaggle.com/parulpandey/palmer-archipelago-antarctica-penguin-data">Palmer Penguins dataset</a>, as provided by the brilliant <a href="https://www.allisonhorst.com/">Allison Horst</a> through the <a href="https://allisonhorst.github.io/palmerpenguins/">eponymous R package</a> - complete with her trademark adorable artwork. I was looking for an excuse to work with this dataset. Therefore, this will be a genuine example for an exploratory analysis, as I’m encountering the data for the first time.</p>
@@ -110,7 +105,7 @@ pd.set_option(&#39;display.max_columns&#39;, None)</code></pre>
 <p>It’s best to start your EDA by looking at the big picture: How large is the dataset? How many features are there? What are the data types? Here we have tabular data, but similar steps can be taken for text or images as well.</p>
 <p>In R, I typically go with a combination of <strong>head</strong>, <strong>glimpse</strong>, and <strong>summary</strong> to get a broad idea of the data properties. (Beyond <em>dplyr</em>, there’s also the <a href="https://cran.r-project.org/package=skimr">skimr package</a> for more sophisticated data overviews.)</p>
 <p>With <code>head</code>, we see the first (by default) 6 rows of the dataset:</p>
-<pre class="r rCode"><code># R
+<pre class="r"><code># R
 head(df)</code></pre>
 <pre><code>## # A tibble: 6 x 8
 ##   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g

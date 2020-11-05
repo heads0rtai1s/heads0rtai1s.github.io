@@ -20,16 +20,11 @@
       <description>
 
 
-&lt;style type=&#34;text/css&#34;&gt;
-.rCode {
-background-color: lightblue;
-}
-&lt;/style&gt;
 &lt;p&gt;This is the first post in a new series featuring translations between R and Python code for common data science and machine learning tasks. A &lt;a href=&#34;https://en.wikipedia.org/wiki/Rosetta_Stone&#34;&gt;Rosetta Stone&lt;/a&gt;, if you will. I’m writing this mainly as a documented cheat sheet for myself, as I’m frequently switching between the two languages. Personally, I have learned Python and R around the same time, several years ago, but tidy R is much more intuitive to me than any other language. Hopefully, these posts can be useful to others in a similar situation. My point of reference is primarily R - with the aim to provide equivalent Python code - but occasionally I will look at translations of Python features into R.&lt;/p&gt;
 &lt;p&gt;The first post will focus on the &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; backbone &lt;a href=&#34;https://dplyr.tidyverse.org/&#34;&gt;dplyr&lt;/a&gt; and compare it to Python’s data science workhorse &lt;a href=&#34;https://pandas.pydata.org/&#34;&gt;pandas&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;As with all my blog posts, the code will run in &lt;a href=&#34;https://rmarkdown.rstudio.com/&#34;&gt;Rmarkdown&lt;/a&gt; through the fantastic &lt;a href=&#34;https://rstudio.com/&#34;&gt;Rstudio IDE&lt;/a&gt;. All the output will be reproducible. Rstudio provides Python support via the great &lt;a href=&#34;https://rstudio.github.io/reticulate/&#34;&gt;reticulate&lt;/a&gt; package. If you haven’t heard of it yet, check out my &lt;a href=&#34;https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/&#34;&gt;intro post on reticulate&lt;/a&gt; to get started.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Note: you need at least RStudio version 1.2 to be able to pass objects between R and Python.&lt;/strong&gt; In addition, as always, here are the required packages. We are also setting the python path (see the &lt;a href=&#34;https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/&#34;&gt;intro post&lt;/a&gt; for more details on the path) and importing &lt;em&gt;pandas&lt;/em&gt;:&lt;/p&gt;
-&lt;pre class=&#34;r bg-info&#34;&gt;&lt;code&gt;# R
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# R
 libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;,                # wrangling
           &amp;#39;palmerpenguins&amp;#39;,       # data
           &amp;#39;knitr&amp;#39;,&amp;#39;kableExtra&amp;#39;,   # table styling
@@ -40,7 +35,7 @@ use_python(&amp;quot;/usr/bin/python&amp;quot;)
 
 df &amp;lt;- penguins %&amp;gt;% 
   mutate_if(is.integer, as.double)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class=&#34;python bg-success&#34;&gt;&lt;code&gt;# Python
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;# Python
 import pandas as pd
 pd.set_option(&amp;#39;display.max_columns&amp;#39;, None)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;We will be using the &lt;a href=&#34;https://www.kaggle.com/parulpandey/palmer-archipelago-antarctica-penguin-data&#34;&gt;Palmer Penguins dataset&lt;/a&gt;, as provided by the brilliant &lt;a href=&#34;https://www.allisonhorst.com/&#34;&gt;Allison Horst&lt;/a&gt; through the &lt;a href=&#34;https://allisonhorst.github.io/palmerpenguins/&#34;&gt;eponymous R package&lt;/a&gt; - complete with her trademark adorable artwork. I was looking for an excuse to work with this dataset. Therefore, this will be a genuine example for an exploratory analysis, as I’m encountering the data for the first time.&lt;/p&gt;
@@ -49,7 +44,7 @@ pd.set_option(&amp;#39;display.max_columns&amp;#39;, None)&lt;/code&gt;&lt;/pre&
 &lt;p&gt;It’s best to start your EDA by looking at the big picture: How large is the dataset? How many features are there? What are the data types? Here we have tabular data, but similar steps can be taken for text or images as well.&lt;/p&gt;
 &lt;p&gt;In R, I typically go with a combination of &lt;strong&gt;head&lt;/strong&gt;, &lt;strong&gt;glimpse&lt;/strong&gt;, and &lt;strong&gt;summary&lt;/strong&gt; to get a broad idea of the data properties. (Beyond &lt;em&gt;dplyr&lt;/em&gt;, there’s also the &lt;a href=&#34;https://cran.r-project.org/package=skimr&#34;&gt;skimr package&lt;/a&gt; for more sophisticated data overviews.)&lt;/p&gt;
 &lt;p&gt;With &lt;code&gt;head&lt;/code&gt;, we see the first (by default) 6 rows of the dataset:&lt;/p&gt;
-&lt;pre class=&#34;r rCode&#34;&gt;&lt;code&gt;# R
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# R
 head(df)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 8
 ##   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g

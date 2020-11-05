@@ -17,7 +17,7 @@
       <pubDate>Thu, 05 Nov 2020 00:00:00 +0000</pubDate>
       
       <guid>/2020/11/05/r-python-dplyr-pandas/</guid>
-      <description>.rCode { background-color: lightblue; }  This is the first post in a new series featuring translations between R and Python code for common data science and machine learning tasks. A Rosetta Stone, if you will. I’m writing this mainly as a documented cheat sheet for myself, as I’m frequently switching between the two languages. Personally, I have learned Python and R around the same time, several years ago, but tidy R is much more intuitive to me than any other language.</description>
+      <description>This is the first post in a new series featuring translations between R and Python code for common data science and machine learning tasks. A Rosetta Stone, if you will. I’m writing this mainly as a documented cheat sheet for myself, as I’m frequently switching between the two languages. Personally, I have learned Python and R around the same time, several years ago, but tidy R is much more intuitive to me than any other language.</description>
     </item>
     
     <item>
