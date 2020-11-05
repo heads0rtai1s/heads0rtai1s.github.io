@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.54.0" />
+
+
+<title>R &amp; Python Rosetta Stone: EDA with dplyr vs pandas - head spin - the Heads or Tails blog</title>
+<meta property="og:title" content="R &amp; Python Rosetta Stone: EDA with dplyr vs pandas - head spin - the Heads or Tails blog">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/avatar.png"
+         width="50"
+         height="50"
+         alt="Heads or Tails">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="/blogroll/">Blogroll</a></li>
+    
+    <li><a href="https://twitter.com/heads0rtai1s">Twitter</a></li>
+    
+    <li><a href="https://www.kaggle.com/headsortails">Kaggle</a></li>
+    
+    <li><a href="https://www.linkedin.com/in/martin-henze">LinkedIn</a></li>
+    
+    <li><a href="https://github.com/heads0rtai1s">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">18 min read</span>
+    
+
+    <h1 class="article-title">R &amp; Python Rosetta Stone: EDA with dplyr vs pandas</h1>
+
+    
+    <span class="article-date">2020-11-05</span>
+    
+
+    <div class="article-content">
+      
+
+
+<style type="text/css">
+.rCode {
+background-color: lightblue;
+}
+</style>
+<p>This is the first post in a new series featuring translations between R and Python code for common data science and machine learning tasks. A <a href="https://en.wikipedia.org/wiki/Rosetta_Stone">Rosetta Stone</a>, if you will. I’m writing this mainly as a documented cheat sheet for myself, as I’m frequently switching between the two languages. Personally, I have learned Python and R around the same time, several years ago, but tidy R is much more intuitive to me than any other language. Hopefully, these posts can be useful to others in a similar situation. My point of reference is primarily R - with the aim to provide equivalent Python code - but occasionally I will look at translations of Python features into R.</p>
+<p>The first post will focus on the <a href="https://www.tidyverse.org/">tidyverse</a> backbone <a href="https://dplyr.tidyverse.org/">dplyr</a> and compare it to Python’s data science workhorse <a href="https://pandas.pydata.org/">pandas</a>.</p>
+<p>As with all my blog posts, the code will run in <a href="https://rmarkdown.rstudio.com/">Rmarkdown</a> through the fantastic <a href="https://rstudio.com/">Rstudio IDE</a>. All the output will be reproducible. Rstudio provides Python support via the great <a href="https://rstudio.github.io/reticulate/">reticulate</a> package. If you haven’t heard of it yet, check out my <a href="https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/">intro post on reticulate</a> to get started.</p>
+<p><strong>Note: you need at least RStudio version 1.2 to be able to pass objects between R and Python.</strong> In addition, as always, here are the required packages. We are also setting the python path (see the <a href="https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/">intro post</a> for more details on the path) and importing <em>pandas</em>:</p>
+<pre class="r bg-info"><code># R
+libs &lt;- c(&#39;dplyr&#39;,                # wrangling
+          &#39;palmerpenguins&#39;,       # data
+          &#39;knitr&#39;,&#39;kableExtra&#39;,   # table styling
+          &#39;reticulate&#39;)           # python support 
+invisible(lapply(libs, library, character.only = TRUE))
+
+use_python(&quot;/usr/bin/python&quot;)
+
+df &lt;- penguins %&gt;% 
+  mutate_if(is.integer, as.double)</code></pre>
+<pre class="python bg-success"><code># Python
+import pandas as pd
+pd.set_option(&#39;display.max_columns&#39;, None)</code></pre>
+<p>We will be using the <a href="https://www.kaggle.com/parulpandey/palmer-archipelago-antarctica-penguin-data">Palmer Penguins dataset</a>, as provided by the brilliant <a href="https://www.allisonhorst.com/">Allison Horst</a> through the <a href="https://allisonhorst.github.io/palmerpenguins/">eponymous R package</a> - complete with her trademark adorable artwork. I was looking for an excuse to work with this dataset. Therefore, this will be a genuine example for an exploratory analysis, as I’m encountering the data for the first time.</p>
+<div id="general-overview" class="section level3">
+<h3>General overview</h3>
+<p>It’s best to start your EDA by looking at the big picture: How large is the dataset? How many features are there? What are the data types? Here we have tabular data, but similar steps can be taken for text or images as well.</p>
+<p>In R, I typically go with a combination of <strong>head</strong>, <strong>glimpse</strong>, and <strong>summary</strong> to get a broad idea of the data properties. (Beyond <em>dplyr</em>, there’s also the <a href="https://cran.r-project.org/package=skimr">skimr package</a> for more sophisticated data overviews.)</p>
+<p>With <code>head</code>, we see the first (by default) 6 rows of the dataset:</p>
+<pre class="r rCode"><code># R
+head(df)</code></pre>
+<pre><code>## # A tibble: 6 x 8
+##   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+##   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;dbl&gt;       &lt;dbl&gt;
+## 1 Adelie  Torge…           39.1          18.7              181        3750
+## 2 Adelie  Torge…           39.5          17.4              186        3800
+## 3 Adelie  Torge…           40.3          18                195        3250
+## 4 Adelie  Torge…           NA            NA                 NA          NA
+## 5 Adelie  Torge…           36.7          19.3              193        3450
+## 6 Adelie  Torge…           39.3          20.6              190        3650
+## # … with 2 more variables: sex &lt;fct&gt;, year &lt;dbl&gt;</code></pre>
+<p>We find that our data is a mix of numerical and categorical columns. There are 8 columns in total. We get an idea of the order of magnitude of the numeric features, see that the categorical ones have text, and already spot a couple of missing values. (Note, that I converted all integer columns to double for easier back-and-forth with Python).</p>
+<p>The <em>pandas</em> <strong>head</strong> command is essentially the same. One general difference here is that in <em>pandas</em> (and Python in general) everything is an object. Methods (and attributes) associated with the object, which is a <em>pandas</em> <code>DataFrame</code> here, are accessed via the dot “.” operator. For passing an R object to Python we preface it with <code>r.</code> like such:</p>
+<pre class="python"><code># Python
+r.df.head()</code></pre>
+<pre><code>##   species     island  bill_length_mm  bill_depth_mm  flipper_length_mm  \
+## 0  Adelie  Torgersen            39.1           18.7              181.0   
+## 1  Adelie  Torgersen            39.5           17.4              186.0   
+## 2  Adelie  Torgersen            40.3           18.0              195.0   
+## 3  Adelie  Torgersen             NaN            NaN                NaN   
+## 4  Adelie  Torgersen            36.7           19.3              193.0   
+## 
+##    body_mass_g     sex    year  
+## 0       3750.0    male  2007.0  
+## 1       3800.0  female  2007.0  
+## 2       3250.0  female  2007.0  
+## 3          NaN     NaN  2007.0  
+## 4       3450.0  female  2007.0</code></pre>
+<p>The output is less pretty than for Rmarkdown, but the result is pretty much the same. We don’t see column types, only their values. Another property of <em>pandas</em> data frames is that they come with a row index. By default this is a sequential number of rows, but anything can become an index.</p>
+<p>With <em>dplyr</em>’s <strong>glimpse</strong> we can see a more compact, transposed display of column types and their values. Especially for datasets with many columns this can be a vital complement to <code>head</code>. We also see the number of rows and columns:</p>
+<pre class="r"><code># R
+glimpse(df)</code></pre>
+<pre><code>## Observations: 344
+## Variables: 8
+## $ species           &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, Adelie, Adelie…
+## $ island            &lt;fct&gt; Torgersen, Torgersen, Torgersen, Torgersen, To…
+## $ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, …
+## $ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, …
+## $ flipper_length_mm &lt;dbl&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193, 19…
+## $ body_mass_g       &lt;dbl&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, …
+## $ sex               &lt;fct&gt; male, female, female, NA, female, male, female…
+## $ year              &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007…</code></pre>
+<p>Alongside the 8 columns, our dataset has 344 rows. That’s pretty small.</p>
+<p>In <em>pandas</em>, there’s no identical equivalent to <strong>glimpse</strong>. Instead, we can use the <strong>info</strong> method to give us the feature types in vertical form. We also see the number of non-null features (the “sex” column has the fewest), together with the number of rows and columns.</p>
+<pre class="python"><code># Python
+r.df.info()</code></pre>
+<pre><code>## &lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+## RangeIndex: 344 entries, 0 to 343
+## Data columns (total 8 columns):
+## species              344 non-null category
+## island               344 non-null category
+## bill_length_mm       342 non-null float64
+## bill_depth_mm        342 non-null float64
+## flipper_length_mm    342 non-null float64
+## body_mass_g          342 non-null float64
+## sex                  333 non-null category
+## year                 344 non-null float64
+## dtypes: category(3), float64(5)
+## memory usage: 14.8 KB</code></pre>
+<p>While several columns have missing values, the overall number of those null entries is small.</p>
+<p>Additionally, <em>pandas</em> gives us a summary of data types (3 categorical, 5 float) and tells us how much memory our data takes up. In R, you can use the <code>utils</code> tool <strong>object.size</strong> for the latter:</p>
+<pre class="r"><code># R
+object.size(df)</code></pre>
+<pre><code>## 21336 bytes</code></pre>
+<p>Next up is <strong>summary</strong>, which provides basic overview stats for each feature. Here in particular, we learn that there are 3 penguin species, 3 islands, and 11 missing values in the sex column. “Chinstrap” penguins are rarer than the other two species; and Torgersen is the least frequent island. We also see the fundamental characteristics of the numeric features (min, max, quartiles, median). Mean and median are pretty close for most of those, which suggests little skewness:</p>
+<pre class="r"><code># R
+summary(df)</code></pre>
+<pre><code>##       species          island    bill_length_mm  bill_depth_mm  
+##  Adelie   :152   Biscoe   :168   Min.   :32.10   Min.   :13.10  
+##  Chinstrap: 68   Dream    :124   1st Qu.:39.23   1st Qu.:15.60  
+##  Gentoo   :124   Torgersen: 52   Median :44.45   Median :17.30  
+##                                  Mean   :43.92   Mean   :17.15  
+##                                  3rd Qu.:48.50   3rd Qu.:18.70  
+##                                  Max.   :59.60   Max.   :21.50  
+##                                  NA&#39;s   :2       NA&#39;s   :2      
+##  flipper_length_mm  body_mass_g       sex           year     
+##  Min.   :172.0     Min.   :2700   female:165   Min.   :2007  
+##  1st Qu.:190.0     1st Qu.:3550   male  :168   1st Qu.:2007  
+##  Median :197.0     Median :4050   NA&#39;s  : 11   Median :2008  
+##  Mean   :200.9     Mean   :4202                Mean   :2008  
+##  3rd Qu.:213.0     3rd Qu.:4750                3rd Qu.:2009  
+##  Max.   :231.0     Max.   :6300                Max.   :2009  
+##  NA&#39;s   :2         NA&#39;s   :2</code></pre>
+<p>The closest <em>pandas</em> equivalent to <strong>summary</strong> is <strong>describe</strong>. By default this only includes the numeric columns, but you can get around that by passing a list of features types that you want to include:</p>
+<pre class="python"><code># Python
+r.df.describe(include = [&#39;float&#39;, &#39;category&#39;])</code></pre>
+<pre><code>##        species  island  bill_length_mm  bill_depth_mm  flipper_length_mm  \
+## count      344     344      342.000000     342.000000         342.000000   
+## unique       3       3             NaN            NaN                NaN   
+## top     Adelie  Biscoe             NaN            NaN                NaN   
+## freq       152     168             NaN            NaN                NaN   
+## mean       NaN     NaN       43.921930      17.151170         200.915205   
+## std        NaN     NaN        5.459584       1.974793          14.061714   
+## min        NaN     NaN       32.100000      13.100000         172.000000   
+## 25%        NaN     NaN       39.225000      15.600000         190.000000   
+## 50%        NaN     NaN       44.450000      17.300000         197.000000   
+## 75%        NaN     NaN       48.500000      18.700000         213.000000   
+## max        NaN     NaN       59.600000      21.500000         231.000000   
+## 
+##         body_mass_g   sex         year  
+## count    342.000000   333   344.000000  
+## unique          NaN     2          NaN  
+## top             NaN  male          NaN  
+## freq            NaN   168          NaN  
+## mean    4201.754386   NaN  2008.029070  
+## std      801.954536   NaN     0.818356  
+## min     2700.000000   NaN  2007.000000  
+## 25%     3550.000000   NaN  2007.000000  
+## 50%     4050.000000   NaN  2008.000000  
+## 75%     4750.000000   NaN  2009.000000  
+## max     6300.000000   NaN  2009.000000</code></pre>
+<p>You see that the formatting is less clever, since categorical indicators like “unique” or “top” are shown (with NAs) for the numeric columns and vice versa. Also, we only get told that there are 3 species and the most frequent one is “Adelie”; not the full counts per species.</p>
+<p>We have already learned a lot about our data from those basic overview tools. Typically, at this point in the EDA I would now start plotting feature distributions and interactions. Since we’re only focussing on <em>dplyr</em> here, this part will have to wait for a future “ggplot2 vs seaborn” episode. For now, let’s look at the most simple overview before moving on to <em>dplyr</em> verbs: number of rows and columns.</p>
+<p>In R, there is <strong>dim</strong> while pandas has <strong>shape</strong>:</p>
+<pre class="r"><code># R
+dim(df)</code></pre>
+<pre><code>## [1] 344   8</code></pre>
+<pre class="python"><code># Python
+r.df.shape</code></pre>
+<pre><code>## (344, 8)</code></pre>
+</div>
+<div id="subsetting-rows-and-columns" class="section level3">
+<h3>Subsetting rows and columns</h3>
+<p>For extracting subsets of rows and columns, <em>dplyr</em> has the verbs <strong>filter</strong> and <strong>select</strong>, respectively. For instance, let’s look at the species and sex of the penguins with the shortest bills:</p>
+<pre class="r"><code># R
+df %&gt;% 
+  filter(bill_length_mm &lt; 34) %&gt;% 
+  select(species, sex, bill_length_mm)</code></pre>
+<pre><code>## # A tibble: 3 x 3
+##   species sex    bill_length_mm
+##   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;
+## 1 Adelie  female           33.5
+## 2 Adelie  female           33.1
+## 3 Adelie  female           32.1</code></pre>
+<p>All of those are female Adelie penguins. This is good news for a potential species classifier.</p>
+<p>In pandas, there are several ways to achieve the same result. All of them are a little more complicated than our two <em>dplyr</em> verbs. The most pythonic way is probably to use the <strong>loc</strong> operator like such:</p>
+<pre class="python"><code># Python
+r.df.loc[r.df.bill_length_mm &lt; 34, [&#39;species&#39;, &#39;sex&#39;, &#39;bill_length_mm&#39;]]</code></pre>
+<pre><code>##     species     sex  bill_length_mm
+## 70   Adelie  female            33.5
+## 98   Adelie  female            33.1
+## 142  Adelie  female            32.1</code></pre>
+<p>This indexing via the “[]” brackets is essentially the same as in base R:</p>
+<pre class="r"><code># R
+na.omit(df[df$bill_length_mm &lt; 34, c(&#39;species&#39;, &#39;sex&#39;, &#39;bill_length_mm&#39;)])</code></pre>
+<pre><code>## # A tibble: 3 x 3
+##   species sex    bill_length_mm
+##   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;
+## 1 Adelie  female           33.5
+## 2 Adelie  female           33.1
+## 3 Adelie  female           32.1</code></pre>
+<p>Another way is to use the pandas method <strong>query</strong> as an equivalent for <strong>filter</strong>. This allows us to essentially use <em>dplyr</em>-style evaluation syntax. I found that in practice, <strong>query</strong> is often notably slower than the other indexing tools. This can be important if your’re dealing with large datasets:</p>
+<pre class="python"><code># Python
+r.df.query(&quot;bill_length_mm &lt; 34&quot;).loc[:, [&#39;species&#39;, &#39;sex&#39;, &#39;bill_length_mm&#39;]]</code></pre>
+<pre><code>##     species     sex  bill_length_mm
+## 70   Adelie  female            33.5
+## 98   Adelie  female            33.1
+## 142  Adelie  female            32.1</code></pre>
+<p>In tidy R, the <em>dplyr</em> verb <strong>select</strong> can extract by value as well as by position. And for extracting rows by position there is <strong>slice</strong>. This is just an arbitrary subset:</p>
+<pre class="r"><code># R
+df %&gt;% 
+  slice(c(1,2,3)) %&gt;% 
+  select(c(4,5,6))</code></pre>
+<pre><code>## # A tibble: 3 x 3
+##   bill_depth_mm flipper_length_mm body_mass_g
+##           &lt;dbl&gt;             &lt;dbl&gt;       &lt;dbl&gt;
+## 1          18.7               181        3750
+## 2          17.4               186        3800
+## 3          18                 195        3250</code></pre>
+<p>In pandas, we would use bracket indexing again, but instead of <strong>loc</strong> we now need <strong>iloc</strong> (i.e. locating by index). This might be a good point to remind ourselves that Python starts counting from 0 and R starts from 1:</p>
+<pre class="python"><code># Python
+r.df.iloc[[0, 1, 2], [3, 4, 5]]</code></pre>
+<pre><code>##    bill_depth_mm  flipper_length_mm  body_mass_g
+## 0           18.7              181.0       3750.0
+## 1           17.4              186.0       3800.0
+## 2           18.0              195.0       3250.0</code></pre>
+<p>To emphasise again: pandas uses <strong>loc</strong> for conditional indexing and <strong>iloc</strong> for positional indexing. This takes some getting uses to, but this simple rule covers most of <em>pandas’</em> subsetting operations.</p>
+<p>Retaining unique rows and removing duplicates can be thought of as another way of subsetting a data frame. In <em>dplyr</em>, there’s the <strong>distinct</strong> function which takes as arguments the columns that are considered for identifying duplicated rows:</p>
+<pre class="r"><code># R
+df %&gt;% 
+  slice(c(2, 4, 186)) %&gt;% 
+  distinct(species, island)</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   species island   
+##   &lt;fct&gt;   &lt;fct&gt;    
+## 1 Adelie  Torgersen
+## 2 Gentoo  Biscoe</code></pre>
+<p>In <em>pandas</em> we can achieve the same result via the <strong>drop_duplicates</strong> method:</p>
+<pre class="python"><code>r.df.iloc[[2, 4, 186], :].drop_duplicates([&#39;species&#39;, &#39;island&#39;])</code></pre>
+<pre><code>##     species     island  bill_length_mm  bill_depth_mm  flipper_length_mm  \
+## 2    Adelie  Torgersen            40.3           18.0              195.0   
+## 186  Gentoo     Biscoe            49.1           14.8              220.0   
+## 
+##      body_mass_g     sex    year  
+## 2         3250.0  female  2007.0  
+## 186       5150.0  female  2008.0</code></pre>
+<p>In order to retain only the two affected rows, like in the dplyr example above, you would have to select them using <code>.loc</code>.</p>
+</div>
+<div id="arrange-and-sample" class="section level3">
+<h3>Arrange and Sample</h3>
+<p>Let’s deal with the arranging and sampling of rows in one fell swoop. In <em>dplyr</em>, we use <strong>sample_n</strong> (or <strong>sample_frac</strong>) to choose a random subset of <code>n</code> rows (or a fraction <code>frac</code> of rows). Ordering a row by its values uses the verb <strong>arrange</strong>, optionally with the <strong>desc</strong> tool to specific descending order:</p>
+<pre class="r"><code># R
+set.seed(4321)
+df %&gt;% 
+  select(species, bill_length_mm) %&gt;% 
+  sample_n(4) %&gt;% 
+  arrange(desc(bill_length_mm))</code></pre>
+<pre><code>## # A tibble: 4 x 2
+##   species   bill_length_mm
+##   &lt;fct&gt;              &lt;dbl&gt;
+## 1 Chinstrap           47.5
+## 2 Adelie              42.7
+## 3 Adelie              40.2
+## 4 Adelie              34.6</code></pre>
+<p>In <em>pandas</em>, random sampling is done through the <strong>sample</strong> function, which can take either a fraction or a number of rows. Here, we can also pass directly a random seed (called <em>random_state</em>), instead of defining it outside the function via R’s <strong>set.seed</strong>. Arranging is called <strong>sort_values</strong> and we have to specify an <em>ascending</em> flag because <em>pandas</em> wants to be different:</p>
+<pre class="python"><code># Python
+r.df.loc[:, [&#39;species&#39;, &#39;bill_length_mm&#39;]].\
+  sample(n = 4, random_state = 4321).\
+  sort_values(&#39;bill_length_mm&#39;, ascending = False)</code></pre>
+<pre><code>##        species  bill_length_mm
+## 305  Chinstrap            52.8
+## 301  Chinstrap            52.0
+## 291  Chinstrap            50.5
+## 165     Gentoo            48.4</code></pre>
+<p>As you see, the <em>pandas</em> dot methods can be chained in a way reminiscent of the <em>dplyr</em> pipe (<code>%&gt;%</code>). The scope for this style is much narrower than the pipe, though. It only works for methods and attributes associated with the specific <em>pandas</em> data frame and its transformation results. Nevertheless, it has a certain power and elegance for pipe aficionados. When written accross multiple lines it requires the Python line continuation operator <code>\</code>.</p>
+</div>
+<div id="group-by-and-summarise" class="section level3">
+<h3>Group By and Summarise</h3>
+<p>Here is where <em>dplyr</em> really shines. Grouping and summarising transformations fit seemlessly into any wrangling workflow by preserving the tidy <code>tibble</code> data format. The verbs are <strong>group_by</strong> and <strong>summarise</strong>. Let’s compare average bill lengths among species to find that “Adelie” penguins have significantly shorter bills:</p>
+<pre class="r"><code># R
+df %&gt;% 
+  group_by(species) %&gt;% 
+  summarise(mean_bill_length = mean(bill_length_mm, na.rm = TRUE),
+            sd_bill_length = sd(bill_length_mm, na.rm = TRUE))</code></pre>
+<pre><code>## # A tibble: 3 x 3
+##   species   mean_bill_length sd_bill_length
+##   &lt;fct&gt;                &lt;dbl&gt;          &lt;dbl&gt;
+## 1 Adelie                38.8           2.66
+## 2 Chinstrap             48.8           3.34
+## 3 Gentoo                47.5           3.08</code></pre>
+<p>This is consistent to what we had seen before for the 3 rows with shortes bills. The results also indicate that it would be much harder to try to separate “Chinstrap” vs “Gentoo” by <code>bill_length</code>.</p>
+<p>In terms of usage, <em>pandas</em> is similar: we have <strong>groupby</strong> (without the “<code>_</code>”) to define the grouping, and <strong>agg</strong> to aggregate (i.e. summarise) according to specific measures for certain features:</p>
+<pre class="python"><code># Python
+r.df.groupby(&#39;species&#39;).agg({&#39;bill_length_mm&#39;: [&#39;mean&#39;, &#39;std&#39;]})</code></pre>
+<pre><code>##           bill_length_mm          
+##                     mean       std
+## species                           
+## Adelie         38.791391  2.663405
+## Chinstrap      48.833824  3.339256
+## Gentoo         47.504878  3.081857</code></pre>
+<p>This is pretty much the default way in <em>pandas</em>. It is worth noting that <em>pandas</em>, and Python in general, gets a lot of milage out of 2 data structures: <strong>lists</strong> like <code>[1, 2, 3]</code> which are the equivalent of <code>c(1, 2, 3)</code>, and <strong>dictionaries</strong> <code>{'a': 1, 'b': 2}</code> which are sets of key-value pairs. Values in a dictionary can be pretty much anything, including lists or dictionaries. (Most uses cases for dictionaries are probably served by <em>dplyr</em> tibbles.) Here we use a dictionary to define which column we want to summarise and how. Note again the chaining via dots.</p>
+<p>The outcome of this operation, however, is slightly different from <em>dplyr</em> in that we get a hierarchical data frame with a categorical index (this is no longer a “normal” column&quot;) and 2 data columns that both have the designation <code>bill_length_mm</code>:</p>
+<pre class="python"><code># Python
+r.df.groupby(&#39;species&#39;).agg({&#39;bill_length_mm&#39;: [&#39;mean&#39;, &#39;std&#39;]}).info()</code></pre>
+<pre><code>## &lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+## CategoricalIndex: 3 entries, Adelie to Gentoo
+## Data columns (total 2 columns):
+## (bill_length_mm, mean)    3 non-null float64
+## (bill_length_mm, std)     3 non-null float64
+## dtypes: float64(2)
+## memory usage: 155.0 bytes</code></pre>
+<p>You will see the limitations of that format if you try to chain another method. To get something instead that’s more closely resembling our <em>dplyr</em> output, here is a different way: we forego the dictionary in favour of a simple list, then add a suffix later, and finally reset the index to a normal column:</p>
+<pre class="python"><code># Python
+r.df.groupby(&#39;species&#39;).bill_length_mm.agg([&#39;mean&#39;, &#39;std&#39;]).add_suffix(&quot;_bill_length&quot;).reset_index()</code></pre>
+<pre><code>##      species  mean_bill_length  std_bill_length
+## 0     Adelie         38.791391         2.663405
+## 1  Chinstrap         48.833824         3.339256
+## 2     Gentoo         47.504878         3.081857</code></pre>
+<p>Now we can treat the result like a typical data frame. Note, that here we use another form of column indexing to select <code>bill_length_mm</code> after the <code>groupby</code>. This shorthand, which treats a feature as an object attribute, only works for single columns. Told you that <em>pandas</em> indexing can be a little confusing.</p>
+</div>
+<div id="joining-and-binding" class="section level3">
+<h3>Joining and binding</h3>
+<p>There’s another source of <em>dplyr</em> vs <em>pandas</em> confusion when it comes to SQL-style joins and to binding rows and columns. To demonstrate, we’ll create an additional data frame which holds the mean bill length by species. And we pretend that it’s a separate table. In terms of analysis steps, this crosses over from EDA into feature engineering territory, but that line can get blurry if you’re exploring a dataset’s hidden depths.</p>
+<pre class="r"><code># R
+df2 &lt;- df %&gt;% 
+  group_by(species) %&gt;% 
+  summarise(mean_bill = mean(bill_length_mm, na.rm = TRUE))
+
+df2</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##   species   mean_bill
+##   &lt;fct&gt;         &lt;dbl&gt;
+## 1 Adelie         38.8
+## 2 Chinstrap      48.8
+## 3 Gentoo         47.5</code></pre>
+<p>The <em>dplyr</em> verbs for SQL-like joins are very similar to the various SQL flavours. We have <strong>left_join</strong>, <strong>right_join</strong>, <strong>inner_join</strong>, <strong>outer_join</strong>; as well as the very useful filtering joins <strong>semi_join</strong> and <strong>anti_join</strong> (keep and discard what matches, respectively):</p>
+<pre class="r"><code># R
+set.seed(4321)
+df %&gt;% 
+  left_join(df2, by = &quot;species&quot;) %&gt;% 
+  select(species, bill_length_mm, mean_bill) %&gt;% 
+  sample_n(5)</code></pre>
+<pre><code>## # A tibble: 5 x 3
+##   species   bill_length_mm mean_bill
+##   &lt;fct&gt;              &lt;dbl&gt;     &lt;dbl&gt;
+## 1 Adelie              42.7      38.8
+## 2 Chinstrap           47.5      48.8
+## 3 Adelie              40.2      38.8
+## 4 Adelie              34.6      38.8
+## 5 Gentoo              53.4      47.5</code></pre>
+<p>Now we can for instance subtract the mean bill length from the individual values to get the residuals or to standardise our features.</p>
+<p>In <em>pandas</em>, joining uses the <strong>merge</strong> operator. You have to specify the type of join via the <em>how</em> parameter and the join key via <em>on</em>, like such:</p>
+<pre class="python"><code># Python
+r.df.\
+  sample(n = 5, random_state = 24).\
+  merge(r.df2, how = &quot;left&quot;, on = &quot;species&quot;).\
+  loc[:, [&#39;species&#39;, &#39;bill_length_mm&#39;, &#39;mean_bill&#39;]]</code></pre>
+<pre><code>##      species  bill_length_mm  mean_bill
+## 0     Gentoo            43.4  47.504878
+## 1  Chinstrap            51.7  48.833824
+## 2     Gentoo            46.2  47.504878
+## 3     Adelie            43.1  38.791391
+## 4     Adelie            41.3  38.791391</code></pre>
+<p>Now, to bring in the aforementioned source of confusion: <em>pandas</em> also has an operator called <strong>join</strong> which joins by matching indeces, instead of columns, between two tables. This is a pretty pandas-specific convenience shortcut, since it relies on the data frame index. In practice I recommend using <strong>merge</strong> instead. The little conveniece provided by <strong>join</strong> is not worth the additional confusion.</p>
+<p>Binding rows and columns in <em>dplyr</em> uses <strong>bind_rows</strong> and <strong>bind_cols</strong>. For the rows, there’s really not much of a practical requirement other than that some of the column names match and that those ideally have the same type (which is not strictly necessary):</p>
+<pre class="r"><code># R
+head(df, 2) %&gt;% 
+  bind_rows(tail(df, 2) %&gt;% select(year, everything(), -sex))</code></pre>
+<pre><code>## # A tibble: 4 x 8
+##   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+##   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;dbl&gt;       &lt;dbl&gt;
+## 1 Adelie  Torge…           39.1          18.7              181        3750
+## 2 Adelie  Torge…           39.5          17.4              186        3800
+## 3 Chinst… Dream            50.8          19                210        4100
+## 4 Chinst… Dream            50.2          18.7              198        3775
+## # … with 2 more variables: sex &lt;fct&gt;, year &lt;dbl&gt;</code></pre>
+<p>For columns, it is necessary that the features we’re binding to a tibble have the same number of rows. The big assumption here is that the row orders match (but that can be set beforehand):</p>
+<pre class="r"><code># R
+select(df, species) %&gt;% 
+  bind_cols(df %&gt;% select(year)) %&gt;% 
+  head(5)</code></pre>
+<pre><code>## # A tibble: 5 x 2
+##   species  year
+##   &lt;fct&gt;   &lt;dbl&gt;
+## 1 Adelie   2007
+## 2 Adelie   2007
+## 3 Adelie   2007
+## 4 Adelie   2007
+## 5 Adelie   2007</code></pre>
+<p>The <em>pandas</em> equivalent to <strong>bind_rows</strong> is <strong>append</strong>. This nomenclature is borrowed from Python’s overall reliance on list operations.</p>
+<pre class="python"><code># Python
+r.df.head(2).append(r.df.tail(2).drop(&quot;sex&quot;, axis = &quot;columns&quot;), sort = False)</code></pre>
+<pre><code>##        species     island  bill_length_mm  bill_depth_mm  flipper_length_mm  \
+## 0       Adelie  Torgersen            39.1           18.7              181.0   
+## 1       Adelie  Torgersen            39.5           17.4              186.0   
+## 342  Chinstrap      Dream            50.8           19.0              210.0   
+## 343  Chinstrap      Dream            50.2           18.7              198.0   
+## 
+##      body_mass_g     sex    year  
+## 0         3750.0    male  2007.0  
+## 1         3800.0  female  2007.0  
+## 342       4100.0     NaN  2009.0  
+## 343       3775.0     NaN  2009.0</code></pre>
+<p>Here we also demonstrate how to <strong>drop</strong> a column from a data frame (i.e. the equivalent to <em>dplyr</em> <strong>select</strong> with a minus).</p>
+<p>Binding <em>pandas</em> columns uses <strong>concat</strong>, which takes a Python list as its parameter:</p>
+<pre class="python"><code># Python
+pd.concat([r.df.loc[:, &#39;species&#39;], r.df.loc[:, &#39;year&#39;]], axis = &quot;columns&quot;).head(5)</code></pre>
+<pre><code>##   species    year
+## 0  Adelie  2007.0
+## 1  Adelie  2007.0
+## 2  Adelie  2007.0
+## 3  Adelie  2007.0
+## 4  Adelie  2007.0</code></pre>
+<p>And that’s it for the basics!</p>
+<p>Of course, there are a number of intricacies and special cases here, but by and large this should serve as a useful list of examples to get you started in <em>pandas</em> coming from <em>dplyr</em>, and perhaps also vice versa. Future installments in this series will go beyond <em>dplyr</em>, but likely also touch back on some aspect of it that are easy to get lost in translation.</p>
+<p>More info:</p>
+<ul>
+<li><p>I have been planning to start this series for several months now; since I’m an R user in a Python-dominated team and often use both languages om any given day. What finally pushed me to overcome my laziness was an initiative by the ever prolific <a href="https://twitter.com/BenjaminWolfe/status/1320770728028000256">Benjamin Wolfe</a> to gather resources for R users interested in Python. If you’re interested to contribute too, just drop by in the slack and say Hi.</p></li>
+<li><p>Next up: most likely <a href="https://tidyr.tidyverse.org/">tidyr</a> and/or <a href="https://stringr.tidyverse.org/">stringr</a> vs pandas. Watch this space.</p></li>
+</ul>
+</div>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//headsortails.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/python.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137904077-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+  </body>
+</html>
+

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Python on head spin - the Heads or Tails blog</title>
-    <link>/tags/python/</link>
-    <description>Recent content in Python on head spin - the Heads or Tails blog</description>
+    <title>Eda on head spin - the Heads or Tails blog</title>
+    <link>/tags/eda/</link>
+    <description>Recent content in Eda on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 05 Nov 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/python/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/eda/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -18,15 +18,6 @@
       
       <guid>/2020/11/05/r-python-dplyr-pandas/</guid>
       <description>.rCode { background-color: lightblue; }  This is the first post in a new series featuring translations between R and Python code for common data science and machine learning tasks. A Rosetta Stone, if you will. I’m writing this mainly as a documented cheat sheet for myself, as I’m frequently switching between the two languages. Personally, I have learned Python and R around the same time, several years ago, but tidy R is much more intuitive to me than any other language.</description>
-    </item>
-    
-    <item>
-      <title>The best of both worlds: R meets Python via reticulate</title>
-      <link>/2019/10/03/reticulate-intro/</link>
-      <pubDate>Thu, 03 Oct 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/2019/10/03/reticulate-intro/</guid>
-      <description>As far as rivalries go, R vs Python can almost reach the levels of the glory days of Barca vs Madrid, Stones vs Beatles, or Sega vs Nintendo. Almost. Just dare to venture onto Twitter asking which language is best for data science to witness two tightly entrenched camps. Or at least that’s what seemingly hundreds of Medium articles would like you believe. In reality, beyond some good-natured and occasionally entertaining joshing, the whole debate is rather silly.</description>
     </item>
     
   </channel>

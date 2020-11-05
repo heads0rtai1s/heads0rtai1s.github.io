@@ -6,10 +6,423 @@
     <description>Recent content in Tidyverse on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 30 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 05 Nov 2020 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="/categories/tidyverse/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>R &amp; Python Rosetta Stone: EDA with dplyr vs pandas</title>
+      <link>/2020/11/05/r-python-dplyr-pandas/</link>
+      <pubDate>Thu, 05 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/11/05/r-python-dplyr-pandas/</guid>
+      <description>
+
+
+&lt;style type=&#34;text/css&#34;&gt;
+.rCode {
+background-color: lightblue;
+}
+&lt;/style&gt;
+&lt;p&gt;This is the first post in a new series featuring translations between R and Python code for common data science and machine learning tasks. A &lt;a href=&#34;https://en.wikipedia.org/wiki/Rosetta_Stone&#34;&gt;Rosetta Stone&lt;/a&gt;, if you will. I’m writing this mainly as a documented cheat sheet for myself, as I’m frequently switching between the two languages. Personally, I have learned Python and R around the same time, several years ago, but tidy R is much more intuitive to me than any other language. Hopefully, these posts can be useful to others in a similar situation. My point of reference is primarily R - with the aim to provide equivalent Python code - but occasionally I will look at translations of Python features into R.&lt;/p&gt;
+&lt;p&gt;The first post will focus on the &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; backbone &lt;a href=&#34;https://dplyr.tidyverse.org/&#34;&gt;dplyr&lt;/a&gt; and compare it to Python’s data science workhorse &lt;a href=&#34;https://pandas.pydata.org/&#34;&gt;pandas&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;As with all my blog posts, the code will run in &lt;a href=&#34;https://rmarkdown.rstudio.com/&#34;&gt;Rmarkdown&lt;/a&gt; through the fantastic &lt;a href=&#34;https://rstudio.com/&#34;&gt;Rstudio IDE&lt;/a&gt;. All the output will be reproducible. Rstudio provides Python support via the great &lt;a href=&#34;https://rstudio.github.io/reticulate/&#34;&gt;reticulate&lt;/a&gt; package. If you haven’t heard of it yet, check out my &lt;a href=&#34;https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/&#34;&gt;intro post on reticulate&lt;/a&gt; to get started.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note: you need at least RStudio version 1.2 to be able to pass objects between R and Python.&lt;/strong&gt; In addition, as always, here are the required packages. We are also setting the python path (see the &lt;a href=&#34;https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/&#34;&gt;intro post&lt;/a&gt; for more details on the path) and importing &lt;em&gt;pandas&lt;/em&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r bg-info&#34;&gt;&lt;code&gt;# R
+libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;,                # wrangling
+          &amp;#39;palmerpenguins&amp;#39;,       # data
+          &amp;#39;knitr&amp;#39;,&amp;#39;kableExtra&amp;#39;,   # table styling
+          &amp;#39;reticulate&amp;#39;)           # python support 
+invisible(lapply(libs, library, character.only = TRUE))
+
+use_python(&amp;quot;/usr/bin/python&amp;quot;)
+
+df &amp;lt;- penguins %&amp;gt;% 
+  mutate_if(is.integer, as.double)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;python bg-success&#34;&gt;&lt;code&gt;# Python
+import pandas as pd
+pd.set_option(&amp;#39;display.max_columns&amp;#39;, None)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We will be using the &lt;a href=&#34;https://www.kaggle.com/parulpandey/palmer-archipelago-antarctica-penguin-data&#34;&gt;Palmer Penguins dataset&lt;/a&gt;, as provided by the brilliant &lt;a href=&#34;https://www.allisonhorst.com/&#34;&gt;Allison Horst&lt;/a&gt; through the &lt;a href=&#34;https://allisonhorst.github.io/palmerpenguins/&#34;&gt;eponymous R package&lt;/a&gt; - complete with her trademark adorable artwork. I was looking for an excuse to work with this dataset. Therefore, this will be a genuine example for an exploratory analysis, as I’m encountering the data for the first time.&lt;/p&gt;
+&lt;div id=&#34;general-overview&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;General overview&lt;/h3&gt;
+&lt;p&gt;It’s best to start your EDA by looking at the big picture: How large is the dataset? How many features are there? What are the data types? Here we have tabular data, but similar steps can be taken for text or images as well.&lt;/p&gt;
+&lt;p&gt;In R, I typically go with a combination of &lt;strong&gt;head&lt;/strong&gt;, &lt;strong&gt;glimpse&lt;/strong&gt;, and &lt;strong&gt;summary&lt;/strong&gt; to get a broad idea of the data properties. (Beyond &lt;em&gt;dplyr&lt;/em&gt;, there’s also the &lt;a href=&#34;https://cran.r-project.org/package=skimr&#34;&gt;skimr package&lt;/a&gt; for more sophisticated data overviews.)&lt;/p&gt;
+&lt;p&gt;With &lt;code&gt;head&lt;/code&gt;, we see the first (by default) 6 rows of the dataset:&lt;/p&gt;
+&lt;pre class=&#34;r rCode&#34;&gt;&lt;code&gt;# R
+head(df)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 8
+##   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+##   &amp;lt;fct&amp;gt;   &amp;lt;fct&amp;gt;           &amp;lt;dbl&amp;gt;         &amp;lt;dbl&amp;gt;            &amp;lt;dbl&amp;gt;       &amp;lt;dbl&amp;gt;
+## 1 Adelie  Torge…           39.1          18.7              181        3750
+## 2 Adelie  Torge…           39.5          17.4              186        3800
+## 3 Adelie  Torge…           40.3          18                195        3250
+## 4 Adelie  Torge…           NA            NA                 NA          NA
+## 5 Adelie  Torge…           36.7          19.3              193        3450
+## 6 Adelie  Torge…           39.3          20.6              190        3650
+## # … with 2 more variables: sex &amp;lt;fct&amp;gt;, year &amp;lt;dbl&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We find that our data is a mix of numerical and categorical columns. There are 8 columns in total. We get an idea of the order of magnitude of the numeric features, see that the categorical ones have text, and already spot a couple of missing values. (Note, that I converted all integer columns to double for easier back-and-forth with Python).&lt;/p&gt;
+&lt;p&gt;The &lt;em&gt;pandas&lt;/em&gt; &lt;strong&gt;head&lt;/strong&gt; command is essentially the same. One general difference here is that in &lt;em&gt;pandas&lt;/em&gt; (and Python in general) everything is an object. Methods (and attributes) associated with the object, which is a &lt;em&gt;pandas&lt;/em&gt; &lt;code&gt;DataFrame&lt;/code&gt; here, are accessed via the dot “.” operator. For passing an R object to Python we preface it with &lt;code&gt;r.&lt;/code&gt; like such:&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;# Python
+r.df.head()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   species     island  bill_length_mm  bill_depth_mm  flipper_length_mm  \
+## 0  Adelie  Torgersen            39.1           18.7              181.0   
+## 1  Adelie  Torgersen            39.5           17.4              186.0   
+## 2  Adelie  Torgersen            40.3           18.0              195.0   
+## 3  Adelie  Torgersen             NaN            NaN                NaN   
+## 4  Adelie  Torgersen            36.7           19.3              193.0   
+## 
+##    body_mass_g     sex    year  
+## 0       3750.0    male  2007.0  
+## 1       3800.0  female  2007.0  
+## 2       3250.0  female  2007.0  
+## 3          NaN     NaN  2007.0  
+## 4       3450.0  female  2007.0&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The output is less pretty than for Rmarkdown, but the result is pretty much the same. We don’t see column types, only their values. Another property of &lt;em&gt;pandas&lt;/em&gt; data frames is that they come with a row index. By default this is a sequential number of rows, but anything can become an index.&lt;/p&gt;
+&lt;p&gt;With &lt;em&gt;dplyr&lt;/em&gt;’s &lt;strong&gt;glimpse&lt;/strong&gt; we can see a more compact, transposed display of column types and their values. Especially for datasets with many columns this can be a vital complement to &lt;code&gt;head&lt;/code&gt;. We also see the number of rows and columns:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# R
+glimpse(df)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Observations: 344
+## Variables: 8
+## $ species           &amp;lt;fct&amp;gt; Adelie, Adelie, Adelie, Adelie, Adelie, Adelie…
+## $ island            &amp;lt;fct&amp;gt; Torgersen, Torgersen, Torgersen, Torgersen, To…
+## $ bill_length_mm    &amp;lt;dbl&amp;gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, …
+## $ bill_depth_mm     &amp;lt;dbl&amp;gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, …
+## $ flipper_length_mm &amp;lt;dbl&amp;gt; 181, 186, 195, NA, 193, 190, 181, 195, 193, 19…
+## $ body_mass_g       &amp;lt;dbl&amp;gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, …
+## $ sex               &amp;lt;fct&amp;gt; male, female, female, NA, female, male, female…
+## $ year              &amp;lt;dbl&amp;gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007…&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Alongside the 8 columns, our dataset has 344 rows. That’s pretty small.&lt;/p&gt;
+&lt;p&gt;In &lt;em&gt;pandas&lt;/em&gt;, there’s no identical equivalent to &lt;strong&gt;glimpse&lt;/strong&gt;. Instead, we can use the &lt;strong&gt;info&lt;/strong&gt; method to give us the feature types in vertical form. We also see the number of non-null features (the “sex” column has the fewest), together with the number of rows and columns.&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;# Python
+r.df.info()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## &amp;lt;class &amp;#39;pandas.core.frame.DataFrame&amp;#39;&amp;gt;
+## RangeIndex: 344 entries, 0 to 343
+## Data columns (total 8 columns):
+## species              344 non-null category
+## island               344 non-null category
+## bill_length_mm       342 non-null float64
+## bill_depth_mm        342 non-null float64
+## flipper_length_mm    342 non-null float64
+## body_mass_g          342 non-null float64
+## sex                  333 non-null category
+## year                 344 non-null float64
+## dtypes: category(3), float64(5)
+## memory usage: 14.8 KB&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;While several columns have missing values, the overall number of those null entries is small.&lt;/p&gt;
+&lt;p&gt;Additionally, &lt;em&gt;pandas&lt;/em&gt; gives us a summary of data types (3 categorical, 5 float) and tells us how much memory our data takes up. In R, you can use the &lt;code&gt;utils&lt;/code&gt; tool &lt;strong&gt;object.size&lt;/strong&gt; for the latter:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# R
+object.size(df)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 21336 bytes&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next up is &lt;strong&gt;summary&lt;/strong&gt;, which provides basic overview stats for each feature. Here in particular, we learn that there are 3 penguin species, 3 islands, and 11 missing values in the sex column. “Chinstrap” penguins are rarer than the other two species; and Torgersen is the least frequent island. We also see the fundamental characteristics of the numeric features (min, max, quartiles, median). Mean and median are pretty close for most of those, which suggests little skewness:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# R
+summary(df)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##       species          island    bill_length_mm  bill_depth_mm  
+##  Adelie   :152   Biscoe   :168   Min.   :32.10   Min.   :13.10  
+##  Chinstrap: 68   Dream    :124   1st Qu.:39.23   1st Qu.:15.60  
+##  Gentoo   :124   Torgersen: 52   Median :44.45   Median :17.30  
+##                                  Mean   :43.92   Mean   :17.15  
+##                                  3rd Qu.:48.50   3rd Qu.:18.70  
+##                                  Max.   :59.60   Max.   :21.50  
+##                                  NA&amp;#39;s   :2       NA&amp;#39;s   :2      
+##  flipper_length_mm  body_mass_g       sex           year     
+##  Min.   :172.0     Min.   :2700   female:165   Min.   :2007  
+##  1st Qu.:190.0     1st Qu.:3550   male  :168   1st Qu.:2007  
+##  Median :197.0     Median :4050   NA&amp;#39;s  : 11   Median :2008  
+##  Mean   :200.9     Mean   :4202                Mean   :2008  
+##  3rd Qu.:213.0     3rd Qu.:4750                3rd Qu.:2009  
+##  Max.   :231.0     Max.   :6300                Max.   :2009  
+##  NA&amp;#39;s   :2         NA&amp;#39;s   :2&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The closest &lt;em&gt;pandas&lt;/em&gt; equivalent to &lt;strong&gt;summary&lt;/strong&gt; is &lt;strong&gt;describe&lt;/strong&gt;. By default this only includes the numeric columns, but you can get around that by passing a list of features types that you want to include:&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;# Python
+r.df.describe(include = [&amp;#39;float&amp;#39;, &amp;#39;category&amp;#39;])&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##        species  island  bill_length_mm  bill_depth_mm  flipper_length_mm  \
+## count      344     344      342.000000     342.000000         342.000000   
+## unique       3       3             NaN            NaN                NaN   
+## top     Adelie  Biscoe             NaN            NaN                NaN   
+## freq       152     168             NaN            NaN                NaN   
+## mean       NaN     NaN       43.921930      17.151170         200.915205   
+## std        NaN     NaN        5.459584       1.974793          14.061714   
+## min        NaN     NaN       32.100000      13.100000         172.000000   
+## 25%        NaN     NaN       39.225000      15.600000         190.000000   
+## 50%        NaN     NaN       44.450000      17.300000         197.000000   
+## 75%        NaN     NaN       48.500000      18.700000         213.000000   
+## max        NaN     NaN       59.600000      21.500000         231.000000   
+## 
+##         body_mass_g   sex         year  
+## count    342.000000   333   344.000000  
+## unique          NaN     2          NaN  
+## top             NaN  male          NaN  
+## freq            NaN   168          NaN  
+## mean    4201.754386   NaN  2008.029070  
+## std      801.954536   NaN     0.818356  
+## min     2700.000000   NaN  2007.000000  
+## 25%     3550.000000   NaN  2007.000000  
+## 50%     4050.000000   NaN  2008.000000  
+## 75%     4750.000000   NaN  2009.000000  
+## max     6300.000000   NaN  2009.000000&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You see that the formatting is less clever, since categorical indicators like “unique” or “top” are shown (with NAs) for the numeric columns and vice versa. Also, we only get told that there are 3 species and the most frequent one is “Adelie”; not the full counts per species.&lt;/p&gt;
+&lt;p&gt;We have already learned a lot about our data from those basic overview tools. Typically, at this point in the EDA I would now start plotting feature distributions and interactions. Since we’re only focussing on &lt;em&gt;dplyr&lt;/em&gt; here, this part will have to wait for a future “ggplot2 vs seaborn” episode. For now, let’s look at the most simple overview before moving on to &lt;em&gt;dplyr&lt;/em&gt; verbs: number of rows and columns.&lt;/p&gt;
+&lt;p&gt;In R, there is &lt;strong&gt;dim&lt;/strong&gt; while pandas has &lt;strong&gt;shape&lt;/strong&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# R
+dim(df)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 344   8&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;# Python
+r.df.shape&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## (344, 8)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;subsetting-rows-and-columns&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Subsetting rows and columns&lt;/h3&gt;
+&lt;p&gt;For extracting subsets of rows and columns, &lt;em&gt;dplyr&lt;/em&gt; has the verbs &lt;strong&gt;filter&lt;/strong&gt; and &lt;strong&gt;select&lt;/strong&gt;, respectively. For instance, let’s look at the species and sex of the penguins with the shortest bills:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# R
+df %&amp;gt;% 
+  filter(bill_length_mm &amp;lt; 34) %&amp;gt;% 
+  select(species, sex, bill_length_mm)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 3 x 3
+##   species sex    bill_length_mm
+##   &amp;lt;fct&amp;gt;   &amp;lt;fct&amp;gt;           &amp;lt;dbl&amp;gt;
+## 1 Adelie  female           33.5
+## 2 Adelie  female           33.1
+## 3 Adelie  female           32.1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;All of those are female Adelie penguins. This is good news for a potential species classifier.&lt;/p&gt;
+&lt;p&gt;In pandas, there are several ways to achieve the same result. All of them are a little more complicated than our two &lt;em&gt;dplyr&lt;/em&gt; verbs. The most pythonic way is probably to use the &lt;strong&gt;loc&lt;/strong&gt; operator like such:&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;# Python
+r.df.loc[r.df.bill_length_mm &amp;lt; 34, [&amp;#39;species&amp;#39;, &amp;#39;sex&amp;#39;, &amp;#39;bill_length_mm&amp;#39;]]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##     species     sex  bill_length_mm
+## 70   Adelie  female            33.5
+## 98   Adelie  female            33.1
+## 142  Adelie  female            32.1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This indexing via the “[]” brackets is essentially the same as in base R:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# R
+na.omit(df[df$bill_length_mm &amp;lt; 34, c(&amp;#39;species&amp;#39;, &amp;#39;sex&amp;#39;, &amp;#39;bill_length_mm&amp;#39;)])&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 3 x 3
+##   species sex    bill_length_mm
+##   &amp;lt;fct&amp;gt;   &amp;lt;fct&amp;gt;           &amp;lt;dbl&amp;gt;
+## 1 Adelie  female           33.5
+## 2 Adelie  female           33.1
+## 3 Adelie  female           32.1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Another way is to use the pandas method &lt;strong&gt;query&lt;/strong&gt; as an equivalent for &lt;strong&gt;filter&lt;/strong&gt;. This allows us to essentially use &lt;em&gt;dplyr&lt;/em&gt;-style evaluation syntax. I found that in practice, &lt;strong&gt;query&lt;/strong&gt; is often notably slower than the other indexing tools. This can be important if your’re dealing with large datasets:&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;# Python
+r.df.query(&amp;quot;bill_length_mm &amp;lt; 34&amp;quot;).loc[:, [&amp;#39;species&amp;#39;, &amp;#39;sex&amp;#39;, &amp;#39;bill_length_mm&amp;#39;]]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##     species     sex  bill_length_mm
+## 70   Adelie  female            33.5
+## 98   Adelie  female            33.1
+## 142  Adelie  female            32.1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In tidy R, the &lt;em&gt;dplyr&lt;/em&gt; verb &lt;strong&gt;select&lt;/strong&gt; can extract by value as well as by position. And for extracting rows by position there is &lt;strong&gt;slice&lt;/strong&gt;. This is just an arbitrary subset:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# R
+df %&amp;gt;% 
+  slice(c(1,2,3)) %&amp;gt;% 
+  select(c(4,5,6))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 3 x 3
+##   bill_depth_mm flipper_length_mm body_mass_g
+##           &amp;lt;dbl&amp;gt;             &amp;lt;dbl&amp;gt;       &amp;lt;dbl&amp;gt;
+## 1          18.7               181        3750
+## 2          17.4               186        3800
+## 3          18                 195        3250&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In pandas, we would use bracket indexing again, but instead of &lt;strong&gt;loc&lt;/strong&gt; we now need &lt;strong&gt;iloc&lt;/strong&gt; (i.e. locating by index). This might be a good point to remind ourselves that Python starts counting from 0 and R starts from 1:&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;# Python
+r.df.iloc[[0, 1, 2], [3, 4, 5]]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    bill_depth_mm  flipper_length_mm  body_mass_g
+## 0           18.7              181.0       3750.0
+## 1           17.4              186.0       3800.0
+## 2           18.0              195.0       3250.0&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To emphasise again: pandas uses &lt;strong&gt;loc&lt;/strong&gt; for conditional indexing and &lt;strong&gt;iloc&lt;/strong&gt; for positional indexing. This takes some getting uses to, but this simple rule covers most of &lt;em&gt;pandas’&lt;/em&gt; subsetting operations.&lt;/p&gt;
+&lt;p&gt;Retaining unique rows and removing duplicates can be thought of as another way of subsetting a data frame. In &lt;em&gt;dplyr&lt;/em&gt;, there’s the &lt;strong&gt;distinct&lt;/strong&gt; function which takes as arguments the columns that are considered for identifying duplicated rows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# R
+df %&amp;gt;% 
+  slice(c(2, 4, 186)) %&amp;gt;% 
+  distinct(species, island)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 2 x 2
+##   species island   
+##   &amp;lt;fct&amp;gt;   &amp;lt;fct&amp;gt;    
+## 1 Adelie  Torgersen
+## 2 Gentoo  Biscoe&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In &lt;em&gt;pandas&lt;/em&gt; we can achieve the same result via the &lt;strong&gt;drop_duplicates&lt;/strong&gt; method:&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;r.df.iloc[[2, 4, 186], :].drop_duplicates([&amp;#39;species&amp;#39;, &amp;#39;island&amp;#39;])&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##     species     island  bill_length_mm  bill_depth_mm  flipper_length_mm  \
+## 2    Adelie  Torgersen            40.3           18.0              195.0   
+## 186  Gentoo     Biscoe            49.1           14.8              220.0   
+## 
+##      body_mass_g     sex    year  
+## 2         3250.0  female  2007.0  
+## 186       5150.0  female  2008.0&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In order to retain only the two affected rows, like in the dplyr example above, you would have to select them using &lt;code&gt;.loc&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;arrange-and-sample&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Arrange and Sample&lt;/h3&gt;
+&lt;p&gt;Let’s deal with the arranging and sampling of rows in one fell swoop. In &lt;em&gt;dplyr&lt;/em&gt;, we use &lt;strong&gt;sample_n&lt;/strong&gt; (or &lt;strong&gt;sample_frac&lt;/strong&gt;) to choose a random subset of &lt;code&gt;n&lt;/code&gt; rows (or a fraction &lt;code&gt;frac&lt;/code&gt; of rows). Ordering a row by its values uses the verb &lt;strong&gt;arrange&lt;/strong&gt;, optionally with the &lt;strong&gt;desc&lt;/strong&gt; tool to specific descending order:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# R
+set.seed(4321)
+df %&amp;gt;% 
+  select(species, bill_length_mm) %&amp;gt;% 
+  sample_n(4) %&amp;gt;% 
+  arrange(desc(bill_length_mm))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 4 x 2
+##   species   bill_length_mm
+##   &amp;lt;fct&amp;gt;              &amp;lt;dbl&amp;gt;
+## 1 Chinstrap           47.5
+## 2 Adelie              42.7
+## 3 Adelie              40.2
+## 4 Adelie              34.6&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In &lt;em&gt;pandas&lt;/em&gt;, random sampling is done through the &lt;strong&gt;sample&lt;/strong&gt; function, which can take either a fraction or a number of rows. Here, we can also pass directly a random seed (called &lt;em&gt;random_state&lt;/em&gt;), instead of defining it outside the function via R’s &lt;strong&gt;set.seed&lt;/strong&gt;. Arranging is called &lt;strong&gt;sort_values&lt;/strong&gt; and we have to specify an &lt;em&gt;ascending&lt;/em&gt; flag because &lt;em&gt;pandas&lt;/em&gt; wants to be different:&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;# Python
+r.df.loc[:, [&amp;#39;species&amp;#39;, &amp;#39;bill_length_mm&amp;#39;]].\
+  sample(n = 4, random_state = 4321).\
+  sort_values(&amp;#39;bill_length_mm&amp;#39;, ascending = False)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##        species  bill_length_mm
+## 305  Chinstrap            52.8
+## 301  Chinstrap            52.0
+## 291  Chinstrap            50.5
+## 165     Gentoo            48.4&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As you see, the &lt;em&gt;pandas&lt;/em&gt; dot methods can be chained in a way reminiscent of the &lt;em&gt;dplyr&lt;/em&gt; pipe (&lt;code&gt;%&amp;gt;%&lt;/code&gt;). The scope for this style is much narrower than the pipe, though. It only works for methods and attributes associated with the specific &lt;em&gt;pandas&lt;/em&gt; data frame and its transformation results. Nevertheless, it has a certain power and elegance for pipe aficionados. When written accross multiple lines it requires the Python line continuation operator &lt;code&gt;\&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;group-by-and-summarise&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Group By and Summarise&lt;/h3&gt;
+&lt;p&gt;Here is where &lt;em&gt;dplyr&lt;/em&gt; really shines. Grouping and summarising transformations fit seemlessly into any wrangling workflow by preserving the tidy &lt;code&gt;tibble&lt;/code&gt; data format. The verbs are &lt;strong&gt;group_by&lt;/strong&gt; and &lt;strong&gt;summarise&lt;/strong&gt;. Let’s compare average bill lengths among species to find that “Adelie” penguins have significantly shorter bills:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# R
+df %&amp;gt;% 
+  group_by(species) %&amp;gt;% 
+  summarise(mean_bill_length = mean(bill_length_mm, na.rm = TRUE),
+            sd_bill_length = sd(bill_length_mm, na.rm = TRUE))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 3 x 3
+##   species   mean_bill_length sd_bill_length
+##   &amp;lt;fct&amp;gt;                &amp;lt;dbl&amp;gt;          &amp;lt;dbl&amp;gt;
+## 1 Adelie                38.8           2.66
+## 2 Chinstrap             48.8           3.34
+## 3 Gentoo                47.5           3.08&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This is consistent to what we had seen before for the 3 rows with shortes bills. The results also indicate that it would be much harder to try to separate “Chinstrap” vs “Gentoo” by &lt;code&gt;bill_length&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In terms of usage, &lt;em&gt;pandas&lt;/em&gt; is similar: we have &lt;strong&gt;groupby&lt;/strong&gt; (without the “&lt;code&gt;_&lt;/code&gt;”) to define the grouping, and &lt;strong&gt;agg&lt;/strong&gt; to aggregate (i.e. summarise) according to specific measures for certain features:&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;# Python
+r.df.groupby(&amp;#39;species&amp;#39;).agg({&amp;#39;bill_length_mm&amp;#39;: [&amp;#39;mean&amp;#39;, &amp;#39;std&amp;#39;]})&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##           bill_length_mm          
+##                     mean       std
+## species                           
+## Adelie         38.791391  2.663405
+## Chinstrap      48.833824  3.339256
+## Gentoo         47.504878  3.081857&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This is pretty much the default way in &lt;em&gt;pandas&lt;/em&gt;. It is worth noting that &lt;em&gt;pandas&lt;/em&gt;, and Python in general, gets a lot of milage out of 2 data structures: &lt;strong&gt;lists&lt;/strong&gt; like &lt;code&gt;[1, 2, 3]&lt;/code&gt; which are the equivalent of &lt;code&gt;c(1, 2, 3)&lt;/code&gt;, and &lt;strong&gt;dictionaries&lt;/strong&gt; &lt;code&gt;{&#39;a&#39;: 1, &#39;b&#39;: 2}&lt;/code&gt; which are sets of key-value pairs. Values in a dictionary can be pretty much anything, including lists or dictionaries. (Most uses cases for dictionaries are probably served by &lt;em&gt;dplyr&lt;/em&gt; tibbles.) Here we use a dictionary to define which column we want to summarise and how. Note again the chaining via dots.&lt;/p&gt;
+&lt;p&gt;The outcome of this operation, however, is slightly different from &lt;em&gt;dplyr&lt;/em&gt; in that we get a hierarchical data frame with a categorical index (this is no longer a “normal” column&amp;quot;) and 2 data columns that both have the designation &lt;code&gt;bill_length_mm&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;# Python
+r.df.groupby(&amp;#39;species&amp;#39;).agg({&amp;#39;bill_length_mm&amp;#39;: [&amp;#39;mean&amp;#39;, &amp;#39;std&amp;#39;]}).info()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## &amp;lt;class &amp;#39;pandas.core.frame.DataFrame&amp;#39;&amp;gt;
+## CategoricalIndex: 3 entries, Adelie to Gentoo
+## Data columns (total 2 columns):
+## (bill_length_mm, mean)    3 non-null float64
+## (bill_length_mm, std)     3 non-null float64
+## dtypes: float64(2)
+## memory usage: 155.0 bytes&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You will see the limitations of that format if you try to chain another method. To get something instead that’s more closely resembling our &lt;em&gt;dplyr&lt;/em&gt; output, here is a different way: we forego the dictionary in favour of a simple list, then add a suffix later, and finally reset the index to a normal column:&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;# Python
+r.df.groupby(&amp;#39;species&amp;#39;).bill_length_mm.agg([&amp;#39;mean&amp;#39;, &amp;#39;std&amp;#39;]).add_suffix(&amp;quot;_bill_length&amp;quot;).reset_index()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##      species  mean_bill_length  std_bill_length
+## 0     Adelie         38.791391         2.663405
+## 1  Chinstrap         48.833824         3.339256
+## 2     Gentoo         47.504878         3.081857&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we can treat the result like a typical data frame. Note, that here we use another form of column indexing to select &lt;code&gt;bill_length_mm&lt;/code&gt; after the &lt;code&gt;groupby&lt;/code&gt;. This shorthand, which treats a feature as an object attribute, only works for single columns. Told you that &lt;em&gt;pandas&lt;/em&gt; indexing can be a little confusing.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;joining-and-binding&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Joining and binding&lt;/h3&gt;
+&lt;p&gt;There’s another source of &lt;em&gt;dplyr&lt;/em&gt; vs &lt;em&gt;pandas&lt;/em&gt; confusion when it comes to SQL-style joins and to binding rows and columns. To demonstrate, we’ll create an additional data frame which holds the mean bill length by species. And we pretend that it’s a separate table. In terms of analysis steps, this crosses over from EDA into feature engineering territory, but that line can get blurry if you’re exploring a dataset’s hidden depths.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# R
+df2 &amp;lt;- df %&amp;gt;% 
+  group_by(species) %&amp;gt;% 
+  summarise(mean_bill = mean(bill_length_mm, na.rm = TRUE))
+
+df2&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 3 x 2
+##   species   mean_bill
+##   &amp;lt;fct&amp;gt;         &amp;lt;dbl&amp;gt;
+## 1 Adelie         38.8
+## 2 Chinstrap      48.8
+## 3 Gentoo         47.5&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;em&gt;dplyr&lt;/em&gt; verbs for SQL-like joins are very similar to the various SQL flavours. We have &lt;strong&gt;left_join&lt;/strong&gt;, &lt;strong&gt;right_join&lt;/strong&gt;, &lt;strong&gt;inner_join&lt;/strong&gt;, &lt;strong&gt;outer_join&lt;/strong&gt;; as well as the very useful filtering joins &lt;strong&gt;semi_join&lt;/strong&gt; and &lt;strong&gt;anti_join&lt;/strong&gt; (keep and discard what matches, respectively):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# R
+set.seed(4321)
+df %&amp;gt;% 
+  left_join(df2, by = &amp;quot;species&amp;quot;) %&amp;gt;% 
+  select(species, bill_length_mm, mean_bill) %&amp;gt;% 
+  sample_n(5)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 5 x 3
+##   species   bill_length_mm mean_bill
+##   &amp;lt;fct&amp;gt;              &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;
+## 1 Adelie              42.7      38.8
+## 2 Chinstrap           47.5      48.8
+## 3 Adelie              40.2      38.8
+## 4 Adelie              34.6      38.8
+## 5 Gentoo              53.4      47.5&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we can for instance subtract the mean bill length from the individual values to get the residuals or to standardise our features.&lt;/p&gt;
+&lt;p&gt;In &lt;em&gt;pandas&lt;/em&gt;, joining uses the &lt;strong&gt;merge&lt;/strong&gt; operator. You have to specify the type of join via the &lt;em&gt;how&lt;/em&gt; parameter and the join key via &lt;em&gt;on&lt;/em&gt;, like such:&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;# Python
+r.df.\
+  sample(n = 5, random_state = 24).\
+  merge(r.df2, how = &amp;quot;left&amp;quot;, on = &amp;quot;species&amp;quot;).\
+  loc[:, [&amp;#39;species&amp;#39;, &amp;#39;bill_length_mm&amp;#39;, &amp;#39;mean_bill&amp;#39;]]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##      species  bill_length_mm  mean_bill
+## 0     Gentoo            43.4  47.504878
+## 1  Chinstrap            51.7  48.833824
+## 2     Gentoo            46.2  47.504878
+## 3     Adelie            43.1  38.791391
+## 4     Adelie            41.3  38.791391&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, to bring in the aforementioned source of confusion: &lt;em&gt;pandas&lt;/em&gt; also has an operator called &lt;strong&gt;join&lt;/strong&gt; which joins by matching indeces, instead of columns, between two tables. This is a pretty pandas-specific convenience shortcut, since it relies on the data frame index. In practice I recommend using &lt;strong&gt;merge&lt;/strong&gt; instead. The little conveniece provided by &lt;strong&gt;join&lt;/strong&gt; is not worth the additional confusion.&lt;/p&gt;
+&lt;p&gt;Binding rows and columns in &lt;em&gt;dplyr&lt;/em&gt; uses &lt;strong&gt;bind_rows&lt;/strong&gt; and &lt;strong&gt;bind_cols&lt;/strong&gt;. For the rows, there’s really not much of a practical requirement other than that some of the column names match and that those ideally have the same type (which is not strictly necessary):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# R
+head(df, 2) %&amp;gt;% 
+  bind_rows(tail(df, 2) %&amp;gt;% select(year, everything(), -sex))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 4 x 8
+##   species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
+##   &amp;lt;fct&amp;gt;   &amp;lt;fct&amp;gt;           &amp;lt;dbl&amp;gt;         &amp;lt;dbl&amp;gt;            &amp;lt;dbl&amp;gt;       &amp;lt;dbl&amp;gt;
+## 1 Adelie  Torge…           39.1          18.7              181        3750
+## 2 Adelie  Torge…           39.5          17.4              186        3800
+## 3 Chinst… Dream            50.8          19                210        4100
+## 4 Chinst… Dream            50.2          18.7              198        3775
+## # … with 2 more variables: sex &amp;lt;fct&amp;gt;, year &amp;lt;dbl&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For columns, it is necessary that the features we’re binding to a tibble have the same number of rows. The big assumption here is that the row orders match (but that can be set beforehand):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# R
+select(df, species) %&amp;gt;% 
+  bind_cols(df %&amp;gt;% select(year)) %&amp;gt;% 
+  head(5)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 5 x 2
+##   species  year
+##   &amp;lt;fct&amp;gt;   &amp;lt;dbl&amp;gt;
+## 1 Adelie   2007
+## 2 Adelie   2007
+## 3 Adelie   2007
+## 4 Adelie   2007
+## 5 Adelie   2007&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;em&gt;pandas&lt;/em&gt; equivalent to &lt;strong&gt;bind_rows&lt;/strong&gt; is &lt;strong&gt;append&lt;/strong&gt;. This nomenclature is borrowed from Python’s overall reliance on list operations.&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;# Python
+r.df.head(2).append(r.df.tail(2).drop(&amp;quot;sex&amp;quot;, axis = &amp;quot;columns&amp;quot;), sort = False)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##        species     island  bill_length_mm  bill_depth_mm  flipper_length_mm  \
+## 0       Adelie  Torgersen            39.1           18.7              181.0   
+## 1       Adelie  Torgersen            39.5           17.4              186.0   
+## 342  Chinstrap      Dream            50.8           19.0              210.0   
+## 343  Chinstrap      Dream            50.2           18.7              198.0   
+## 
+##      body_mass_g     sex    year  
+## 0         3750.0    male  2007.0  
+## 1         3800.0  female  2007.0  
+## 342       4100.0     NaN  2009.0  
+## 343       3775.0     NaN  2009.0&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here we also demonstrate how to &lt;strong&gt;drop&lt;/strong&gt; a column from a data frame (i.e. the equivalent to &lt;em&gt;dplyr&lt;/em&gt; &lt;strong&gt;select&lt;/strong&gt; with a minus).&lt;/p&gt;
+&lt;p&gt;Binding &lt;em&gt;pandas&lt;/em&gt; columns uses &lt;strong&gt;concat&lt;/strong&gt;, which takes a Python list as its parameter:&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;# Python
+pd.concat([r.df.loc[:, &amp;#39;species&amp;#39;], r.df.loc[:, &amp;#39;year&amp;#39;]], axis = &amp;quot;columns&amp;quot;).head(5)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   species    year
+## 0  Adelie  2007.0
+## 1  Adelie  2007.0
+## 2  Adelie  2007.0
+## 3  Adelie  2007.0
+## 4  Adelie  2007.0&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And that’s it for the basics!&lt;/p&gt;
+&lt;p&gt;Of course, there are a number of intricacies and special cases here, but by and large this should serve as a useful list of examples to get you started in &lt;em&gt;pandas&lt;/em&gt; coming from &lt;em&gt;dplyr&lt;/em&gt;, and perhaps also vice versa. Future installments in this series will go beyond &lt;em&gt;dplyr&lt;/em&gt;, but likely also touch back on some aspect of it that are easy to get lost in translation.&lt;/p&gt;
+&lt;p&gt;More info:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;I have been planning to start this series for several months now; since I’m an R user in a Python-dominated team and often use both languages om any given day. What finally pushed me to overcome my laziness was an initiative by the ever prolific &lt;a href=&#34;https://twitter.com/BenjaminWolfe/status/1320770728028000256&#34;&gt;Benjamin Wolfe&lt;/a&gt; to gather resources for R users interested in Python. If you’re interested to contribute too, just drop by in the slack and say Hi.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next up: most likely &lt;a href=&#34;https://tidyr.tidyverse.org/&#34;&gt;tidyr&lt;/a&gt; and/or &lt;a href=&#34;https://stringr.tidyverse.org/&#34;&gt;stringr&lt;/a&gt; vs pandas. Watch this space.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Animations in the time of Coronavirus</title>
