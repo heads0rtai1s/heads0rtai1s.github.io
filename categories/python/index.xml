@@ -6,10 +6,157 @@
     <description>Recent content in Python on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Nov 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 25 Feb 2021 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="/categories/python/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Installing CUDA, tensorflow, torch for R &amp; Python on Ubuntu 20.04</title>
+      <link>/2021/02/25/gpu-setup-r-python-ubuntu/</link>
+      <pubDate>Thu, 25 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/02/25/gpu-setup-r-python-ubuntu/</guid>
+      <description>
+
+
+&lt;p&gt;Last weekend, I finally managed to get round to upgrading Ubuntu from version 19.10 to the &lt;a href=&#34;https://releases.ubuntu.com/20.04/&#34;&gt;long-term support release 20.04&lt;/a&gt; on my workhorse laptop. To be precise, I’m using the &lt;a href=&#34;https://kubuntu.org/&#34;&gt;Kubuntu flavour&lt;/a&gt; since &lt;a href=&#34;https://www.youtube.com/watch?v=9QxJQRVQqao&#34;&gt;I’m more of a KDE guy myself&lt;/a&gt;. I usually do a fresh install on those occasions, instead of a &lt;code&gt;dist_upgrade&lt;/code&gt;, because it’s a good opportunity to remove clutter and update software that I might otherwise just keep at an older version, out of convenience.&lt;/p&gt;
+&lt;p&gt;One of my main goals this year is to get better at deep learning (DL) in R and Python - and there’s no way around using GPUs for those purposes. My laptop, a Dell G3 15, has a Nvidia GeForce GTX 1660, which at the time of writing does a decent job at playing with smaller neural networks which can then be scaled up on cloud platforms such as &lt;a href=&#34;https://www.kaggle.com/code&#34;&gt;Kaggle Notebooks&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Setting up GPU-powered DL libraries on your local machine can still be a somewhat daunting task. Having just done it successfully (crossing fingers; nothing broke yet) I decided to write down my notes and experiences while they are still fresh. At a minimum, this will help me the next time I set up at DL machine. And maybe my experience can even be helpful to others in a similar situation.&lt;/p&gt;
+&lt;p&gt;Note: before starting you want to be sure that your machine has a Nvidia GPU that’s recent enough to run DL software. If in doubt, read up on compute capability (and consult &lt;a href=&#34;https://developer.nvidia.com/cuda-gpus#compute&#34;&gt;those tables&lt;/a&gt;).&lt;/p&gt;
+&lt;div id=&#34;high-level-overview-main-challenge&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;High-level overview &amp;amp; main challenge&lt;/h1&gt;
+&lt;p&gt;These are the main ingredients you need to enable your R &amp;amp; Python DL packages:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;p&gt;CUDA drivers to access your GPU.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The cuDNN library which provides GPU acceleration.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;For Python, the DL framework of your choice: Tensorflow or Pytorch.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;For R, the &lt;code&gt;reticulate&lt;/code&gt; package for &lt;code&gt;keras&lt;/code&gt; and/or the new &lt;code&gt;torch&lt;/code&gt; package.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;These steps by themselves are not that hard, and there is a reasonable amount of documentation available online. &lt;strong&gt;The main challenge lies in finding the right library versions that play nicely together.&lt;/strong&gt; This difficulty stems primarily from the breakneck speed at which all the parts of the DL ecosystem continue to evolve. New features are constantly being implemented, and older versions might no longer be supported. For instance, Tensorflow version 2 is significantly re-imagined (and considerably more beginner friendly) than version 1.&lt;/p&gt;
+&lt;p&gt;As a result, the latest GPU driver library versions might not always be supported by the latest DL package version. I ran into this problem at the very end of my first installation attempt (when installing Pytorch) and decided that it would be easier to redo everything from scratch. And indeed, the second installation went much smoother and faster. I hope that my lost hours are your gain, dear reader, and that my repeated experience will prove useful in one way or another.&lt;/p&gt;
+&lt;p&gt;Below I outline the necessary installation steps.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;step-by-step-installation&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Step-by-step installation&lt;/h1&gt;
+&lt;div id=&#34;prerequisites-a-clean-system&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Prerequisites: a clean system&lt;/h2&gt;
+&lt;p&gt;It’s possible that you already have some CUDA or Nvidia libraries installed. But honestly, the best way is to remove everything and start with a clean install. Otherwise there’s just too much danger of version clashes or duplicated paths. The following steps accomplish this. This is also the way in which you can clean up a botched or wrong CUDA installation (like I did) and start afresh. The following is copied from the &lt;a href=&#34;https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html&#34;&gt;CUDA installation manual&lt;/a&gt; (more on this in the next step):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Remove CUDA Toolkit:
+sudo apt-get --purge remove &amp;quot;*cublas*&amp;quot; &amp;quot;*cufft*&amp;quot; &amp;quot;*curand*&amp;quot; &amp;quot;*cusolver*&amp;quot; &amp;quot;*cusparse*&amp;quot; &amp;quot;*npp*&amp;quot; &amp;quot;*nvjpeg*&amp;quot; &amp;quot;cuda*&amp;quot; &amp;quot;nsight*&amp;quot; &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# Remove Nvidia Drivers:
+sudo apt-get --purge remove &amp;quot;*nvidia*&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# Clean up the uninstall:
+sudo apt-get autoremove&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Some more clean-up tips are given in &lt;a href=&#34;cleanup:%20https://medium.com/@stephengregory_69986/installing-cuda-10-1-on-ubuntu-20-04-e562a5e724a0&#34;&gt;this article&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;cuda-drivers&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;CUDA drivers&lt;/h2&gt;
+&lt;p&gt;Let’s get the CUDA GPU drivers (aka CUDA toolkit). Note, that there are instructions for this on software-specific websites, such as &lt;a href=&#34;https://www.tensorflow.org/install/gpu&#34;&gt;for Tensorflow&lt;/a&gt;. However, those aren’t always up to date, and I recommend instead to follow the &lt;a href=&#34;https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html&#34;&gt;official CUDA installation manual&lt;/a&gt; which is really good and detailed.&lt;/p&gt;
+&lt;p&gt;So detailed, in fact, that in can be a little overwhelming at first contact. Here I break down the essential steps:&lt;/p&gt;
+&lt;div id=&#34;choose-and-install-the-appropriate-cuda-version&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Choose and install the appropriate CUDA version&lt;/h3&gt;
+&lt;p&gt;There’s a nice little platform selector linked in the manual, but &lt;a href=&#34;https://developer.nvidia.com/cuda-downloads&#34;&gt;do not use this version&lt;/a&gt;. Or at least double check if you want this version. Because this link always chooses the most recent CUDA version, which is 11.2 as I’m writing these lines. Now, also at the time of writing, Pytorch &amp;amp; torchlib only support CUDA 11.0 (not the latest 11.2) and Tensorflow 2.4 is also build against the same version. Therefore, we want to install CUDA 11.0.&lt;/p&gt;
+&lt;p&gt;(If you decide to install the latest CUDA version instead, there are some troubleshooting notes at the very bottom of this article that might help you out in a pinch.)&lt;/p&gt;
+&lt;p&gt;You can &lt;a href=&#34;https://developer.nvidia.com/cuda-11.0-update1-download-archive&#34;&gt;get the CUDA 11.0 toolkit here&lt;/a&gt;. This gives you the exact same platform selection steps. &lt;a href=&#34;https://developer.nvidia.com/cuda-11.0-update1-download-archive?target_os=Linux&amp;amp;target_arch=x86_64&amp;amp;target_distro=Ubuntu&amp;amp;target_version=2004&amp;amp;target_type=deblocal&#34;&gt;This is my configuration&lt;/a&gt;, which gives me the following install commands:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin
+sudo mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600
+wget https://developer.download.nvidia.com/compute/cuda/11.0.3/local_installers/cuda-repo-ubuntu2004-11-0-local_11.0.3-450.51.06-1_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu2004-11-0-local_11.0.3-450.51.06-1_amd64.deb
+sudo apt-key add /var/cuda-repo-ubuntu2004-11-0-local/7fa2af80.pub
+sudo apt-get update
+sudo apt-get install cuda&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Essentially, you download the CUDA toolkit as a &lt;code&gt;.deb&lt;/code&gt; package, add the CUDA repository for Ubuntu 20.04, and install. The &lt;code&gt;pin&lt;/code&gt; stuff makes sure that you continue to pull CUDA stuff from the right repository in the future (&lt;a href=&#34;https://help.ubuntu.com/community/PinningHowto&#34;&gt;see e.g. here&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;.deb&lt;/code&gt; file is about 2.2 GB, so you might want to get a cup of coffee or tea while downloading.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;set-the-correct-library-paths&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Set the correct library paths&lt;/h3&gt;
+&lt;p&gt;The easiest way is to copy those three lines into your &lt;code&gt;.bashrc&lt;/code&gt;. (&lt;a href=&#34;https://unix.stackexchange.com/questions/129143/what-is-the-purpose-of-bashrc-and-how-does-it-work&#34;&gt;What is bashrc?&lt;/a&gt;).&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;export PATH=/usr/local/cuda-11.0/bin${PATH:+:${PATH}}
+export LD_LIBRARY_PATH=/usr/local/cuda-11.0/lib64:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-11.0/include:$LD_LIBRARY_PATH&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;confirm-the-install&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Confirm the install&lt;/h3&gt;
+&lt;p&gt;To make sure that everything is working, run those commands. None of them should throw an error:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cat /proc/driver/nvidia/version&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;nvcc -V&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;nvidia-smi&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This last tool, SMI, is very useful to see your driver versions and also the GPU memory usage during training.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;optional-libraries&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Optional libraries&lt;/h3&gt;
+&lt;p&gt;Not strictly necessary, but probably useful in one way or another. In my case, I had most of those already installed anyway:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo apt-get install g++ freeglut3-dev build-essential libx11-dev libxmu-dev libxi-dev libglu1-mesa libglu1-mesa-dev&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;cudnn-libraries&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;cuDNN libraries&lt;/h2&gt;
+&lt;p&gt;You also need Nvidia’s &lt;a href=&#34;https://developer.nvidia.com/cudnn&#34;&gt;cuDNN&lt;/a&gt;, the CUDA Deep Neural Network library. Those tools provide GPU-optimised implementation for neural network fundamentals.&lt;/p&gt;
+&lt;p&gt;Getting the appropriate cuDNN libraries is easier than the previous step. You can download them from the &lt;a href=&#34;https://developer.nvidia.com/rdp/cudnn-download&#34;&gt;Nvidia developer portal&lt;/a&gt;. That website requires you to make a free account, which is just a formality. When choosing the cuDNN version you will see the options with their matching CUDA versions, e.g.: &lt;code&gt;Download cuDNN v8.1.0 (January 26th, 2021), for CUDA 11.0,11.1 and 11.2&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;We just installed CUDA 11.0, so we’ll click on the above option which provides a list of download links for different operating systems and architectures. There is a generic version &lt;code&gt;cuDNN Library for Linux (x86_64)&lt;/code&gt; which provides a &lt;code&gt;.tgz&lt;/code&gt; file we could use. But as (K)Ubuntu users we can also download tailored &lt;code&gt;.deb&lt;/code&gt; packages instead. There is a “Developer Version”, a “Runtime Version”, and “Code Samples and User Guide” - all for “Ubuntu20.04 x86_64 (Deb)”. Perfect! Just download everything.&lt;/p&gt;
+&lt;p&gt;Once you’ve got the packages, there is a pretty nice &lt;a href=&#34;https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html&#34;&gt;cuDNN installation guide&lt;/a&gt; which boils down to the following:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo dpkg -i libcudnn8_8.1.0.77-1+cuda11.2_amd64.deb 
+sudo dpkg -i libcudnn8-dev_8.1.0.77-1+cuda11.2_amd64.deb 
+sudo dpkg -i libcudnn8-samples_8.1.0.77-1+cuda11.2_amd64.deb &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The guide also includes some troubleshooting and verification steps, but this part rarely goes wrong.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;tensorflow-pytorch-for-python&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Tensorflow &amp;amp; Pytorch for Python&lt;/h2&gt;
+&lt;p&gt;The drivers are the main challenge; from here everything should be straightforward. There are 2 main deep learning packages in 2020: Tensorflow and Pytorch. If you’re just starting out with deep learning, then in my view it doesn’t matter much which one you pick. They are both pretty user friendly by now, and the fundamentals are similar enough so that familiarity with one package will help you to get started quickly with the other.&lt;/p&gt;
+&lt;p&gt;For &lt;a href=&#34;https://www.tensorflow.org/&#34;&gt;Tensorflow&lt;/a&gt;, not long ago there were two different Python packages for GPU and CPU, respectively. But now you get everything via:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;pip install tensorflow keras&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;a href=&#34;https://keras.io/&#34;&gt;Keras&lt;/a&gt; is a well-designed high-level API for Tensorflow. These other 2 packages are useful additions:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;pip install tensorflow_datasets tensorflow_addons&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For &lt;a href=&#34;https://pytorch.org/&#34;&gt;Pytorch&lt;/a&gt;, I have a penchant for &lt;a href=&#34;https://www.fast.ai/&#34;&gt;FastAI&lt;/a&gt; as a higher-level gateway. Using my preferred &lt;a href=&#34;https://docs.conda.io/en/latest/miniconda.html&#34;&gt;miniconda&lt;/a&gt; environment, you can get both from their respective channels like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;conda create -n fastai -c fastai -c pytorch fastai&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You’ll need some kind of environment manager for the next R step anyway, and it’s easier to keep up with the rapidly evolving libraries if you use some version of &lt;a href=&#34;https://docs.anaconda.com/&#34;&gt;anaconda&lt;/a&gt;. This &lt;code&gt;conda&lt;/code&gt; install will also get you stuff like &lt;code&gt;torchvision&lt;/code&gt; for image models.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;tensorflow-torch-for-r&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Tensorflow &amp;amp; Torch for R&lt;/h2&gt;
+&lt;p&gt;In R, Tensorflow and Keras are best installed via the &lt;a href=&#34;https://keras.rstudio.com/&#34;&gt;keras package&lt;/a&gt;. This uses the fantastic &lt;a href=&#34;https://rstudio.github.io/reticulate/&#34;&gt;reticulate package&lt;/a&gt; as a wrapper around Python’s Tensorflow/Keras, so make sure you got it installed. For an introduction to reticulate check out my &lt;a href=&#34;https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/&#34;&gt;earlier blogpost&lt;/a&gt;. Install as such:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;install.packages(&amp;quot;keras&amp;quot;, repos=&amp;quot;http://cran.r-project.org&amp;quot;, dependencies=TRUE)
+keras::install_keras(tensorflow = &amp;quot;gpu&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then you want to check your Python configuration for &lt;code&gt;reticulate&lt;/code&gt;, along with the &lt;code&gt;keras&lt;/code&gt; availability:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;reticulate::py_config() 
+reticulate::py_module_available(&amp;quot;keras&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For torch, there is now a &lt;a href=&#34;https://torch.mlverse.org/&#34;&gt;native R package&lt;/a&gt; which &lt;em&gt;doesn’t&lt;/em&gt; use Pytorch under the hood. (Instead, it’s build on the same C++ backend, called &lt;a href=&#34;https://github.com/pytorch/pytorch/blob/master/docs/libtorch.rst&#34;&gt;libtorch&lt;/a&gt;, as the Python version.)&lt;/p&gt;
+&lt;p&gt;The 1st step for installing &lt;code&gt;torch&lt;/code&gt; is this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;install.packages(&amp;quot;torch&amp;quot;, repos=&amp;quot;http://cran.r-project.org&amp;quot;, dependencies=TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now you need to activate it, which then downloads and installs necessary stuff:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;library(torch)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Note: if this step fails for no good reason then you want to try replacing it with &lt;code&gt;install_torch(timeout=1000)&lt;/code&gt;. This timeout is important, because the corresponding files are relative large and the default is only 360 seconds.&lt;/p&gt;
+&lt;p&gt;And while you’re there, you might also want to get those extra packages for common use cases:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;install.packages(&amp;quot;torchvision&amp;quot;, repos=&amp;quot;http://cran.r-project.org&amp;quot;, dependencies=TRUE)
+install.packages(&amp;quot;torchaudio&amp;quot;, repos=&amp;quot;http://cran.r-project.org&amp;quot;, dependencies=TRUE)
+remotes::install_github(&amp;quot;mlverse/torchdatasets&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;does-everything-work&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Does everything work?&lt;/h1&gt;
+&lt;p&gt;Now everything should be there on your machine. But does it all work as it should?&lt;/p&gt;
+&lt;p&gt;In Python, you can check Tensorflow and Pytorch as such (and get some information about your GPU in the process):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import tensorflow as tf
+tf.config.list_physical_devices(&amp;#39;GPU&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If you’re using &lt;code&gt;conda&lt;/code&gt;, don’t forget to &lt;code&gt;activate&lt;/code&gt; your environment:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import torch
+torch.cuda.get_device_name()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In R, the installations steps should already have told you if something didn’t work. In addition, you can also check the status of the &lt;code&gt;keras&lt;/code&gt; and &lt;code&gt;torch&lt;/code&gt; packages like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;library(keras)
+is_keras_available()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;library(torch)
+cuda_is_available()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And that’s it! You now have GPU-powered deep learning capabilities at your disposal. Use them wisely. Or, you know, just have fun with them. Either way, I hope this post was helpful.&lt;/p&gt;
+&lt;p&gt;More info:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;This is far from the only write-up on getting your GPU tools set up on (Ubuntu) Linux. For my first successful installation on Kubuntu 19.10 I was largely following &lt;a href=&#34;https://medium.com/@Oysiyl/install-tensorflow-2-with-gpu-support-on-ubuntu-19-10-f502ae85593c&#34;&gt;this post by Dmitriy Kisil&lt;/a&gt;. For the current 20.04 install, I compared the CUDA and cuDNN instructions to posts by &lt;a href=&#34;https://medium.com/@tunguz/installing-tensorflow-on-ubuntu-20-04-bcada5a9c7e1&#34;&gt;Bojan Tunguz&lt;/a&gt; and &lt;a href=&#34;https://medium.com/@stephengregory_69986/installing-cuda-10-1-on-ubuntu-20-04-e562a5e724a0&#34;&gt;Stephen Gregory&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Remember that you don’t need to install GPU software if all you want to do is to experiment with deep learning tools. There are plenty of resources online where you can try out the code, e.g. via Google Colab, in a pre-configured cloud environment. This also includes &lt;a href=&#34;https://www.kaggle.com/code&#34;&gt;Kaggle Notebooks&lt;/a&gt;, which come equipped with a large set of data science and machine learning packages.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;I managed to install CUDA 11.2 (and TF 2.4), but it was less smooth than version 11.0. Specifically, &lt;code&gt;sudo apt-get install cuda&lt;/code&gt; threw a &lt;code&gt;you have held broken packages&lt;/code&gt; error and refused to do the install. The solution was to use the more tenacious &lt;code&gt;aptitude&lt;/code&gt; to &lt;code&gt;sudo aptitude install cuda&lt;/code&gt; which suggested that &lt;code&gt;libnvidia-compute-460&lt;/code&gt; needed to be downgraded. After that the install worked without a hitch.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Another CUDA 11.2 related issue popped up for Tensorflow on Python. The installation worked and &lt;code&gt;import tensorflow&lt;/code&gt; also worked, but when using the library I got the error message &lt;code&gt;Could not load dynamic library &#39;libcusolver.so.10&#39;&lt;/code&gt;. This was most likely related to TF 2.4 being build against CUDA 11.0, not 11.2 (see &lt;a href=&#34;https://github.com/tensorflow/tensorflow/issues/45848&#34;&gt;here&lt;/a&gt;). The workaround was to make a hard-link to pretend that &lt;code&gt;.so.11&lt;/code&gt; is &lt;code&gt;.so.10&lt;/code&gt; (see &lt;a href=&#34;https://github.com/tensorflow/tensorflow/issues/44777&#34;&gt;here&lt;/a&gt;): &lt;code&gt;cd /usr/local/cuda-11.2/lib64; sudo ln libcusolver.so.11 libcusolver.so.10&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>R &amp; Python Rosetta Stone: EDA with dplyr vs pandas</title>
