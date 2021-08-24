@@ -87,7 +87,8 @@
 <div id="colab-pro-features" class="section level3">
 <h3>Colab Pro+ features</h3>
 <ul>
-<li><p><strong>GPU resources:</strong> The Plus subscription gave me access to 1 V100 GPU in its “high-RAM” GPU runtime setting. I could only run a single of these sessions at a time. Alternatively, the “Standard” RAM runtime option allowed me to run 2 concurrent sessions with 1 P100 GPU each.</p></li>
+<li><p><strong>GPU resources:</strong> The Plus subscription gave me access to 1 V100 GPU in its “High-RAM” GPU runtime setting. I could only run a single of these sessions at a time. Alternatively, the “Standard” RAM runtime option allowed me to run 2 concurrent sessions with 1 P100 GPU each.</p></li>
+<li><p>The “High-RAM” runtime did justify its name by providing 53GB of RAM, alongside 8 CPU cores. In my “Standard” RAM sessions I got 13GB RAM and 2 CPUs (which I think might be what’s included in the free Colab).</p></li>
 <li><p>The <strong>runtime limit</strong> for any session is 24 hours; which was consistent throughout my tests. The Plus subscription advertises that the notebook keeps running even after closing the browser, which can be a useful feature. But I didn’t test this. Be aware that even in Pro+ the runtime still disconnects after a certain time of inactivity (i.e. no cells are running).</p></li>
 <li><p>With large data, <strong>storage</strong> is important. Compared to the 100GB of the Pro subscription, Pro+ provided me with 150GB of disk space. This turned out to make a crucial difference in allowing me to copy all the train plus test data, in addition to pip installing updated libraries.</p></li>
 <li><p>What I didn’t test: Colab’s TPU runtime as well as the number of concurrent CPU sessions.</p></li>
