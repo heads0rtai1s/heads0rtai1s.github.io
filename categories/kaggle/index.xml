@@ -6,10 +6,72 @@
     <description>Recent content in Kaggle on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 30 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 24 Aug 2021 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="/categories/kaggle/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Colab Pro&#43; Features, Kaggling on Colab, and Cloud GPU Platforms</title>
+      <link>/2021/08/24/colab-plus-kaggle-cloud-gpu/</link>
+      <pubDate>Tue, 24 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/08/24/colab-plus-kaggle-cloud-gpu/</guid>
+      <description>
+
+
+&lt;p&gt;In the final, hectic days of a recent &lt;a href=&#34;https://www.kaggle.com/c/seti-breakthrough-listen&#34;&gt;Kaggle competition&lt;/a&gt; I found myself in want of more GPU power. As one often does in such an occasion. My own laptop, with its &lt;a href=&#34;https://heads0rtai1s.github.io/2021/02/25/gpu-setup-r-python-ubuntu/&#34;&gt;GPU setup&lt;/a&gt;, was doing a fine job with various small models and small images, but scaling up both aspects became necessary to climb the leaderboard further. My first choice options GCP and AWS quickly turned out to require quota increases which either didn’t happen or took too long. Thus, I decided to explore the paid options of &lt;a href=&#34;https://research.google.com/colaboratory/&#34;&gt;Google Colab&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I had only ever used the free version of Colab, and found 2 paid subscriptions: Colab Pro and Colab Pro+. The Plus version, at a not insignificant $50/month, was advertising “priority access to faster GPUs” compared to the 10 bucks/month Pro tier. While researching more about this and other vaguenesses in the feature descriptions that the website was offering up, I quickly realised that Plus had only be launched a day or two earlier. And nobody really seemed to know what the exact specs were. So I thought to myself “in for a penny, in for a pound”. Or about 36 pounds at the current exchange rate. Might as well get Plus and figure out what it’s about.&lt;/p&gt;
+&lt;p&gt;This post describes the features I found in Colab Pro+, alongside some notes how to best use any version of Colab in a Kaggle competition. After sharing some findings &lt;a href=&#34;https://twitter.com/heads0rtai1s/status/1428833896330899463&#34;&gt;on Twitter&lt;/a&gt;, I received a number of very useful suggestions for Colab alternatives which are compiled in the final part of the post.&lt;/p&gt;
+&lt;div id=&#34;colab-pro-features&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Colab Pro+ features&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;GPU resources:&lt;/strong&gt; The Plus subscription gave me access to 1 V100 GPU in its “high-RAM” GPU runtime setting. I could only run a single of these sessions at a time. Alternatively, the “Standard” RAM runtime option allowed me to run 2 concurrent sessions with 1 P100 GPU each.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The &lt;strong&gt;runtime limit&lt;/strong&gt; for any session is 24 hours; which was consistent throughout my tests. The Plus subscription advertises that the notebook keeps running even after closing the browser, which can be a useful feature. But I didn’t test this. Be aware that even in Pro+ the runtime still disconnects after a certain time of inactivity (i.e. no cells are running).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;With large data, &lt;strong&gt;storage&lt;/strong&gt; is important. Compared to the 100GB of the Pro subscription, Pro+ provided me with 150GB of disk space. This turned out to make a crucial difference in allowing me to copy all the train plus test data, in addition to pip installing updated libraries.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;What I didn’t test: Colab’s TPU runtime as well as the number of concurrent CPU sessions.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Are those features worth the $50/month? On the one hand, having 24h of V100 power is a notable step up from the free Colab and Kaggle resources. On the other hand, being restricted to 1 session at a time, or 2 sessions with slower P100s, can be a limiting factor in a time crunch.&lt;/p&gt;
+&lt;p&gt;Also note, that the Colab FAQ states that “Resources in Colab Pro and Pro+ are prioritized for subscribers who have recently used less resources, in order to prevent the monopolization of limited resources by a small number of users.” Thus, it seems unlikely that one could use a V100 GPU 24/7 for an entire month. I intend to run more experiments and might encounter this limit sooner or later.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;kaggling-on-colab&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Kaggling on Colab&lt;/h3&gt;
+&lt;p&gt;If you’ve exceeded your (considerable) Kaggle resources for the week or, like me, need a bit more horse power for a short time, then moving your Kaggle Notebook into Colab is a good option to keep training and experimenting. It can be non-trivial, though, and the 2 main challenges for me were getting the data and setting up the notebook environment. Well, that and Colab’s slightly infuriating choice to forego many of the standard Jupyter keyboard shortcuts (seriously: why?).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Get your data into Colab:&lt;/strong&gt; by far the best and fastest way here is to copy the data via their &lt;code&gt;GCS_DS_PATH&lt;/code&gt;; i.e. Google Cloud Storage path. Since Kaggle was acquired by Google in 2017, there has been significant integration of its framework into Google’s cloud environments. Kaggle datasets and competition data have cloud storage addresses and can be quickly moved to Colab from there.&lt;/p&gt;
+&lt;p&gt;You can get the &lt;code&gt;GCS_DS_PATH&lt;/code&gt; by running the following code in a Kaggle Notebook. Substitute &lt;code&gt;seti-breakthrough-listen&lt;/code&gt; with the name of your competition or dataset:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;from kaggle_datasets import KaggleDatasets
+GCS_DS_PATH = KaggleDatasets().get_gcs_path(&amp;quot;seti-breakthrough-listen&amp;quot;)
+print(GCS_DS_PATH)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Within Colab you can then use the &lt;code&gt;gsutil&lt;/code&gt; tool to copy the dataset, or even individual folders, like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;!gsutil -m cp -r {GCS_DS_PATH}/&amp;quot;train&amp;quot; .
+!gsutil -m cp -r {GCS_DS_PATH}/&amp;quot;test&amp;quot; .&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This retrieves the data significantly faster than by copying from Google Drive or downloading via the (otherwise great) &lt;a href=&#34;https://github.com/Kaggle/kaggle-api&#34;&gt;Kaggle API&lt;/a&gt;. And of course getting the data counts towards your 24 hour runtime limit. Keep in mind that the data is gone after your session gets disconnected, and you need to repeat the setup in a new session.&lt;/p&gt;
+&lt;p&gt;The same is true for any files you create in your session (such as trained model weights or submission files) or for &lt;strong&gt;custom libraries&lt;/strong&gt; that you install. Colab has the usual Python and Deep Learning tools installed, but I found the versions to be rather old. You can update via &lt;code&gt;pip&lt;/code&gt; like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;!pip install --upgrade --force-reinstall fastai==2.4.1 -qq
+!pip install --upgrade --force-reinstall timm==0.4.12 -qq
+!pip install --upgrade --force-reinstall torch -qq&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Two things to note: after installing you need to restart your runtime to be able to &lt;code&gt;import&lt;/code&gt; the new libraries. No worries: your data will still be there after the restart. Also make sure to leave enough disk space to install everything you need.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Save your outputs on Drive:&lt;/strong&gt; A final note to make sure to copy the results of your experiments - whether they’re trained weights, submission files, or EDA visuals - to your Google Drive account to make sure you don’t lose them when the runtime disconnects. Better to learn from my mistakes than by making them yourself. You can always download stuff manually, but I found that copying them automatically is more reliable.&lt;/p&gt;
+&lt;p&gt;You can mount Drive in your Colab notebook like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;from google.colab import drive
+drive.mount(&amp;#39;/content/drive&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then copy files e.g. via Python’s &lt;code&gt;os.system&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;other-cloud-gpu-options&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Other cloud GPU options&lt;/h3&gt;
+&lt;p&gt;While Colab and its Pro versions, as outlined above, have several strong points in their favour, you might want explore other cloud GPU alternatives that either offer more power (A100s!) or are cheaper or more flexible to use. The options here were contributed by other ML practitioners &lt;a href=&#34;https://twitter.com/heads0rtai1s/status/1428833896330899463&#34;&gt;via Twitter&lt;/a&gt; and are listed in no particular order. I’m not including the well-known GCP or AWS here, although someone recommended preemptible (aka “spot”) instances on these platforms.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://gradient.paperspace.com/pricing&#34;&gt;Paperspace Gradient&lt;/a&gt;: the G1 subscription costs $8/month and gives free instances with smaller GPUs and a 6h runtime limit. Beyond that, pay $2.30/h to run &lt;a href=&#34;https://docs.paperspace.com/gradient/more/instance-types&#34;&gt;an V100 instance&lt;/a&gt;. 200GB storage included, and 5 concurrent running notebooks.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://cloud.jarvislabs.ai/&#34;&gt;JarvisCloud&lt;/a&gt;: great landing page, plus A100 GPUs at $2.4/h are being attractive features here. They also offer up-to-date Pytorch, FastAI, Tensorflow as pre-installed frameworks. Storage up to 500GB at max 7 cents per hour.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://vast.ai/console/create/&#34;&gt;Vast.ai&lt;/a&gt;: is a marketplace for people to rent out their GPUs. You can also access GCP, AWS, and Paperspace resources here. Prices vary quite a bit, but some look significantly cheaper than those of the big players at a similar level of reliability.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://www.oracle.com/cloud/compute/pricing.html&#34;&gt;OracleCloud&lt;/a&gt;: seems to be at about $3/h for V100, which is comparable to AWS. A100s “available soon”&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://www.ovhcloud.com/en/public-cloud/prices/&#34;&gt;OHVcloud&lt;/a&gt;: a French provider known for being not very expensive. They have 1 V100 with 400GB storage starting at $1.7/h; which is not bad at all.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Plenty of options available to explore further. Maybe we’ll see prices drop a bit more amidst this healthy competition.&lt;/p&gt;
+&lt;p&gt;Hope those are useful for your projects on Kaggle or otherwise. Have fun!&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Animations in the time of Coronavirus</title>

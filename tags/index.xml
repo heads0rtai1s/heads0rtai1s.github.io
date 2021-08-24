@@ -30,6 +30,24 @@
     </item>
     
     <item>
+      <title>Cloud</title>
+      <link>/tags/cloud/</link>
+      <pubDate>Tue, 24 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/cloud/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Colab</title>
+      <link>/tags/colab/</link>
+      <pubDate>Tue, 24 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/colab/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Community</title>
       <link>/tags/community/</link>
       <pubDate>Thu, 20 Feb 2020 00:00:00 +0000</pubDate>
@@ -86,7 +104,7 @@
     <item>
       <title>Gpu</title>
       <link>/tags/gpu/</link>
-      <pubDate>Thu, 25 Feb 2021 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 24 Aug 2021 00:00:00 +0000</pubDate>
       
       <guid>/tags/gpu/</guid>
       <description></description>
@@ -113,7 +131,7 @@
     <item>
       <title>Kaggle</title>
       <link>/tags/kaggle/</link>
-      <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 24 Aug 2021 00:00:00 +0000</pubDate>
       
       <guid>/tags/kaggle/</guid>
       <description></description>

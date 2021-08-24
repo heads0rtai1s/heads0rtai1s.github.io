@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.54.0" />
+
+
+<title>Colab Pro&#43; Features, Kaggling on Colab, and Cloud GPU Platforms - head spin - the Heads or Tails blog</title>
+<meta property="og:title" content="Colab Pro&#43; Features, Kaggling on Colab, and Cloud GPU Platforms - head spin - the Heads or Tails blog">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/avatar.png"
+         width="50"
+         height="50"
+         alt="Heads or Tails">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="/blogroll/">Blogroll</a></li>
+    
+    <li><a href="https://twitter.com/heads0rtai1s">Twitter</a></li>
+    
+    <li><a href="https://www.kaggle.com/headsortails">Kaggle</a></li>
+    
+    <li><a href="https://www.linkedin.com/in/martin-henze">LinkedIn</a></li>
+    
+    <li><a href="https://github.com/heads0rtai1s">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">7 min read</span>
+    
+
+    <h1 class="article-title">Colab Pro&#43; Features, Kaggling on Colab, and Cloud GPU Platforms</h1>
+
+    
+    <span class="article-date">2021-08-24</span>
+    
+
+    <div class="article-content">
+      
+
+
+<p>In the final, hectic days of a recent <a href="https://www.kaggle.com/c/seti-breakthrough-listen">Kaggle competition</a> I found myself in want of more GPU power. As one often does in such an occasion. My own laptop, with its <a href="https://heads0rtai1s.github.io/2021/02/25/gpu-setup-r-python-ubuntu/">GPU setup</a>, was doing a fine job with various small models and small images, but scaling up both aspects became necessary to climb the leaderboard further. My first choice options GCP and AWS quickly turned out to require quota increases which either didn’t happen or took too long. Thus, I decided to explore the paid options of <a href="https://research.google.com/colaboratory/">Google Colab</a>.</p>
+<p>I had only ever used the free version of Colab, and found 2 paid subscriptions: Colab Pro and Colab Pro+. The Plus version, at a not insignificant $50/month, was advertising “priority access to faster GPUs” compared to the 10 bucks/month Pro tier. While researching more about this and other vaguenesses in the feature descriptions that the website was offering up, I quickly realised that Plus had only be launched a day or two earlier. And nobody really seemed to know what the exact specs were. So I thought to myself “in for a penny, in for a pound”. Or about 36 pounds at the current exchange rate. Might as well get Plus and figure out what it’s about.</p>
+<p>This post describes the features I found in Colab Pro+, alongside some notes how to best use any version of Colab in a Kaggle competition. After sharing some findings <a href="https://twitter.com/heads0rtai1s/status/1428833896330899463">on Twitter</a>, I received a number of very useful suggestions for Colab alternatives which are compiled in the final part of the post.</p>
+<div id="colab-pro-features" class="section level3">
+<h3>Colab Pro+ features</h3>
+<ul>
+<li><p><strong>GPU resources:</strong> The Plus subscription gave me access to 1 V100 GPU in its “high-RAM” GPU runtime setting. I could only run a single of these sessions at a time. Alternatively, the “Standard” RAM runtime option allowed me to run 2 concurrent sessions with 1 P100 GPU each.</p></li>
+<li><p>The <strong>runtime limit</strong> for any session is 24 hours; which was consistent throughout my tests. The Plus subscription advertises that the notebook keeps running even after closing the browser, which can be a useful feature. But I didn’t test this. Be aware that even in Pro+ the runtime still disconnects after a certain time of inactivity (i.e. no cells are running).</p></li>
+<li><p>With large data, <strong>storage</strong> is important. Compared to the 100GB of the Pro subscription, Pro+ provided me with 150GB of disk space. This turned out to make a crucial difference in allowing me to copy all the train plus test data, in addition to pip installing updated libraries.</p></li>
+<li><p>What I didn’t test: Colab’s TPU runtime as well as the number of concurrent CPU sessions.</p></li>
+</ul>
+<p>Are those features worth the $50/month? On the one hand, having 24h of V100 power is a notable step up from the free Colab and Kaggle resources. On the other hand, being restricted to 1 session at a time, or 2 sessions with slower P100s, can be a limiting factor in a time crunch.</p>
+<p>Also note, that the Colab FAQ states that “Resources in Colab Pro and Pro+ are prioritized for subscribers who have recently used less resources, in order to prevent the monopolization of limited resources by a small number of users.” Thus, it seems unlikely that one could use a V100 GPU 24/7 for an entire month. I intend to run more experiments and might encounter this limit sooner or later.</p>
+</div>
+<div id="kaggling-on-colab" class="section level3">
+<h3>Kaggling on Colab</h3>
+<p>If you’ve exceeded your (considerable) Kaggle resources for the week or, like me, need a bit more horse power for a short time, then moving your Kaggle Notebook into Colab is a good option to keep training and experimenting. It can be non-trivial, though, and the 2 main challenges for me were getting the data and setting up the notebook environment. Well, that and Colab’s slightly infuriating choice to forego many of the standard Jupyter keyboard shortcuts (seriously: why?).</p>
+<p><strong>Get your data into Colab:</strong> by far the best and fastest way here is to copy the data via their <code>GCS_DS_PATH</code>; i.e. Google Cloud Storage path. Since Kaggle was acquired by Google in 2017, there has been significant integration of its framework into Google’s cloud environments. Kaggle datasets and competition data have cloud storage addresses and can be quickly moved to Colab from there.</p>
+<p>You can get the <code>GCS_DS_PATH</code> by running the following code in a Kaggle Notebook. Substitute <code>seti-breakthrough-listen</code> with the name of your competition or dataset:</p>
+<pre><code>from kaggle_datasets import KaggleDatasets
+GCS_DS_PATH = KaggleDatasets().get_gcs_path(&quot;seti-breakthrough-listen&quot;)
+print(GCS_DS_PATH)</code></pre>
+<p>Within Colab you can then use the <code>gsutil</code> tool to copy the dataset, or even individual folders, like this:</p>
+<pre><code>!gsutil -m cp -r {GCS_DS_PATH}/&quot;train&quot; .
+!gsutil -m cp -r {GCS_DS_PATH}/&quot;test&quot; .</code></pre>
+<p>This retrieves the data significantly faster than by copying from Google Drive or downloading via the (otherwise great) <a href="https://github.com/Kaggle/kaggle-api">Kaggle API</a>. And of course getting the data counts towards your 24 hour runtime limit. Keep in mind that the data is gone after your session gets disconnected, and you need to repeat the setup in a new session.</p>
+<p>The same is true for any files you create in your session (such as trained model weights or submission files) or for <strong>custom libraries</strong> that you install. Colab has the usual Python and Deep Learning tools installed, but I found the versions to be rather old. You can update via <code>pip</code> like this:</p>
+<pre><code>!pip install --upgrade --force-reinstall fastai==2.4.1 -qq
+!pip install --upgrade --force-reinstall timm==0.4.12 -qq
+!pip install --upgrade --force-reinstall torch -qq</code></pre>
+<p>Two things to note: after installing you need to restart your runtime to be able to <code>import</code> the new libraries. No worries: your data will still be there after the restart. Also make sure to leave enough disk space to install everything you need.</p>
+<p><strong>Save your outputs on Drive:</strong> A final note to make sure to copy the results of your experiments - whether they’re trained weights, submission files, or EDA visuals - to your Google Drive account to make sure you don’t lose them when the runtime disconnects. Better to learn from my mistakes than by making them yourself. You can always download stuff manually, but I found that copying them automatically is more reliable.</p>
+<p>You can mount Drive in your Colab notebook like this:</p>
+<pre><code>from google.colab import drive
+drive.mount(&#39;/content/drive&#39;)</code></pre>
+<p>Then copy files e.g. via Python’s <code>os.system</code>.</p>
+</div>
+<div id="other-cloud-gpu-options" class="section level3">
+<h3>Other cloud GPU options</h3>
+<p>While Colab and its Pro versions, as outlined above, have several strong points in their favour, you might want explore other cloud GPU alternatives that either offer more power (A100s!) or are cheaper or more flexible to use. The options here were contributed by other ML practitioners <a href="https://twitter.com/heads0rtai1s/status/1428833896330899463">via Twitter</a> and are listed in no particular order. I’m not including the well-known GCP or AWS here, although someone recommended preemptible (aka “spot”) instances on these platforms.</p>
+<ul>
+<li><p><a href="https://gradient.paperspace.com/pricing">Paperspace Gradient</a>: the G1 subscription costs $8/month and gives free instances with smaller GPUs and a 6h runtime limit. Beyond that, pay $2.30/h to run <a href="https://docs.paperspace.com/gradient/more/instance-types">an V100 instance</a>. 200GB storage included, and 5 concurrent running notebooks.</p></li>
+<li><p><a href="https://cloud.jarvislabs.ai/">JarvisCloud</a>: great landing page, plus A100 GPUs at $2.4/h are being attractive features here. They also offer up-to-date Pytorch, FastAI, Tensorflow as pre-installed frameworks. Storage up to 500GB at max 7 cents per hour.</p></li>
+<li><p><a href="https://vast.ai/console/create/">Vast.ai</a>: is a marketplace for people to rent out their GPUs. You can also access GCP, AWS, and Paperspace resources here. Prices vary quite a bit, but some look significantly cheaper than those of the big players at a similar level of reliability.</p></li>
+<li><p><a href="https://www.oracle.com/cloud/compute/pricing.html">OracleCloud</a>: seems to be at about $3/h for V100, which is comparable to AWS. A100s “available soon”</p></li>
+<li><p><a href="https://www.ovhcloud.com/en/public-cloud/prices/">OHVcloud</a>: a French provider known for being not very expensive. They have 1 V100 with 400GB storage starting at $1.7/h; which is not bad at all.</p></li>
+</ul>
+<p>Plenty of options available to explore further. Maybe we’ll see prices drop a bit more amidst this healthy competition.</p>
+<p>Hope those are useful for your projects on Kaggle or otherwise. Have fun!</p>
+</div>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//headsortails.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/python.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137904077-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+  </body>
+</html>
+

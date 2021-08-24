@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Gpu on head spin - the Heads or Tails blog</title>
-    <link>/tags/gpu/</link>
-    <description>Recent content in Gpu on head spin - the Heads or Tails blog</description>
+    <title>Colab on head spin - the Heads or Tails blog</title>
+    <link>/tags/colab/</link>
+    <description>Recent content in Colab on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 24 Aug 2021 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/gpu/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/colab/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -18,15 +18,6 @@
       
       <guid>/2021/08/24/colab-plus-kaggle-cloud-gpu/</guid>
       <description>In the final, hectic days of a recent Kaggle competition I found myself in want of more GPU power. As one often does in such an occasion. My own laptop, with its GPU setup, was doing a fine job with various small models and small images, but scaling up both aspects became necessary to climb the leaderboard further. My first choice options GCP and AWS quickly turned out to require quota increases which either didn’t happen or took too long.</description>
-    </item>
-    
-    <item>
-      <title>Installing CUDA, tensorflow, torch for R &amp; Python on Ubuntu 20.04</title>
-      <link>/2021/02/25/gpu-setup-r-python-ubuntu/</link>
-      <pubDate>Thu, 25 Feb 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/2021/02/25/gpu-setup-r-python-ubuntu/</guid>
-      <description>Last weekend, I finally managed to get round to upgrading Ubuntu from version 19.10 to the long-term support release 20.04 on my workhorse laptop. To be precise, I’m using the Kubuntu flavour since I’m more of a KDE guy myself. I usually do a fresh install on those occasions, instead of a dist_upgrade, because it’s a good opportunity to remove clutter and update software that I might otherwise just keep at an older version, out of convenience.</description>
     </item>
     
   </channel>

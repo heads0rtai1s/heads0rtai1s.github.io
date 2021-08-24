@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/2021/08/24/colab-plus-kaggle-cloud-gpu/</loc>
+    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/2021/02/25/gpu-setup-r-python-ubuntu/</loc>
     <lastmod>2021-02-25T00:00:00+00:00</lastmod>
   </url>
@@ -118,6 +123,30 @@
   </url>
   
   <url>
+    <loc>/tags/cloud/</loc>
+    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/cloud/</loc>
+    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/colab/</loc>
+    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/colab/</loc>
+    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/community/</loc>
     <lastmod>2020-02-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -173,13 +202,13 @@
   
   <url>
     <loc>/tags/gpu/</loc>
-    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
+    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/categories/gpu/</loc>
-    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
+    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -203,13 +232,13 @@
   
   <url>
     <loc>/tags/kaggle/</loc>
-    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/categories/kaggle/</loc>
-    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -251,7 +280,7 @@
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
+    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -389,7 +418,7 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
+    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

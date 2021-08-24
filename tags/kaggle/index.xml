@@ -6,10 +6,19 @@
     <description>Recent content in Kaggle on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 30 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 24 Aug 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/kaggle/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Colab Pro&#43; Features, Kaggling on Colab, and Cloud GPU Platforms</title>
+      <link>/2021/08/24/colab-plus-kaggle-cloud-gpu/</link>
+      <pubDate>Tue, 24 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/08/24/colab-plus-kaggle-cloud-gpu/</guid>
+      <description>In the final, hectic days of a recent Kaggle competition I found myself in want of more GPU power. As one often does in such an occasion. My own laptop, with its GPU setup, was doing a fine job with various small models and small images, but scaling up both aspects became necessary to climb the leaderboard further. My first choice options GCP and AWS quickly turned out to require quota increases which either didn’t happen or took too long.</description>
+    </item>
     
     <item>
       <title>Animations in the time of Coronavirus</title>
