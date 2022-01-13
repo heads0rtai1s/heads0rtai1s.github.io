@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/2022/01/13/goals-2021-results/</loc>
+    <lastmod>2022-01-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/2021/08/24/colab-plus-kaggle-cloud-gpu/</loc>
     <lastmod>2021-08-24T00:00:00+00:00</lastmod>
   </url>
@@ -93,25 +98,25 @@
   </url>
   
   <url>
-    <loc>/categories/animation/</loc>
-    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/tags/animation/</loc>
     <lastmod>2020-04-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/astro/</loc>
-    <lastmod>2020-01-23T00:00:00+00:00</lastmod>
+    <loc>/categories/animation/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/astro/</loc>
+    <lastmod>2020-01-23T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/astro/</loc>
     <lastmod>2020-01-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -123,32 +128,26 @@
   </url>
   
   <url>
-    <loc>/categories/cloud/</loc>
-    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/tags/cloud/</loc>
     <lastmod>2021-08-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/colab/</loc>
+    <loc>/categories/cloud/</loc>
     <lastmod>2021-08-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/colab/</loc>
-    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
+    <lastmod>2022-01-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/community/</loc>
-    <lastmod>2020-02-20T00:00:00+00:00</lastmod>
+    <loc>/categories/colab/</loc>
+    <lastmod>2022-01-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -159,13 +158,19 @@
   </url>
   
   <url>
-    <loc>/categories/covid19/</loc>
-    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+    <loc>/categories/community/</loc>
+    <lastmod>2020-02-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/covid19/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/covid19/</loc>
     <lastmod>2020-04-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -177,13 +182,13 @@
   </url>
   
   <url>
-    <loc>/categories/eda/</loc>
+    <loc>/tags/eda/</loc>
     <lastmod>2020-11-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/tags/eda/</loc>
+    <loc>/categories/eda/</loc>
     <lastmod>2020-11-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -201,13 +206,19 @@
   </url>
   
   <url>
-    <loc>/categories/gpu/</loc>
-    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
+    <loc>/tags/goals/</loc>
+    <lastmod>2022-01-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/gpu/</loc>
+    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/gpu/</loc>
     <lastmod>2021-08-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -219,26 +230,26 @@
   </url>
   
   <url>
-    <loc>/categories/journey/</loc>
-    <lastmod>2019-09-19T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/tags/journey/</loc>
-    <lastmod>2019-09-19T00:00:00+00:00</lastmod>
+    <lastmod>2022-01-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/kaggle/</loc>
-    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
+    <loc>/categories/journey/</loc>
+    <lastmod>2022-01-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/kaggle/</loc>
-    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
+    <lastmod>2022-01-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/kaggle/</loc>
+    <lastmod>2022-01-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -249,20 +260,14 @@
   </url>
   
   <url>
-    <loc>/categories/machine-learning/</loc>
-    <lastmod>2019-10-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/tags/machine-learning/</loc>
     <lastmod>2019-10-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/maps/</loc>
-    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+    <loc>/categories/machine-learning/</loc>
+    <lastmod>2019-10-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -273,14 +278,20 @@
   </url>
   
   <url>
+    <loc>/categories/maps/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/meta/</loc>
-    <lastmod>2019-09-19T00:00:00+00:00</lastmod>
+    <lastmod>2022-01-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
+    <lastmod>2022-01-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -291,19 +302,13 @@
   </url>
   
   <url>
-    <loc>/categories/python/</loc>
-    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/tags/python/</loc>
     <lastmod>2021-02-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/pytorch/</loc>
+    <loc>/categories/python/</loc>
     <lastmod>2021-02-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -315,7 +320,7 @@
   </url>
   
   <url>
-    <loc>/categories/r/</loc>
+    <loc>/categories/pytorch/</loc>
     <lastmod>2021-02-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -327,8 +332,14 @@
   </url>
   
   <url>
-    <loc>/categories/scraping/</loc>
-    <lastmod>2020-01-23T00:00:00+00:00</lastmod>
+    <loc>/categories/r/</loc>
+    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/running/</loc>
+    <lastmod>2022-01-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -339,8 +350,8 @@
   </url>
   
   <url>
-    <loc>/categories/shiny/</loc>
-    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
+    <loc>/categories/scraping/</loc>
+    <lastmod>2020-01-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -351,7 +362,7 @@
   </url>
   
   <url>
-    <loc>/categories/starter-code/</loc>
+    <loc>/categories/shiny/</loc>
     <lastmod>2019-12-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -363,14 +374,14 @@
   </url>
   
   <url>
-    <loc>/tags/</loc>
-    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+    <loc>/categories/starter-code/</loc>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/tensorflow/</loc>
-    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
+    <loc>/tags/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -381,8 +392,8 @@
   </url>
   
   <url>
-    <loc>/categories/tidytuesday/</loc>
-    <lastmod>2019-11-07T00:00:00+00:00</lastmod>
+    <loc>/categories/tensorflow/</loc>
+    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -393,8 +404,8 @@
   </url>
   
   <url>
-    <loc>/categories/tidyverse/</loc>
-    <lastmod>2020-11-05T00:00:00+00:00</lastmod>
+    <loc>/categories/tidytuesday/</loc>
+    <lastmod>2019-11-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -405,8 +416,8 @@
   </url>
   
   <url>
-    <loc>/categories/visualisation/</loc>
-    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+    <loc>/categories/tidyverse/</loc>
+    <lastmod>2020-11-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -417,8 +428,14 @@
   </url>
   
   <url>
+    <loc>/categories/visualisation/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/</loc>
-    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
+    <lastmod>2022-01-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
