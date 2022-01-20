@@ -1,22 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Scraping on head spin - the Heads or Tails blog</title>
-    <link>/tags/scraping/</link>
-    <description>Recent content in Scraping on head spin - the Heads or Tails blog</description>
+    <title>scraping on head spin - the Heads or Tails blog</title>
+    <link>https://heads0rtai1s.github.io/tags/scraping/</link>
+    <description>Recent content in scraping on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 20 Feb 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/scraping/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 20 Feb 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/scraping/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Analysing tweets with the rtweet package</title>
-      <link>/2020/02/20/rtweet-intro/</link>
+      <link>https://heads0rtai1s.github.io/2020/02/20/rtweet-intro/</link>
       <pubDate>Thu, 20 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/02/20/rtweet-intro/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/02/20/rtweet-intro/</guid>
       <description>This is a brief post on collecting and analysing tweets. I will show how to use the rtweet package to extract Twitter posts about the R community. This ties into last weeks post on rstudio::conf and community values, and is also related to my previous intro post on web scraping.
 First, we load rtweet and other (tidyverse) packages we will need:
 libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;tibble&amp;#39;, # wrangling &amp;#39;stringr&amp;#39;, &amp;#39;rtweet&amp;#39;, # strings, tweets &amp;#39;knitr&amp;#39;, &amp;#39;kableExtra&amp;#39;, # table styling &amp;#39;lubridate&amp;#39;, # time &amp;#39;ggplot2&amp;#39;, &amp;#39;ggthemes&amp;#39;) # plots invisible(lapply(libs, library, character.</description>
@@ -24,10 +20,10 @@ libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;tibble&amp;#39;, # wrangling 
     
     <item>
       <title>Web Scraping with rvest &#43; Astro Throwback</title>
-      <link>/2020/01/23/rvest-intro-astro/</link>
+      <link>https://heads0rtai1s.github.io/2020/01/23/rvest-intro-astro/</link>
       <pubDate>Thu, 23 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/01/23/rvest-intro-astro/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/01/23/rvest-intro-astro/</guid>
       <description>In my first post of the year I will provide a gentle introduction to web scraping with the tidyverse package rvest. As the package name pun suggests, web scraping is the process of harvesting, or extracting, data from websites. The extraction process is greatly simplified by the fact that websites are predominantly built using HTML (= Hyper Text Markup Language), which essentially uses a set of formatting and structuring rules to tell your browser how to display a website.</description>
     </item>
     

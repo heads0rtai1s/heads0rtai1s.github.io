@@ -1,24 +1,23 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Machine Learning on head spin - the Heads or Tails blog</title>
-    <link>/categories/machine-learning/</link>
+    <link>https://heads0rtai1s.github.io/categories/machine-learning/</link>
     <description>Recent content in Machine Learning on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 03 Oct 2019 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="/categories/machine-learning/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://heads0rtai1s.github.io/categories/machine-learning/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>The best of both worlds: R meets Python via reticulate</title>
-      <link>/2019/10/03/reticulate-intro/</link>
+      <link>https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/</link>
       <pubDate>Thu, 03 Oct 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/10/03/reticulate-intro/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;&lt;em&gt;As far as rivalries go, R vs Python can almost reach the levels of the glory days of Barca vs Madrid, Stones vs Beatles, or Sega vs Nintendo. Almost. Just dare to venture onto Twitter asking which language is best for data science to witness two tightly entrenched camps.&lt;/em&gt; Or at least that’s what seemingly hundreds of Medium articles would like you believe. In reality, beyond some good-natured and occasionally entertaining joshing, the whole debate is rather silly. Because the question itself is wrong. It’s the whole &lt;em&gt;“My kung fu is better than your kung fu”&lt;/em&gt; mindset that completely misses the point.&lt;/p&gt;
@@ -155,7 +154,7 @@ p2 &amp;lt;- iris %&amp;gt;%
   theme(legend.position = &amp;quot;top&amp;quot;)
 
 grid.arrange(p1, p2, layout_matrix = rbind(c(1,2)))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-10-03-reticulate-intro_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2019-10-03-reticulate-intro_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We find that there are clear clusters for each of the species - especially for setosa and in the petal dimensions. A well-trained classifier should be able to distinguish the three iris species. Now, R is perfectly capable of performing this classification task, but for the sake of the excercise we will turn to Python. Given the popularity of both &lt;code&gt;ggplot2&lt;/code&gt; and &lt;code&gt;scikit-learn&lt;/code&gt;, such a workflow is certainly realistic.&lt;/p&gt;
 &lt;p&gt;First, we need to tell R where Python can be found. In &lt;code&gt;reticulate&lt;/code&gt;, the &lt;code&gt;use_python&lt;/code&gt; convenience function takes care of that; all we need is a path to the executable. On a Unix-based system, simply open a terminal and type &lt;code&gt;which python&lt;/code&gt;, then paste the resulting path below. (Or look for &lt;code&gt;python3&lt;/code&gt; instead, but this should really become your default version because for Python 2 the &lt;a href=&#34;https://pythonclock.org&#34;&gt;time is running out&lt;/a&gt;). This is my path:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;use_python(&amp;quot;/usr/bin/python&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
@@ -358,7 +357,7 @@ p3 &amp;lt;- foo %&amp;gt;%
 
 grid.arrange(p1, p2, p3,
         layout_matrix = cbind(c(3), c(rep(1,2), rep(2,3))))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-10-03-reticulate-intro_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2019-10-03-reticulate-intro_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;This plot layout provides diagnostics for the performance of the classifier:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;On the left, there is a confusion matrix which shows how many test instances of each species were classified as one of the 3 species. The numbers are absolute numbers (remember that this is a small dataset) and the colours encode percentages. For instance, 100% of the 19 setosa instances were correctly classified as setosa. This is the classification accuracy, i.e. the number of true positives. The accuracies for the other two species are pretty high, too; with iris virginica having the lowest proportion of 20 out of 24 instances correctly classified.&lt;/p&gt;&lt;/li&gt;

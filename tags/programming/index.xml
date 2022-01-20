@@ -1,49 +1,45 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Programming on head spin - the Heads or Tails blog</title>
-    <link>/tags/programming/</link>
-    <description>Recent content in Programming on head spin - the Heads or Tails blog</description>
+    <title>programming on head spin - the Heads or Tails blog</title>
+    <link>https://heads0rtai1s.github.io/tags/programming/</link>
+    <description>Recent content in programming on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Nov 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/programming/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 05 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/programming/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>R &amp; Python Rosetta Stone: EDA with dplyr vs pandas</title>
-      <link>/2020/11/05/r-python-dplyr-pandas/</link>
+      <link>https://heads0rtai1s.github.io/2020/11/05/r-python-dplyr-pandas/</link>
       <pubDate>Thu, 05 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/11/05/r-python-dplyr-pandas/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/11/05/r-python-dplyr-pandas/</guid>
       <description>This is the first post in a new series featuring translations between R and Python code for common data science and machine learning tasks. A Rosetta Stone, if you will. I’m writing this mainly as a documented cheat sheet for myself, as I’m frequently switching between the two languages. Personally, I have learned Python and R around the same time, several years ago, but tidy R is much more intuitive to me than any other language.</description>
     </item>
     
     <item>
       <title>Tidyverse evolutions: curly-curly operator and pivoting (feat. tidytuesday data &amp; leaflet visuals)</title>
-      <link>/2019/11/07/tidy-curly-pivot-leaflet/</link>
+      <link>https://heads0rtai1s.github.io/2019/11/07/tidy-curly-pivot-leaflet/</link>
       <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/11/07/tidy-curly-pivot-leaflet/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/11/07/tidy-curly-pivot-leaflet/</guid>
       <description>The tidyverse ecosystem is steadily growing and adapting to the needs of its users. As part of this evolution, existing tools are being replaced by new and better methods. As useful as this flexibility is to the strength of the system, sometimes it can be hard to keep track of all the changes. This blogpost will deal with two new developments: the ‘curly-curly’ operator for tidy evaluation and the new ‘pivot’ functions for data reshaping.</description>
     </item>
     
     <item>
       <title>The best of both worlds: R meets Python via reticulate</title>
-      <link>/2019/10/03/reticulate-intro/</link>
+      <link>https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/</link>
       <pubDate>Thu, 03 Oct 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/10/03/reticulate-intro/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/</guid>
       <description>As far as rivalries go, R vs Python can almost reach the levels of the glory days of Barca vs Madrid, Stones vs Beatles, or Sega vs Nintendo. Almost. Just dare to venture onto Twitter asking which language is best for data science to witness two tightly entrenched camps. Or at least that’s what seemingly hundreds of Medium articles would like you believe. In reality, beyond some good-natured and occasionally entertaining joshing, the whole debate is rather silly.</description>
     </item>
     
     <item>
       <title>Tidy evaluation in R: Part 2 - Complex use cases (feat. facet zoom)</title>
-      <link>/2019/08/22/tidy-eval-examples-part2/</link>
+      <link>https://heads0rtai1s.github.io/2019/08/22/tidy-eval-examples-part2/</link>
       <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/08/22/tidy-eval-examples-part2/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/08/22/tidy-eval-examples-part2/</guid>
       <description>In an earlier post I gave a gentle introduction to tidy evaluation in the R tidyverse using simple examples. I covered quoting with enquo and unquoting with !! in brief dplyr and ggplot2 snippets. Today, I aim to build a collection of more complex use cases involving additional tools.
 Those are our libraries:
 libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;stringr&amp;#39;, # wrangling &amp;#39;knitr&amp;#39;,&amp;#39;kableExtra&amp;#39;, # table styling &amp;#39;ggplot2&amp;#39;,&amp;#39;ggforce&amp;#39;) # plots invisible(lapply(libs, library, character.</description>
@@ -51,10 +47,10 @@ libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;stringr&amp;#39;, # wrangling
     
     <item>
       <title>Tidy evaluation in R - Simple Examples</title>
-      <link>/2019/04/24/tidy-eval-examples/</link>
+      <link>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</link>
       <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/04/24/tidy-eval-examples/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</guid>
       <description>The tidyverse philosophy introduced by Hadley Wickham has been a game changer for the R community. It is based on intuitive rules of what a tidy data set should look like: each variable is a column, each observation is a row (Wickham 2014). At its core, the tidyverse collection of R packages is powered by a consistent grammar of data manipulation and visualisation.
 The tidyverse grammar makes it easier to manipulate data sets using simple expressions that reduce the syntactic overhead and allow you to focus on the data.</description>
     </item>

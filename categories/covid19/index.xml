@@ -1,24 +1,23 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Covid19 on head spin - the Heads or Tails blog</title>
-    <link>/categories/covid19/</link>
-    <description>Recent content in Covid19 on head spin - the Heads or Tails blog</description>
+    <title>covid19 on head spin - the Heads or Tails blog</title>
+    <link>https://heads0rtai1s.github.io/categories/covid19/</link>
+    <description>Recent content in covid19 on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 30 Apr 2020 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="/categories/covid19/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://heads0rtai1s.github.io/categories/covid19/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Animations in the time of Coronavirus</title>
-      <link>/2020/04/30/animate-map-covid/</link>
+      <link>https://heads0rtai1s.github.io/2020/04/30/animate-map-covid/</link>
       <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/04/30/animate-map-covid/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/04/30/animate-map-covid/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;The first four months of 2020 have been dominated by the Coronavirus pandemic (aka COVID-19), which has transformed global life in an unprecedented way. Societies and economies struggle to adapt to the new conditions and necessary contraints. A reassuringly large fraction of governments around the world continue to take evidence-based approaches to this crisis that are grounded in large scale data collection efforts. Most of this data is being made publicly available and can be studied in real time. This post will describe how to extract and prepare the necessary data to animate the spread of the virus over time within my native country of Germany.&lt;/p&gt;
@@ -306,7 +305,7 @@ F
   transition_time(date)
 
 animate(gg + ease_aes(&amp;#39;cubic-in-out&amp;#39;), fps = 10, end_pause = 25, height = 800, width = round(800/1.61803398875))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-04-30-animate-map-covid_files/figure-html/unnamed-chunk-8-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2020-04-30-animate-map-covid_files/figure-html/unnamed-chunk-8-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
 &lt;p&gt;Our final map shows how the number of COVID-19 cases in Germany first started to rise in the South and West, and how they spread to other parts of the country. The geographical middle of Germany appears to be lagging behind in case counts even at later times. Note the logarithmic colour scale.&lt;/p&gt;
 &lt;p&gt;More info:&lt;/p&gt;
 &lt;ul&gt;

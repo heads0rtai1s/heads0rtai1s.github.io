@@ -1,31 +1,27 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Geospatial on head spin - the Heads or Tails blog</title>
-    <link>/tags/geospatial/</link>
-    <description>Recent content in Geospatial on head spin - the Heads or Tails blog</description>
+    <title>geospatial on head spin - the Heads or Tails blog</title>
+    <link>https://heads0rtai1s.github.io/tags/geospatial/</link>
+    <description>Recent content in geospatial on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 30 Apr 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/geospatial/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 30 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/geospatial/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Animations in the time of Coronavirus</title>
-      <link>/2020/04/30/animate-map-covid/</link>
+      <link>https://heads0rtai1s.github.io/2020/04/30/animate-map-covid/</link>
       <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/04/30/animate-map-covid/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/04/30/animate-map-covid/</guid>
       <description>The first four months of 2020 have been dominated by the Coronavirus pandemic (aka COVID-19), which has transformed global life in an unprecedented way. Societies and economies struggle to adapt to the new conditions and necessary contraints. A reassuringly large fraction of governments around the world continue to take evidence-based approaches to this crisis that are grounded in large scale data collection efforts. Most of this data is being made publicly available and can be studied in real time.</description>
     </item>
     
     <item>
       <title>Tidyverse evolutions: curly-curly operator and pivoting (feat. tidytuesday data &amp; leaflet visuals)</title>
-      <link>/2019/11/07/tidy-curly-pivot-leaflet/</link>
+      <link>https://heads0rtai1s.github.io/2019/11/07/tidy-curly-pivot-leaflet/</link>
       <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/11/07/tidy-curly-pivot-leaflet/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/11/07/tidy-curly-pivot-leaflet/</guid>
       <description>The tidyverse ecosystem is steadily growing and adapting to the needs of its users. As part of this evolution, existing tools are being replaced by new and better methods. As useful as this flexibility is to the strength of the system, sometimes it can be hard to keep track of all the changes. This blogpost will deal with two new developments: the ‘curly-curly’ operator for tidy evaluation and the new ‘pivot’ functions for data reshaping.</description>
     </item>
     

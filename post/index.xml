@@ -1,23 +1,106 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on head spin - the Heads or Tails blog</title>
-    <link>/post/</link>
+    <link>https://heads0rtai1s.github.io/post/</link>
     <description>Recent content in Posts on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 13 Jan 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 20 Jan 2022 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://heads0rtai1s.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Yearly goals: 2022 targets</title>
+      <link>https://heads0rtai1s.github.io/2022/01/20/goals-2022-targets/</link>
+      <pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/2022/01/20/goals-2022-targets/</guid>
+      <description>
+
+
+&lt;p&gt;This is the second part in a series of posts about setting and tracking my yearly goals when it comes to Machine Learning &amp;amp; Data Science (ML &amp;amp; DS) as well as Sports &amp;amp; Exercise. In the &lt;a href=&#34;https://heads0rtai1s.github.io/2022/01/13/goals-2021-results/&#34;&gt;first post&lt;/a&gt; I wrote about my past goals for 2021 and the lessons learned from those. This post will focus on my goals and expectations for 2022, and how last year’s experiences shaped and informed them. This might be more fun to read if you’ve seen the &lt;del&gt;comedy show&lt;/del&gt; documentary Silicon Valley.&lt;/p&gt;
+&lt;div id=&#34;stretch-to-avoid-injuries&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Stretch to avoid injuries&lt;/h3&gt;
+&lt;p&gt;Here’s the summary tweet with my stretch goals from the 1st of January:&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;My 2022 stretch goals:&lt;br&gt;&lt;br&gt;- Spend 400 h learning ML/DS&lt;br&gt;&lt;br&gt;- Join 2 NLP + 2 Image competitions on &lt;a href=&#34;https://twitter.com/kaggle?ref_src=twsrc%5Etfw&#34;&gt;@kaggle&lt;/a&gt;&lt;br&gt;&lt;br&gt;- Team up in 3 competitions&lt;br&gt;&lt;br&gt;- Win 2 Kaggle comp medals&lt;br&gt;&lt;br&gt;- Write 50 blog posts&lt;br&gt;&lt;br&gt;- Run a sub-4h marathon&lt;br&gt;&lt;br&gt;- Do 1 muscle up&lt;br&gt;&lt;br&gt;- Sleep at least 8 h/night with a std dev &amp;lt;= 0.5 h&lt;/p&gt;&amp;mdash; Martin Henze (Heads or Tails) (@heads0rtai1s) &lt;a href=&#34;https://twitter.com/heads0rtai1s/status/1477360618432778242?ref_src=twsrc%5Etfw&#34;&gt;January 1, 2022&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;The idea of those being &lt;em&gt;stretch&lt;/em&gt; goals is that I’m not expecting to reach all of them. And that would be fine. Because the important aspect is the &lt;strong&gt;journey towards those goals&lt;/strong&gt;, and the skills and experiences that I hope this journey will give me.&lt;/p&gt;
+&lt;p&gt;The goals themselves are still important, and I will do my best in reaching them. Some will go better than others. Trying to become better at something can be a vague target, and concrete goals can be very useful in providing a metric to measure progress and success. Similar to ML, finding a good metric can make a big difference. And of course also similar to ML any metric can be gamed; but you would only be fooling yourself. Thus, when striving for those goals it is essential to remember the purpose behind them, and the vision you had when setting them.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://media.giphy.com/media/mXuPwP0kxQqvu0M168/giphy.gif&#34; title=&#34;Maybe not that kind of vision&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;spend-400-h-learning-mlds&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Spend 400 h learning ML/DS&lt;/h3&gt;
+&lt;p&gt;As I wrote in the previous post, hours themselves don’t create mastery. Spending your time effectively is more important that spending lots of it with vague intentions. My aspiration here is to grow my ML/DS skills in specific directions. I realised that I’m still lacking the kind of solid understanding of many ML concepts that would allow me to use them as confidently and creatively as I would like to.&lt;/p&gt;
+&lt;p&gt;Let me try to illustrate what I mean. When I encounter a certain data problem - be it on Kaggle, at work, or anywhere - then in my head I construct ideas for ways to process the data to make it easier to solve the problem. For instance, for the &lt;a href=&#34;https://www.kaggle.com/c/titanic&#34;&gt;Kaggle Titanic&lt;/a&gt; challenge I would try to come up with feature engineering steps to figure out whether someone was travelling alone or in groups, and what kind of groups those could be (family? friends?). That’s the creative part. Translating these ideas into code is where the skill comes in. For traditional (tabular) ML I’m reasonably good at this translation, but when it comes to Deep Learning (DL) my process is still slow and inefficient.&lt;/p&gt;
+&lt;p&gt;Besides the tabular ML and feature engineering flow, I also know what to aim for in my skill development through the analogy to data visualisation. I’m a big fan of dataviz, and it arguably contributed a lot to my early successes in the Kaggle community. When it comes to a visualisation problem, I’m able to envision the data in my head and then find the right (ggplot2) tools to realise my imagination through code. Ideas flow almost unimpeded through the power of dataviz skills and tools. From there, my limitations (which are still plenty) mostly arise from a lack in creativity rather than from my coding skills. And this is where I want to be with ML/DL. Maybe not this year; but I want to get much closer.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;join-2-nlp-2-image-competitions-on-kaggle&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Join 2 NLP + 2 Image competitions on Kaggle&lt;/h3&gt;
+&lt;p&gt;One way to make my ML goals even more concrete is through &lt;a href=&#34;https://www.kaggle.com/competitions&#34;&gt;Kaggle competitions&lt;/a&gt;. Challenges throughout the year are manifold and diverse. They typically attract a few thousand people, hundreds among whom are sharing their ideas or code. I can’t think of a better way of learning than to immerse yourself into such a competition for (typically) 3 months and soak up the skills and problem solving ingenuity that others display.&lt;/p&gt;
+&lt;p&gt;Specifically, I want to improve my skills in Image problems (aka Computer Vision) and Natural Language Processing (NLP). Both of those are solidly in the domain of DL these days. Image-based challenges are usually plentiful throughout the year. NLP competitions can be less frequent, but it should hopefully still be possible to encounter 2 interesting ones in 2022.&lt;/p&gt;
+&lt;p&gt;When it comes to Image data, I’m reasonably happy with my progress in 2021. I started learning about &lt;a href=&#34;https://www.fast.ai&#34;&gt;FastAI&lt;/a&gt; and using it more confidently in building my own competition pipeline and tinkering with custom dataloaders in some competitions. I also started to look into the underlying basic functionality in &lt;a href=&#34;https://pytorch.org&#34;&gt;Pytorch&lt;/a&gt; and &lt;a href=&#34;https://torch.mlverse.org&#34;&gt;torch for R&lt;/a&gt; (FastAI is a high-level wrapper for Pytorch). While the way that torch works is pretty intuitive, I need to spend more time with the code itself to become more confident in using it creatively.&lt;/p&gt;
+&lt;p&gt;For NLP, the &lt;a href=&#34;https://huggingface.co&#34;&gt;huggingface libraries&lt;/a&gt; have fast become the gold standard, and the ecosystem is growing and evolving rapidly. I enjoyed taking the first &lt;a href=&#34;https://huggingface.co/course/chapter1/1&#34;&gt;huggingface course&lt;/a&gt; last year, and I plan to continue with those courses to learn more. There are a few libraries that bring the huggingface tools into the FastAI ecosystem; which is an ideal combination for me at this stage. I plan to focus on those, besides the general huggingface framework, and will hopefully blog about it every now and then.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://media.giphy.com/media/LpR8z8GqoyktA3141E/giphy.gif&#34; title=&#34;I promise I&amp;#39;ll try my best to blog about it.&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;team-up-in-3-competitions&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Team up in 3 competitions&lt;/h3&gt;
+&lt;p&gt;I thoroughly enjoyed my teaming up experiences in 2021 and plan to continue this approach in 2022. There is a lot that you can learn from your team mate(s) on Kaggle, since many people come from such different professional and technical backgrounds. The goal of 3 competitions seems relatively low compared to the rest of the goals, but I’m aiming for gradual progress here. Last year it was 2 competitions.&lt;/p&gt;
+&lt;p&gt;Finding the right balance in a team can be a challenge, as is the way that progress is planned and implemented. Communication is really crucial here; as in so many areas of life. This applies not necessarily to the goal of doing well in a Kaggle competition, but to getting the most out of the learning experiences that are enabled by the process of collaboration. In all of those aspects I consider myself fortunate in having teamed up with &lt;a href=&#34;https://twitter.com/YassineAlouini&#34;&gt;Yassine&lt;/a&gt;, and I’m looking forward to our future collaborations.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://media.giphy.com/media/jsI8nBXJl6s7r7iuJ5/giphy.gif&#34; title=&#34;Tres competiciones&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;win-2-kaggle-comp-medals&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Win 2 Kaggle comp medals&lt;/h3&gt;
+&lt;p&gt;In 2021, I purposefully didn’t set a goal of a certain performance in a Kaggle competition. I just wanted to grow my (DL) skills by spending more time on Kaggle problems. Now, I feel like I’m at a stage where I can expect to develop those skills to the extend where my progress translates to better finishes on competition leaderboards.&lt;/p&gt;
+&lt;p&gt;I’m a fan of the Kaggle medal system, and of the gamification aspect in general. I consider it an incarnation of the idea of concrete metrics replacing otherwise vague goals that I wrote about at the beginning of this post. But here there can be an even greater incentive to game the system and take the medals as a goal in themselves, rather than a reflection of your skills. Sometimes, it might be possible to win a (bronze) medal by forking a public notebook or blindly ensembling other people’s solutions without understanding them (and getting lucky in the shake-up). That’s not what I want. Those medals don’t really count for anything, since they are disconnected from your actual abilities.&lt;/p&gt;
+&lt;p&gt;I want to write my own code and understand (ideally) every line of it. Inspired by other people’s ideas, yes; but incorporating those inspirations purposefully and in an informed way into my own pipelines. Plan my experiments intelligently and choose the best progress based on the results of those experiments. Those medals will mean something. Most importantly, they will mean something to me. Setting this goal and putting it out there will create a bit more pressure to succeed.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://media.giphy.com/media/QrcujnCu5qWVyea2Xc/giphy.gif&#34; title=&#34;Maybe it was a bit too much pressure.&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;write-50-blog-posts&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Write 50 blog posts&lt;/h3&gt;
+&lt;p&gt;Blogging was an aspect of my journey that suffered in 2021. Of the 12 posts that I had planned, I wrote only 2. But instead of lowering the bar more, I decided to raise it to 50 instead. This might not make a lot of intuitive sense, since a target of 50 looks way more intimidating than a mere dozen. However, I realised that it wasn’t really the number of posts that stopped me from writing. It was the process of writing a single posts, which I saw as a significant endeavour that needed preparation and research and comprehensive content to be worth it.&lt;/p&gt;
+&lt;p&gt;I can be a bit of a perfectionist, which sometimes stops me from making public something that I had written but wasn’t happy with. And I would hate to turn into the kind of spammer who just churns out cookie-cutter posts in the search for engagement and followers. You know the ones. Although I don’t expect a large audience for those posts, I want to write something of value for those who stumble across my blog. There’s enough noise on the internet already.&lt;/p&gt;
+&lt;p&gt;But here’s the crux: writing valuable content doesn’t have to mean writing long and/or polished content. Short snippets of concise code or brief reflections on recent learnings can have as much value as posts that have been months in the making. I simply need to get out of my comfort zone and write more.&lt;/p&gt;
+&lt;p&gt;One benefit of writing is analogous to the idea that teaching a concept to someone is a great way of learning about this concept. If you can’t explain it, then do you really understand it? And if you can’t write about it clearly and concisely, then chances are you don’t actually understand it either. But understanding something is not necessarily a binary thing, and sharing even small progress in learning can be useful to people in similar situations.&lt;/p&gt;
+&lt;p&gt;And after writing only 2 posts in 2021 (albeit more technical posts), this will be already the second post of 2022.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;run-a-sub-4h-marathon&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Run a sub-4h marathon&lt;/h3&gt;
+&lt;p&gt;My first ever marathon in 2021 (not a race, just the distance) clocked in at 4 hours 25 minutes. Not too bad; now let’s see whether we can get under 4 hours. Shaving off 25 minutes of 42km might not look much at the outset, but it’s about 35s per km, which here is the difference between a 5:45 pace (4h-goal) and a 6:20 pace (last year), which is pretty noticeable. (Being European, I measure my pace in min/km.)&lt;/p&gt;
+&lt;p&gt;My pace for shorter runs is significantly faster than that; and I’ve run a personal best 1h 40min half-marathon (i.e. 4:45 pace). However, a marathon becomes very different after the 2h mark, and most certainly during the final 10km. I will probably still need to take short stretches of walking with water and energy gels, which need to be factored into the overall running pace. I feel like being at 5:00 pace for the first half and then aiming for 5:30 - 6:30 pace for the remainder sounds realistic. In contrast, last year I dropped to 7:30 pace for the last 12km, albeit having done quite well until km 25. My plan is to work more on the stages between km 20 and 30 with long training runs of 2h to 3h durations during most weekends. Should be fun!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://media.giphy.com/media/cnipK4uGHhudr6tels/giphy.gif&#34; title=&#34;We might have different definitions of &amp;#39;fun&amp;#39;.&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;do-1-muscle-up&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Do 1 muscle up&lt;/h3&gt;
+&lt;p&gt;This is a repetition of the 2021 goal, since I didn’t accomplish anything in that direction. For 2022, I will have to build a better plan to make at least some progress. I’m pretty sure that a muscle up is mostly a question of technique, given a certain level of strength. None of that silly cross-fit-style swingy stuff though; I’m talking about proper technique. There are different stages of the muscle up movement, and I hope to be able to train some of those in isolation.&lt;/p&gt;
+&lt;p&gt;Instead of trying to build out the strength first (and my pull up continuity in 2021 wasn’t too bad), this year I will invest more time to research the technique and put together a plan to get me progressively closer to my goal.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;sleep-at-least-8-hnight-with-a-std-dev-0.5-h&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Sleep at least 8 h/night with a std dev &amp;lt;= 0.5 h&lt;/h3&gt;
+&lt;p&gt;This last goal might sound weirdly specific, but it’s all about continuity. As a student, then PhD student, then astronomer (of all things!) it’s easy to slip into weird sleeping habits. Even if you don’t actually have to spend your nights at a telescope. Working at a startup might sound like one of those “out of the frying pan and into the fire” type situations when it comes to being sleep deprived, but I’m happy to tell you that there are startups who recognise the value of a healthy work-life balance. Since more and more research is highlighting the importance of a good night’s sleep, I identified this goal as foundational for all the other goals in this post.&lt;/p&gt;
+&lt;p&gt;It’s honestly also something that you should listen to your body for. From time to time it might be necessary to work late to meet a deadline, but the thought that your brain won’t be impacted by only 4h of shut-eye is pretty untenable. You pay for burning the midnight oil with reduced cognitive spark over the following days, so your average productivity still goes down even though you worked all those extra hours. And you might be able to get away with it for a while in your 20s, since that’s pretty much the kind of bad decisions that your 20s are for, but it’s still gonna catch up with you eventually. Anyway, no lecturing intended here. Sleep is super important, and I suggest to use it smartly to get where you want to get.&lt;/p&gt;
+&lt;p&gt;So what about that goal? Well, last year I managed to exceed my planned average of 8h / night. But you can famously drown in a river that’s only 30cm deep on average. Variance matters, and there was too much of that in my sleep patterns. Once more, I was looking for a concrete goal to improve my habits. A standard deviation of less than 30 mins means that in 67% of nights I would be less than +/- 15 min away from my average goal. That sounds broadly doable. Last year’s standard deviation was 1h.&lt;/p&gt;
+&lt;p&gt;I’m not suggesting to run around with a stop watch either, or try to plan your day down to the minute. That’s a recipe for a neurotic type of disaster worthy of a silly and slightly problematic 80s comedy. My approach is to pay a bit more attention to guide my habits towards being more sustainable and then let routine take over. You won’t always able to stick to those habits every single day, but if you’re generally maintaining them that’s already a big improvement. So don’t sleep on sleep.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://media.giphy.com/media/Qw4X3FJbFEXeglZ7s6A/giphy.gif&#34; title=&#34;Especially when travelling long distances.&#34; /&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;Now you know some of my plans for 2022. I’d be happy to read about yours, in whichever shape or form you’d like to share them.&lt;/p&gt;
+&lt;p&gt;You might have noticed a pattern in most of my goals, and that is something I will write about more in detail in a future post: my overarching aim is for my 2022 self to be better than my 2021 self. Comparing yourself to other people can be a futile and demoralising exercise, especially if you, like me, tend to look to the most high-achieving people in your field or community for inspiration. Even more so in this age of social media highlight reels. In contrast, I believe that comparing yourself to a previous baseline of yourself can be a great way to learn from past mistakes and experiences. Look at what worked, slightly tweak those things that didn’t work to see if that improves the situation.&lt;/p&gt;
+&lt;p&gt;It’s the basis for ML experiments, which comes from the basis of any science experiments, which comes from the scientific method, which comes from an evidence-based approach to trying to understand this often perplexing world in which we find ourselves. Reflecting on your choices and their consequences is a valuable tool in any context. Or as Socrates used to say: “The unexamined life is not worth living”.&lt;/p&gt;
+&lt;p&gt;In the third and final part of this goals series I will write about measuring my goals and (finally!) bring in some code and visualisations. Stay tuned!&lt;/p&gt;
+&lt;p&gt;This is the end of this post.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://media.giphy.com/media/mXuPwxly5V2xL1uAow/giphy.gif&#34; title=&#34;Go and be awesome!&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Yearly goals: 2021 experiences</title>
-      <link>/2022/01/13/goals-2021-results/</link>
+      <link>https://heads0rtai1s.github.io/2022/01/13/goals-2021-results/</link>
       <pubDate>Thu, 13 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>/2022/01/13/goals-2021-results/</guid>
+      <guid>https://heads0rtai1s.github.io/2022/01/13/goals-2021-results/</guid>
       <description>
 
 
@@ -85,10 +168,10 @@ Kaggle Notebooks. In 2021 I succesfuly managed to establish a continuity of one 
     
     <item>
       <title>Colab Pro&#43; Features, Kaggling on Colab, and Cloud GPU Platforms</title>
-      <link>/2021/08/24/colab-plus-kaggle-cloud-gpu/</link>
+      <link>https://heads0rtai1s.github.io/2021/08/24/colab-plus-kaggle-cloud-gpu/</link>
       <pubDate>Tue, 24 Aug 2021 00:00:00 +0000</pubDate>
       
-      <guid>/2021/08/24/colab-plus-kaggle-cloud-gpu/</guid>
+      <guid>https://heads0rtai1s.github.io/2021/08/24/colab-plus-kaggle-cloud-gpu/</guid>
       <description>
 
 
@@ -148,10 +231,10 @@ drive.mount(&amp;#39;/content/drive&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Installing CUDA, tensorflow, torch for R &amp; Python on Ubuntu 20.04</title>
-      <link>/2021/02/25/gpu-setup-r-python-ubuntu/</link>
+      <link>https://heads0rtai1s.github.io/2021/02/25/gpu-setup-r-python-ubuntu/</link>
       <pubDate>Thu, 25 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>/2021/02/25/gpu-setup-r-python-ubuntu/</guid>
+      <guid>https://heads0rtai1s.github.io/2021/02/25/gpu-setup-r-python-ubuntu/</guid>
       <description>
 
 
@@ -295,10 +378,10 @@ cuda_is_available()&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>R &amp; Python Rosetta Stone: EDA with dplyr vs pandas</title>
-      <link>/2020/11/05/r-python-dplyr-pandas/</link>
+      <link>https://heads0rtai1s.github.io/2020/11/05/r-python-dplyr-pandas/</link>
       <pubDate>Thu, 05 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/11/05/r-python-dplyr-pandas/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/11/05/r-python-dplyr-pandas/</guid>
       <description>
 
 
@@ -703,12 +786,12 @@ pd.concat([r.df.loc[:, &amp;#39;species&amp;#39;], r.df.loc[:, &amp;#39;year&amp
     
     <item>
       <title>Animations in the time of Coronavirus</title>
-      <link>/2020/04/30/animate-map-covid/</link>
+      <link>https://heads0rtai1s.github.io/2020/04/30/animate-map-covid/</link>
       <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/04/30/animate-map-covid/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/04/30/animate-map-covid/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;The first four months of 2020 have been dominated by the Coronavirus pandemic (aka COVID-19), which has transformed global life in an unprecedented way. Societies and economies struggle to adapt to the new conditions and necessary contraints. A reassuringly large fraction of governments around the world continue to take evidence-based approaches to this crisis that are grounded in large scale data collection efforts. Most of this data is being made publicly available and can be studied in real time. This post will describe how to extract and prepare the necessary data to animate the spread of the virus over time within my native country of Germany.&lt;/p&gt;
@@ -996,7 +1079,7 @@ F
   transition_time(date)
 
 animate(gg + ease_aes(&amp;#39;cubic-in-out&amp;#39;), fps = 10, end_pause = 25, height = 800, width = round(800/1.61803398875))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-04-30-animate-map-covid_files/figure-html/unnamed-chunk-8-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2020-04-30-animate-map-covid_files/figure-html/unnamed-chunk-8-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
 &lt;p&gt;Our final map shows how the number of COVID-19 cases in Germany first started to rise in the South and West, and how they spread to other parts of the country. The geographical middle of Germany appears to be lagging behind in case counts even at later times. Note the logarithmic colour scale.&lt;/p&gt;
 &lt;p&gt;More info:&lt;/p&gt;
 &lt;ul&gt;
@@ -1009,12 +1092,12 @@ animate(gg + ease_aes(&amp;#39;cubic-in-out&amp;#39;), fps = 10, end_pause = 25,
     
     <item>
       <title>Analysing tweets with the rtweet package</title>
-      <link>/2020/02/20/rtweet-intro/</link>
+      <link>https://heads0rtai1s.github.io/2020/02/20/rtweet-intro/</link>
       <pubDate>Thu, 20 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/02/20/rtweet-intro/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/02/20/rtweet-intro/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;This is a brief post on collecting and analysing tweets. I will show how to use the &lt;a href=&#34;https://github.com/ropensci/rtweet&#34;&gt;rtweet&lt;/a&gt; package to extract Twitter posts about the R community. This ties into last weeks post on &lt;a href=&#34;https://heads0rtai1s.github.io/2020/02/13/rstudio-conf/&#34;&gt;rstudio::conf and community values&lt;/a&gt;, and is also related to my previous &lt;a href=&#34;https://heads0rtai1s.github.io/2020/01/23/rvest-intro-astro/&#34;&gt;intro post on web scraping&lt;/a&gt;.&lt;/p&gt;
@@ -1125,7 +1208,7 @@ GiusCalamita
   theme(legend.position = &amp;quot;none&amp;quot;) +
   ggtitle(&amp;quot;Daily number of tweets about the &amp;#39;rstats community&amp;#39;&amp;quot;,
           subtitle = &amp;quot;Extracted using the rtweet package&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-02-20-rtweet-intro_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2020-02-20-rtweet-intro_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The notable spike on Feb 12 was caused by &lt;code&gt;@kierisi&lt;/code&gt; asking about people’s experiences with the community. I’m looking forward to her blog post:&lt;/p&gt;
 &lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;I&amp;#39;m working on a presentation about the R Community (yes, yes I&amp;#39;ll make a blog post!) and while I have *my* opinions, I&amp;#39;d really love to showcase your experiences!&lt;br&gt;&lt;br&gt;What motivated you to join the &lt;a href=&#34;https://twitter.com/hashtag/rstats?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#rstats&lt;/a&gt; community? Why do you participate? What makes you stay?&lt;br&gt;&lt;br&gt;(DMs are OK, too!) &lt;a href=&#34;https://t.co/7h3xKZ0Cg2&#34;&gt;pic.twitter.com/7h3xKZ0Cg2&lt;/a&gt;&lt;/p&gt;&amp;mdash; Jesse Mostipak 🦦 (@kierisi) &lt;a href=&#34;https://twitter.com/kierisi/status/1227666597860577281?ref_src=twsrc%5Etfw&#34;&gt;February 12, 2020&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
@@ -1135,17 +1218,17 @@ GiusCalamita
     
     <item>
       <title>rstudio::conf retrospective</title>
-      <link>/2020/02/13/rstudio-conf/</link>
+      <link>https://heads0rtai1s.github.io/2020/02/13/rstudio-conf/</link>
       <pubDate>Thu, 13 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/02/13/rstudio-conf/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/02/13/rstudio-conf/</guid>
       <description>
 
 
 &lt;p&gt;Two weeks ago, I was fortunate to attend my very first &lt;a href=&#34;https://rstudio.com/conference/&#34;&gt;Rstudio conference&lt;/a&gt;. Spoiler: it was an amazing event - packed to the brim with new ideas, tools, impressions, and most important of all: smart and kind people. This was the first time that San Francisco was hosting “rstudio::conf” (the affectionate shorthand is mirroring R’s package::tool syntax). Having moved to the Bay Area not long ago I really counted myself lucky to have such a promising event in my neighbourhood.&lt;/p&gt;
 &lt;p&gt;I have written about the importance of a strong and supportive community once before: in &lt;a href=&#34;https://heads0rtai1s.github.io/2019/04/19/great-community-kaggledays19/&#34;&gt;last year’s post&lt;/a&gt; on meeting my favourite &lt;a href=&#34;https://www.kaggle.com&#34;&gt;Kaggle&lt;/a&gt; crowd for the first time in real life. The rstudio::conf confirmed my belief that progress in any field is greatly boosted by having friendly and competent people around to support you and lift you up.&lt;/p&gt;
 &lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;/pics/rstudioconf20_1.jpg&#34; alt=&#34;rstudio::conf opening; with about 20% of the audience visible&#34; style=&#34;width:100.0%&#34; /&gt;
+&lt;img src=&#34;https://heads0rtai1s.github.io/pics/rstudioconf20_1.jpg&#34; alt=&#34;rstudio::conf opening; with about 20% of the audience visible&#34; style=&#34;width:100.0%&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;&lt;em&gt;rstudio::conf opening; with about 20% of the audience visible&lt;/em&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;p&gt;Nothing exemplifies this attitude better than the way in which the R community has embraced the &lt;a href=&#34;https://www.ericholscher.com/blog/2017/aug/2/pacman-rule-conferences/&#34;&gt;Pac-Man rule&lt;/a&gt;: “When standing as a group of people, always leave room for 1 person to join your group.” In other words, if you’re talking as a group then don’t stand in a closed circle but leave a bit of free space for anyone who’d like to participate in the conversation. At rstudio::conf I saw this concept work extremely well and it allowed me (and many others) to quickly connect with new people and have fun and inspiring conversations. It may have also helped that we all had at least one thing in common to talk about.&lt;/p&gt;
@@ -1158,7 +1241,7 @@ GiusCalamita
 &lt;/ul&gt;
 &lt;p&gt;But of course the most important consequence of the healthy expansion of the R ecosystem is the existence of many new hex stickers ;-) . This was my first opportunity to become a hunter and gatherer of those colourful collectibles, and I managed to ultimately design a whole new look for my laptop:&lt;/p&gt;
 &lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;/pics/rstudioconf20_2.jpg&#34; alt=&#34;I’m gonna need a bigger laptop&#34; style=&#34;width:100.0%&#34; /&gt;
+&lt;img src=&#34;https://heads0rtai1s.github.io/pics/rstudioconf20_2.jpg&#34; alt=&#34;I’m gonna need a bigger laptop&#34; style=&#34;width:100.0%&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;&lt;em&gt;I’m gonna need a bigger laptop&lt;/em&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;p&gt;More resources:&lt;/p&gt;
@@ -1172,12 +1255,12 @@ GiusCalamita
     
     <item>
       <title>Web Scraping with rvest &#43; Astro Throwback</title>
-      <link>/2020/01/23/rvest-intro-astro/</link>
+      <link>https://heads0rtai1s.github.io/2020/01/23/rvest-intro-astro/</link>
       <pubDate>Thu, 23 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/01/23/rvest-intro-astro/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/01/23/rvest-intro-astro/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;In my first post of the year I will provide &lt;strong&gt;a gentle introduction to web scraping&lt;/strong&gt; with the &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; package &lt;a href=&#34;https://github.com/tidyverse/rvest&#34;&gt;rvest&lt;/a&gt;. As the package name pun suggests, &lt;a href=&#34;https://en.wikipedia.org/wiki/Web_scraping&#34;&gt;web scraping&lt;/a&gt; is the process of harvesting, or extracting, data from websites. The extraction process is greatly simplified by the fact that websites are predominantly built using &lt;a href=&#34;https://en.wikipedia.org/wiki/HTML&#34;&gt;HTML&lt;/a&gt; (= Hyper Text Markup Language), which essentially uses a set of formatting and structuring rules to tell your browser how to display a website. By navigating the website structure and requesting the desired formatting element (e.g. a certain image, hyperlink, or bold-face text) we can scrape the underlying information. With more and more information stored online, web scraping is a valuable tool in your data science tool box. &lt;strong&gt;There’s not much background required to understand this post, other than &lt;code&gt;dplyr&lt;/code&gt; basics and a bit of HTML.&lt;/strong&gt;&lt;/p&gt;
@@ -1193,7 +1276,7 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;target_link &amp;lt;- &amp;quot;https://www.swift.ac.uk/swift_portal/getobject.php?name=m31n+2008-12a&amp;amp;submit=Search+Names&amp;quot;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;We know that our star has the prosaic catalogue name “M31N 2008-12a” (or at least I still know that name in my sleep), so this is what we will plug into the search name syntax of the &lt;a href=&#34;https://www.swift.ac.uk/&#34;&gt;UK Swift Science Data Centre&lt;/a&gt;. Below is the result:&lt;/p&gt;
 &lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;/pics/swift_name_search.jpg&#34; alt=&#34;Search result for M31N 2008-12a&#34; style=&#34;width:100.0%&#34; /&gt;
+&lt;img src=&#34;https://heads0rtai1s.github.io/pics/swift_name_search.jpg&#34; alt=&#34;Search result for M31N 2008-12a&#34; style=&#34;width:100.0%&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;&lt;em&gt;Search result for M31N 2008-12a&lt;/em&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;p&gt;Among some other elements, this page has a prominent table which contains all &lt;em&gt;Swift&lt;/em&gt; observations that covered the position of our object on the sky. As you see, not all of those were pointed at M31N 2008-12a; some serendipitous observations featured our explosive friend somewhere near the edge of the field of view. But we’re not picky, we take all we can get. We download the entire page using the &lt;code&gt;read_html&lt;/code&gt; tool and store it in the variable &lt;code&gt;target_page&lt;/code&gt;. This might take a moment or two:&lt;/p&gt;
@@ -1202,7 +1285,7 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Luckily, we don’t have to mess around with the HTML text in this unstructured form. In order to find out exactly which element we need, we can use the &lt;em&gt;Inspector&lt;/em&gt; tool of our browsers. Chances are, you just need to press &lt;code&gt;F12&lt;/code&gt; to launch it.&lt;/p&gt;
 &lt;p&gt;Now you should see something like this, with the Inspector tool taking up part of the screen. The Inspector window (here on the right) shows the HTML code of the website in the upper half of the window (plus some stuff we don’t care about in this post in the lower half):&lt;/p&gt;
 &lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;/pics/swift_name_search_inspect.jpg&#34; alt=&#34;Website with Inspector tool&#34; style=&#34;width:100.0%&#34; /&gt;
+&lt;img src=&#34;https://heads0rtai1s.github.io/pics/swift_name_search_inspect.jpg&#34; alt=&#34;Website with Inspector tool&#34; style=&#34;width:100.0%&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;&lt;em&gt;Website with Inspector tool&lt;/em&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;p&gt;To identify the &lt;em&gt;path&lt;/em&gt; for the element we need (here the big table) we will go through the following 3 steps, which I’ve marked in the image above:&lt;/p&gt;
@@ -1528,7 +1611,7 @@ foo %&amp;gt;%
        caption = &amp;quot;The M31N 2008-12a monitoring collaboration&amp;quot;) +
   ggtitle(&amp;quot;Neil Gehrels Swift Observatory coverage of nova M31N 2008-12a&amp;quot;,
           subtitle = &amp;quot;Targeted observations began in 2013. In 2015 we conducted the\nX-ray flash monitoring campaign. In 2017 the eruption happened on NYE.&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-01-23-rvest-intro-swift_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2020-01-23-rvest-intro-swift_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Observations prior to 2013 did not detect the eruptions; in 2013 our targeted campaign &lt;a href=&#34;https://arxiv.org/abs/1401.2904&#34;&gt;began&lt;/a&gt;. 2015 was an odd year, because we were running a separate high-frequency campaign trying to catch an elusive &lt;a href=&#34;https://arxiv.org/abs/1607.07985&#34;&gt;X-ray flash&lt;/a&gt;, which had never been observed in any object. Unfortunately, it still hasn’t. In 2017 the eruption had the nerves to happen on New Year’s Eve, so almost all observations happened in early 2018 (and our NYE parties briefly got a bit hectic). The 2020 eruption will probably happen in October, but don’t bet too much money on it.&lt;/p&gt;
 &lt;p&gt;If you look at cumulative exposure time instead of number of observations you see that in 2015 most of those 112 observations were much shorter than usual:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;foo %&amp;gt;% 
@@ -1545,7 +1628,7 @@ foo %&amp;gt;%
   labs(x = &amp;quot;Year&amp;quot;, y = &amp;quot;Combined XRT Exposure [ks]&amp;quot;,
        caption = &amp;quot;The M31N 2008-12a monitoring collaboration&amp;quot;) +
   ggtitle(&amp;quot;Neil Gehrels Swift Observatory coverage of nova M31N 2008-12a&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-01-23-rvest-intro-swift_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2020-01-23-rvest-intro-swift_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Up to Jan 2020, we have used &lt;em&gt;Swift&lt;/em&gt; to look at M31N 2008-12a in the X-rays for a total of almost exactly 600 ks. Which is more than half a &lt;em&gt;mega second&lt;/em&gt;. Now that’s an impressive unit. Coincidentally, with Rstudio::conf 2020 coming up in San Francisco next week, my next post might happen within the next mega second. Watch this space ;-)&lt;/p&gt;
 &lt;p&gt;More info:&lt;/p&gt;
 &lt;ul&gt;
@@ -1559,10 +1642,10 @@ foo %&amp;gt;%
     
     <item>
       <title>R Shiny for beginners: annotated starter code</title>
-      <link>/2019/12/05/shiny-starter-code/</link>
+      <link>https://heads0rtai1s.github.io/2019/12/05/shiny-starter-code/</link>
       <pubDate>Thu, 05 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/12/05/shiny-starter-code/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/12/05/shiny-starter-code/</guid>
       <description>
 
 
@@ -1716,23 +1799,23 @@ shinyApp(ui = ui, server = server)&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Tidyverse evolutions: curly-curly operator and pivoting (feat. tidytuesday data &amp; leaflet visuals)</title>
-      <link>/2019/11/07/tidy-curly-pivot-leaflet/</link>
+      <link>https://heads0rtai1s.github.io/2019/11/07/tidy-curly-pivot-leaflet/</link>
       <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/11/07/tidy-curly-pivot-leaflet/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/11/07/tidy-curly-pivot-leaflet/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;/rmarkdown-libs/leaflet/leaflet.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;/rmarkdown-libs/leaflet/leaflet.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;/rmarkdown-libs/leafletfix/leafletfix.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;/rmarkdown-libs/Proj4Leaflet/proj4-compressed.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;/rmarkdown-libs/Proj4Leaflet/proj4leaflet.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;/rmarkdown-libs/rstudio_leaflet/rstudio_leaflet.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;/rmarkdown-libs/leaflet-binding/leaflet.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;/rmarkdown-libs/leaflet-providers/leaflet-providers.js&#34;&gt;&lt;/script&gt;
-&lt;script src=&#34;/rmarkdown-libs/leaflet-providers-plugin/leaflet-providers-plugin.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/leaflet/leaflet.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/leaflet/leaflet.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/leafletfix/leafletfix.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/Proj4Leaflet/proj4-compressed.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/Proj4Leaflet/proj4leaflet.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/rstudio_leaflet/rstudio_leaflet.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/leaflet-binding/leaflet.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/leaflet-providers/leaflet-providers.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/leaflet-providers-plugin/leaflet-providers-plugin.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;The &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; ecosystem is steadily growing and adapting to the needs of its users. As part of this evolution, existing tools are being replaced by new and better methods. As useful as this flexibility is to the strength of the system, sometimes it can be hard to keep track of all the changes. &lt;strong&gt;This blogpost will deal with two new developments: the ‘curly-curly’ operator for tidy evaluation and the new ‘pivot’ functions for data reshaping.&lt;/strong&gt;&lt;/p&gt;
@@ -2485,12 +2568,12 @@ leaflet(loc) %&amp;gt;%
     
     <item>
       <title>The best of both worlds: R meets Python via reticulate</title>
-      <link>/2019/10/03/reticulate-intro/</link>
+      <link>https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/</link>
       <pubDate>Thu, 03 Oct 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/10/03/reticulate-intro/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;&lt;em&gt;As far as rivalries go, R vs Python can almost reach the levels of the glory days of Barca vs Madrid, Stones vs Beatles, or Sega vs Nintendo. Almost. Just dare to venture onto Twitter asking which language is best for data science to witness two tightly entrenched camps.&lt;/em&gt; Or at least that’s what seemingly hundreds of Medium articles would like you believe. In reality, beyond some good-natured and occasionally entertaining joshing, the whole debate is rather silly. Because the question itself is wrong. It’s the whole &lt;em&gt;“My kung fu is better than your kung fu”&lt;/em&gt; mindset that completely misses the point.&lt;/p&gt;
@@ -2627,7 +2710,7 @@ p2 &amp;lt;- iris %&amp;gt;%
   theme(legend.position = &amp;quot;top&amp;quot;)
 
 grid.arrange(p1, p2, layout_matrix = rbind(c(1,2)))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-10-03-reticulate-intro_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2019-10-03-reticulate-intro_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We find that there are clear clusters for each of the species - especially for setosa and in the petal dimensions. A well-trained classifier should be able to distinguish the three iris species. Now, R is perfectly capable of performing this classification task, but for the sake of the excercise we will turn to Python. Given the popularity of both &lt;code&gt;ggplot2&lt;/code&gt; and &lt;code&gt;scikit-learn&lt;/code&gt;, such a workflow is certainly realistic.&lt;/p&gt;
 &lt;p&gt;First, we need to tell R where Python can be found. In &lt;code&gt;reticulate&lt;/code&gt;, the &lt;code&gt;use_python&lt;/code&gt; convenience function takes care of that; all we need is a path to the executable. On a Unix-based system, simply open a terminal and type &lt;code&gt;which python&lt;/code&gt;, then paste the resulting path below. (Or look for &lt;code&gt;python3&lt;/code&gt; instead, but this should really become your default version because for Python 2 the &lt;a href=&#34;https://pythonclock.org&#34;&gt;time is running out&lt;/a&gt;). This is my path:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;use_python(&amp;quot;/usr/bin/python&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
@@ -2830,7 +2913,7 @@ p3 &amp;lt;- foo %&amp;gt;%
 
 grid.arrange(p1, p2, p3,
         layout_matrix = cbind(c(3), c(rep(1,2), rep(2,3))))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-10-03-reticulate-intro_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2019-10-03-reticulate-intro_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;This plot layout provides diagnostics for the performance of the classifier:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;On the left, there is a confusion matrix which shows how many test instances of each species were classified as one of the 3 species. The numbers are absolute numbers (remember that this is a small dataset) and the colours encode percentages. For instance, 100% of the 19 setosa instances were correctly classified as setosa. This is the classification accuracy, i.e. the number of true positives. The accuracies for the other two species are pretty high, too; with iris virginica having the lowest proportion of 20 out of 24 instances correctly classified.&lt;/p&gt;&lt;/li&gt;
@@ -2850,10 +2933,10 @@ grid.arrange(p1, p2, p3,
     
     <item>
       <title>Astronomy to Data Science - A Travel Journal</title>
-      <link>/2019/09/19/first-six-months/</link>
+      <link>https://heads0rtai1s.github.io/2019/09/19/first-six-months/</link>
       <pubDate>Thu, 19 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/09/19/first-six-months/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/09/19/first-six-months/</guid>
       <description>
 
 
@@ -2880,12 +2963,12 @@ grid.arrange(p1, p2, p3,
     
     <item>
       <title>Tidy evaluation in R: Part 2 - Complex use cases (feat. facet zoom)</title>
-      <link>/2019/08/22/tidy-eval-examples-part2/</link>
+      <link>https://heads0rtai1s.github.io/2019/08/22/tidy-eval-examples-part2/</link>
       <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/08/22/tidy-eval-examples-part2/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/08/22/tidy-eval-examples-part2/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;In an &lt;a href=&#34;https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/&#34;&gt;earlier post&lt;/a&gt; I gave a gentle introduction to &lt;a href=&#34;https://tidyeval.tidyverse.org/&#34;&gt;tidy evaluation&lt;/a&gt; in the R &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; using simple examples. I covered quoting with &lt;code&gt;enquo&lt;/code&gt; and unquoting with &lt;code&gt;!!&lt;/code&gt; in brief &lt;code&gt;dplyr&lt;/code&gt; and &lt;code&gt;ggplot2&lt;/code&gt; snippets. Today, I aim to build a collection of more complex use cases involving additional tools.&lt;/p&gt;
@@ -3159,7 +3242,7 @@ group_mean(diamonds, price, mean_price, cut, color) %&amp;gt;%
 }
 
 plot_xy(diamonds, carat, price, clarity, &amp;quot;IF&amp;quot;, color, cut)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-08-22-tidy-eval-complex-examples_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2019-08-22-tidy-eval-complex-examples_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Let’s break it down:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;The &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt; features are encoded using &lt;code&gt;enquo&lt;/code&gt; and &lt;code&gt;!!&lt;/code&gt;, as covered in the &lt;a href=&#34;https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/&#34;&gt;previous post&lt;/a&gt;. Those variables will form our scatter plot. But now, they are also encoded using &lt;code&gt;ensym&lt;/code&gt; as &lt;code&gt;xname&lt;/code&gt; and &lt;code&gt;yname&lt;/code&gt;. Those are symbols that we can now use in string functions to build custom plot titles and labels.&lt;/p&gt;&lt;/li&gt;
@@ -3180,12 +3263,12 @@ plot_xy(diamonds, carat, price, clarity, &amp;quot;IF&amp;quot;, color, cut)&lt;
     
     <item>
       <title>Data flow visuals - alluvial vs ggalluvial in R</title>
-      <link>/2019/06/06/visuals-alluvial-ggalluvial/</link>
+      <link>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</link>
       <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/06/06/visuals-alluvial-ggalluvial/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;I have long been a fan of creative data visualisation techniques. For me, the choice of visual representation is driven by both the type of data and the kind of question one wants to examine.&lt;/p&gt;
@@ -3283,7 +3366,7 @@ alluvial(fly %&amp;gt;% select(-n),
          cex=0.75,
          axis_labels = c(&amp;quot;Origin&amp;quot;, &amp;quot;Carrier&amp;quot;, &amp;quot;Destination&amp;quot;),
          hide = fly$n &amp;lt; 150)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;The features are arranged horizontally, with their value counts stacked vertically. This corresponds to a stacked barplot: e.g. for the destinations “BOS” has fewer flights than “LAX”. Here we only look at the top 5 destination and their top 4 carriers (that’s the first two segments of the code above).&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;The “alluvia” are the bands that connect the features from left to right. Alluvia break down all feature combinations, with complexity increasing also from left to right. These sub-segments are called “flows”.&lt;/p&gt;&lt;/li&gt;
@@ -3311,7 +3394,7 @@ alluvial(fly %&amp;gt;% select(-n),
   theme_minimal() +
   theme(legend.position = &amp;quot;none&amp;quot;) +
   ggtitle(&amp;quot;NYC flights volume for top destinations and airlines&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2019-06-06-visuals_alluvial_ggalluvial_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Here I purposefully choose the styling parameters to (broadly) reproduce the above plot. It is evident that &lt;code&gt;ggalluvial&lt;/code&gt; integrates much more smoothly into the &lt;code&gt;ggplot2&lt;/code&gt; grammar. Specifically:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;The alluvia and the vertical features (the “strata”; here: origin, carrier, and destination) are implemented as different geometry layers. Note, that the default order of the strata features is reversed compared to &lt;code&gt;alluvial&lt;/code&gt;. Also: there are no gaps between the strata here compared to what &lt;code&gt;alluvial&lt;/code&gt; does. This makes it easier to add a y-axis.&lt;/p&gt;&lt;/li&gt;
@@ -3328,12 +3411,12 @@ alluvial(fly %&amp;gt;% select(-n),
     
     <item>
       <title>Tidy evaluation in R - Simple Examples</title>
-      <link>/2019/04/24/tidy-eval-examples/</link>
+      <link>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</link>
       <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/04/24/tidy-eval-examples/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;The &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; philosophy introduced by &lt;a href=&#34;http://hadley.nz/&#34;&gt;Hadley Wickham&lt;/a&gt; has been a game changer for the &lt;a href=&#34;https://www.r-project.org/&#34;&gt;R&lt;/a&gt; community. It is based on intuitive rules of what a &lt;em&gt;tidy&lt;/em&gt; data set should look like: &lt;em&gt;each variable is a column, each observation is a row&lt;/em&gt; (&lt;a href=&#34;https://www.jstatsoft.org/article/view/v059i10&#34;&gt;Wickham 2014&lt;/a&gt;). At its core, the tidyverse collection of R packages is powered by a consistent grammar of data manipulation and visualisation.&lt;/p&gt;
@@ -3462,7 +3545,7 @@ median_minus_mean(Orange, circumference)&lt;/code&gt;&lt;/pre&gt;
 }
 
 plot_growth_tree(Orange, age, circumference, Tree)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Some trees grow faster than others.&lt;/p&gt;
 &lt;p&gt;In fact, ggplot2 is a great use case because it allows us to quickly built helper functions if we need to repeat a certain plot for many similar features. Individual modification to those templates can be added using the ggplot2 grammar. Here is a histogram example where we add a custom title to the second plot&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_hist &amp;lt;- function(df, var, bins, bcol){
@@ -3478,7 +3561,7 @@ p2 &amp;lt;- plot_hist(Orange, circumference, 7, &amp;quot;red&amp;quot;) +
   ggtitle(&amp;quot;A custom title&amp;quot;)
 
 grid.arrange(p1, p2, layout_matrix = rbind(c(1,2)))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2019-04-24-tidy-eval-examples_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;You see that here the number of histogram bins and the plot colour are being passed to the function as normal integer and string - without need of being quoted. This works because these parameters are not R expressions.&lt;/p&gt;
 &lt;p&gt;There will be a second post soon about more complex tidy evaluation examples. If you’re interested, watch this space.&lt;/p&gt;
 &lt;p&gt;In the meantime: Curious about the bigger picture?&lt;/p&gt;
@@ -3489,7 +3572,7 @@ grid.arrange(p1, p2, layout_matrix = rbind(c(1,2)))&lt;/code&gt;&lt;/pre&gt;
 &lt;/ul&gt;
 
 &lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
-  &lt;iframe src=&#34;//www.youtube.com/embed/nERXS3ssntw&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
+  &lt;iframe src=&#34;https://www.youtube.com/embed/nERXS3ssntw&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 
 &lt;div class=&#34;footnotes&#34;&gt;
@@ -3504,29 +3587,29 @@ grid.arrange(p1, p2, layout_matrix = rbind(c(1,2)))&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>What makes a community great?</title>
-      <link>/2019/04/19/great-community-kaggledays19/</link>
+      <link>https://heads0rtai1s.github.io/2019/04/19/great-community-kaggledays19/</link>
       <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/04/19/great-community-kaggledays19/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/04/19/great-community-kaggledays19/</guid>
       <description>
 
 
 &lt;p&gt;The easy answer to this question is: the people. Great people build great communities. Case not quite closed yet, though, because there is more to it. Even the most promising group of individuals needs certain conditions in order to grow into a strong and thriving community. The kind of community that lifts up its members beyond their individual capabilities and becomes more than the sum of their proverbial skills and contributions. I believe that such communities are the cornerstones of all scientific fields, including data science, and that those fields succeed or fail depending on their communities.&lt;/p&gt;
 &lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;/pics/kdays19_1.jpg&#34; alt=&#34;Kaggle Days audience for welcome talks&#34; style=&#34;width:100.0%&#34; /&gt;
+&lt;img src=&#34;https://heads0rtai1s.github.io/pics/kdays19_1.jpg&#34; alt=&#34;Kaggle Days audience for welcome talks&#34; style=&#34;width:100.0%&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;&lt;em&gt;Kaggle Days audience for welcome talks&lt;/em&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;p&gt;Here is the case study that prompted this post: last week I took part in the &lt;a href=&#34;https://kaggledays.com/sanfrancisco/&#34;&gt;Kaggle Days meeting in San Francisco&lt;/a&gt;. Kaggle Days are a new series of local meetings which aim to bring together members of the international, virtual &lt;a href=&#34;https://www.kaggle.com/&#34;&gt;Kaggle&lt;/a&gt; community for in-person workshops, presentations, and competitions. Over the last few years, Kaggle itself has transformed from being “merely” the go-to place for sophisticated machine learning competitions to a multi-faceted online community. The range and depth of user-hosted datasets continues to grow rapidly from month to month, as does a unique repository of machine learning and data science code templates in the form of Kaggle &lt;a href=&#34;https://www.kaggle.com/kernels&#34;&gt;Kernels&lt;/a&gt;: reproducible R/Python notebooks or scripts in a self-contained, cloud-based environment. There really is something for everyone.&lt;/p&gt;
 &lt;p&gt;It is fair to say that Kaggle has been a main catalyst for my career change. Joining the platform in early 2017, two years ago, opened my eyes to the multitude of fascinating challenges and problem-solving strategies beyond my narrow academic field. One year later, I had become the first ever &lt;a href=&#34;http://blog.kaggle.com/2018/06/19/tales-from-my-first-year-inside-the-head-of-a-recent-kaggle-addict/&#34;&gt;Kaggle Kernels Grandmaster&lt;/a&gt; - a journey that I plan to revisit in a future post. What drew me into Kaggle, beyond the fun competitions, was a remarkably friendly and supportive community. It’s a rare occurrence to find people who are both extremely smart and happy to help a newcomer in an approachable and relaxed way. Machine Learning can be intimidating, but the people on Kaggle made it fun. Sooner than expected, I started to feel that I had become part of a community which, despite being very competitive, was remarkably efficient at working together to solve hard problems. Especially considering that we all worked on these challenges in our free-time and in different corners of the world.&lt;/p&gt;
 &lt;p&gt;All this back story might help to illustrate why I felt rather excited to finally encounter many of my fellow Kagglers in person at the Kaggle Days meetup. Excited and a bit nervous as to how the virtual collaboration would translate to the real world. I had high expectations - which were exceeded spectacularly. Kaggle Days was a blast! Almost the entire &lt;a href=&#34;https://www.kaggle.com/about/team&#34;&gt;Kaggle Team&lt;/a&gt; was present, including CEO &lt;a href=&#34;https://twitter.com/antgoldbloom&#34;&gt;Anthony Goldblum&lt;/a&gt; and Co-Founder &lt;a href=&#34;https://twitter.com/benhamner&#34;&gt;Ben Hamner&lt;/a&gt;. Top Kagglers such as &lt;a href=&#34;https://twitter.com/tunguz&#34;&gt;Bojan Tunguz&lt;/a&gt; and &lt;a href=&#34;https://twitter.com/DmitryLarko&#34;&gt;Dmitry Larko&lt;/a&gt; gave presentations and workshops alongside Machine Learning gurus like &lt;a href=&#34;https://twitter.com/fchollet&#34;&gt;Francois Chollet&lt;/a&gt; (Keras) or &lt;a href=&#34;https://twitter.com/quocleix&#34;&gt;Quoc Le&lt;/a&gt; (Google Brain / AutoML). So many super smart people to listen and talk to! It was great fun.&lt;/p&gt;
 &lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;/pics/kdays19_2.jpg&#34; alt=&#34;Kaggle Days brainstorming sessions&#34; style=&#34;width:100.0%&#34; /&gt;
+&lt;img src=&#34;https://heads0rtai1s.github.io/pics/kdays19_2.jpg&#34; alt=&#34;Kaggle Days brainstorming sessions&#34; style=&#34;width:100.0%&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;&lt;em&gt;Kaggle Days brainstorming sessions&lt;/em&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;p&gt;Interestingly, as a side effect of my initial Kaggle anonymity (I did not use my real name at all during my first year) I quickly found it more useful to introduce myself as “Heads or Tails”, even though my badge had my actual name on it. I only forgot this when I first met almost the entire Kaggle team at once and needed a second take for a more useful introduction. As this blog shows, I still prefer the “Heads or Tails” moniker for my Data Science personality. Let’s hope that no psychologists read this.&lt;/p&gt;
 &lt;p&gt;Ever the hands-on community, the second (and final) day of the Kaggle Days meetup gave us the opportunity to form small teams to participate in an on-site competition. This was particularly interesting for me, since I had never teamed up with others to tackle a Kaggle problem. In a team, there is much more code sharing and discussion than in the open Kaggle forum. And even though there were a few small hiccups in this particular competition (Want a change in metric plus additional data halfway through? Say no more!) working with my team mates was a lot of fun. Shout-out to &lt;a href=&#34;https://www.kaggle.com/thawatt&#34;&gt;Michael&lt;/a&gt; and &lt;a href=&#34;https://www.kaggle.com/gtoubassi&#34;&gt;Garrick&lt;/a&gt; - you guys rock! As a result of Kaggle Days I’m definitely more motivated to team up with others in future competitions. Not just that: I’m more motivated in general to spend time on Kaggle.&lt;/p&gt;
 &lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;/pics/kdays19_3.jpg&#34; alt=&#34;Kaggle Days competition winners&#34; style=&#34;width:100.0%&#34; /&gt;
+&lt;img src=&#34;https://heads0rtai1s.github.io/pics/kdays19_3.jpg&#34; alt=&#34;Kaggle Days competition winners&#34; style=&#34;width:100.0%&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;&lt;em&gt;Kaggle Days competition winners&lt;/em&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;p&gt;Now, why is that exactly? What makes the Kaggle community such a fun place? For me, there are several different factors that all enhance each other when combined:&lt;/p&gt;
@@ -3549,10 +3632,10 @@ grid.arrange(p1, p2, layout_matrix = rbind(c(1,2)))&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Prologue</title>
-      <link>/2019/04/08/prologue/</link>
+      <link>https://heads0rtai1s.github.io/2019/04/08/prologue/</link>
       <pubDate>Mon, 08 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/04/08/prologue/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/04/08/prologue/</guid>
       <description>
 
 

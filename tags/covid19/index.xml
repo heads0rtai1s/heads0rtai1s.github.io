@@ -1,22 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Covid19 on head spin - the Heads or Tails blog</title>
-    <link>/tags/covid19/</link>
-    <description>Recent content in Covid19 on head spin - the Heads or Tails blog</description>
+    <title>covid19 on head spin - the Heads or Tails blog</title>
+    <link>https://heads0rtai1s.github.io/tags/covid19/</link>
+    <description>Recent content in covid19 on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 30 Apr 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/covid19/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 30 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/covid19/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Animations in the time of Coronavirus</title>
-      <link>/2020/04/30/animate-map-covid/</link>
+      <link>https://heads0rtai1s.github.io/2020/04/30/animate-map-covid/</link>
       <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/04/30/animate-map-covid/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/04/30/animate-map-covid/</guid>
       <description>The first four months of 2020 have been dominated by the Coronavirus pandemic (aka COVID-19), which has transformed global life in an unprecedented way. Societies and economies struggle to adapt to the new conditions and necessary contraints. A reassuringly large fraction of governments around the world continue to take evidence-based approaches to this crisis that are grounded in large scale data collection efforts. Most of this data is being made publicly available and can be studied in real time.</description>
     </item>
     

@@ -1,49 +1,45 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R on head spin - the Heads or Tails blog</title>
-    <link>/tags/r/</link>
+    <link>https://heads0rtai1s.github.io/tags/r/</link>
     <description>Recent content in R on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 25 Feb 2021 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 25 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/r/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Installing CUDA, tensorflow, torch for R &amp; Python on Ubuntu 20.04</title>
-      <link>/2021/02/25/gpu-setup-r-python-ubuntu/</link>
+      <link>https://heads0rtai1s.github.io/2021/02/25/gpu-setup-r-python-ubuntu/</link>
       <pubDate>Thu, 25 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>/2021/02/25/gpu-setup-r-python-ubuntu/</guid>
+      <guid>https://heads0rtai1s.github.io/2021/02/25/gpu-setup-r-python-ubuntu/</guid>
       <description>Last weekend, I finally managed to get round to upgrading Ubuntu from version 19.10 to the long-term support release 20.04 on my workhorse laptop. To be precise, I’m using the Kubuntu flavour since I’m more of a KDE guy myself. I usually do a fresh install on those occasions, instead of a dist_upgrade, because it’s a good opportunity to remove clutter and update software that I might otherwise just keep at an older version, out of convenience.</description>
     </item>
     
     <item>
       <title>R &amp; Python Rosetta Stone: EDA with dplyr vs pandas</title>
-      <link>/2020/11/05/r-python-dplyr-pandas/</link>
+      <link>https://heads0rtai1s.github.io/2020/11/05/r-python-dplyr-pandas/</link>
       <pubDate>Thu, 05 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/11/05/r-python-dplyr-pandas/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/11/05/r-python-dplyr-pandas/</guid>
       <description>This is the first post in a new series featuring translations between R and Python code for common data science and machine learning tasks. A Rosetta Stone, if you will. I’m writing this mainly as a documented cheat sheet for myself, as I’m frequently switching between the two languages. Personally, I have learned Python and R around the same time, several years ago, but tidy R is much more intuitive to me than any other language.</description>
     </item>
     
     <item>
       <title>Animations in the time of Coronavirus</title>
-      <link>/2020/04/30/animate-map-covid/</link>
+      <link>https://heads0rtai1s.github.io/2020/04/30/animate-map-covid/</link>
       <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/04/30/animate-map-covid/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/04/30/animate-map-covid/</guid>
       <description>The first four months of 2020 have been dominated by the Coronavirus pandemic (aka COVID-19), which has transformed global life in an unprecedented way. Societies and economies struggle to adapt to the new conditions and necessary contraints. A reassuringly large fraction of governments around the world continue to take evidence-based approaches to this crisis that are grounded in large scale data collection efforts. Most of this data is being made publicly available and can be studied in real time.</description>
     </item>
     
     <item>
       <title>Analysing tweets with the rtweet package</title>
-      <link>/2020/02/20/rtweet-intro/</link>
+      <link>https://heads0rtai1s.github.io/2020/02/20/rtweet-intro/</link>
       <pubDate>Thu, 20 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/02/20/rtweet-intro/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/02/20/rtweet-intro/</guid>
       <description>This is a brief post on collecting and analysing tweets. I will show how to use the rtweet package to extract Twitter posts about the R community. This ties into last weeks post on rstudio::conf and community values, and is also related to my previous intro post on web scraping.
 First, we load rtweet and other (tidyverse) packages we will need:
 libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;tibble&amp;#39;, # wrangling &amp;#39;stringr&amp;#39;, &amp;#39;rtweet&amp;#39;, # strings, tweets &amp;#39;knitr&amp;#39;, &amp;#39;kableExtra&amp;#39;, # table styling &amp;#39;lubridate&amp;#39;, # time &amp;#39;ggplot2&amp;#39;, &amp;#39;ggthemes&amp;#39;) # plots invisible(lapply(libs, library, character.</description>
@@ -51,56 +47,56 @@ libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;tibble&amp;#39;, # wrangling 
     
     <item>
       <title>rstudio::conf retrospective</title>
-      <link>/2020/02/13/rstudio-conf/</link>
+      <link>https://heads0rtai1s.github.io/2020/02/13/rstudio-conf/</link>
       <pubDate>Thu, 13 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/02/13/rstudio-conf/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/02/13/rstudio-conf/</guid>
       <description>Two weeks ago, I was fortunate to attend my very first Rstudio conference. Spoiler: it was an amazing event - packed to the brim with new ideas, tools, impressions, and most important of all: smart and kind people. This was the first time that San Francisco was hosting “rstudio::conf” (the affectionate shorthand is mirroring R’s package::tool syntax). Having moved to the Bay Area not long ago I really counted myself lucky to have such a promising event in my neighbourhood.</description>
     </item>
     
     <item>
       <title>Web Scraping with rvest &#43; Astro Throwback</title>
-      <link>/2020/01/23/rvest-intro-astro/</link>
+      <link>https://heads0rtai1s.github.io/2020/01/23/rvest-intro-astro/</link>
       <pubDate>Thu, 23 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/01/23/rvest-intro-astro/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/01/23/rvest-intro-astro/</guid>
       <description>In my first post of the year I will provide a gentle introduction to web scraping with the tidyverse package rvest. As the package name pun suggests, web scraping is the process of harvesting, or extracting, data from websites. The extraction process is greatly simplified by the fact that websites are predominantly built using HTML (= Hyper Text Markup Language), which essentially uses a set of formatting and structuring rules to tell your browser how to display a website.</description>
     </item>
     
     <item>
       <title>R Shiny for beginners: annotated starter code</title>
-      <link>/2019/12/05/shiny-starter-code/</link>
+      <link>https://heads0rtai1s.github.io/2019/12/05/shiny-starter-code/</link>
       <pubDate>Thu, 05 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/12/05/shiny-starter-code/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/12/05/shiny-starter-code/</guid>
       <description>This week I decided to get started with the R shiny package for interactive web applications. As an absolute beginner, I want to document my learning journey in the hope that it will be useful for other first-time shiny users.
 This post assumes some basic familiarity with R and the tidyverse, but no prior knowledge of shiny is required. The content is digested from the official shiny tutorial which is great and definitely worth checking out for more details.</description>
     </item>
     
     <item>
       <title>Tidyverse evolutions: curly-curly operator and pivoting (feat. tidytuesday data &amp; leaflet visuals)</title>
-      <link>/2019/11/07/tidy-curly-pivot-leaflet/</link>
+      <link>https://heads0rtai1s.github.io/2019/11/07/tidy-curly-pivot-leaflet/</link>
       <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/11/07/tidy-curly-pivot-leaflet/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/11/07/tidy-curly-pivot-leaflet/</guid>
       <description>The tidyverse ecosystem is steadily growing and adapting to the needs of its users. As part of this evolution, existing tools are being replaced by new and better methods. As useful as this flexibility is to the strength of the system, sometimes it can be hard to keep track of all the changes. This blogpost will deal with two new developments: the ‘curly-curly’ operator for tidy evaluation and the new ‘pivot’ functions for data reshaping.</description>
     </item>
     
     <item>
       <title>The best of both worlds: R meets Python via reticulate</title>
-      <link>/2019/10/03/reticulate-intro/</link>
+      <link>https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/</link>
       <pubDate>Thu, 03 Oct 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/10/03/reticulate-intro/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/</guid>
       <description>As far as rivalries go, R vs Python can almost reach the levels of the glory days of Barca vs Madrid, Stones vs Beatles, or Sega vs Nintendo. Almost. Just dare to venture onto Twitter asking which language is best for data science to witness two tightly entrenched camps. Or at least that’s what seemingly hundreds of Medium articles would like you believe. In reality, beyond some good-natured and occasionally entertaining joshing, the whole debate is rather silly.</description>
     </item>
     
     <item>
       <title>Tidy evaluation in R: Part 2 - Complex use cases (feat. facet zoom)</title>
-      <link>/2019/08/22/tidy-eval-examples-part2/</link>
+      <link>https://heads0rtai1s.github.io/2019/08/22/tidy-eval-examples-part2/</link>
       <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/08/22/tidy-eval-examples-part2/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/08/22/tidy-eval-examples-part2/</guid>
       <description>In an earlier post I gave a gentle introduction to tidy evaluation in the R tidyverse using simple examples. I covered quoting with enquo and unquoting with !! in brief dplyr and ggplot2 snippets. Today, I aim to build a collection of more complex use cases involving additional tools.
 Those are our libraries:
 libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;stringr&amp;#39;, # wrangling &amp;#39;knitr&amp;#39;,&amp;#39;kableExtra&amp;#39;, # table styling &amp;#39;ggplot2&amp;#39;,&amp;#39;ggforce&amp;#39;) # plots invisible(lapply(libs, library, character.</description>
@@ -108,20 +104,20 @@ libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;stringr&amp;#39;, # wrangling
     
     <item>
       <title>Data flow visuals - alluvial vs ggalluvial in R</title>
-      <link>/2019/06/06/visuals-alluvial-ggalluvial/</link>
+      <link>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</link>
       <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/06/06/visuals-alluvial-ggalluvial/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</guid>
       <description>I have long been a fan of creative data visualisation techniques. For me, the choice of visual representation is driven by both the type of data and the kind of question one wants to examine.
 The power of its visualisation tools has been a major strength of the R language well before the ggplot2 package and the tidyverse burst onto the scene. Today’s post will be an introductory examination of two similar packages that allow us to study the connection and flow of data between different categorical features via alluvial plots.</description>
     </item>
     
     <item>
       <title>Tidy evaluation in R - Simple Examples</title>
-      <link>/2019/04/24/tidy-eval-examples/</link>
+      <link>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</link>
       <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/04/24/tidy-eval-examples/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</guid>
       <description>The tidyverse philosophy introduced by Hadley Wickham has been a game changer for the R community. It is based on intuitive rules of what a tidy data set should look like: each variable is a column, each observation is a row (Wickham 2014). At its core, the tidyverse collection of R packages is powered by a consistent grammar of data manipulation and visualisation.
 The tidyverse grammar makes it easier to manipulate data sets using simple expressions that reduce the syntactic overhead and allow you to focus on the data.</description>
     </item>

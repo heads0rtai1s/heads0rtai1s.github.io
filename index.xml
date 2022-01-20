@@ -6,10 +6,19 @@
     <description>Recent content on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 13 Jan 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 20 Jan 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Yearly goals: 2022 targets</title>
+      <link>/2022/01/20/goals-2022-targets/</link>
+      <pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/2022/01/20/goals-2022-targets/</guid>
+      <description>This is the second part in a series of posts about setting and tracking my yearly goals when it comes to Machine Learning &amp;amp; Data Science (ML &amp;amp; DS) as well as Sports &amp;amp; Exercise. In the first post I wrote about my past goals for 2021 and the lessons learned from those. This post will focus on my goals and expectations for 2022, and how last year’s experiences shaped and informed them.</description>
+    </item>
     
     <item>
       <title>Yearly goals: 2021 experiences</title>

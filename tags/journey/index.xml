@@ -1,40 +1,45 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Journey on head spin - the Heads or Tails blog</title>
-    <link>/tags/journey/</link>
-    <description>Recent content in Journey on head spin - the Heads or Tails blog</description>
+    <title>journey on head spin - the Heads or Tails blog</title>
+    <link>https://heads0rtai1s.github.io/tags/journey/</link>
+    <description>Recent content in journey on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 13 Jan 2022 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/journey/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Thu, 20 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/journey/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Yearly goals: 2022 targets</title>
+      <link>https://heads0rtai1s.github.io/2022/01/20/goals-2022-targets/</link>
+      <pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/2022/01/20/goals-2022-targets/</guid>
+      <description>This is the second part in a series of posts about setting and tracking my yearly goals when it comes to Machine Learning &amp;amp; Data Science (ML &amp;amp; DS) as well as Sports &amp;amp; Exercise. In the first post I wrote about my past goals for 2021 and the lessons learned from those. This post will focus on my goals and expectations for 2022, and how last year’s experiences shaped and informed them.</description>
+    </item>
     
     <item>
       <title>Yearly goals: 2021 experiences</title>
-      <link>/2022/01/13/goals-2021-results/</link>
+      <link>https://heads0rtai1s.github.io/2022/01/13/goals-2021-results/</link>
       <pubDate>Thu, 13 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>/2022/01/13/goals-2021-results/</guid>
+      <guid>https://heads0rtai1s.github.io/2022/01/13/goals-2021-results/</guid>
       <description>At the beginning of last year, I got the motivation from other people’s Twitter posts to set and track my own goals for what would surely be the year we would emerge from the shadows of the pandemic. With an ever so slightly more jaded outlook to life, I’m doing the same this year. On a global level, many societies didn’t seem to have learned an aweful lot from the Covid years of 2020 and 2021.</description>
     </item>
     
     <item>
       <title>Astronomy to Data Science - A Travel Journal</title>
-      <link>/2019/09/19/first-six-months/</link>
+      <link>https://heads0rtai1s.github.io/2019/09/19/first-six-months/</link>
       <pubDate>Thu, 19 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/09/19/first-six-months/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/09/19/first-six-months/</guid>
       <description>The first six months as a Data Scientist have gone by in a blur of new tools, techniques, and experiences. In my new job, I’m lucky to be (once again) part of a great team of people who are not just smart, but always happy to share their knowledge and feedback in a productive and thoughtful way. A supportive environment helps a lot. Surprising insight - I know. Worth repeating nonetheless.</description>
     </item>
     
     <item>
       <title>Prologue</title>
-      <link>/2019/04/08/prologue/</link>
+      <link>https://heads0rtai1s.github.io/2019/04/08/prologue/</link>
       <pubDate>Mon, 08 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/04/08/prologue/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/04/08/prologue/</guid>
       <description>This one is all about change. In many ways life is about change. Not all change is good, but without it there would be no evolution. No progress. And as much as we sometimes want certain moments to last, stagnation is rarely a good thing. Without attempting something new it is impossible to say whether it will succeed. I guess that’s a verbose way of saying: I decided to start a blog.</description>
     </item>
     

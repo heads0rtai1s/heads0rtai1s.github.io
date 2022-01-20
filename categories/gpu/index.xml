@@ -1,22 +1,21 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Gpu on head spin - the Heads or Tails blog</title>
-    <link>/categories/gpu/</link>
-    <description>Recent content in Gpu on head spin - the Heads or Tails blog</description>
+    <title>GPU on head spin - the Heads or Tails blog</title>
+    <link>https://heads0rtai1s.github.io/categories/gpu/</link>
+    <description>Recent content in GPU on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 24 Aug 2021 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="/categories/gpu/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://heads0rtai1s.github.io/categories/gpu/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Colab Pro&#43; Features, Kaggling on Colab, and Cloud GPU Platforms</title>
-      <link>/2021/08/24/colab-plus-kaggle-cloud-gpu/</link>
+      <link>https://heads0rtai1s.github.io/2021/08/24/colab-plus-kaggle-cloud-gpu/</link>
       <pubDate>Tue, 24 Aug 2021 00:00:00 +0000</pubDate>
       
-      <guid>/2021/08/24/colab-plus-kaggle-cloud-gpu/</guid>
+      <guid>https://heads0rtai1s.github.io/2021/08/24/colab-plus-kaggle-cloud-gpu/</guid>
       <description>
 
 
@@ -76,10 +75,10 @@ drive.mount(&amp;#39;/content/drive&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Installing CUDA, tensorflow, torch for R &amp; Python on Ubuntu 20.04</title>
-      <link>/2021/02/25/gpu-setup-r-python-ubuntu/</link>
+      <link>https://heads0rtai1s.github.io/2021/02/25/gpu-setup-r-python-ubuntu/</link>
       <pubDate>Thu, 25 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>/2021/02/25/gpu-setup-r-python-ubuntu/</guid>
+      <guid>https://heads0rtai1s.github.io/2021/02/25/gpu-setup-r-python-ubuntu/</guid>
       <description>
 
 

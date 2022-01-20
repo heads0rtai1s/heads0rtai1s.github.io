@@ -1,22 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Cloud on head spin - the Heads or Tails blog</title>
-    <link>/tags/cloud/</link>
+    <link>https://heads0rtai1s.github.io/tags/cloud/</link>
     <description>Recent content in Cloud on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 24 Aug 2021 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/cloud/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 24 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/cloud/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Colab Pro&#43; Features, Kaggling on Colab, and Cloud GPU Platforms</title>
-      <link>/2021/08/24/colab-plus-kaggle-cloud-gpu/</link>
+      <link>https://heads0rtai1s.github.io/2021/08/24/colab-plus-kaggle-cloud-gpu/</link>
       <pubDate>Tue, 24 Aug 2021 00:00:00 +0000</pubDate>
       
-      <guid>/2021/08/24/colab-plus-kaggle-cloud-gpu/</guid>
+      <guid>https://heads0rtai1s.github.io/2021/08/24/colab-plus-kaggle-cloud-gpu/</guid>
       <description>In the final, hectic days of a recent Kaggle competition I found myself in want of more GPU power. As one often does in such an occasion. My own laptop, with its GPU setup, was doing a fine job with various small models and small images, but scaling up both aspects became necessary to climb the leaderboard further. My first choice options GCP and AWS quickly turned out to require quota increases which either didn’t happen or took too long.</description>
     </item>
     

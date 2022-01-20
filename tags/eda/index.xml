@@ -1,22 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Eda on head spin - the Heads or Tails blog</title>
-    <link>/tags/eda/</link>
-    <description>Recent content in Eda on head spin - the Heads or Tails blog</description>
+    <title>EDA on head spin - the Heads or Tails blog</title>
+    <link>https://heads0rtai1s.github.io/tags/eda/</link>
+    <description>Recent content in EDA on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Nov 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/eda/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 05 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/eda/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>R &amp; Python Rosetta Stone: EDA with dplyr vs pandas</title>
-      <link>/2020/11/05/r-python-dplyr-pandas/</link>
+      <link>https://heads0rtai1s.github.io/2020/11/05/r-python-dplyr-pandas/</link>
       <pubDate>Thu, 05 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/11/05/r-python-dplyr-pandas/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/11/05/r-python-dplyr-pandas/</guid>
       <description>This is the first post in a new series featuring translations between R and Python code for common data science and machine learning tasks. A Rosetta Stone, if you will. I’m writing this mainly as a documented cheat sheet for myself, as I’m frequently switching between the two languages. Personally, I have learned Python and R around the same time, several years ago, but tidy R is much more intuitive to me than any other language.</description>
     </item>
     

@@ -1,49 +1,54 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Kaggle on head spin - the Heads or Tails blog</title>
-    <link>/tags/kaggle/</link>
-    <description>Recent content in Kaggle on head spin - the Heads or Tails blog</description>
+    <title>kaggle on head spin - the Heads or Tails blog</title>
+    <link>https://heads0rtai1s.github.io/tags/kaggle/</link>
+    <description>Recent content in kaggle on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 13 Jan 2022 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/kaggle/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Thu, 20 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/kaggle/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Yearly goals: 2022 targets</title>
+      <link>https://heads0rtai1s.github.io/2022/01/20/goals-2022-targets/</link>
+      <pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/2022/01/20/goals-2022-targets/</guid>
+      <description>This is the second part in a series of posts about setting and tracking my yearly goals when it comes to Machine Learning &amp;amp; Data Science (ML &amp;amp; DS) as well as Sports &amp;amp; Exercise. In the first post I wrote about my past goals for 2021 and the lessons learned from those. This post will focus on my goals and expectations for 2022, and how last year’s experiences shaped and informed them.</description>
+    </item>
     
     <item>
       <title>Yearly goals: 2021 experiences</title>
-      <link>/2022/01/13/goals-2021-results/</link>
+      <link>https://heads0rtai1s.github.io/2022/01/13/goals-2021-results/</link>
       <pubDate>Thu, 13 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>/2022/01/13/goals-2021-results/</guid>
+      <guid>https://heads0rtai1s.github.io/2022/01/13/goals-2021-results/</guid>
       <description>At the beginning of last year, I got the motivation from other people’s Twitter posts to set and track my own goals for what would surely be the year we would emerge from the shadows of the pandemic. With an ever so slightly more jaded outlook to life, I’m doing the same this year. On a global level, many societies didn’t seem to have learned an aweful lot from the Covid years of 2020 and 2021.</description>
     </item>
     
     <item>
       <title>Colab Pro&#43; Features, Kaggling on Colab, and Cloud GPU Platforms</title>
-      <link>/2021/08/24/colab-plus-kaggle-cloud-gpu/</link>
+      <link>https://heads0rtai1s.github.io/2021/08/24/colab-plus-kaggle-cloud-gpu/</link>
       <pubDate>Tue, 24 Aug 2021 00:00:00 +0000</pubDate>
       
-      <guid>/2021/08/24/colab-plus-kaggle-cloud-gpu/</guid>
+      <guid>https://heads0rtai1s.github.io/2021/08/24/colab-plus-kaggle-cloud-gpu/</guid>
       <description>In the final, hectic days of a recent Kaggle competition I found myself in want of more GPU power. As one often does in such an occasion. My own laptop, with its GPU setup, was doing a fine job with various small models and small images, but scaling up both aspects became necessary to climb the leaderboard further. My first choice options GCP and AWS quickly turned out to require quota increases which either didn’t happen or took too long.</description>
     </item>
     
     <item>
       <title>Animations in the time of Coronavirus</title>
-      <link>/2020/04/30/animate-map-covid/</link>
+      <link>https://heads0rtai1s.github.io/2020/04/30/animate-map-covid/</link>
       <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/04/30/animate-map-covid/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/04/30/animate-map-covid/</guid>
       <description>The first four months of 2020 have been dominated by the Coronavirus pandemic (aka COVID-19), which has transformed global life in an unprecedented way. Societies and economies struggle to adapt to the new conditions and necessary contraints. A reassuringly large fraction of governments around the world continue to take evidence-based approaches to this crisis that are grounded in large scale data collection efforts. Most of this data is being made publicly available and can be studied in real time.</description>
     </item>
     
     <item>
       <title>What makes a community great?</title>
-      <link>/2019/04/19/great-community-kaggledays19/</link>
+      <link>https://heads0rtai1s.github.io/2019/04/19/great-community-kaggledays19/</link>
       <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/04/19/great-community-kaggledays19/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/04/19/great-community-kaggledays19/</guid>
       <description>The easy answer to this question is: the people. Great people build great communities. Case not quite closed yet, though, because there is more to it. Even the most promising group of individuals needs certain conditions in order to grow into a strong and thriving community. The kind of community that lifts up its members beyond their individual capabilities and becomes more than the sum of their proverbial skills and contributions.</description>
     </item>
     

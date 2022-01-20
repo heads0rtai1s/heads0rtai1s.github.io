@@ -1,22 +1,21 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tensorflow on head spin - the Heads or Tails blog</title>
-    <link>/categories/tensorflow/</link>
+    <link>https://heads0rtai1s.github.io/categories/tensorflow/</link>
     <description>Recent content in Tensorflow on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 25 Feb 2021 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="/categories/tensorflow/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://heads0rtai1s.github.io/categories/tensorflow/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Installing CUDA, tensorflow, torch for R &amp; Python on Ubuntu 20.04</title>
-      <link>/2021/02/25/gpu-setup-r-python-ubuntu/</link>
+      <link>https://heads0rtai1s.github.io/2021/02/25/gpu-setup-r-python-ubuntu/</link>
       <pubDate>Thu, 25 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>/2021/02/25/gpu-setup-r-python-ubuntu/</guid>
+      <guid>https://heads0rtai1s.github.io/2021/02/25/gpu-setup-r-python-ubuntu/</guid>
       <description>
 
 

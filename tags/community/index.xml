@@ -1,22 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Community on head spin - the Heads or Tails blog</title>
-    <link>/tags/community/</link>
-    <description>Recent content in Community on head spin - the Heads or Tails blog</description>
+    <title>community on head spin - the Heads or Tails blog</title>
+    <link>https://heads0rtai1s.github.io/tags/community/</link>
+    <description>Recent content in community on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 20 Feb 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/community/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 20 Feb 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/community/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Analysing tweets with the rtweet package</title>
-      <link>/2020/02/20/rtweet-intro/</link>
+      <link>https://heads0rtai1s.github.io/2020/02/20/rtweet-intro/</link>
       <pubDate>Thu, 20 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/02/20/rtweet-intro/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/02/20/rtweet-intro/</guid>
       <description>This is a brief post on collecting and analysing tweets. I will show how to use the rtweet package to extract Twitter posts about the R community. This ties into last weeks post on rstudio::conf and community values, and is also related to my previous intro post on web scraping.
 First, we load rtweet and other (tidyverse) packages we will need:
 libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;tibble&amp;#39;, # wrangling &amp;#39;stringr&amp;#39;, &amp;#39;rtweet&amp;#39;, # strings, tweets &amp;#39;knitr&amp;#39;, &amp;#39;kableExtra&amp;#39;, # table styling &amp;#39;lubridate&amp;#39;, # time &amp;#39;ggplot2&amp;#39;, &amp;#39;ggthemes&amp;#39;) # plots invisible(lapply(libs, library, character.</description>
@@ -24,19 +20,19 @@ libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;tibble&amp;#39;, # wrangling 
     
     <item>
       <title>rstudio::conf retrospective</title>
-      <link>/2020/02/13/rstudio-conf/</link>
+      <link>https://heads0rtai1s.github.io/2020/02/13/rstudio-conf/</link>
       <pubDate>Thu, 13 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/02/13/rstudio-conf/</guid>
+      <guid>https://heads0rtai1s.github.io/2020/02/13/rstudio-conf/</guid>
       <description>Two weeks ago, I was fortunate to attend my very first Rstudio conference. Spoiler: it was an amazing event - packed to the brim with new ideas, tools, impressions, and most important of all: smart and kind people. This was the first time that San Francisco was hosting “rstudio::conf” (the affectionate shorthand is mirroring R’s package::tool syntax). Having moved to the Bay Area not long ago I really counted myself lucky to have such a promising event in my neighbourhood.</description>
     </item>
     
     <item>
       <title>What makes a community great?</title>
-      <link>/2019/04/19/great-community-kaggledays19/</link>
+      <link>https://heads0rtai1s.github.io/2019/04/19/great-community-kaggledays19/</link>
       <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/04/19/great-community-kaggledays19/</guid>
+      <guid>https://heads0rtai1s.github.io/2019/04/19/great-community-kaggledays19/</guid>
       <description>The easy answer to this question is: the people. Great people build great communities. Case not quite closed yet, though, because there is more to it. Even the most promising group of individuals needs certain conditions in order to grow into a strong and thriving community. The kind of community that lifts up its members beyond their individual capabilities and becomes more than the sum of their proverbial skills and contributions.</description>
     </item>
     

@@ -1,22 +1,27 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Goals on head spin - the Heads or Tails blog</title>
-    <link>/tags/goals/</link>
-    <description>Recent content in Goals on head spin - the Heads or Tails blog</description>
+    <title>goals on head spin - the Heads or Tails blog</title>
+    <link>https://heads0rtai1s.github.io/tags/goals/</link>
+    <description>Recent content in goals on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 13 Jan 2022 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/goals/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Thu, 20 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/goals/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Yearly goals: 2022 targets</title>
+      <link>https://heads0rtai1s.github.io/2022/01/20/goals-2022-targets/</link>
+      <pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/2022/01/20/goals-2022-targets/</guid>
+      <description>This is the second part in a series of posts about setting and tracking my yearly goals when it comes to Machine Learning &amp;amp; Data Science (ML &amp;amp; DS) as well as Sports &amp;amp; Exercise. In the first post I wrote about my past goals for 2021 and the lessons learned from those. This post will focus on my goals and expectations for 2022, and how last year’s experiences shaped and informed them.</description>
+    </item>
     
     <item>
       <title>Yearly goals: 2021 experiences</title>
-      <link>/2022/01/13/goals-2021-results/</link>
+      <link>https://heads0rtai1s.github.io/2022/01/13/goals-2021-results/</link>
       <pubDate>Thu, 13 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>/2022/01/13/goals-2021-results/</guid>
+      <guid>https://heads0rtai1s.github.io/2022/01/13/goals-2021-results/</guid>
       <description>At the beginning of last year, I got the motivation from other people’s Twitter posts to set and track my own goals for what would surely be the year we would emerge from the shadows of the pandemic. With an ever so slightly more jaded outlook to life, I’m doing the same this year. On a global level, many societies didn’t seem to have learned an aweful lot from the Covid years of 2020 and 2021.</description>
     </item>
     

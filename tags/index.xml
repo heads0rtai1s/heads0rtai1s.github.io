@@ -1,292 +1,288 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on head spin - the Heads or Tails blog</title>
-    <link>/tags/</link>
+    <link>https://heads0rtai1s.github.io/tags/</link>
     <description>Recent content in Tags on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 30 Apr 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 20 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Animation</title>
-      <link>/tags/animation/</link>
-      <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
+      <title>goals</title>
+      <link>https://heads0rtai1s.github.io/tags/goals/</link>
+      <pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>/tags/animation/</guid>
+      <guid>https://heads0rtai1s.github.io/tags/goals/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Astro</title>
-      <link>/tags/astro/</link>
-      <pubDate>Thu, 23 Jan 2020 00:00:00 +0000</pubDate>
+      <title>journey</title>
+      <link>https://heads0rtai1s.github.io/tags/journey/</link>
+      <pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>/tags/astro/</guid>
+      <guid>https://heads0rtai1s.github.io/tags/journey/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Cloud</title>
-      <link>/tags/cloud/</link>
-      <pubDate>Tue, 24 Aug 2021 00:00:00 +0000</pubDate>
+      <title>kaggle</title>
+      <link>https://heads0rtai1s.github.io/tags/kaggle/</link>
+      <pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>/tags/cloud/</guid>
+      <guid>https://heads0rtai1s.github.io/tags/kaggle/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>meta</title>
+      <link>https://heads0rtai1s.github.io/tags/meta/</link>
+      <pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/meta/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>running</title>
+      <link>https://heads0rtai1s.github.io/tags/running/</link>
+      <pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/running/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Colab</title>
-      <link>/tags/colab/</link>
+      <link>https://heads0rtai1s.github.io/tags/colab/</link>
       <pubDate>Thu, 13 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>/tags/colab/</guid>
+      <guid>https://heads0rtai1s.github.io/tags/colab/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Community</title>
-      <link>/tags/community/</link>
-      <pubDate>Thu, 20 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/community/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Covid19</title>
-      <link>/tags/covid19/</link>
-      <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/covid19/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Dataset</title>
-      <link>/tags/dataset/</link>
-      <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/dataset/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Eda</title>
-      <link>/tags/eda/</link>
-      <pubDate>Thu, 05 Nov 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/eda/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Geospatial</title>
-      <link>/tags/geospatial/</link>
-      <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/geospatial/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Ggplot2</title>
-      <link>/tags/ggplot2/</link>
-      <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/ggplot2/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Goals</title>
-      <link>/tags/goals/</link>
-      <pubDate>Thu, 13 Jan 2022 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/goals/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Gpu</title>
-      <link>/tags/gpu/</link>
+      <title>Cloud</title>
+      <link>https://heads0rtai1s.github.io/tags/cloud/</link>
       <pubDate>Tue, 24 Aug 2021 00:00:00 +0000</pubDate>
       
-      <guid>/tags/gpu/</guid>
+      <guid>https://heads0rtai1s.github.io/tags/cloud/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Interactive</title>
-      <link>/tags/interactive/</link>
-      <pubDate>Thu, 05 Dec 2019 00:00:00 +0000</pubDate>
+      <title>GPU</title>
+      <link>https://heads0rtai1s.github.io/tags/gpu/</link>
+      <pubDate>Tue, 24 Aug 2021 00:00:00 +0000</pubDate>
       
-      <guid>/tags/interactive/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Journey</title>
-      <link>/tags/journey/</link>
-      <pubDate>Thu, 13 Jan 2022 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/journey/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Kaggle</title>
-      <link>/tags/kaggle/</link>
-      <pubDate>Thu, 13 Jan 2022 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/kaggle/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Kaggle Days</title>
-      <link>/tags/kaggle-days/</link>
-      <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/kaggle-days/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Machine Learning</title>
-      <link>/tags/machine-learning/</link>
-      <pubDate>Thu, 03 Oct 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/machine-learning/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Maps</title>
-      <link>/tags/maps/</link>
-      <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/maps/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Meta</title>
-      <link>/tags/meta/</link>
-      <pubDate>Thu, 13 Jan 2022 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/meta/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Programming</title>
-      <link>/tags/programming/</link>
-      <pubDate>Thu, 05 Nov 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/programming/</guid>
+      <guid>https://heads0rtai1s.github.io/tags/gpu/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python</title>
-      <link>/tags/python/</link>
+      <link>https://heads0rtai1s.github.io/tags/python/</link>
       <pubDate>Thu, 25 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>/tags/python/</guid>
+      <guid>https://heads0rtai1s.github.io/tags/python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Pytorch</title>
-      <link>/tags/pytorch/</link>
+      <link>https://heads0rtai1s.github.io/tags/pytorch/</link>
       <pubDate>Thu, 25 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>/tags/pytorch/</guid>
+      <guid>https://heads0rtai1s.github.io/tags/pytorch/</guid>
       <description></description>
     </item>
     
     <item>
       <title>R</title>
-      <link>/tags/r/</link>
+      <link>https://heads0rtai1s.github.io/tags/r/</link>
       <pubDate>Thu, 25 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>/tags/r/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Running</title>
-      <link>/tags/running/</link>
-      <pubDate>Thu, 13 Jan 2022 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/running/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Scraping</title>
-      <link>/tags/scraping/</link>
-      <pubDate>Thu, 20 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/scraping/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Shiny</title>
-      <link>/tags/shiny/</link>
-      <pubDate>Thu, 05 Dec 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/shiny/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Starter Code</title>
-      <link>/tags/starter-code/</link>
-      <pubDate>Thu, 23 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/starter-code/</guid>
+      <guid>https://heads0rtai1s.github.io/tags/r/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Tensorflow</title>
-      <link>/tags/tensorflow/</link>
+      <link>https://heads0rtai1s.github.io/tags/tensorflow/</link>
       <pubDate>Thu, 25 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>/tags/tensorflow/</guid>
+      <guid>https://heads0rtai1s.github.io/tags/tensorflow/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Tidytuesday</title>
-      <link>/tags/tidytuesday/</link>
-      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/tidytuesday/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tidyverse</title>
-      <link>/tags/tidyverse/</link>
+      <title>EDA</title>
+      <link>https://heads0rtai1s.github.io/tags/eda/</link>
       <pubDate>Thu, 05 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/tidyverse/</guid>
+      <guid>https://heads0rtai1s.github.io/tags/eda/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Visualisation</title>
-      <link>/tags/visualisation/</link>
+      <title>programming</title>
+      <link>https://heads0rtai1s.github.io/tags/programming/</link>
+      <pubDate>Thu, 05 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/programming/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tidyverse</title>
+      <link>https://heads0rtai1s.github.io/tags/tidyverse/</link>
+      <pubDate>Thu, 05 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/tidyverse/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>animation</title>
+      <link>https://heads0rtai1s.github.io/tags/animation/</link>
       <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/visualisation/</guid>
+      <guid>https://heads0rtai1s.github.io/tags/animation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>covid19</title>
+      <link>https://heads0rtai1s.github.io/tags/covid19/</link>
+      <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/covid19/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dataset</title>
+      <link>https://heads0rtai1s.github.io/tags/dataset/</link>
+      <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/dataset/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>geospatial</title>
+      <link>https://heads0rtai1s.github.io/tags/geospatial/</link>
+      <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/geospatial/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>maps</title>
+      <link>https://heads0rtai1s.github.io/tags/maps/</link>
+      <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/maps/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>visualisation</title>
+      <link>https://heads0rtai1s.github.io/tags/visualisation/</link>
+      <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/visualisation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>community</title>
+      <link>https://heads0rtai1s.github.io/tags/community/</link>
+      <pubDate>Thu, 20 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/community/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>scraping</title>
+      <link>https://heads0rtai1s.github.io/tags/scraping/</link>
+      <pubDate>Thu, 20 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/scraping/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>astro</title>
+      <link>https://heads0rtai1s.github.io/tags/astro/</link>
+      <pubDate>Thu, 23 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/astro/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>starter code</title>
+      <link>https://heads0rtai1s.github.io/tags/starter-code/</link>
+      <pubDate>Thu, 23 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/starter-code/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>interactive</title>
+      <link>https://heads0rtai1s.github.io/tags/interactive/</link>
+      <pubDate>Thu, 05 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/interactive/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>shiny</title>
+      <link>https://heads0rtai1s.github.io/tags/shiny/</link>
+      <pubDate>Thu, 05 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/shiny/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tidytuesday</title>
+      <link>https://heads0rtai1s.github.io/tags/tidytuesday/</link>
+      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/tidytuesday/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>machine learning</title>
+      <link>https://heads0rtai1s.github.io/tags/machine-learning/</link>
+      <pubDate>Thu, 03 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/machine-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ggplot2</title>
+      <link>https://heads0rtai1s.github.io/tags/ggplot2/</link>
+      <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/ggplot2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kaggle-days</title>
+      <link>https://heads0rtai1s.github.io/tags/kaggle-days/</link>
+      <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/kaggle-days/</guid>
       <description></description>
     </item>
     
