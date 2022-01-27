@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.92.0" />
+
+
+<title>EDA guidelines &amp; live coding experience - head spin - the Heads or Tails blog</title>
+<meta property="og:title" content="EDA guidelines &amp; live coding experience - head spin - the Heads or Tails blog">
+
+
+  <link href='https://heads0rtai1s.github.io/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/avatar.png"
+         width="50"
+         height="50"
+         alt="Heads or Tails">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="/blogroll/">Blogroll</a></li>
+    
+    <li><a href="https://twitter.com/heads0rtai1s">Twitter</a></li>
+    
+    <li><a href="https://www.kaggle.com/headsortails">Kaggle</a></li>
+    
+    <li><a href="https://www.linkedin.com/in/martin-henze">LinkedIn</a></li>
+    
+    <li><a href="https://github.com/heads0rtai1s">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">8 min read</span>
+    
+
+    <h1 class="article-title">EDA guidelines &amp; live coding experience</h1>
+
+    
+    <span class="article-date">2022-01-27</span>
+    
+
+    <div class="article-content">
+      
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>Last week I was spontaneously invited to contribute a live-coding exploratory data analysis (EDA) to a recently launched Kaggle community competition. I accepted the invite, and 24h later we were live-streaming my first encounter with the data on Youtube. Here are my reflections on this experience and on my EDA process in general.</p>
+<div id="the-context" class="section level3">
+<h3>The context</h3>
+<p>The Kaggle platform, my favourite machine learning (ML) and data science (DS) community, <a href="https://www.kaggle.com/product-feedback/294337">recently made it much easier for Kagglers to host their own competitions</a>. The <a href="https://www.kaggle.com/c/song-popularity-prediction">Song Popularity Prediction competion</a> was launched by <a href="https://www.kaggle.com/abhishek">Abhishek Thakur</a> - one of Kaggle’s most prominent Grandmasters. I already had the chance a little while ago to <a href="https://www.youtube.com/watch?v=kI4yxAL2wtM">chat with Abhishek about EDA</a> on his popular <a href="https://www.youtube.com/channel/UCBPRJjIWfyNG4X-CRbnv78A">Youtube channel</a>. Perhaps as a result of that I got a message from him asking if I’d be interested in showcasing my EDA approach for this new competition. After a brief negotiation with my calendar, I was happy to say yes. And we set a time barely 24 hours later, so that the EDA could be useful for people within the first days of the competition launch.</p>
+<p><blockquote class="twitter-tweet"><p lang="en" dir="ltr">wuhuuuu 🎉 Martin Henze (aka Heads or Tails) has kindly agreed to do a live EDA for the first competition in Applied ML Competition Series. Tomorrow, 5 PM CET! Link to join: <a href="https://t.co/Ra7QyyoGFh">https://t.co/Ra7QyyoGFh</a><br>Competition Link: <a href="https://t.co/AoNEGU7Id2">https://t.co/AoNEGU7Id2</a> <a href="https://t.co/7pHttHaCTO">pic.twitter.com/7pHttHaCTO</a></p>&mdash; abhishek (@abhi1thakur) <a href="https://twitter.com/abhi1thakur/status/1483490638884659206?ref_src=twsrc%5Etfw">January 18, 2022</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</p>
+<p>While I was able to fit this spontaneous event into my calendar for the next day, there was no time for preparations. But that was fine for me. If it is a live-stream anyway, so were my thoughts, then let’s make it as authentic as possible. I would see the data for the first time and wrangle and plot it in real time. I knew that the data was tabular. I only downloaded the data in advance and set up a very basic Rmarkdown template, so that we wouldn’t waste time with library calls for <code>dplyr</code> or <code>ggplot</code>. And I quickly checked that I could read in the data without issue. That was it. Everything else would happen live.</p>
+</div>
+<div id="my-eda-process-guidelines" class="section level3">
+<h3>My EDA process &amp; guidelines</h3>
+<p>While I hadn’t looked at the data before the live-stream, I had a general game plan in my head that I intended to follow and to demonstrate. Over the years, I have built up a process for approaching new datasets that has served me well. It works best for tabular datasets, but can be adapted well for text data and, to a certain extend, also to image data.</p>
+<p>Here I want to briefly summarise the main steps of this process, which can be used as general guidelines to structure your analysis around. For a specific implementation of those steps, you can check the <a href="https://www.kaggle.com/headsortails/song-popularity-eda-live-coding-fun">Kaggle Notebook</a> that was the result of the live EDA, or any or one of my other <a href="https://www.kaggle.com/headsortails">EDA Notebooks on Kaggle</a>.</p>
+<ul>
+<li><p><strong>Understand the data context:</strong> On Kaggle this means that you should carefully read the competition pages as they outline the overview, datasets, and evaluation metric of the challenge. In an industry setting this translates to knowing where the data comes from, who collected it, and which limitations and quirks those people have identified. No dataset is perfect.</p></li>
+<li><p><strong>Look at your data:</strong> Once I start analysing the data itself, my first step is to simply look at it in its tabular form and see what kind of values the different features take. Here you can learn about data types, missing values, and simple summary statistics. I’m using the R tools <code>glimpse</code> and <code>summary</code> for some simple transformations.</p></li>
+<li><p><strong>Always plot your data:</strong> You can learn a lot about your dataset by finding the best way to visualise each feature. For huge numbers of columns grab a subset. But you want to at least get an impression of what your features look like. You will quickly detect skewness, outliers, imbalances, or otherwise troubling characteristics. I almost always start with individual plots for predictors and for the target to establish the foundations of the analysis. For continuous variables I start with density plots and for categorical ones with barplots. You can always change styles later, but those plots give you a solid first impression.</p></li>
+<li><p><strong>Gradually build up complexity:</strong> After learning about the individual features and their distributions, you can go a step further to see how they interact. A correlation matrix or a pairplot can get you started, but it is also worth it to look at each predictor feature’s interaction with the target in the way that is most revealing for that particular combination. For instance a density plot with two overlapping colors for a binary classification target. From there you can go into even higher-dimensional visuals to see how 2, 3, 4 features interact with each other and the target at the same time. I’m a big fan of facet plots to quickly and cleanly add another categorical dimension to your visuals.</p></li>
+<li><p><strong>Investigate your data from different angles:</strong> For many of the higher-dimensional plots you need to do some data wrangling to unlock their full potential. I’m thinking here primarily of reshaping the data, e.g. via <code>pivot_longer</code> or <code>pivot_wider</code> in <code>tidyr</code>. Pivoting can give you new facet variable for a different perspective on a dataset. If you have more than one dataset then this is also a great time for joins of various kinds.</p></li>
+<li><p><strong>Document your thoughts and ideas:</strong> Visuals are great, and it’s easy to get caught up in a journey of visual exploration. But don’t forget to pause every now and then to write down your thoughts and insights. Often this allows you to get a clearer idea of where your analysis is going, and maybe new inspiration. You’re also making your analysis much more accessible; not only to your readers but also to your future self. Some insights that seem obvious in the moment might be hard to recount even a day later. And when it comes to data science a very important but often overlooked aspect is communication. You want to be able to explain your findings and thinking to other people. And the better your able to do that, the higher the chance that you have a good understanding of the data yourself.</p></li>
+</ul>
+</div>
+<div id="live-coding-experience" class="section level3">
+<h3>Live-coding experience</h3>
+<p>Those were the guidelines that I took with me into this live-stream. And a little bit of nervousness, although the less-than 24 hours were luckily not enough to build up a lot of doubt in my mind. But I had never done a live-coding session before in my life. I didn’t expect to freeze up, but there were quite a few things that could go wrong. To add to the challenge, I would be using new headphones, a relatively new microphone, and a video platform I hadn’t used before.</p>
+<p>But Abhishek had all the technical details covered in a relaxed way. My setup was quickly verified, and we chatted a bit before launching into the stream. I was using my Ubuntu laptop and had set up a virtual desktop that only contained my Rstudio session and a browser with the competition pages, so that I could easily switch between the two and go from context to coding. I even remembered to briefly recap my main slide from the previous EDA chat as a ways of introduction, before talking about the competition itself.</p>
+<p>The live-coding turned out to be a very fun experience and you can <a href="https://www.youtube.com/watch?v=JXF-7rCcR1c">watch the first session here</a>. And yes, I’m writing <em>first</em> session, because the interest and engagement of the participants motivated us to stream a <a href="https://www.youtube.com/watch?v=2aE6SvCVOis">second session 2 days later</a> where we continued the analysis into multi-feature relationships. The <a href="https://www.kaggle.com/headsortails/song-popularity-eda-live-coding-fun">resulting Kaggle Notebook</a> was primarily built during those sessions. I added the narration and some polish in between and afterwards; but most of the insights were revealed in the sessions.</p>
+<p>Given that I hadn’t done any preparation on this particular dataset, the streams went rather remarkably well in retrospect. This is particularly true for the first session, during which I looked at the data for the first time. Sure, there were plenty of mistakes and R even crashed on me once (which is a pretty rare thing in general). But I managed to follow my guidelines and to analyse the data in sufficient detail to get people started on it. We even had time for questions and recommendations.</p>
+<p>During the 2nd session I put a lot of emphasis on the pivoting and multi-variate visuals; especially using facet plots. Maybe it was too much emphasis, and other aspects didn’t get enough airtime. Parts of that 2nd stream might have gotten rather technical. But it was an important subject to me and I wanted to explain and show it in detail. I think this worked, and I hope that those strategies were useful to other people.</p>
+<p>One thing I didn’t figure out how to do properly was to watch the stream at the same time. Since I was sharing my screen I couldn’t just tab to the video and back. During the first session, I had another laptop running with the Youtube stream at the same time. But I found it too distracting and soon ended up focussing on my main screen only for the coding. This meant that I couldn’t read any of the live session questions and comments, and had to leave the question asking to Abhishek. Which he did great, of course. But I feel there should be a better way. Maybe if there’s a next time I’ll try a different multi-monitor setup.</p>
+<p>And I would certainly do another live-coding session again in the future. Maybe with a bit more preparation to make things run a little smoother; although this might take away much of the authenticity. We’ll see. Apparently these things can happen pretty spontaneously ;-)</p>
+</div>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//headsortails.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137904077-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  </body>
+</html>
+

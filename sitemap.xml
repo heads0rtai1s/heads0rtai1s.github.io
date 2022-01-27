@@ -1,447 +1,239 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
-    <loc>/2022/01/20/goals-2022-targets/</loc>
+    <loc>https://heads0rtai1s.github.io/categories/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/eda/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/eda/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2022/01/27/eda-guide-livecoding/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/kaggle/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/kaggle/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/post/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/programming/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/goals/</loc>
     <lastmod>2022-01-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/2022/01/13/goals-2021-results/</loc>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/journey/</loc>
+    <lastmod>2022-01-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/journey/</loc>
+    <lastmod>2022-01-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/meta/</loc>
+    <lastmod>2022-01-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/running/</loc>
+    <lastmod>2022-01-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2022/01/20/goals-2022-targets/</loc>
+    <lastmod>2022-01-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/colab/</loc>
     <lastmod>2022-01-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/2021/08/24/colab-plus-kaggle-cloud-gpu/</loc>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/colab/</loc>
+    <lastmod>2022-01-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2022/01/13/goals-2021-results/</loc>
+    <lastmod>2022-01-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/cloud/</loc>
     <lastmod>2021-08-24T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/2021/02/25/gpu-setup-r-python-ubuntu/</loc>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/cloud/</loc>
+    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2021/08/24/colab-plus-kaggle-cloud-gpu/</loc>
+    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/gpu/</loc>
+    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/gpu/</loc>
+    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2021/02/25/gpu-setup-r-python-ubuntu/</loc>
     <lastmod>2021-02-25T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/2020/11/05/r-python-dplyr-pandas/</loc>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/python/</loc>
+    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/python/</loc>
+    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/pytorch/</loc>
+    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/pytorch/</loc>
+    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/r/</loc>
+    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/r/</loc>
+    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/tensorflow/</loc>
+    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/tensorflow/</loc>
+    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2020/11/05/r-python-dplyr-pandas/</loc>
     <lastmod>2020-11-05T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/2020/04/30/animate-map-covid/</loc>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/tidyverse/</loc>
+    <lastmod>2020-11-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/tidyverse/</loc>
+    <lastmod>2020-11-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/animation/</loc>
     <lastmod>2020-04-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/2020/02/20/rtweet-intro/</loc>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/animation/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2020/04/30/animate-map-covid/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/covid19/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/covid19/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/dataset/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/geospatial/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/maps/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/maps/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/visualisation/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/visualisation/</loc>
+    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2020/02/20/rtweet-intro/</loc>
     <lastmod>2020-02-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/2020/02/13/rstudio-conf/</loc>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/community/</loc>
+    <lastmod>2020-02-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/community/</loc>
+    <lastmod>2020-02-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/scraping/</loc>
+    <lastmod>2020-02-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2020/02/13/rstudio-conf/</loc>
     <lastmod>2020-02-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/2020/01/23/rvest-intro-astro/</loc>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/astro/</loc>
     <lastmod>2020-01-23T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/2019/12/05/shiny-starter-code/</loc>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/astro/</loc>
+    <lastmod>2020-01-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/scraping/</loc>
+    <lastmod>2020-01-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/starter-code/</loc>
+    <lastmod>2020-01-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2020/01/23/rvest-intro-astro/</loc>
+    <lastmod>2020-01-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/interactive/</loc>
     <lastmod>2019-12-05T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/2019/11/07/tidy-curly-pivot-leaflet/</loc>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2019/12/05/shiny-starter-code/</loc>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/shiny/</loc>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/shiny/</loc>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/starter-code/</loc>
+    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/tidytuesday/</loc>
     <lastmod>2019-11-07T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/2019/10/03/reticulate-intro/</loc>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/tidytuesday/</loc>
+    <lastmod>2019-11-07T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2019/11/07/tidy-curly-pivot-leaflet/</loc>
+    <lastmod>2019-11-07T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/machine-learning/</loc>
     <lastmod>2019-10-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/2019/09/19/first-six-months/</loc>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/machine-learning/</loc>
+    <lastmod>2019-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/</loc>
+    <lastmod>2019-10-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2019/09/19/first-six-months/</loc>
     <lastmod>2019-09-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blogroll/</loc>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/blogroll/</loc>
     <lastmod>2019-09-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/2019/08/22/tidy-eval-examples-part2/</loc>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2019/08/22/tidy-eval-examples-part2/</loc>
     <lastmod>2019-08-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/2019/06/06/visuals-alluvial-ggalluvial/</loc>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</loc>
     <lastmod>2019-06-06T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/2019/04/24/tidy-eval-examples/</loc>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/ggplot2/</loc>
+    <lastmod>2019-06-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</loc>
     <lastmod>2019-04-24T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/2019/04/19/great-community-kaggledays19/</loc>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/kaggle-days/</loc>
     <lastmod>2019-04-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/about/</loc>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2019/04/19/great-community-kaggledays19/</loc>
+    <lastmod>2019-04-19T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/about/</loc>
+    <lastmod>2019-04-08T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2019/04/08/prologue/</loc>
     <lastmod>2019-04-08T00:00:00+00:00</lastmod>
   </url>
-  
-  <url>
-    <loc>/2019/04/08/prologue/</loc>
-    <lastmod>2019-04-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/animation/</loc>
-    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/animation/</loc>
-    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/astro/</loc>
-    <lastmod>2020-01-23T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/astro/</loc>
-    <lastmod>2020-01-23T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/</loc>
-    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/cloud/</loc>
-    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/cloud/</loc>
-    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/colab/</loc>
-    <lastmod>2022-01-13T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/colab/</loc>
-    <lastmod>2022-01-13T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/community/</loc>
-    <lastmod>2020-02-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/community/</loc>
-    <lastmod>2020-02-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/covid19/</loc>
-    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/covid19/</loc>
-    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/dataset/</loc>
-    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/eda/</loc>
-    <lastmod>2020-11-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/eda/</loc>
-    <lastmod>2020-11-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/geospatial/</loc>
-    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/ggplot2/</loc>
-    <lastmod>2019-06-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/goals/</loc>
-    <lastmod>2022-01-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/gpu/</loc>
-    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/gpu/</loc>
-    <lastmod>2021-08-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/interactive/</loc>
-    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/journey/</loc>
-    <lastmod>2022-01-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/journey/</loc>
-    <lastmod>2022-01-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/kaggle/</loc>
-    <lastmod>2022-01-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/kaggle/</loc>
-    <lastmod>2022-01-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/kaggle-days/</loc>
-    <lastmod>2019-04-19T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/machine-learning/</loc>
-    <lastmod>2019-10-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/machine-learning/</loc>
-    <lastmod>2019-10-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/maps/</loc>
-    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/maps/</loc>
-    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/meta/</loc>
-    <lastmod>2022-01-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
-    <lastmod>2022-01-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/programming/</loc>
-    <lastmod>2020-11-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/python/</loc>
-    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/python/</loc>
-    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/pytorch/</loc>
-    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/pytorch/</loc>
-    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/r/</loc>
-    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/r/</loc>
-    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/running/</loc>
-    <lastmod>2022-01-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/scraping/</loc>
-    <lastmod>2020-02-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/scraping/</loc>
-    <lastmod>2020-01-23T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/shiny/</loc>
-    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/shiny/</loc>
-    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/starter-code/</loc>
-    <lastmod>2020-01-23T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/starter-code/</loc>
-    <lastmod>2019-12-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
-    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/tensorflow/</loc>
-    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/tensorflow/</loc>
-    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/tidytuesday/</loc>
-    <lastmod>2019-11-07T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/tidytuesday/</loc>
-    <lastmod>2019-11-07T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/tidyverse/</loc>
-    <lastmod>2020-11-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/tidyverse/</loc>
-    <lastmod>2020-11-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/visualisation/</loc>
-    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/visualisation/</loc>
-    <lastmod>2020-04-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/</loc>
-    <lastmod>2022-01-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
 </urlset>

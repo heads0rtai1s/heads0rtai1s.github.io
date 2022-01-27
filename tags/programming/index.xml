@@ -6,7 +6,17 @@
     <description>Recent content in programming on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/programming/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 27 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/programming/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>EDA guidelines &amp; live coding experience</title>
+      <link>https://heads0rtai1s.github.io/2022/01/27/eda-guide-livecoding/</link>
+      <pubDate>Thu, 27 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/2022/01/27/eda-guide-livecoding/</guid>
+      <description>Last week I was spontaneously invited to contribute a live-coding exploratory data analysis (EDA) to a recently launched Kaggle community competition. I accepted the invite, and 24h later we were live-streaming my first encounter with the data on Youtube. Here are my reflections on this experience and on my EDA process in general.
+The context The Kaggle platform, my favourite machine learning (ML) and data science (DS) community, recently made it much easier for Kagglers to host their own competitions.</description>
+    </item>
+    
     <item>
       <title>R &amp; Python Rosetta Stone: EDA with dplyr vs pandas</title>
       <link>https://heads0rtai1s.github.io/2020/11/05/r-python-dplyr-pandas/</link>
