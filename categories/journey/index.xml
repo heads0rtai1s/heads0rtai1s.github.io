@@ -5,10 +5,609 @@
     <description>Recent content in journey on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 20 Jan 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 10 Feb 2022 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://heads0rtai1s.github.io/categories/journey/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Yearly goals: Tracking tools &amp; visuals</title>
+      <link>https://heads0rtai1s.github.io/2022/02/10/goals-tracking-visuals/</link>
+      <pubDate>Thu, 10 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/2022/02/10/goals-tracking-visuals/</guid>
+      <description>
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;In my final post on setting up yearly goals I will write about how to track progress and finally add some data visuals. Building your own progress dashboards adds a nice meta level of data science to the journey and gives you more control over how to track your goals.&lt;/p&gt;
+&lt;p&gt;We’re loading the popular libraries for data wrangling and visuals:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;stringr&amp;#39;, &amp;#39;forcats&amp;#39;,   # wrangling
+          &amp;#39;tidyr&amp;#39;, &amp;#39;readr&amp;#39;,                # wrangling &amp;amp; reading
+          &amp;#39;gt&amp;#39;,                            # table styling
+          &amp;#39;lubridate&amp;#39;,                     # date &amp;amp; time
+          &amp;#39;ggplot2&amp;#39;, &amp;#39;ggthemes&amp;#39;,           # plots
+          &amp;#39;ggridges&amp;#39;, &amp;#39;patchwork&amp;#39;)         # plots
+invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;track-or-be-tracked&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Track or be tracked&lt;/h3&gt;
+&lt;p&gt;When it comes to tracking methods, I’m using multiple apps and tools:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;For general time tracking, I like to use &lt;a href=&#34;http://www.atimelogger.com&#34;&gt;aTimeLogger&lt;/a&gt;. It’s easy to use and to customise, and it allows you to export your data as csv files. (Which is by no means a given for apps like this.)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;My workout data I’m tracking in an app called &lt;a href=&#34;http://www.fitnotesapp.com&#34;&gt;FitNotes&lt;/a&gt;, which is a general fitness log tool. Also here you have a lot of control over how to set up your exercises; and you can export your data easily.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;When it comes to running, I’m using a &lt;a href=&#34;https://explore.garmin.com/en-US/forerunner&#34;&gt;Garmin Forerunner 35 watch&lt;/a&gt; from the lower end of their range. It has good battery and decent GPS, which is really all I need to track my kilometers.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I had the watch for a good 2 years now and its robust and reliable. There is an app and dashboard tool called Garmin Connect associated with it, which gives you a decent overview of your status and achievements. However, I haven’t found a good way yet to extract this data in a way that I can analyse it. For now, I’m just copying my overall running stats (time &amp;amp; distance) into FitNotes and include them into that csv file. But I’m hoping that there’s a good way to get more decent stats from Garmin directly. If you happen to know more about this, please let me know.&lt;/p&gt;
+&lt;p&gt;When it comes to the apps, FitNotes and aTimeLogger, I’ve been using them for years in various ways. In the old days, I still used a paper notebook for my gym and running workouts. And already that made a major difference by giving me a baseline to try to improve on in the next workout. Nowadays apps make this process quite a bit easier, as long as you don’t allow your phone to distract you during sets.&lt;/p&gt;
+&lt;p&gt;The time logging I started to use to get better control of my habits and time management. Anyone who has ever sat down in front of their laptop to “quickly check out this new Kaggle competition”, only to look up 5 hours later and wonder why you’re getting hungry, will understand what I mean. There are different levels of strictness with which one can approach this time tracking thing; and as so often in life it’s best not to get too carried away with it. It’s hardly useful to track every single thing, or to fret about minutes. I’m using it to track my sleep, as well as my time on Kaggle and (in 2022) the time I spend learning ML techniques.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;the-data&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;The data&lt;/h3&gt;
+&lt;p&gt;I’m sharing some of my personal data here, but mostly on a high, aggregated level except for the run data which is already pretty granular in the visuals I’m using. Always good to be at least aware of how much of your data you’re giving to the world. I’ve been tweeting quite a bit about my running progress, so there’s nothing really new here. The sleep visuals will be more aggregated.&lt;/p&gt;
+&lt;p&gt;As an example, the running data looks like this:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;run %&amp;gt;% 
+  tail(20) %&amp;gt;% 
+  gt() %&amp;gt;% 
+  tab_header(
+    title = md(&amp;quot;**Last 20 runs in 2021**&amp;quot;)) %&amp;gt;% 
+  cols_label(
+    date = &amp;quot;Date&amp;quot;,
+    dist = &amp;quot;Distance (km)&amp;quot;,
+    dur = &amp;quot;Duration&amp;quot;,
+    pace = &amp;quot;Pace (min/km)&amp;quot;
+  ) %&amp;gt;% 
+  opt_row_striping() %&amp;gt;% 
+  tab_options(container.height = px(400))&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;eefnsmsrwn&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:400px;&#34;&gt;
+&lt;style&gt;html {
+  font-family: -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, Oxygen, Ubuntu, Cantarell, &#39;Helvetica Neue&#39;, &#39;Fira Sans&#39;, &#39;Droid Sans&#39;, Arial, sans-serif;
+}
+
+#eefnsmsrwn .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#eefnsmsrwn .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#eefnsmsrwn .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#eefnsmsrwn .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#eefnsmsrwn .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#eefnsmsrwn .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#eefnsmsrwn .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#eefnsmsrwn .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#eefnsmsrwn .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#eefnsmsrwn .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#eefnsmsrwn .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#eefnsmsrwn .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#eefnsmsrwn .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#eefnsmsrwn .gt_from_md &gt; :first-child {
+  margin-top: 0;
+}
+
+#eefnsmsrwn .gt_from_md &gt; :last-child {
+  margin-bottom: 0;
+}
+
+#eefnsmsrwn .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#eefnsmsrwn .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#eefnsmsrwn .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eefnsmsrwn .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#eefnsmsrwn .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eefnsmsrwn .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#eefnsmsrwn .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#eefnsmsrwn .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#eefnsmsrwn .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#eefnsmsrwn .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#eefnsmsrwn .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#eefnsmsrwn .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#eefnsmsrwn .gt_left {
+  text-align: left;
+}
+
+#eefnsmsrwn .gt_center {
+  text-align: center;
+}
+
+#eefnsmsrwn .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#eefnsmsrwn .gt_font_normal {
+  font-weight: normal;
+}
+
+#eefnsmsrwn .gt_font_bold {
+  font-weight: bold;
+}
+
+#eefnsmsrwn .gt_font_italic {
+  font-style: italic;
+}
+
+#eefnsmsrwn .gt_super {
+  font-size: 65%;
+}
+
+#eefnsmsrwn .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+&lt;/style&gt;
+&lt;table class=&#34;gt_table&#34;&gt;
+  &lt;thead class=&#34;gt_header&#34;&gt;
+    &lt;tr&gt;
+      &lt;th colspan=&#34;4&#34; class=&#34;gt_heading gt_title gt_font_normal gt_bottom_border&#34; style&gt;&lt;strong&gt;Last 20 runs in 2021&lt;/strong&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+    
+  &lt;/thead&gt;
+  &lt;thead class=&#34;gt_col_headings&#34;&gt;
+    &lt;tr&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;Date&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_right&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;Distance (km)&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_center&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;Duration&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_right&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;Pace (min/km)&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody class=&#34;gt_table_body&#34;&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;2021-10-26&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;5.00&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;27M 13S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;5.443333&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2021-10-28&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;4.56&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;21M 12S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;4.649123&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;2021-11-02&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;10.00&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;52M 41S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;5.268333&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2021-11-04&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;5.00&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;22M 50S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;4.566667&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;2021-11-06&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;34.00&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;3H 20M 58S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;5.910784&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2021-11-10&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;5.00&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;26M 27S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;5.290000&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;2021-11-17&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;5.00&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;31M 37S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;6.323333&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2021-11-21&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;10.74&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;1H 0M 0S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;5.586592&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;2021-11-23&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;10.00&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;54M 25S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;5.441667&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2021-11-25&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;5.00&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;24M 53S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;4.976667&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;2021-11-28&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;21.16&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;2H 0M 0S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;5.671078&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2021-12-01&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;5.00&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;24M 3S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;4.810000&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;2021-12-03&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;10.71&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;1H 0M 0S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;5.602241&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2021-12-05&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;42.20&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;4H 24M 52S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;6.276461&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;2021-12-09&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;10.00&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;57M 45S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;5.775000&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2021-12-12&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;17.45&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;1H 30M 0S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;5.157593&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;2021-12-16&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;5.00&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;28M 19S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;5.663333&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2021-12-21&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;5.69&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;30M 0S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;5.272408&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;2021-12-23&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;16.11&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;1H 30M 0S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;5.586592&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2021-12-28&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;5.00&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;25M 55S&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right gt_striped&#34;&gt;5.183333&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+  
+  
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;p&gt;Here I’m using the fantastic &lt;a href=&#34;https://gt.rstudio.com/index.html&#34;&gt;gt package&lt;/a&gt;, which likely deserves its own blog post in the future. For now, this table should demonstrate that for each run I’m collecting the date, distance, duration, and pace (which is derived from duration / distance). Those last 20 runs of 2021 include my successful marathon distance of which I’m disproportionately proud.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;running-visuals&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Running Visuals&lt;/h3&gt;
+&lt;p&gt;Let’s stay with the topic of running and continue with the visuals. One of the overview plots I had chosen for tracking the time and distance that I spent running each month.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;run %&amp;gt;% 
+  mutate(dur = as.numeric(dur)/3600) %&amp;gt;% 
+  mutate(month = lubridate::month(date, abbr = TRUE, label = TRUE)) %&amp;gt;% 
+  group_by(month) %&amp;gt;% 
+  summarise(dist = sum(dist),
+            dur = sum(dur)) %&amp;gt;% 
+  pivot_longer(c(dist, dur), names_to = &amp;quot;type&amp;quot;, values_to = &amp;quot;val&amp;quot;) %&amp;gt;% 
+  mutate(type = if_else(type == &amp;quot;dist&amp;quot;, &amp;quot;Distance Run (km)&amp;quot;, &amp;quot;Run Duration (h)&amp;quot;)) %&amp;gt;% 
+  ggplot(aes(month, val, fill = type)) +
+  geom_col() +
+  scale_fill_viridis_d() +
+  facet_wrap(~ type, ncol = 1, scales = &amp;quot;free_y&amp;quot;) +
+  theme_hc() +
+  theme(legend.position = &amp;quot;none&amp;quot;) +
+  labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;, title = &amp;quot;Total Time and Distance run per Month&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2022-02-10-goals-tracking-visuals_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;You’ll see that I was ramping up my kilometers in pursuit of the marathon first in March and then again in July, but both times travel and Covid vaccines intervened before I could reach my goal. Finally, a slightly more gradual increase in monthly distance proved successful in December. This kind of high level plot can put each month into perspective, and show the bigger picture of your progress. It is simple yet effective, and you could aim to gradually increase the size of the monthly bar leading up to your goal.&lt;/p&gt;
+&lt;p&gt;Another overview visual I made was more detailed: it shows the evolution of each individual run distance over time. Overlayed are horizontal bars at the 5k, 10k, half marathon, 30k, and marathon marks. There are no runs shorter than 5k here:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;marathon &amp;lt;- 42.195
+
+run %&amp;gt;% 
+  ggplot(aes(date, dist)) +
+  geom_line() +
+  geom_point() +
+  #geom_smooth(data = run %&amp;gt;% filter(dist &amp;gt;= 10), method = &amp;quot;loess&amp;quot;, formula = &amp;quot;y ~ x&amp;quot;, se = FALSE, span = 1) +
+  geom_hline(yintercept = c(5, 10, marathon/2, 30, marathon),
+             color =  c(&amp;quot;#5fcea8&amp;quot;, &amp;quot;#1fccff&amp;quot;, &amp;quot;#956296&amp;quot;, &amp;quot;#e56c3a&amp;quot;, &amp;quot;#e8bb34&amp;quot;)) +
+  theme_minimal() +
+  labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;, title = &amp;quot;Path to Marathon: Run Distance over Time&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2022-02-10-goals-tracking-visuals_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;If you’re a Kaggler, you might recognise that I’ve chosen the colours of those milestones according to the &lt;a href=&#34;https://www.kaggle.com/progression&#34;&gt;Kaggle progression system&lt;/a&gt;, with the marathon being Grandmaster tier. Gotta learn from the best when it comes to gamification ;-)&lt;/p&gt;
+&lt;p&gt;Depending on your number of workouts, such a plot can get messy. But it’s not so much about the individual runs, but rather the emerging patterns. From Jan to Apr you see me aiming for gradually longer runs, witch the occasional week of short runs thrown in between. My eventual progress towards the successful marathon attempt in December was faster in comparison. But you also see the consistent trend throughout the year that was leading up to it (with an intermittent spike in Jul/Aug). Without this birds eye view, a period of shorter runs could easily be mistaken for failure&lt;/p&gt;
+&lt;p&gt;Progress is rarely linear. Especially when it comes to physical goals, you shouldn’t expect to just increase your results every week without fail. As a layperson, I understand that there is a cyclical pattern to physiological processes: you work out and it taxes your body; your body then recovers and even increases its strength during rest. Rest is just as important as exercise. It will be to your advantage to listen to your body and to track and recognise those cyclical patterns in your workout progression.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;sleep-visuals&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Sleep Visuals&lt;/h3&gt;
+&lt;p&gt;My sleep goal was conceptually different from my running goal, and thus I chose a different visualisation style. I was aiming to stay above 8 hours of sleep per night throughout the year, and I tracked this on a monthly level.&lt;/p&gt;
+&lt;p&gt;A barplot, like above, would do a fine job in keeping track of the average monthly sleep time. But I was also interested in the variance in those numbers. Sleep duration is a continuous variable, for which my preference is to start with density plots. A sequence of (monthly) density plots can nicely be constructed using the great &lt;a href=&#34;https://wilkelab.org/ggridges&#34;&gt;ggridges package&lt;/a&gt;. In addition, I’m plotting alongside the mean and standard deviations of those distributions using horizontal error bars. The side-by-side composition of those two plots is provided by the fantastic &lt;a href=&#34;https://patchwork.data-imaginist.com&#34;&gt;patchwork package&lt;/a&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p1 &amp;lt;- sleep %&amp;gt;% 
+  ggplot(aes(dur_day, month, fill = month)) +
+  geom_density_ridges(bandwidth = 0.3) +
+  scale_fill_viridis_d() +
+  theme_minimal() +
+  theme(legend.position = &amp;quot;none&amp;quot;) +
+  labs(x = &amp;quot;Hours&amp;quot;, y = &amp;quot;&amp;quot;, title = &amp;quot;Hours of sleep per day for months&amp;quot;)
+
+p2 &amp;lt;- sleep %&amp;gt;% 
+  group_by(month) %&amp;gt;% 
+  summarise(mean = mean(dur_day),
+            sd = sd(dur_day),
+            sum = sum(dur_day)) %&amp;gt;% 
+  # pivot_longer(c(mean, sum), names_to = &amp;quot;type&amp;quot;, values_to = &amp;quot;val&amp;quot;) %&amp;gt;% 
+  ggplot(aes(month, mean, col = month)) +
+  geom_point(size = 4) +
+  geom_errorbar(aes(ymin = mean-sd, ymax = mean+sd), size = 1) +
+  coord_flip() +
+  # scale_y_continuous(breaks = c(6, 7, 8, 9))
+  # facet_wrap(~ type, scales = &amp;quot;free_x&amp;quot;) +
+  theme_minimal() +
+  theme(legend.position = &amp;quot;none&amp;quot;) +
+  labs(x = &amp;quot;&amp;quot;, y = &amp;quot;Hours&amp;quot;, title = &amp;quot;Average hours per day&amp;quot;)
+
+p1 + p2&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2022-02-10-goals-tracking-visuals_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;You can clearly see the broad and rather misshapen distributions, as well as the fact that their centers were shifting quite a bit over time. While the error bars give an immediate indication of the narrowness of the distribution, the density plots show skewness, multiple peaks, and outlining values. Although I succeeded in my sleep goal overall, there are more of those outliers than I would have liked. This is something I intend to improve on this year.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;progress-bars&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Progress bars&lt;/h3&gt;
+&lt;p&gt;Last but not least, I’d like to present an argument in favour of the humble progress bar. Bars that continously update as the year is progressing can be a great method for tracking and motivation. I’m using two slightly different bars here for sleep and running.&lt;/p&gt;
+&lt;p&gt;The running bar in grey is set at the distance of the marathon goal. The green bar then fills in more and more of this bar as I’m pushing my maximum run distance further and further. Eventually, the green bar will fully cover the grey background.&lt;/p&gt;
+&lt;p&gt;The sleep bar is tracking the total hours of sleep throughout the year. The vertical overlayed on it does at the same time progress at the speed of 8 hours per day. You want to try to keep the bar ahead of the line at all time.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;goal_sleep &amp;lt;- 8
+goal_run &amp;lt;- marathon
+
+p1 &amp;lt;- run %&amp;gt;% 
+  filter(dist &amp;lt; max(dist)) %&amp;gt;% 
+  summarise(dist = max(dist)) %&amp;gt;% 
+  mutate(type = &amp;quot;Run&amp;quot;) %&amp;gt;% 
+  ggplot(aes(type, dist)) +
+  geom_col(aes(&amp;quot;Run&amp;quot;, goal_run), fill = &amp;quot;grey70&amp;quot;) +
+  geom_col(fill = &amp;quot;darkgreen&amp;quot;) +
+  coord_flip() +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
+  labs(x = &amp;quot;&amp;quot;, y = &amp;quot;Longest Run in km&amp;quot;, title = &amp;quot;Maximum Run Distance before marathon&amp;quot;)
+
+p2 &amp;lt;- sleep %&amp;gt;% 
+  summarise(dur = sum(dur_day)) %&amp;gt;% 
+  mutate(type = &amp;quot;Sleep&amp;quot;) %&amp;gt;% 
+  ggplot(aes(type, dur)) +
+  geom_col(aes(&amp;quot;Sleep&amp;quot;, goal_sleep * 365), fill = &amp;quot;grey70&amp;quot;) +
+  geom_col(fill = &amp;quot;darkblue&amp;quot;) +
+  geom_hline(yintercept = 365 * goal_sleep, linetype = 2) +
+  coord_flip() +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
+  labs(x = &amp;quot;&amp;quot;, y = &amp;quot;Hours of Sleep&amp;quot;, title = &amp;quot;Total Sleep in 2021 with moving goal&amp;quot;)
+
+p1 / p2&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2022-02-10-goals-tracking-visuals_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;To display all those individual visuals together nicely, I’m making use of the &lt;a href=&#34;https://pkgs.rstudio.com/flexdashboard&#34;&gt;flexdashboard package&lt;/a&gt; which can easily turn an Rmarkdown script (such as this blog post) into a static dashboard.&lt;/p&gt;
+&lt;p&gt;There are many more ways of building tracking visuals, but for now this is the end of this post. We will revisit some of those plots in an update post on the progress towards my 2022 goals, about halfway through the year. Until then, best of success with your goals for 2022!&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Yearly goals: 2022 targets</title>

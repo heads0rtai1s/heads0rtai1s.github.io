@@ -6,7 +6,18 @@
     <description>Recent content in meta on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 20 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/meta/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 10 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/meta/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Yearly goals: Tracking tools &amp; visuals</title>
+      <link>https://heads0rtai1s.github.io/2022/02/10/goals-tracking-visuals/</link>
+      <pubDate>Thu, 10 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/2022/02/10/goals-tracking-visuals/</guid>
+      <description>In my final post on setting up yearly goals I will write about how to track progress and finally add some data visuals. Building your own progress dashboards adds a nice meta level of data science to the journey and gives you more control over how to track your goals.
+We’re loading the popular libraries for data wrangling and visuals:
+libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;stringr&amp;#39;, &amp;#39;forcats&amp;#39;, # wrangling &amp;#39;tidyr&amp;#39;, &amp;#39;readr&amp;#39;, # wrangling &amp;amp; reading &amp;#39;gt&amp;#39;, # table styling &amp;#39;lubridate&amp;#39;, # date &amp;amp; time &amp;#39;ggplot2&amp;#39;, &amp;#39;ggthemes&amp;#39;, # plots &amp;#39;ggridges&amp;#39;, &amp;#39;patchwork&amp;#39;) # plots invisible(lapply(libs, library, character.</description>
+    </item>
+    
     <item>
       <title>Yearly goals: 2022 targets</title>
       <link>https://heads0rtai1s.github.io/2022/01/20/goals-2022-targets/</link>
