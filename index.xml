@@ -6,7 +6,17 @@
     <description>Recent content on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 10 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 24 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>R &amp; Python Rosetta Stone: Reading files and column transformations</title>
+      <link>https://heads0rtai1s.github.io/2022/02/24/r-python-read-separate/</link>
+      <pubDate>Thu, 24 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/2022/02/24/r-python-read-separate/</guid>
+      <description>This post continues my series on translations between R and Python code for common data science and machine learning tasks. A documented cheat sheet for those such as myself, who frequently switch between the two languages for different tasks.
+I had written the first post in this series back in late 2020, full of optimism that it would kick off a whole series of frequent posts on the topic.</description>
+    </item>
+    
     <item>
       <title>Yearly goals: Tracking tools &amp; visuals</title>
       <link>https://heads0rtai1s.github.io/2022/02/10/goals-tracking-visuals/</link>

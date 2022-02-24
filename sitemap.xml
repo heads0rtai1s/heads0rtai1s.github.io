@@ -3,12 +3,42 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://heads0rtai1s.github.io/categories/</loc>
-    <lastmod>2022-02-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://heads0rtai1s.github.io/tags/goals/</loc>
-    <lastmod>2022-02-10T00:00:00+00:00</lastmod>
+    <lastmod>2022-02-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://heads0rtai1s.github.io/</loc>
+    <lastmod>2022-02-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/post/</loc>
+    <lastmod>2022-02-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/programming/</loc>
+    <lastmod>2022-02-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/python/</loc>
+    <lastmod>2022-02-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/python/</loc>
+    <lastmod>2022-02-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/r/</loc>
+    <lastmod>2022-02-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/r/</loc>
+    <lastmod>2022-02-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2022/02/24/r-python-read-separate/</loc>
+    <lastmod>2022-02-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/</loc>
+    <lastmod>2022-02-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/tidyverse/</loc>
+    <lastmod>2022-02-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/tidyverse/</loc>
+    <lastmod>2022-02-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/goals/</loc>
     <lastmod>2022-02-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://heads0rtai1s.github.io/tags/journey/</loc>
@@ -20,19 +50,7 @@
     <loc>https://heads0rtai1s.github.io/tags/meta/</loc>
     <lastmod>2022-02-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://heads0rtai1s.github.io/post/</loc>
-    <lastmod>2022-02-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://heads0rtai1s.github.io/tags/r/</loc>
-    <lastmod>2022-02-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://heads0rtai1s.github.io/categories/r/</loc>
-    <lastmod>2022-02-10T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://heads0rtai1s.github.io/tags/running/</loc>
-    <lastmod>2022-02-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://heads0rtai1s.github.io/tags/</loc>
     <lastmod>2022-02-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://heads0rtai1s.github.io/tags/visualisation/</loc>
@@ -57,9 +75,6 @@
     <lastmod>2022-01-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://heads0rtai1s.github.io/categories/kaggle/</loc>
-    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://heads0rtai1s.github.io/tags/programming/</loc>
     <lastmod>2022-01-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://heads0rtai1s.github.io/2022/01/20/goals-2022-targets/</loc>
@@ -92,12 +107,6 @@
     <loc>https://heads0rtai1s.github.io/2021/02/25/gpu-setup-r-python-ubuntu/</loc>
     <lastmod>2021-02-25T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://heads0rtai1s.github.io/tags/python/</loc>
-    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://heads0rtai1s.github.io/categories/python/</loc>
-    <lastmod>2021-02-25T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://heads0rtai1s.github.io/tags/pytorch/</loc>
     <lastmod>2021-02-25T00:00:00+00:00</lastmod>
   </url><url>
@@ -111,12 +120,6 @@
     <lastmod>2021-02-25T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://heads0rtai1s.github.io/2020/11/05/r-python-dplyr-pandas/</loc>
-    <lastmod>2020-11-05T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://heads0rtai1s.github.io/tags/tidyverse/</loc>
-    <lastmod>2020-11-05T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://heads0rtai1s.github.io/categories/tidyverse/</loc>
     <lastmod>2020-11-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://heads0rtai1s.github.io/tags/animation/</loc>

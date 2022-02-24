@@ -58,12 +58,12 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   ) %&amp;gt;% 
   opt_row_striping() %&amp;gt;% 
   tab_options(container.height = px(400))&lt;/code&gt;&lt;/pre&gt;
-&lt;div id=&#34;eefnsmsrwn&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:400px;&#34;&gt;
+&lt;div id=&#34;pwuqyqlqhc&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:400px;&#34;&gt;
 &lt;style&gt;html {
   font-family: -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, Oxygen, Ubuntu, Cantarell, &#39;Helvetica Neue&#39;, &#39;Fira Sans&#39;, &#39;Droid Sans&#39;, Arial, sans-serif;
 }
 
-#eefnsmsrwn .gt_table {
+#pwuqyqlqhc .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -88,7 +88,7 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   border-left-color: #D3D3D3;
 }
 
-#eefnsmsrwn .gt_heading {
+#pwuqyqlqhc .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -100,7 +100,7 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   border-right-color: #D3D3D3;
 }
 
-#eefnsmsrwn .gt_title {
+#pwuqyqlqhc .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -110,7 +110,7 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   border-bottom-width: 0;
 }
 
-#eefnsmsrwn .gt_subtitle {
+#pwuqyqlqhc .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -120,13 +120,13 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   border-top-width: 0;
 }
 
-#eefnsmsrwn .gt_bottom_border {
+#pwuqyqlqhc .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#eefnsmsrwn .gt_col_headings {
+#pwuqyqlqhc .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -141,7 +141,7 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   border-right-color: #D3D3D3;
 }
 
-#eefnsmsrwn .gt_col_heading {
+#pwuqyqlqhc .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -161,7 +161,7 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   overflow-x: hidden;
 }
 
-#eefnsmsrwn .gt_column_spanner_outer {
+#pwuqyqlqhc .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -173,15 +173,15 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   padding-right: 4px;
 }
 
-#eefnsmsrwn .gt_column_spanner_outer:first-child {
+#pwuqyqlqhc .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#eefnsmsrwn .gt_column_spanner_outer:last-child {
+#pwuqyqlqhc .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#eefnsmsrwn .gt_column_spanner {
+#pwuqyqlqhc .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -193,7 +193,7 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   width: 100%;
 }
 
-#eefnsmsrwn .gt_group_heading {
+#pwuqyqlqhc .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -215,7 +215,7 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   vertical-align: middle;
 }
 
-#eefnsmsrwn .gt_empty_group_heading {
+#pwuqyqlqhc .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -230,15 +230,15 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   vertical-align: middle;
 }
 
-#eefnsmsrwn .gt_from_md &gt; :first-child {
+#pwuqyqlqhc .gt_from_md &gt; :first-child {
   margin-top: 0;
 }
 
-#eefnsmsrwn .gt_from_md &gt; :last-child {
+#pwuqyqlqhc .gt_from_md &gt; :last-child {
   margin-bottom: 0;
 }
 
-#eefnsmsrwn .gt_row {
+#pwuqyqlqhc .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -257,7 +257,7 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   overflow-x: hidden;
 }
 
-#eefnsmsrwn .gt_stub {
+#pwuqyqlqhc .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -269,7 +269,7 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   padding-left: 12px;
 }
 
-#eefnsmsrwn .gt_summary_row {
+#pwuqyqlqhc .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -279,7 +279,7 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   padding-right: 5px;
 }
 
-#eefnsmsrwn .gt_first_summary_row {
+#pwuqyqlqhc .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -289,7 +289,7 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   border-top-color: #D3D3D3;
 }
 
-#eefnsmsrwn .gt_grand_summary_row {
+#pwuqyqlqhc .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -299,7 +299,7 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   padding-right: 5px;
 }
 
-#eefnsmsrwn .gt_first_grand_summary_row {
+#pwuqyqlqhc .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -309,11 +309,11 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   border-top-color: #D3D3D3;
 }
 
-#eefnsmsrwn .gt_striped {
+#pwuqyqlqhc .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#eefnsmsrwn .gt_table_body {
+#pwuqyqlqhc .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -322,7 +322,7 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   border-bottom-color: #D3D3D3;
 }
 
-#eefnsmsrwn .gt_footnotes {
+#pwuqyqlqhc .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -336,13 +336,13 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   border-right-color: #D3D3D3;
 }
 
-#eefnsmsrwn .gt_footnote {
+#pwuqyqlqhc .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#eefnsmsrwn .gt_sourcenotes {
+#pwuqyqlqhc .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -356,41 +356,41 @@ invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
   border-right-color: #D3D3D3;
 }
 
-#eefnsmsrwn .gt_sourcenote {
+#pwuqyqlqhc .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#eefnsmsrwn .gt_left {
+#pwuqyqlqhc .gt_left {
   text-align: left;
 }
 
-#eefnsmsrwn .gt_center {
+#pwuqyqlqhc .gt_center {
   text-align: center;
 }
 
-#eefnsmsrwn .gt_right {
+#pwuqyqlqhc .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#eefnsmsrwn .gt_font_normal {
+#pwuqyqlqhc .gt_font_normal {
   font-weight: normal;
 }
 
-#eefnsmsrwn .gt_font_bold {
+#pwuqyqlqhc .gt_font_bold {
   font-weight: bold;
 }
 
-#eefnsmsrwn .gt_font_italic {
+#pwuqyqlqhc .gt_font_italic {
   font-style: italic;
 }
 
-#eefnsmsrwn .gt_super {
+#pwuqyqlqhc .gt_super {
   font-size: 65%;
 }
 
-#eefnsmsrwn .gt_footnote_marks {
+#pwuqyqlqhc .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -533,7 +533,7 @@ run %&amp;gt;%
   labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;, title = &amp;quot;Path to Marathon: Run Distance over Time&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2022-02-10-goals-tracking-visuals_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;If you’re a Kaggler, you might recognise that I’ve chosen the colours of those milestones according to the &lt;a href=&#34;https://www.kaggle.com/progression&#34;&gt;Kaggle progression system&lt;/a&gt;, with the marathon being Grandmaster tier. Gotta learn from the best when it comes to gamification ;-)&lt;/p&gt;
-&lt;p&gt;Depending on your number of workouts, such a plot can get messy. But it’s not so much about the individual runs, but rather the emerging patterns. From Jan to Apr you see me aiming for gradually longer runs, witch the occasional week of short runs thrown in between. My eventual progress towards the successful marathon attempt in December was faster in comparison. But you also see the consistent trend throughout the year that was leading up to it (with an intermittent spike in Jul/Aug). Without this birds eye view, a period of shorter runs could easily be mistaken for failure&lt;/p&gt;
+&lt;p&gt;Depending on your number of workouts, such a plot can get messy. But it’s not so much about the individual runs, but rather the emerging patterns. From Jan to Apr you see me aiming for gradually longer runs, with the occasional week of short runs thrown in between. My eventual progress towards the successful marathon attempt in December was faster in comparison. But you also see the consistent trend throughout the year that was leading up to it (with an intermittent spike in Jul/Aug). Without this birds eye view, a period of shorter runs could easily be mistaken for failure&lt;/p&gt;
 &lt;p&gt;Progress is rarely linear. Especially when it comes to physical goals, you shouldn’t expect to just increase your results every week without fail. As a layperson, I understand that there is a cyclical pattern to physiological processes: you work out and it taxes your body; your body then recovers and even increases its strength during rest. Rest is just as important as exercise. It will be to your advantage to listen to your body and to track and recognise those cyclical patterns in your workout progression.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;sleep-visuals&#34; class=&#34;section level3&#34;&gt;
@@ -566,7 +566,7 @@ p2 &amp;lt;- sleep %&amp;gt;%
 
 p1 + p2&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2022-02-10-goals-tracking-visuals_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;You can clearly see the broad and rather misshapen distributions, as well as the fact that their centers were shifting quite a bit over time. While the error bars give an immediate indication of the narrowness of the distribution, the density plots show skewness, multiple peaks, and outlining values. Although I succeeded in my sleep goal overall, there are more of those outliers than I would have liked. This is something I intend to improve on this year.&lt;/p&gt;
+&lt;p&gt;You can clearly see the broad and rather misshapen distributions, as well as the fact that their centers were shifting quite a bit over time. While the error bars give an immediate indication of the narrowness of the distribution, the density plots show skewness, multiple peaks, and outlier values. Although I succeeded in my sleep goal overall, there are more of those outliers than I would have liked. This is something I intend to improve on this year.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;progress-bars&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Progress bars&lt;/h3&gt;
