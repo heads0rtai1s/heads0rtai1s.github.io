@@ -5,7 +5,7 @@
     <description>Recent content in R on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 19 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 19 Apr 2022 23:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://heads0rtai1s.github.io/categories/r/index.xml" rel="self" type="application/rss+xml" />
     
@@ -13,7 +13,7 @@
     <item>
       <title>Designing a Kaggle Notebooks Competition</title>
       <link>https://heads0rtai1s.github.io/2022/04/19/gems-comp-design/</link>
-      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 19 Apr 2022 23:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2022/04/19/gems-comp-design/</guid>
       <description>
@@ -34,12 +34,9 @@
 &lt;p&gt;There were notable milestones on the way: for episode 50 I’ve created a &lt;a href=&#34;https://www.kaggle.com/datasets/headsortails/notebooks-of-the-week-hidden-gems&#34;&gt;dedicated Kaggle dataset of all my Hidden Gems episodes&lt;/a&gt; together with a &lt;a href=&#34;https://www.kaggle.com/code/headsortails/hidden-gems-a-collection-of-underrated-notebooks&#34;&gt;Starter Notebook written in tidyverse R&lt;/a&gt;. The notebook also drew connections to the comprehensive &lt;a href=&#34;https://www.kaggle.com/kaggle/meta-kaggle&#34;&gt;Meta Kaggle dataset&lt;/a&gt;, where Kaggle publishes all the meta data about the community.&lt;/p&gt;
 &lt;p&gt;And on Tuesday April 5th 2022 my little series reached its &lt;a href=&#34;https://www.kaggle.com/discussions/general/317093&#34;&gt;100th episode&lt;/a&gt;! I’m still pretty amazed at this significant milestone; and at the fact that Kagglers have continued to visit and appreciate my episodes throughout those one hundred weeks. This definitely called for a celebration.&lt;/p&gt;
 &lt;p&gt;I much prefer to celebrate with my fellow Kagglers, so on the very same day I launched a &lt;a href=&#34;https://www.kaggle.com/discussions/general/317093&#34;&gt;surprise competition&lt;/a&gt; aimed at exploring the Hidden Gems data and its connections to related datasets. Over the preceding weeks and months, I had managed to put together a stellar panel of judges to evaluate the submissions and to obtain cool swag prizes (and more!) from Kaggle itself and from the &lt;a href=&#34;https://wandb.ai/site&#34;&gt;Weights &amp;amp; Biases platform&lt;/a&gt;. Thanks so much for sponsoring this!&lt;/p&gt;
-&lt;p&gt;I also want to emphasize that in the design of this competition I drew on inspiration from the different judges, especially from &lt;a href=&#34;https://twitter.com/bhutanisanyam1&#34;&gt;Sanyam Bhutani&lt;/a&gt;, the host of the popular &lt;a href=&#34;https://www.youtube.com/c/chaitimedatascience&#34;&gt;Chai Time Data Science podcast&lt;/a&gt;, who had hosted his own &lt;a href=&#34;https://www.kaggle.com/datasets/rohanrao/chai-time-data-science&#34;&gt;Notebooks competition&lt;/a&gt; back in 2020. I got a lot of ideas from that competition and I’m grateful to Sanyam and &lt;a href=&#34;https://www.kaggle.com/rohanrao&#34;&gt;Rohan Rao&lt;/a&gt; for organising it and inviting me to the panel of judges.&lt;/p&gt;
+&lt;p&gt;I also want to emphasize that in the design of this competition I drew on inspiration from the different judges, especially from &lt;a href=&#34;https://twitter.com/bhutanisanyam1&#34;&gt;Sanyam Bhutani&lt;/a&gt;, the host of the popular &lt;a href=&#34;https://www.youtube.com/c/chaitimedatascience&#34;&gt;Chai Time Data Science podcast&lt;/a&gt;, who had hosted his own &lt;a href=&#34;https://www.kaggle.com/datasets/rohanrao/chai-time-data-science&#34;&gt;Notebooks competition&lt;/a&gt; back in 2020. I got a lot of ideas from that competition and I’m grateful to Sanyam and &lt;a href=&#34;https://www.kaggle.com/rohanrao&#34;&gt;Rohan Rao&lt;/a&gt; for organising it and inviting me to the panel of judges back then.&lt;/p&gt;
 &lt;p&gt;The main goal of the Hidden Gems competition is to help people learn and practice how to craft engaging and insightful DS &amp;amp; ML presentations. All contributions are guaranteed to receive an evaluation and constructive feedback from a panel of highly experienced Kaggle community members. Below this overview infographic I share instructions on how to join, as well as my advice on the important elements of a successful notebook.&lt;/p&gt;
-&lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;../../static/pics/hidden_gems_competition.jpeg&#34; style=&#34;width:100.0%&#34; alt=&#34;&#34; /&gt;
-&lt;p class=&#34;caption&#34;&gt;&lt;em&gt;The Hidden Gems Competition poster&lt;/em&gt;&lt;/p&gt;
-&lt;/div&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/pics/hidden_gems_competition.jpeg&#34; title=&#34;The Hidden Gems Competition poster&#34; style=&#34;width:100.0%&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;evaluation-criteria-what-makes-a-great-notebook&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Evaluation Criteria: What makes a great notebook?&lt;/h3&gt;
@@ -76,7 +73,7 @@
     <item>
       <title>R &amp; Python Rosetta Stone: Reading files and column transformations</title>
       <link>https://heads0rtai1s.github.io/2022/02/24/r-python-read-separate/</link>
-      <pubDate>Thu, 24 Feb 2022 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 24 Feb 2022 23:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2022/02/24/r-python-read-separate/</guid>
       <description>
@@ -2824,7 +2821,7 @@ df_py&lt;/code&gt;&lt;/pre&gt;
     <item>
       <title>Yearly goals: Tracking tools &amp; visuals</title>
       <link>https://heads0rtai1s.github.io/2022/02/10/goals-tracking-visuals/</link>
-      <pubDate>Thu, 10 Feb 2022 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 10 Feb 2022 23:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2022/02/10/goals-tracking-visuals/</guid>
       <description>
@@ -3423,7 +3420,7 @@ p1 / p2&lt;/code&gt;&lt;/pre&gt;
     <item>
       <title>Installing CUDA, tensorflow, torch for R &amp; Python on Ubuntu 20.04</title>
       <link>https://heads0rtai1s.github.io/2021/02/25/gpu-setup-r-python-ubuntu/</link>
-      <pubDate>Thu, 25 Feb 2021 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 25 Feb 2021 23:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2021/02/25/gpu-setup-r-python-ubuntu/</guid>
       <description>
@@ -3570,7 +3567,7 @@ cuda_is_available()&lt;/code&gt;&lt;/pre&gt;
     <item>
       <title>R &amp; Python Rosetta Stone: EDA with dplyr vs pandas</title>
       <link>https://heads0rtai1s.github.io/2020/11/05/r-python-dplyr-pandas/</link>
-      <pubDate>Thu, 05 Nov 2020 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 05 Nov 2020 23:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2020/11/05/r-python-dplyr-pandas/</guid>
       <description>
@@ -3978,7 +3975,7 @@ pd.concat([r.df.loc[:, &amp;#39;species&amp;#39;], r.df.loc[:, &amp;#39;year&amp
     <item>
       <title>Animations in the time of Coronavirus</title>
       <link>https://heads0rtai1s.github.io/2020/04/30/animate-map-covid/</link>
-      <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 30 Apr 2020 23:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2020/04/30/animate-map-covid/</guid>
       <description>
@@ -4284,7 +4281,7 @@ animate(gg + ease_aes(&amp;#39;cubic-in-out&amp;#39;), fps = 10, end_pause = 25,
     <item>
       <title>Analysing tweets with the rtweet package</title>
       <link>https://heads0rtai1s.github.io/2020/02/20/rtweet-intro/</link>
-      <pubDate>Thu, 20 Feb 2020 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 20 Feb 2020 23:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2020/02/20/rtweet-intro/</guid>
       <description>
@@ -4410,7 +4407,7 @@ GiusCalamita
     <item>
       <title>rstudio::conf retrospective</title>
       <link>https://heads0rtai1s.github.io/2020/02/13/rstudio-conf/</link>
-      <pubDate>Thu, 13 Feb 2020 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 13 Feb 2020 23:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2020/02/13/rstudio-conf/</guid>
       <description>
@@ -4447,7 +4444,7 @@ GiusCalamita
     <item>
       <title>Web Scraping with rvest &#43; Astro Throwback</title>
       <link>https://heads0rtai1s.github.io/2020/01/23/rvest-intro-astro/</link>
-      <pubDate>Thu, 23 Jan 2020 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 23 Jan 2020 23:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2020/01/23/rvest-intro-astro/</guid>
       <description>
@@ -4834,7 +4831,7 @@ foo %&amp;gt;%
     <item>
       <title>R Shiny for beginners: annotated starter code</title>
       <link>https://heads0rtai1s.github.io/2019/12/05/shiny-starter-code/</link>
-      <pubDate>Thu, 05 Dec 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 05 Dec 2019 23:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2019/12/05/shiny-starter-code/</guid>
       <description>
@@ -4991,7 +4988,7 @@ shinyApp(ui = ui, server = server)&lt;/code&gt;&lt;/pre&gt;
     <item>
       <title>Tidyverse evolutions: curly-curly operator and pivoting (feat. tidytuesday data &amp; leaflet visuals)</title>
       <link>https://heads0rtai1s.github.io/2019/11/07/tidy-curly-pivot-leaflet/</link>
-      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 07 Nov 2019 23:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2019/11/07/tidy-curly-pivot-leaflet/</guid>
       <description>
@@ -5760,7 +5757,7 @@ leaflet(loc) %&amp;gt;%
     <item>
       <title>The best of both worlds: R meets Python via reticulate</title>
       <link>https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/</link>
-      <pubDate>Thu, 03 Oct 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 03 Oct 2019 23:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/</guid>
       <description>
@@ -6125,7 +6122,7 @@ grid.arrange(p1, p2, p3,
     <item>
       <title>Tidy evaluation in R: Part 2 - Complex use cases (feat. facet zoom)</title>
       <link>https://heads0rtai1s.github.io/2019/08/22/tidy-eval-examples-part2/</link>
-      <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 22 Aug 2019 23:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2019/08/22/tidy-eval-examples-part2/</guid>
       <description>
@@ -6425,7 +6422,7 @@ plot_xy(diamonds, carat, price, clarity, &amp;quot;IF&amp;quot;, color, cut)&lt;
     <item>
       <title>Data flow visuals - alluvial vs ggalluvial in R</title>
       <link>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</link>
-      <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 06 Jun 2019 23:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</guid>
       <description>
@@ -6573,7 +6570,7 @@ alluvial(fly %&amp;gt;% select(-n),
     <item>
       <title>Tidy evaluation in R - Simple Examples</title>
       <link>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</link>
-      <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 24 Apr 2019 23:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</guid>
       <description>
