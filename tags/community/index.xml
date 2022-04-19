@@ -6,7 +6,16 @@
     <description>Recent content in community on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 20 Feb 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/community/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 19 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/community/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Designing a Kaggle Notebooks Competition</title>
+      <link>https://heads0rtai1s.github.io/2022/04/19/gems-comp-design/</link>
+      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/2022/04/19/gems-comp-design/</guid>
+      <description>Two weeks ago, I launched my first very own competition on the Kaggle platform, the goal of which is to design engaging data science notebooks with great visuals, narration, and insights. Today, at the half-way point of the competition, I want to write about my motivations for creating this challenge, the underlying data, and my criteria of what makes a captivating and accessible notebook in the R or Python languages.</description>
+    </item>
+    
     <item>
       <title>Analysing tweets with the rtweet package</title>
       <link>https://heads0rtai1s.github.io/2020/02/20/rtweet-intro/</link>

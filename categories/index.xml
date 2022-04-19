@@ -5,15 +5,42 @@
     <description>Recent content in Categories on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 24 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 19 Apr 2022 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://heads0rtai1s.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>community</title>
+      <link>https://heads0rtai1s.github.io/categories/community/</link>
+      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/categories/community/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>EDA</title>
+      <link>https://heads0rtai1s.github.io/categories/eda/</link>
+      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/categories/eda/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kaggle</title>
+      <link>https://heads0rtai1s.github.io/categories/kaggle/</link>
+      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/categories/kaggle/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Python</title>
       <link>https://heads0rtai1s.github.io/categories/python/</link>
-      <pubDate>Thu, 24 Feb 2022 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/categories/python/</guid>
       <description></description>
@@ -22,9 +49,18 @@
     <item>
       <title>R</title>
       <link>https://heads0rtai1s.github.io/categories/r/</link>
-      <pubDate>Thu, 24 Feb 2022 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/categories/r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>visualisation</title>
+      <link>https://heads0rtai1s.github.io/categories/visualisation/</link>
+      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/categories/visualisation/</guid>
       <description></description>
     </item>
     
@@ -43,33 +79,6 @@
       <pubDate>Thu, 10 Feb 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/categories/journey/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>visualisation</title>
-      <link>https://heads0rtai1s.github.io/categories/visualisation/</link>
-      <pubDate>Thu, 10 Feb 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://heads0rtai1s.github.io/categories/visualisation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>EDA</title>
-      <link>https://heads0rtai1s.github.io/categories/eda/</link>
-      <pubDate>Thu, 27 Jan 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://heads0rtai1s.github.io/categories/eda/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kaggle</title>
-      <link>https://heads0rtai1s.github.io/categories/kaggle/</link>
-      <pubDate>Thu, 27 Jan 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://heads0rtai1s.github.io/categories/kaggle/</guid>
       <description></description>
     </item>
     
@@ -142,15 +151,6 @@
       <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/categories/maps/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>community</title>
-      <link>https://heads0rtai1s.github.io/categories/community/</link>
-      <pubDate>Thu, 20 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://heads0rtai1s.github.io/categories/community/</guid>
       <description></description>
     </item>
     

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.92.0" />
+
+
+<title>Designing a Kaggle Notebooks Competition - head spin - the Heads or Tails blog</title>
+<meta property="og:title" content="Designing a Kaggle Notebooks Competition - head spin - the Heads or Tails blog">
+
+
+  <link href='https://heads0rtai1s.github.io/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/avatar.png"
+         width="50"
+         height="50"
+         alt="Heads or Tails">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="/blogroll/">Blogroll</a></li>
+    
+    <li><a href="https://twitter.com/heads0rtai1s">Twitter</a></li>
+    
+    <li><a href="https://www.kaggle.com/headsortails">Kaggle</a></li>
+    
+    <li><a href="https://www.linkedin.com/in/martin-henze">LinkedIn</a></li>
+    
+    <li><a href="https://github.com/heads0rtai1s">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">8 min read</span>
+    
+
+    <h1 class="article-title">Designing a Kaggle Notebooks Competition</h1>
+
+    
+    <span class="article-date">2022-04-19</span>
+    
+
+    <div class="article-content">
+      
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>Two weeks ago, I launched my <a href="https://www.kaggle.com/discussions/general/317093">first very own competition on the Kaggle platform</a>, the goal of which is to design engaging data science notebooks with great visuals, narration, and insights. Today, at the half-way point of the competition, I want to write about my motivations for creating this challenge, the underlying data, and my criteria of what makes a captivating and accessible notebook in the R or Python languages. All of this is strongly connected to what I see as one of the most underrated skills in the fields of data science (DS) and machine learning (ML): the ability to effectively communicate your approach and your findings.</p>
+<p>But let’s start at the beginning.</p>
+<div id="the-hidden-gems-project" class="section level3">
+<h3>The Hidden Gems project</h3>
+<p>It was two years ago when, out of a whim and a chat on Twitter, I’ve decided that it was time to put a spotlight on the underrated content found within the Kaggle community. The <a href="https://www.kaggle.com">Kaggle platform</a> has grown dramatically over the last years, and so has the number of <a href="https://www.kaggle.com/code">Kaggle Notebooks</a>, i.e. Jupyter or Rmarkdown analysis notebooks of competitions, datasets, tutorials, dataviz challenges, and more. One of the great strengths of the Kaggle platform is the ability to run those notebooks in their cloud environment; complete with free compute, GPU &amp; TPU time, a pre-installed DS &amp; ML stack, and access to tons of different datasets.</p>
+<p>Naturally, such a powerful environment, together with a supportive yet competitive community, produces a lot of great content. There are many notebooks on Kaggle that for good reasons are very popular: they explain state-of-the-art ML approaches, present new modelling ideas, enlighten us with detailed data explorations, or showcase carefully crafted visuals. But at the same time there are also notebooks that have a high quality yet, for whichever reason, haven’t received many views, upvotes, or feedback. The Hidden Gems project is my attempt to rectify this situation. I wanted to do my little bit in helping to get those notebooks and their authors the attention that they deserve.</p>
+<p>From the <a href="https://www.kaggle.com/general/150603">very beginning</a>, my goal with this series has been to showcase underrated Kaggle Notebooks and to illuminate the diversity and creativity of the community. My selections are always highly subjective; reflecting my own views and preferences. And I always encourage the readers of the series to further engage with the community by posting about other underestimated Notebooks in the comments.</p>
+</div>
+<div id="a-reason-to-celebrate" class="section level3">
+<h3>A Reason to Celebrate</h3>
+<p>Over the last two years, I managed to keep up a cadence of posting about three underrated notebooks per week; every week. On each Tuesday, without fail, I would publish a new episode of Hidden Gems on Kaggle and on social media. I’ve learnt a lot during this time from all the notebooks that I’ve reviewed. And reading new and interesting works has become an integral part of my week.</p>
+<p>There were notable milestones on the way: for episode 50 I’ve created a <a href="https://www.kaggle.com/datasets/headsortails/notebooks-of-the-week-hidden-gems">dedicated Kaggle dataset of all my Hidden Gems episodes</a> together with a <a href="https://www.kaggle.com/code/headsortails/hidden-gems-a-collection-of-underrated-notebooks">Starter Notebook written in tidyverse R</a>. The notebook also drew connections to the comprehensive <a href="https://www.kaggle.com/kaggle/meta-kaggle">Meta Kaggle dataset</a>, where Kaggle publishes all the meta data about the community.</p>
+<p>And on Tuesday April 5th 2022 my little series reached its <a href="https://www.kaggle.com/discussions/general/317093">100th episode</a>! I’m still pretty amazed at this significant milestone; and at the fact that Kagglers have continued to visit and appreciate my episodes throughout those one hundred weeks. This definitely called for a celebration.</p>
+<p>I much prefer to celebrate with my fellow Kagglers, so on the very same day I launched a <a href="https://www.kaggle.com/discussions/general/317093">surprise competition</a> aimed at exploring the Hidden Gems data and its connections to related datasets. Over the preceding weeks and months, I had managed to put together a stellar panel of judges to evaluate the submissions and to obtain cool swag prizes (and more!) from Kaggle itself and from the <a href="https://wandb.ai/site">Weights &amp; Biases platform</a>. Thanks so much for sponsoring this!</p>
+<p>I also want to emphasize that in the design of this competition I drew on inspiration from the different judges, especially from <a href="https://twitter.com/bhutanisanyam1">Sanyam Bhutani</a>, the host of the popular <a href="https://www.youtube.com/c/chaitimedatascience">Chai Time Data Science podcast</a>, who had hosted his own <a href="https://www.kaggle.com/datasets/rohanrao/chai-time-data-science">Notebooks competition</a> back in 2020. I got a lot of ideas from that competition and I’m grateful to Sanyam and <a href="https://www.kaggle.com/rohanrao">Rohan Rao</a> for organising it and inviting me to the panel of judges.</p>
+<p>The main goal of the Hidden Gems competition is to help people learn and practice how to craft engaging and insightful DS &amp; ML presentations. All contributions are guaranteed to receive an evaluation and constructive feedback from a panel of highly experienced Kaggle community members. Below this overview infographic I share instructions on how to join, as well as my advice on the important elements of a successful notebook.</p>
+<div class="figure">
+<img src="../../static/pics/hidden_gems_competition.jpeg" style="width:100.0%" alt="" />
+<p class="caption"><em>The Hidden Gems Competition poster</em></p>
+</div>
+</div>
+<div id="evaluation-criteria-what-makes-a-great-notebook" class="section level3">
+<h3>Evaluation Criteria: What makes a great notebook?</h3>
+<p>This is not a typical Kaggle competition with predictions that are scored on a leaderboard. Instead, <em>submissions are Kaggle Notebooks</em>. Anyone can participate simply by creating a public Notebook on the Hidden Gems dataset. All submission will be evaluated by a panel of expert judges on five specific criteria.</p>
+<p>These are the criteria which I see as the cornerstones of communicating accessible ML &amp; DS insights. Here is a list explaining each criterion, in no particular order:</p>
+<ul>
+<li><p><strong>Quality of data visuals:</strong> How clean, well designed, and approachable are the visualisations? Does the type of visualisation match the kind of insight that is being communicated? Are there consistent styles or colour schemes?</p></li>
+<li><p><strong>Narration &amp; storytelling:</strong> Is the analysis well explained and documented to allow the reader to understand insights and their context? Does the notebook follow an engaging flow? Are there certain narrative tools that make the work stand out?</p></li>
+<li><p><strong>Structure &amp; presentation:</strong> Are the different parts of the notebook well defined? How do those parts relate to one another? Is the code clean? Are the key insights centered, but the code and context easily accessible?</p></li>
+<li><p><strong>Quality of insights:</strong> Are the insights relevant, useful, and actionable? Does the notebook tell us something new, unexpected, or counter intuitive? Does the work contain recommendations or predictions for the future?</p></li>
+<li><p><strong>Creativity &amp; originality:</strong> How novel and inventive are the ideas and approach? Am I positively surprised by some stylistic choices or discovered findings? Does the author have their own style, and perhaps take some design risks in expressing it.</p></li>
+</ul>
+<p>You might notice that those criteria have a strong overlap with best practices in data journalism. Which makes sense, because the goals are very similar: to clearly present a cohesive narrative that is insightful and accessible to an audience. Like for many ways of communicating, the details here depend on who your audience is and what kind of findings your are communicating. The Kaggle community is likely more technically inclined than most, so you could decide to put a strong emphasis on well documented data wrangling or model architectures. Or you could hide all the code in your notebook and rely on a strong narrative with a few hand-crafted visuals. Like in a good piece of popular data journalism.</p>
+</div>
+<div id="how-to-join" class="section level3">
+<h3>How to join</h3>
+<p>If you share my passion for dataviz and storytelling, then you might now be interested to know how you can join this competition to practice your skills and win some prizes. You might even consider to join the Kaggle platform just to compete in this challenge, in which case I’d be very honoured. This might be a good time to mention that there is a special prize category for people who will have written their very first Kaggle notebook.</p>
+<p>To join, go to the <a href="https://www.kaggle.com/datasets/headsortails/notebooks-of-the-week-hidden-gems/discussion/317098">dataset page</a>. At the very top, you will find a button that says “New Notebook”. Click that, and choose between Python or R (and R Jupyter notebook or Rmarkdown). You will find yourself in the Kaggle editor, where the dataset is already available, and start exploring.</p>
+<p>If you would like to watch some examples of what can be done with the dataset and how to use the Kaggle editor, here are a few live streams done by the members of the judge panel:</p>
+<ul>
+<li><p><a href="https://www.youtube.com/watch?v=o__J3bkp2PQ">The launch stream by Sanyam Bhutani and myself</a> - where we explain the background and setup of the competition in detail. I go through my starter notebook, and Sanyam shows how to connect to the Weights &amp; Biases platform.</p></li>
+<li><p><a href="https://www.youtube.com/watch?v=J2iLOkIqwQo">Stream on Abhishek Thakur’s youtube channel</a> - focussing on overall EDA advice and how to write engaging notebooks. We answer quite a few questions from the audience and talk about the notebook that won the first weekly price.</p></li>
+<li><p><a href="https://www.twitch.tv/videos/1449472244">Live coding with Rob Mulla on twitch</a> - a more in-depth chat about motivations and various EDA techniques in R and Python. I’m explaining my R starter notebook and Rob starts a live EDA in Python.</p></li>
+<li><p><a href="https://www.youtube.com/watch?v=o-Cefl_zLEk">Live coding EDA by Andrada Olteanu hosted by Sanyam Bhutani</a> - full of great advice for notebook design and dataviz crafting. Andrada starts a live EDA in Python.</p></li>
+</ul>
+<p>The Kaggle editor works pretty well for Jupyter-style notebooks. When it comes to Rmarkdown content, I prefer to build it locally in Rstudio and then copy/paste my work into the Kaggle environment and run it there (button “Save Version”). This way, you can take advantage of all the Rstudio tools.</p>
+<hr />
+<p>Hopefully this post got you interested in joining the ongoing competition to practice your skills when it comes to EDA and notebook design. I would love to see your ideas and creativity! And to reward them with some cool swag prizes.</p>
+<p><a href="https://www.kaggle.com/datasets/headsortails/notebooks-of-the-week-hidden-gems/discussion/317098">You can join here.</a></p>
+</div>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//headsortails.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137904077-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  </body>
+</html>
+

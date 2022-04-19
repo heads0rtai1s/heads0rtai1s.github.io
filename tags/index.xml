@@ -6,20 +6,38 @@
     <description>Recent content in Tags on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 24 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 19 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>programming</title>
-      <link>https://heads0rtai1s.github.io/tags/programming/</link>
-      <pubDate>Thu, 24 Feb 2022 00:00:00 +0000</pubDate>
+      <title>community</title>
+      <link>https://heads0rtai1s.github.io/tags/community/</link>
+      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://heads0rtai1s.github.io/tags/programming/</guid>
+      <guid>https://heads0rtai1s.github.io/tags/community/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>EDA</title>
+      <link>https://heads0rtai1s.github.io/tags/eda/</link>
+      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/eda/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kaggle</title>
+      <link>https://heads0rtai1s.github.io/tags/kaggle/</link>
+      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/kaggle/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python</title>
       <link>https://heads0rtai1s.github.io/tags/python/</link>
-      <pubDate>Thu, 24 Feb 2022 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/tags/python/</guid>
       <description></description>
@@ -28,9 +46,27 @@
     <item>
       <title>R</title>
       <link>https://heads0rtai1s.github.io/tags/r/</link>
-      <pubDate>Thu, 24 Feb 2022 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/tags/r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>visualisation</title>
+      <link>https://heads0rtai1s.github.io/tags/visualisation/</link>
+      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/visualisation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>programming</title>
+      <link>https://heads0rtai1s.github.io/tags/programming/</link>
+      <pubDate>Thu, 24 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/programming/</guid>
       <description></description>
     </item>
     
@@ -76,33 +112,6 @@
       <pubDate>Thu, 10 Feb 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/tags/running/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>visualisation</title>
-      <link>https://heads0rtai1s.github.io/tags/visualisation/</link>
-      <pubDate>Thu, 10 Feb 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://heads0rtai1s.github.io/tags/visualisation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>EDA</title>
-      <link>https://heads0rtai1s.github.io/tags/eda/</link>
-      <pubDate>Thu, 27 Jan 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://heads0rtai1s.github.io/tags/eda/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kaggle</title>
-      <link>https://heads0rtai1s.github.io/tags/kaggle/</link>
-      <pubDate>Thu, 27 Jan 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://heads0rtai1s.github.io/tags/kaggle/</guid>
       <description></description>
     </item>
     
@@ -193,15 +202,6 @@
       <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/tags/maps/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>community</title>
-      <link>https://heads0rtai1s.github.io/tags/community/</link>
-      <pubDate>Thu, 20 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://heads0rtai1s.github.io/tags/community/</guid>
       <description></description>
     </item>
     

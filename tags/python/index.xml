@@ -6,7 +6,16 @@
     <description>Recent content in Python on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 24 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 19 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Designing a Kaggle Notebooks Competition</title>
+      <link>https://heads0rtai1s.github.io/2022/04/19/gems-comp-design/</link>
+      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/2022/04/19/gems-comp-design/</guid>
+      <description>Two weeks ago, I launched my first very own competition on the Kaggle platform, the goal of which is to design engaging data science notebooks with great visuals, narration, and insights. Today, at the half-way point of the competition, I want to write about my motivations for creating this challenge, the underlying data, and my criteria of what makes a captivating and accessible notebook in the R or Python languages.</description>
+    </item>
+    
     <item>
       <title>R &amp; Python Rosetta Stone: Reading files and column transformations</title>
       <link>https://heads0rtai1s.github.io/2022/02/24/r-python-read-separate/</link>
