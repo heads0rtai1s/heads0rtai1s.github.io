@@ -6,7 +6,16 @@
     <description>Recent content in kaggle on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 19 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/kaggle/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 28 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/kaggle/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TidyTuesday and Barplots with Images</title>
+      <link>https://heads0rtai1s.github.io/2022/04/28/gems-tidytuesday/</link>
+      <pubDate>Thu, 28 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/2022/04/28/gems-tidytuesday/</guid>
+      <description>This week, the Kaggle Hidden Gems Competition is featured in a special crossover event with the fantastic TidyTuesday project to further strengthen the connections between the R &amp;amp; Kaggle communities. The TidyTuesday participants are invited to expand their beautifully crafted data visuals into narrative notebooks on the Kaggle platform, and receive feedback and prizes for their work. This post will briefly describe my goals and motivation for this collaboration, and then show the code for one of my own visuals where I learned how to include images in ggplot2 barplots.</description>
+    </item>
+    
     <item>
       <title>Designing a Kaggle Notebooks Competition</title>
       <link>https://heads0rtai1s.github.io/2022/04/19/gems-comp-design/</link>

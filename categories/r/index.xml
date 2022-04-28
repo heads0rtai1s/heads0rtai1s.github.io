@@ -5,15 +5,1248 @@
     <description>Recent content in R on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 19 Apr 2022 23:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 28 Apr 2022 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://heads0rtai1s.github.io/categories/r/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>TidyTuesday and Barplots with Images</title>
+      <link>https://heads0rtai1s.github.io/2022/04/28/gems-tidytuesday/</link>
+      <pubDate>Thu, 28 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/2022/04/28/gems-tidytuesday/</guid>
+      <description>
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;This week, the &lt;a href=&#34;https://www.kaggle.com/discussions/general/317093&#34;&gt;Kaggle Hidden Gems Competition&lt;/a&gt; is featured in a special crossover event with the fantastic &lt;a href=&#34;https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-04-26/readme.md&#34;&gt;TidyTuesday project&lt;/a&gt; to further strengthen the connections between the R &amp;amp; Kaggle communities. The TidyTuesday participants are invited to expand their beautifully crafted data visuals into narrative notebooks on the Kaggle platform, and receive feedback and prizes for their work. This post will briefly describe my goals and motivation for this collaboration, and then show the code for one of my own visuals where I learned how to include images in ggplot2 barplots.&lt;/p&gt;
+&lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;The &lt;a href=&#34;https://twitter.com/R4DScommunity?ref_src=twsrc%5Etfw&#34;&gt;@R4DScommunity&lt;/a&gt; welcomes you to week 17 of &lt;a href=&#34;https://twitter.com/hashtag/TidyTuesday?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#TidyTuesday&lt;/a&gt;!  We&amp;#39;re exploring Kaggle Hidden Gems courtesy of &lt;a href=&#34;https://twitter.com/heads0rtai1s?ref_src=twsrc%5Etfw&#34;&gt;@heads0rtai1s&lt;/a&gt; !!&lt;br&gt;&lt;br&gt;📂 &lt;a href=&#34;https://t.co/sElb4fcv3u&#34;&gt;https://t.co/sElb4fcv3u&lt;/a&gt;&lt;br&gt;🗞 &lt;a href=&#34;https://t.co/OVy4t58mvO&#34;&gt;https://t.co/OVy4t58mvO&lt;/a&gt;&lt;a href=&#34;https://twitter.com/hashtag/r4ds?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#r4ds&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/tidyverse?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#tidyverse&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/rstats?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#rstats&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/dataviz?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#dataviz&lt;/a&gt; &lt;a href=&#34;https://t.co/MP85A6im6h&#34;&gt;pic.twitter.com/MP85A6im6h&lt;/a&gt;&lt;/p&gt;&amp;mdash; Tom Mock (@thomas_mock) &lt;a href=&#34;https://twitter.com/thomas_mock/status/1518729259828797445?ref_src=twsrc%5Etfw&#34;&gt;April 25, 2022&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
+&lt;div id=&#34;a-tidytuesday-crossover-episode&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;A TidyTuesday crossover episode&lt;/h3&gt;
+&lt;p&gt;The &lt;a href=&#34;https://github.com/rfordatascience/tidytuesday/blob/master/README.md&#34;&gt;TidyTuesday series&lt;/a&gt; is a long-running project organised by &lt;a href=&#34;https://twitter.com/thomas_mock&#34;&gt;Tom Mock&lt;/a&gt; and the &lt;a href=&#34;https://twitter.com/R4DScommunity&#34;&gt;R4DS online learning community&lt;/a&gt; and largely run on Twitter. Every week sees a new dataset, in varying states of tidiness, and the challenge is to wrangle, explore, and visualise this data. And each week the participants continue to delight and astonish with their creative solutions.&lt;/p&gt;
+&lt;p&gt;The goals of TidyTuesday have a strong overlap with those of my Kaggle Hidden Gems competition, about which I wrote in &lt;a href=&#34;https://heads0rtai1s.github.io/2022/04/19/gems-comp-design&#34;&gt;last week’s post&lt;/a&gt;. For me, visualisations are at the heart of effective data science communication. The notebook format of the Hidden Gems challenge now opens up the opportunity to
+take those visuals and embed them into an engaging and accessible story.&lt;/p&gt;
+&lt;p&gt;I’ve already seen multiple great visuals through the &lt;code&gt;#TidyTuesday&lt;/code&gt; and &lt;code&gt;#Rstats&lt;/code&gt; hashtags on Twitter, and I plan to collect most or all of them in a future post.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;practice-new-ideas-images-in-barplots&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Practice new ideas: Images in Barplots&lt;/h3&gt;
+&lt;p&gt;One major goal of initiatives like TidyTuesday and this crossover initiative is to give the participants the opportunity to practice their data &amp;amp; dataviz skills, and to learn and showcase new tools and ideas. When I wrote my &lt;a href=&#34;https://www.kaggle.com/code/headsortails/hidden-gems-a-collection-of-underrated-notebooks&#34;&gt;Starter Notebook&lt;/a&gt; for the Hidden Gems data I did something similar and decide to challenge myself to learn how to include (jpg) images in plots.&lt;/p&gt;
+&lt;p&gt;Here, I’m breaking down one of those plots, which uses the self-contained &lt;code&gt;kaggle_hidden_gems.csv&lt;/code&gt; dataset to study the frequencies of social media links on the profiles of the Hidden Gems authors.&lt;/p&gt;
+&lt;p&gt;First, we get our required libraries:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;tibble&amp;#39;,      # wrangling
+          &amp;#39;tidyr&amp;#39;, &amp;#39;stringr&amp;#39;,     # wrangling
+          &amp;#39;tidytuesdayR&amp;#39;,         # tidytuesday
+          &amp;#39;gt&amp;#39;,                   # tables
+          &amp;#39;grid&amp;#39;, &amp;#39;magick&amp;#39;,       # images, plots
+          &amp;#39;ggthemes&amp;#39;, &amp;#39;ggplot2&amp;#39;)  # plots
+invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The dataset itself is &lt;a href=&#34;https://www.kaggle.com/datasets/headsortails/notebooks-of-the-week-hidden-gems&#34;&gt;publicly available on Kaggle&lt;/a&gt;, but through the TidyTuesday crossover it can now also be accessed via the &lt;a href=&#34;https://thebioengineer.github.io/tidytuesdayR/&#34;&gt;tidytuesdayR package&lt;/a&gt; like this:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tuesdata &amp;lt;- tidytuesdayR::tt_load(&amp;#39;2022-04-26&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+##  Downloading file 1 of 1: `hidden_gems.csv`&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gems &amp;lt;- tuesdata$hidden_gems&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The detailed exploration of the dataset and its features is of course the goal of the Hidden Gems Competition and the TidyTuesday challenge, so here I’ll be focussing only on this narrow question: what percentage of Hidden Gems authors have a Twitter link in their bio vs a LinkedIn link?&lt;/p&gt;
+&lt;p&gt;Here we are interested in the features &lt;code&gt;author_twitter&lt;/code&gt; and &lt;code&gt;author_linkedin&lt;/code&gt; that contain the social links. We’re reformatting those columns a little and pivot them to a longer table. This is so that we can group by the social &lt;code&gt;media&lt;/code&gt; platform and extract the fractions of authors that display those links in their profiles. Note, that this code is more elegant than what I originally wrote for the starter notebook:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;foo &amp;lt;- gems %&amp;gt;% 
+  distinct(author_twitter, author_linkedin) %&amp;gt;%
+  pivot_longer(everything(), names_to = &amp;quot;media&amp;quot;, values_to = &amp;quot;links&amp;quot;) %&amp;gt;% 
+  mutate(media = str_to_title(str_replace(media, &amp;quot;author_&amp;quot;, &amp;quot;&amp;quot;))) %&amp;gt;% 
+  group_by(media) %&amp;gt;% 
+  summarise(total = n(),
+            ct = sum(!is.na(links)),
+            frac = mean(!is.na(links)))
+
+foo %&amp;gt;% 
+  gt()&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;aktdrjnxnh&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:auto;&#34;&gt;
+&lt;style&gt;html {
+  font-family: -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, Oxygen, Ubuntu, Cantarell, &#39;Helvetica Neue&#39;, &#39;Fira Sans&#39;, &#39;Droid Sans&#39;, Arial, sans-serif;
+}
+
+#aktdrjnxnh .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#aktdrjnxnh .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#aktdrjnxnh .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#aktdrjnxnh .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#aktdrjnxnh .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#aktdrjnxnh .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#aktdrjnxnh .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#aktdrjnxnh .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#aktdrjnxnh .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#aktdrjnxnh .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#aktdrjnxnh .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#aktdrjnxnh .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#aktdrjnxnh .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#aktdrjnxnh .gt_from_md &gt; :first-child {
+  margin-top: 0;
+}
+
+#aktdrjnxnh .gt_from_md &gt; :last-child {
+  margin-bottom: 0;
+}
+
+#aktdrjnxnh .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#aktdrjnxnh .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#aktdrjnxnh .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#aktdrjnxnh .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#aktdrjnxnh .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#aktdrjnxnh .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#aktdrjnxnh .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#aktdrjnxnh .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#aktdrjnxnh .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#aktdrjnxnh .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#aktdrjnxnh .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#aktdrjnxnh .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#aktdrjnxnh .gt_left {
+  text-align: left;
+}
+
+#aktdrjnxnh .gt_center {
+  text-align: center;
+}
+
+#aktdrjnxnh .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#aktdrjnxnh .gt_font_normal {
+  font-weight: normal;
+}
+
+#aktdrjnxnh .gt_font_bold {
+  font-weight: bold;
+}
+
+#aktdrjnxnh .gt_font_italic {
+  font-style: italic;
+}
+
+#aktdrjnxnh .gt_super {
+  font-size: 65%;
+}
+
+#aktdrjnxnh .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+&lt;/style&gt;
+&lt;table class=&#34;gt_table&#34;&gt;
+  
+  &lt;thead class=&#34;gt_col_headings&#34;&gt;
+    &lt;tr&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;media&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_right&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;total&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_right&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;ct&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_right&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;frac&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody class=&#34;gt_table_body&#34;&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;Linkedin&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;188&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;171&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;0.9095745&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;Twitter&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;188&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;91&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;0.4840426&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+  
+  
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;p&gt;We see that there are 188 distinct authors in total, and that 91% have their LinkedIn displayed but only 48% their Twitter. That’s a notable difference, and it provides interesting insights into how Kaggle profiles might be used and perceived in a wider social context.&lt;/p&gt;
+&lt;p&gt;We could turn this into a simple barplot and be done here, but our goal is to practice using images. We will use the logos of the respective platforms, which I’ve downloaded and made available in the &lt;a href=&#34;https://www.kaggle.com/datasets/headsortails/notebooks-of-the-week-hidden-gems&#34;&gt;Hidden Gems dataset&lt;/a&gt; for convenience.&lt;/p&gt;
+&lt;p&gt;We will make a little helper table that contains the image path:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;path_img &amp;lt;- &amp;quot;./&amp;quot;
+#path_img &amp;lt;- &amp;quot;/pics/&amp;quot;
+
+img_d &amp;lt;- tibble(
+  media = c(&amp;quot;Linkedin&amp;quot;, &amp;quot;Twitter&amp;quot;),
+  img = str_c(path_img, c(&amp;quot;linkedIn_logo.png&amp;quot;, &amp;quot;twitter_logo_v2.png&amp;quot;))
+)
+
+img_d %&amp;gt;% 
+  gt()&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;eixmyqpjas&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:auto;&#34;&gt;
+&lt;style&gt;html {
+  font-family: -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, Oxygen, Ubuntu, Cantarell, &#39;Helvetica Neue&#39;, &#39;Fira Sans&#39;, &#39;Droid Sans&#39;, Arial, sans-serif;
+}
+
+#eixmyqpjas .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#eixmyqpjas .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#eixmyqpjas .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#eixmyqpjas .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#eixmyqpjas .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#eixmyqpjas .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#eixmyqpjas .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#eixmyqpjas .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#eixmyqpjas .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#eixmyqpjas .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#eixmyqpjas .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#eixmyqpjas .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#eixmyqpjas .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#eixmyqpjas .gt_from_md &gt; :first-child {
+  margin-top: 0;
+}
+
+#eixmyqpjas .gt_from_md &gt; :last-child {
+  margin-bottom: 0;
+}
+
+#eixmyqpjas .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#eixmyqpjas .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#eixmyqpjas .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eixmyqpjas .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#eixmyqpjas .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eixmyqpjas .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#eixmyqpjas .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#eixmyqpjas .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#eixmyqpjas .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#eixmyqpjas .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#eixmyqpjas .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#eixmyqpjas .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#eixmyqpjas .gt_left {
+  text-align: left;
+}
+
+#eixmyqpjas .gt_center {
+  text-align: center;
+}
+
+#eixmyqpjas .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#eixmyqpjas .gt_font_normal {
+  font-weight: normal;
+}
+
+#eixmyqpjas .gt_font_bold {
+  font-weight: bold;
+}
+
+#eixmyqpjas .gt_font_italic {
+  font-style: italic;
+}
+
+#eixmyqpjas .gt_super {
+  font-size: 65%;
+}
+
+#eixmyqpjas .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+&lt;/style&gt;
+&lt;table class=&#34;gt_table&#34;&gt;
+  
+  &lt;thead class=&#34;gt_col_headings&#34;&gt;
+    &lt;tr&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;media&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;img&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody class=&#34;gt_table_body&#34;&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;Linkedin&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;./linkedIn_logo.png&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;Twitter&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;./twitter_logo_v2.png&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+  
+  
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;p&gt;And here’s the plot itself in a single cell:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p &amp;lt;- foo %&amp;gt;% 
+  ggplot(aes(media, frac)) +
+  geom_col(fill = &amp;quot;white&amp;quot;) +
+  scale_y_continuous(labels = scales::percent, breaks = seq(0, 1, 0.1)) +
+  theme_hc() +
+  theme(legend.position = &amp;quot;none&amp;quot;) +
+  labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;, title = &amp;quot;Percentage of Authors with Social Media on their Profile&amp;quot;)
+
+p_dat &amp;lt;- ggplot_build(p)
+
+p_map &amp;lt;- p_dat$data[[1]] %&amp;gt;% 
+  select(xmin, xmax, ymin, ymax) %&amp;gt;% 
+  bind_cols(foo %&amp;gt;% select(media)) %&amp;gt;% 
+  left_join(img_d, by = &amp;quot;media&amp;quot;)
+
+for (i in seq(nrow(p_map))){
+  
+  p &amp;lt;- p +
+    annotation_custom(
+      grid::rasterGrob(image_read(p_map$img[i]), 
+                 width = unit(1, &amp;quot;npc&amp;quot;), 
+                 height = unit(1, &amp;quot;npc&amp;quot;)),
+      xmin = p_map$xmin[i], 
+      xmax = p_map$xmax[i],
+      ymin = p_map$ymin[i],
+      ymax = p_map$ymax[i])
+}
+  
+p&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2022-04-28-gems-tidytuesday_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;You see that the logos now act like the bars in the plot, and are scaled to the height of the bar. It’s easy to get carried away with effects like this, but I think with only a few images and a clean style the plot still remains readable and informative.&lt;/p&gt;
+&lt;p&gt;Ok, now let’s break it down.&lt;/p&gt;
+&lt;p&gt;We first build the barplot in the normal way with &lt;code&gt;geom_col&lt;/code&gt;. The bars add like a white background, but we could also turn them fully transparent. We format the y-axis with percentages, add a nice theme and a title to set up our canvas:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p &amp;lt;- foo %&amp;gt;% 
+  ggplot(aes(media, frac)) +
+  geom_col(fill = &amp;quot;white&amp;quot;) +
+  scale_y_continuous(labels = scales::percent, breaks = seq(0, 1, 0.1)) +
+  theme_hc() +
+  theme(legend.position = &amp;quot;none&amp;quot;) +
+  labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;, title = &amp;quot;Percentage of Authors with Social Media on their Profile&amp;quot;)
+
+p&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2022-04-28-gems-tidytuesday_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;You see that the plot style is already there, and we only need to fill in the images. We achieve that by first deconstruct the plot object from above via &lt;code&gt;ggplot_build&lt;/code&gt; into a set of components that can be used to render the graph.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p_dat &amp;lt;- ggplot_build(p)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The outcome is a list with three entries: &lt;code&gt;data&lt;/code&gt; (the bars), &lt;code&gt;layout&lt;/code&gt; (the plot settings), and &lt;code&gt;plot&lt;/code&gt; (the rendered outcome). I’m not going to show all of it here, but you can easily print and inspect it. For our purposes, we will take the &lt;code&gt;data&lt;/code&gt; entry and add our image links:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p_map &amp;lt;- p_dat$data[[1]] %&amp;gt;% 
+  select(xmin, xmax, ymin, ymax) %&amp;gt;% 
+  bind_cols(foo %&amp;gt;% select(media)) %&amp;gt;% 
+  left_join(img_d, by = &amp;quot;media&amp;quot;)
+
+p_map %&amp;gt;% 
+  gt()&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;rgpshtgsdw&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:auto;&#34;&gt;
+&lt;style&gt;html {
+  font-family: -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, Oxygen, Ubuntu, Cantarell, &#39;Helvetica Neue&#39;, &#39;Fira Sans&#39;, &#39;Droid Sans&#39;, Arial, sans-serif;
+}
+
+#rgpshtgsdw .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#rgpshtgsdw .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rgpshtgsdw .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#rgpshtgsdw .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#rgpshtgsdw .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rgpshtgsdw .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rgpshtgsdw .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#rgpshtgsdw .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#rgpshtgsdw .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#rgpshtgsdw .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#rgpshtgsdw .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#rgpshtgsdw .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#rgpshtgsdw .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#rgpshtgsdw .gt_from_md &gt; :first-child {
+  margin-top: 0;
+}
+
+#rgpshtgsdw .gt_from_md &gt; :last-child {
+  margin-bottom: 0;
+}
+
+#rgpshtgsdw .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#rgpshtgsdw .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#rgpshtgsdw .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rgpshtgsdw .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#rgpshtgsdw .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rgpshtgsdw .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#rgpshtgsdw .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#rgpshtgsdw .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rgpshtgsdw .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rgpshtgsdw .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#rgpshtgsdw .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rgpshtgsdw .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#rgpshtgsdw .gt_left {
+  text-align: left;
+}
+
+#rgpshtgsdw .gt_center {
+  text-align: center;
+}
+
+#rgpshtgsdw .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#rgpshtgsdw .gt_font_normal {
+  font-weight: normal;
+}
+
+#rgpshtgsdw .gt_font_bold {
+  font-weight: bold;
+}
+
+#rgpshtgsdw .gt_font_italic {
+  font-style: italic;
+}
+
+#rgpshtgsdw .gt_super {
+  font-size: 65%;
+}
+
+#rgpshtgsdw .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+&lt;/style&gt;
+&lt;table class=&#34;gt_table&#34;&gt;
+  
+  &lt;thead class=&#34;gt_col_headings&#34;&gt;
+    &lt;tr&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_center&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;xmin&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_center&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;xmax&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_right&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;ymin&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_right&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;ymax&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;media&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;img&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody class=&#34;gt_table_body&#34;&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_center&#34;&gt;0.55&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;1.45&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;0.9095745&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Linkedin&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;./linkedIn_logo.png&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_center&#34;&gt;1.55&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;2.45&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_right&#34;&gt;0.4840426&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Twitter&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;./twitter_logo_v2.png&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+  
+  
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;p&gt;This gives us the dimensions of the bars and the image that we want to add to them. Now all that’s left is to loop through this table and add the image.&lt;/p&gt;
+&lt;p&gt;Here, &lt;code&gt;annotation_custom&lt;/code&gt; is a &lt;code&gt;ggplot2&lt;/code&gt; helper for inserting images or decorations. The images themselves are read by &lt;code&gt;image_read&lt;/code&gt; from the &lt;a href=&#34;https://github.com/ropensci/magick&#34;&gt;magick package&lt;/a&gt; and rendered by &lt;code&gt;rasterGrob&lt;/code&gt; from the &lt;code&gt;grid&lt;/code&gt; package. Then we’re setting the x and y dimensions according to the plot data and the final plot is ready:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;for (i in seq(nrow(p_map))){
+  
+  p &amp;lt;- p +
+    annotation_custom(
+      grid::rasterGrob(magick::image_read(p_map$img[i]), 
+                 width = unit(1, &amp;quot;npc&amp;quot;),
+                 height = unit(1, &amp;quot;npc&amp;quot;)),
+      xmin = p_map$xmin[i], 
+      xmax = p_map$xmax[i],
+      ymin = p_map$ymin[i],
+      ymax = p_map$ymax[i])
+}
+  
+p&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2022-04-28-gems-tidytuesday_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;There are many variations possible here, including images as backgrounds, images on top bars (which I’m doing in my starter notebook for R vs Python insights), logos in image corners, and much more. If used sparingly, these kind of visual elements can enrich your visuals and insights presentations.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;Got interested in playing with these kind of plots? I’d love to see your ideas!&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://www.kaggle.com/discussions/general/317093&#34;&gt;Join the Hidden Gems challenge&lt;/a&gt; and show us your skills, or fork my &lt;a href=&#34;https://www.kaggle.com/code/headsortails/hidden-gems-a-collection-of-underrated-notebooks&#34;&gt;Starter Notebook&lt;/a&gt; to tinker with the code and get inspired.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The TidyTuesday crossover is still running, and you are very welcome to share your ideas with the community on Twitter.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Have fun!&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Designing a Kaggle Notebooks Competition</title>
       <link>https://heads0rtai1s.github.io/2022/04/19/gems-comp-design/</link>
-      <pubDate>Tue, 19 Apr 2022 23:00:00 +0000</pubDate>
+      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2022/04/19/gems-comp-design/</guid>
       <description>
@@ -73,7 +1306,7 @@
     <item>
       <title>R &amp; Python Rosetta Stone: Reading files and column transformations</title>
       <link>https://heads0rtai1s.github.io/2022/02/24/r-python-read-separate/</link>
-      <pubDate>Thu, 24 Feb 2022 23:00:00 +0000</pubDate>
+      <pubDate>Thu, 24 Feb 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2022/02/24/r-python-read-separate/</guid>
       <description>
@@ -2821,7 +4054,7 @@ df_py&lt;/code&gt;&lt;/pre&gt;
     <item>
       <title>Yearly goals: Tracking tools &amp; visuals</title>
       <link>https://heads0rtai1s.github.io/2022/02/10/goals-tracking-visuals/</link>
-      <pubDate>Thu, 10 Feb 2022 23:00:00 +0000</pubDate>
+      <pubDate>Thu, 10 Feb 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2022/02/10/goals-tracking-visuals/</guid>
       <description>
@@ -3420,7 +4653,7 @@ p1 / p2&lt;/code&gt;&lt;/pre&gt;
     <item>
       <title>Installing CUDA, tensorflow, torch for R &amp; Python on Ubuntu 20.04</title>
       <link>https://heads0rtai1s.github.io/2021/02/25/gpu-setup-r-python-ubuntu/</link>
-      <pubDate>Thu, 25 Feb 2021 23:00:00 +0000</pubDate>
+      <pubDate>Thu, 25 Feb 2021 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2021/02/25/gpu-setup-r-python-ubuntu/</guid>
       <description>
@@ -3567,7 +4800,7 @@ cuda_is_available()&lt;/code&gt;&lt;/pre&gt;
     <item>
       <title>R &amp; Python Rosetta Stone: EDA with dplyr vs pandas</title>
       <link>https://heads0rtai1s.github.io/2020/11/05/r-python-dplyr-pandas/</link>
-      <pubDate>Thu, 05 Nov 2020 23:00:00 +0000</pubDate>
+      <pubDate>Thu, 05 Nov 2020 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2020/11/05/r-python-dplyr-pandas/</guid>
       <description>
@@ -3975,7 +5208,7 @@ pd.concat([r.df.loc[:, &amp;#39;species&amp;#39;], r.df.loc[:, &amp;#39;year&amp
     <item>
       <title>Animations in the time of Coronavirus</title>
       <link>https://heads0rtai1s.github.io/2020/04/30/animate-map-covid/</link>
-      <pubDate>Thu, 30 Apr 2020 23:00:00 +0000</pubDate>
+      <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2020/04/30/animate-map-covid/</guid>
       <description>
@@ -4281,7 +5514,7 @@ animate(gg + ease_aes(&amp;#39;cubic-in-out&amp;#39;), fps = 10, end_pause = 25,
     <item>
       <title>Analysing tweets with the rtweet package</title>
       <link>https://heads0rtai1s.github.io/2020/02/20/rtweet-intro/</link>
-      <pubDate>Thu, 20 Feb 2020 23:00:00 +0000</pubDate>
+      <pubDate>Thu, 20 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2020/02/20/rtweet-intro/</guid>
       <description>
@@ -4407,7 +5640,7 @@ GiusCalamita
     <item>
       <title>rstudio::conf retrospective</title>
       <link>https://heads0rtai1s.github.io/2020/02/13/rstudio-conf/</link>
-      <pubDate>Thu, 13 Feb 2020 23:00:00 +0000</pubDate>
+      <pubDate>Thu, 13 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2020/02/13/rstudio-conf/</guid>
       <description>
@@ -4444,7 +5677,7 @@ GiusCalamita
     <item>
       <title>Web Scraping with rvest &#43; Astro Throwback</title>
       <link>https://heads0rtai1s.github.io/2020/01/23/rvest-intro-astro/</link>
-      <pubDate>Thu, 23 Jan 2020 23:00:00 +0000</pubDate>
+      <pubDate>Thu, 23 Jan 2020 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2020/01/23/rvest-intro-astro/</guid>
       <description>
@@ -4831,7 +6064,7 @@ foo %&amp;gt;%
     <item>
       <title>R Shiny for beginners: annotated starter code</title>
       <link>https://heads0rtai1s.github.io/2019/12/05/shiny-starter-code/</link>
-      <pubDate>Thu, 05 Dec 2019 23:00:00 +0000</pubDate>
+      <pubDate>Thu, 05 Dec 2019 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2019/12/05/shiny-starter-code/</guid>
       <description>
@@ -4988,7 +6221,7 @@ shinyApp(ui = ui, server = server)&lt;/code&gt;&lt;/pre&gt;
     <item>
       <title>Tidyverse evolutions: curly-curly operator and pivoting (feat. tidytuesday data &amp; leaflet visuals)</title>
       <link>https://heads0rtai1s.github.io/2019/11/07/tidy-curly-pivot-leaflet/</link>
-      <pubDate>Thu, 07 Nov 2019 23:00:00 +0000</pubDate>
+      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2019/11/07/tidy-curly-pivot-leaflet/</guid>
       <description>
@@ -5757,7 +6990,7 @@ leaflet(loc) %&amp;gt;%
     <item>
       <title>The best of both worlds: R meets Python via reticulate</title>
       <link>https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/</link>
-      <pubDate>Thu, 03 Oct 2019 23:00:00 +0000</pubDate>
+      <pubDate>Thu, 03 Oct 2019 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2019/10/03/reticulate-intro/</guid>
       <description>
@@ -6122,7 +7355,7 @@ grid.arrange(p1, p2, p3,
     <item>
       <title>Tidy evaluation in R: Part 2 - Complex use cases (feat. facet zoom)</title>
       <link>https://heads0rtai1s.github.io/2019/08/22/tidy-eval-examples-part2/</link>
-      <pubDate>Thu, 22 Aug 2019 23:00:00 +0000</pubDate>
+      <pubDate>Thu, 22 Aug 2019 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2019/08/22/tidy-eval-examples-part2/</guid>
       <description>
@@ -6422,7 +7655,7 @@ plot_xy(diamonds, carat, price, clarity, &amp;quot;IF&amp;quot;, color, cut)&lt;
     <item>
       <title>Data flow visuals - alluvial vs ggalluvial in R</title>
       <link>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</link>
-      <pubDate>Thu, 06 Jun 2019 23:00:00 +0000</pubDate>
+      <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2019/06/06/visuals-alluvial-ggalluvial/</guid>
       <description>
@@ -6570,7 +7803,7 @@ alluvial(fly %&amp;gt;% select(-n),
     <item>
       <title>Tidy evaluation in R - Simple Examples</title>
       <link>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</link>
-      <pubDate>Wed, 24 Apr 2019 23:00:00 +0000</pubDate>
+      <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/2019/04/24/tidy-eval-examples/</guid>
       <description>

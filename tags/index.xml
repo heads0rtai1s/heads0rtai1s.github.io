@@ -6,11 +6,11 @@
     <description>Recent content in Tags on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 19 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 28 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>community</title>
       <link>https://heads0rtai1s.github.io/tags/community/</link>
-      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 28 Apr 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/tags/community/</guid>
       <description></description>
@@ -19,7 +19,7 @@
     <item>
       <title>EDA</title>
       <link>https://heads0rtai1s.github.io/tags/eda/</link>
-      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 28 Apr 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/tags/eda/</guid>
       <description></description>
@@ -28,9 +28,36 @@
     <item>
       <title>kaggle</title>
       <link>https://heads0rtai1s.github.io/tags/kaggle/</link>
-      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 28 Apr 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/tags/kaggle/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>R</title>
+      <link>https://heads0rtai1s.github.io/tags/r/</link>
+      <pubDate>Thu, 28 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tidytuesday</title>
+      <link>https://heads0rtai1s.github.io/tags/tidytuesday/</link>
+      <pubDate>Thu, 28 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/tidytuesday/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>visualisation</title>
+      <link>https://heads0rtai1s.github.io/tags/visualisation/</link>
+      <pubDate>Thu, 28 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/visualisation/</guid>
       <description></description>
     </item>
     
@@ -40,24 +67,6 @@
       <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/tags/python/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>R</title>
-      <link>https://heads0rtai1s.github.io/tags/r/</link>
-      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://heads0rtai1s.github.io/tags/r/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>visualisation</title>
-      <link>https://heads0rtai1s.github.io/tags/visualisation/</link>
-      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://heads0rtai1s.github.io/tags/visualisation/</guid>
       <description></description>
     </item>
     
@@ -247,15 +256,6 @@
       <pubDate>Thu, 05 Dec 2019 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/tags/shiny/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>tidytuesday</title>
-      <link>https://heads0rtai1s.github.io/tags/tidytuesday/</link>
-      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://heads0rtai1s.github.io/tags/tidytuesday/</guid>
       <description></description>
     </item>
     
