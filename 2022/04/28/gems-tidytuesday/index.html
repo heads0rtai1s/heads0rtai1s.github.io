@@ -95,7 +95,7 @@ take those visuals and embed them into an engaging and accessible story.</p>
 </div>
 <div id="practice-new-ideas-images-in-barplots" class="section level3">
 <h3>Practice new ideas: Images in Barplots</h3>
-<p>One major goal of initiatives like TidyTuesday and this crossover initiative is to give the participants the opportunity to practice their data &amp; dataviz skills, and to learn and showcase new tools and ideas. When I wrote my <a href="https://www.kaggle.com/code/headsortails/hidden-gems-a-collection-of-underrated-notebooks">Starter Notebook</a> for the Hidden Gems data I did something similar and decide to challenge myself to learn how to include (jpg) images in plots.</p>
+<p>One major motivation for initiatives like TidyTuesday or this crossover project is to give the participants the opportunity to practice their data &amp; dataviz skills, and to learn and showcase new tools and ideas. When I wrote my <a href="https://www.kaggle.com/code/headsortails/hidden-gems-a-collection-of-underrated-notebooks">Starter Notebook</a> for the Hidden Gems data I did something similar and decide to challenge myself to learn how to include (png) images in plots.</p>
 <p>Here, I’m breaking down one of those plots, which uses the self-contained <code>kaggle_hidden_gems.csv</code> dataset to study the frequencies of social media links on the profiles of the Hidden Gems authors.</p>
 <p>First, we get our required libraries:</p>
 <pre class="r"><code>libs &lt;- c(&#39;dplyr&#39;, &#39;tibble&#39;,      # wrangling
@@ -105,7 +105,7 @@ take those visuals and embed them into an engaging and accessible story.</p>
           &#39;grid&#39;, &#39;magick&#39;,       # images, plots
           &#39;ggthemes&#39;, &#39;ggplot2&#39;)  # plots
 invisible(lapply(libs, library, character.only = TRUE))</code></pre>
-<p>The dataset itself is <a href="https://www.kaggle.com/datasets/headsortails/notebooks-of-the-week-hidden-gems">publicly available on Kaggle</a>, but through the TidyTuesday crossover it can now also be accessed via the <a href="https://thebioengineer.github.io/tidytuesdayR/">tidytuesdayR package</a> like this:</p>
+<p>The dataset itself is <a href="https://www.kaggle.com/datasets/headsortails/notebooks-of-the-week-hidden-gems">publicly available on Kaggle</a>, and through the TidyTuesday crossover it can now also be accessed via the <a href="https://thebioengineer.github.io/tidytuesdayR/">tidytuesdayR package</a> like this:</p>
 <pre class="r"><code>tuesdata &lt;- tidytuesdayR::tt_load(&#39;2022-04-26&#39;)</code></pre>
 <pre><code>## 
 ##  Downloading file 1 of 1: `hidden_gems.csv`</code></pre>
@@ -123,12 +123,12 @@ invisible(lapply(libs, library, character.only = TRUE))</code></pre>
 
 foo %&gt;% 
   gt()</code></pre>
-<div id="aktdrjnxnh" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="ngorczqklq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#aktdrjnxnh .gt_table {
+#ngorczqklq .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -153,7 +153,7 @@ foo %&gt;%
   border-left-color: #D3D3D3;
 }
 
-#aktdrjnxnh .gt_heading {
+#ngorczqklq .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -165,7 +165,7 @@ foo %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#aktdrjnxnh .gt_title {
+#ngorczqklq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -175,7 +175,7 @@ foo %&gt;%
   border-bottom-width: 0;
 }
 
-#aktdrjnxnh .gt_subtitle {
+#ngorczqklq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -185,13 +185,13 @@ foo %&gt;%
   border-top-width: 0;
 }
 
-#aktdrjnxnh .gt_bottom_border {
+#ngorczqklq .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#aktdrjnxnh .gt_col_headings {
+#ngorczqklq .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -206,7 +206,7 @@ foo %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#aktdrjnxnh .gt_col_heading {
+#ngorczqklq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -226,7 +226,7 @@ foo %&gt;%
   overflow-x: hidden;
 }
 
-#aktdrjnxnh .gt_column_spanner_outer {
+#ngorczqklq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -238,15 +238,15 @@ foo %&gt;%
   padding-right: 4px;
 }
 
-#aktdrjnxnh .gt_column_spanner_outer:first-child {
+#ngorczqklq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#aktdrjnxnh .gt_column_spanner_outer:last-child {
+#ngorczqklq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#aktdrjnxnh .gt_column_spanner {
+#ngorczqklq .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -258,7 +258,7 @@ foo %&gt;%
   width: 100%;
 }
 
-#aktdrjnxnh .gt_group_heading {
+#ngorczqklq .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -280,7 +280,7 @@ foo %&gt;%
   vertical-align: middle;
 }
 
-#aktdrjnxnh .gt_empty_group_heading {
+#ngorczqklq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -295,15 +295,15 @@ foo %&gt;%
   vertical-align: middle;
 }
 
-#aktdrjnxnh .gt_from_md > :first-child {
+#ngorczqklq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#aktdrjnxnh .gt_from_md > :last-child {
+#ngorczqklq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#aktdrjnxnh .gt_row {
+#ngorczqklq .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -322,7 +322,7 @@ foo %&gt;%
   overflow-x: hidden;
 }
 
-#aktdrjnxnh .gt_stub {
+#ngorczqklq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -334,7 +334,7 @@ foo %&gt;%
   padding-left: 12px;
 }
 
-#aktdrjnxnh .gt_summary_row {
+#ngorczqklq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -344,7 +344,7 @@ foo %&gt;%
   padding-right: 5px;
 }
 
-#aktdrjnxnh .gt_first_summary_row {
+#ngorczqklq .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -354,7 +354,7 @@ foo %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#aktdrjnxnh .gt_grand_summary_row {
+#ngorczqklq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -364,7 +364,7 @@ foo %&gt;%
   padding-right: 5px;
 }
 
-#aktdrjnxnh .gt_first_grand_summary_row {
+#ngorczqklq .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -374,11 +374,11 @@ foo %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#aktdrjnxnh .gt_striped {
+#ngorczqklq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#aktdrjnxnh .gt_table_body {
+#ngorczqklq .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -387,7 +387,7 @@ foo %&gt;%
   border-bottom-color: #D3D3D3;
 }
 
-#aktdrjnxnh .gt_footnotes {
+#ngorczqklq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -401,13 +401,13 @@ foo %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#aktdrjnxnh .gt_footnote {
+#ngorczqklq .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#aktdrjnxnh .gt_sourcenotes {
+#ngorczqklq .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -421,41 +421,41 @@ foo %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#aktdrjnxnh .gt_sourcenote {
+#ngorczqklq .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#aktdrjnxnh .gt_left {
+#ngorczqklq .gt_left {
   text-align: left;
 }
 
-#aktdrjnxnh .gt_center {
+#ngorczqklq .gt_center {
   text-align: center;
 }
 
-#aktdrjnxnh .gt_right {
+#ngorczqklq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#aktdrjnxnh .gt_font_normal {
+#ngorczqklq .gt_font_normal {
   font-weight: normal;
 }
 
-#aktdrjnxnh .gt_font_bold {
+#ngorczqklq .gt_font_bold {
   font-weight: bold;
 }
 
-#aktdrjnxnh .gt_font_italic {
+#ngorczqklq .gt_font_italic {
   font-style: italic;
 }
 
-#aktdrjnxnh .gt_super {
+#ngorczqklq .gt_super {
   font-size: 65%;
 }
 
-#aktdrjnxnh .gt_footnote_marks {
+#ngorczqklq .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -488,8 +488,7 @@ foo %&gt;%
 <p>We see that there are 188 distinct authors in total, and that 91% have their LinkedIn displayed but only 48% their Twitter. That’s a notable difference, and it provides interesting insights into how Kaggle profiles might be used and perceived in a wider social context.</p>
 <p>We could turn this into a simple barplot and be done here, but our goal is to practice using images. We will use the logos of the respective platforms, which I’ve downloaded and made available in the <a href="https://www.kaggle.com/datasets/headsortails/notebooks-of-the-week-hidden-gems">Hidden Gems dataset</a> for convenience.</p>
 <p>We will make a little helper table that contains the image path:</p>
-<pre class="r"><code>path_img &lt;- &quot;./&quot;
-#path_img &lt;- &quot;/pics/&quot;
+<pre class="r"><code>path_img &lt;- &quot;/pics/&quot;
 
 img_d &lt;- tibble(
   media = c(&quot;Linkedin&quot;, &quot;Twitter&quot;),
@@ -498,12 +497,12 @@ img_d &lt;- tibble(
 
 img_d %&gt;% 
   gt()</code></pre>
-<div id="eixmyqpjas" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="unogyheojg" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#eixmyqpjas .gt_table {
+#unogyheojg .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -528,7 +527,7 @@ img_d %&gt;%
   border-left-color: #D3D3D3;
 }
 
-#eixmyqpjas .gt_heading {
+#unogyheojg .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -540,7 +539,7 @@ img_d %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#eixmyqpjas .gt_title {
+#unogyheojg .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -550,7 +549,7 @@ img_d %&gt;%
   border-bottom-width: 0;
 }
 
-#eixmyqpjas .gt_subtitle {
+#unogyheojg .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -560,13 +559,13 @@ img_d %&gt;%
   border-top-width: 0;
 }
 
-#eixmyqpjas .gt_bottom_border {
+#unogyheojg .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#eixmyqpjas .gt_col_headings {
+#unogyheojg .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -581,7 +580,7 @@ img_d %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#eixmyqpjas .gt_col_heading {
+#unogyheojg .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -601,7 +600,7 @@ img_d %&gt;%
   overflow-x: hidden;
 }
 
-#eixmyqpjas .gt_column_spanner_outer {
+#unogyheojg .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -613,15 +612,15 @@ img_d %&gt;%
   padding-right: 4px;
 }
 
-#eixmyqpjas .gt_column_spanner_outer:first-child {
+#unogyheojg .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#eixmyqpjas .gt_column_spanner_outer:last-child {
+#unogyheojg .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#eixmyqpjas .gt_column_spanner {
+#unogyheojg .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -633,7 +632,7 @@ img_d %&gt;%
   width: 100%;
 }
 
-#eixmyqpjas .gt_group_heading {
+#unogyheojg .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -655,7 +654,7 @@ img_d %&gt;%
   vertical-align: middle;
 }
 
-#eixmyqpjas .gt_empty_group_heading {
+#unogyheojg .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -670,15 +669,15 @@ img_d %&gt;%
   vertical-align: middle;
 }
 
-#eixmyqpjas .gt_from_md > :first-child {
+#unogyheojg .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#eixmyqpjas .gt_from_md > :last-child {
+#unogyheojg .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#eixmyqpjas .gt_row {
+#unogyheojg .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -697,7 +696,7 @@ img_d %&gt;%
   overflow-x: hidden;
 }
 
-#eixmyqpjas .gt_stub {
+#unogyheojg .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -709,7 +708,7 @@ img_d %&gt;%
   padding-left: 12px;
 }
 
-#eixmyqpjas .gt_summary_row {
+#unogyheojg .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -719,7 +718,7 @@ img_d %&gt;%
   padding-right: 5px;
 }
 
-#eixmyqpjas .gt_first_summary_row {
+#unogyheojg .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -729,7 +728,7 @@ img_d %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#eixmyqpjas .gt_grand_summary_row {
+#unogyheojg .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -739,7 +738,7 @@ img_d %&gt;%
   padding-right: 5px;
 }
 
-#eixmyqpjas .gt_first_grand_summary_row {
+#unogyheojg .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -749,11 +748,11 @@ img_d %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#eixmyqpjas .gt_striped {
+#unogyheojg .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#eixmyqpjas .gt_table_body {
+#unogyheojg .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -762,7 +761,7 @@ img_d %&gt;%
   border-bottom-color: #D3D3D3;
 }
 
-#eixmyqpjas .gt_footnotes {
+#unogyheojg .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -776,13 +775,13 @@ img_d %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#eixmyqpjas .gt_footnote {
+#unogyheojg .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#eixmyqpjas .gt_sourcenotes {
+#unogyheojg .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -796,41 +795,41 @@ img_d %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#eixmyqpjas .gt_sourcenote {
+#unogyheojg .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#eixmyqpjas .gt_left {
+#unogyheojg .gt_left {
   text-align: left;
 }
 
-#eixmyqpjas .gt_center {
+#unogyheojg .gt_center {
   text-align: center;
 }
 
-#eixmyqpjas .gt_right {
+#unogyheojg .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#eixmyqpjas .gt_font_normal {
+#unogyheojg .gt_font_normal {
   font-weight: normal;
 }
 
-#eixmyqpjas .gt_font_bold {
+#unogyheojg .gt_font_bold {
   font-weight: bold;
 }
 
-#eixmyqpjas .gt_font_italic {
+#unogyheojg .gt_font_italic {
   font-style: italic;
 }
 
-#eixmyqpjas .gt_super {
+#unogyheojg .gt_super {
   font-size: 65%;
 }
 
-#eixmyqpjas .gt_footnote_marks {
+#unogyheojg .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -846,9 +845,9 @@ img_d %&gt;%
   </thead>
   <tbody class="gt_table_body">
     <tr><td class="gt_row gt_left">Linkedin</td>
-<td class="gt_row gt_left">./linkedIn_logo.png</td></tr>
+<td class="gt_row gt_left">/pics/linkedIn_logo.png</td></tr>
     <tr><td class="gt_row gt_left">Twitter</td>
-<td class="gt_row gt_left">./twitter_logo_v2.png</td></tr>
+<td class="gt_row gt_left">/pics/twitter_logo_v2.png</td></tr>
   </tbody>
   
   
@@ -908,12 +907,12 @@ p</code></pre>
 
 p_map %&gt;% 
   gt()</code></pre>
-<div id="rgpshtgsdw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="kklbtoqmyw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#rgpshtgsdw .gt_table {
+#kklbtoqmyw .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -938,7 +937,7 @@ p_map %&gt;%
   border-left-color: #D3D3D3;
 }
 
-#rgpshtgsdw .gt_heading {
+#kklbtoqmyw .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -950,7 +949,7 @@ p_map %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#rgpshtgsdw .gt_title {
+#kklbtoqmyw .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -960,7 +959,7 @@ p_map %&gt;%
   border-bottom-width: 0;
 }
 
-#rgpshtgsdw .gt_subtitle {
+#kklbtoqmyw .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -970,13 +969,13 @@ p_map %&gt;%
   border-top-width: 0;
 }
 
-#rgpshtgsdw .gt_bottom_border {
+#kklbtoqmyw .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#rgpshtgsdw .gt_col_headings {
+#kklbtoqmyw .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -991,7 +990,7 @@ p_map %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#rgpshtgsdw .gt_col_heading {
+#kklbtoqmyw .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1011,7 +1010,7 @@ p_map %&gt;%
   overflow-x: hidden;
 }
 
-#rgpshtgsdw .gt_column_spanner_outer {
+#kklbtoqmyw .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1023,15 +1022,15 @@ p_map %&gt;%
   padding-right: 4px;
 }
 
-#rgpshtgsdw .gt_column_spanner_outer:first-child {
+#kklbtoqmyw .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#rgpshtgsdw .gt_column_spanner_outer:last-child {
+#kklbtoqmyw .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#rgpshtgsdw .gt_column_spanner {
+#kklbtoqmyw .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1043,7 +1042,7 @@ p_map %&gt;%
   width: 100%;
 }
 
-#rgpshtgsdw .gt_group_heading {
+#kklbtoqmyw .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1065,7 +1064,7 @@ p_map %&gt;%
   vertical-align: middle;
 }
 
-#rgpshtgsdw .gt_empty_group_heading {
+#kklbtoqmyw .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1080,15 +1079,15 @@ p_map %&gt;%
   vertical-align: middle;
 }
 
-#rgpshtgsdw .gt_from_md > :first-child {
+#kklbtoqmyw .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#rgpshtgsdw .gt_from_md > :last-child {
+#kklbtoqmyw .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#rgpshtgsdw .gt_row {
+#kklbtoqmyw .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1107,7 +1106,7 @@ p_map %&gt;%
   overflow-x: hidden;
 }
 
-#rgpshtgsdw .gt_stub {
+#kklbtoqmyw .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1119,7 +1118,7 @@ p_map %&gt;%
   padding-left: 12px;
 }
 
-#rgpshtgsdw .gt_summary_row {
+#kklbtoqmyw .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1129,7 +1128,7 @@ p_map %&gt;%
   padding-right: 5px;
 }
 
-#rgpshtgsdw .gt_first_summary_row {
+#kklbtoqmyw .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1139,7 +1138,7 @@ p_map %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#rgpshtgsdw .gt_grand_summary_row {
+#kklbtoqmyw .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1149,7 +1148,7 @@ p_map %&gt;%
   padding-right: 5px;
 }
 
-#rgpshtgsdw .gt_first_grand_summary_row {
+#kklbtoqmyw .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1159,11 +1158,11 @@ p_map %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#rgpshtgsdw .gt_striped {
+#kklbtoqmyw .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#rgpshtgsdw .gt_table_body {
+#kklbtoqmyw .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1172,7 +1171,7 @@ p_map %&gt;%
   border-bottom-color: #D3D3D3;
 }
 
-#rgpshtgsdw .gt_footnotes {
+#kklbtoqmyw .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1186,13 +1185,13 @@ p_map %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#rgpshtgsdw .gt_footnote {
+#kklbtoqmyw .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#rgpshtgsdw .gt_sourcenotes {
+#kklbtoqmyw .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1206,41 +1205,41 @@ p_map %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#rgpshtgsdw .gt_sourcenote {
+#kklbtoqmyw .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#rgpshtgsdw .gt_left {
+#kklbtoqmyw .gt_left {
   text-align: left;
 }
 
-#rgpshtgsdw .gt_center {
+#kklbtoqmyw .gt_center {
   text-align: center;
 }
 
-#rgpshtgsdw .gt_right {
+#kklbtoqmyw .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#rgpshtgsdw .gt_font_normal {
+#kklbtoqmyw .gt_font_normal {
   font-weight: normal;
 }
 
-#rgpshtgsdw .gt_font_bold {
+#kklbtoqmyw .gt_font_bold {
   font-weight: bold;
 }
 
-#rgpshtgsdw .gt_font_italic {
+#kklbtoqmyw .gt_font_italic {
   font-style: italic;
 }
 
-#rgpshtgsdw .gt_super {
+#kklbtoqmyw .gt_super {
   font-size: 65%;
 }
 
-#rgpshtgsdw .gt_footnote_marks {
+#kklbtoqmyw .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -1264,13 +1263,13 @@ p_map %&gt;%
 <td class="gt_row gt_right">0</td>
 <td class="gt_row gt_right">0.9095745</td>
 <td class="gt_row gt_left">Linkedin</td>
-<td class="gt_row gt_left">./linkedIn_logo.png</td></tr>
+<td class="gt_row gt_left">/pics/linkedIn_logo.png</td></tr>
     <tr><td class="gt_row gt_center">1.55</td>
 <td class="gt_row gt_center">2.45</td>
 <td class="gt_row gt_right">0</td>
 <td class="gt_row gt_right">0.4840426</td>
 <td class="gt_row gt_left">Twitter</td>
-<td class="gt_row gt_left">./twitter_logo_v2.png</td></tr>
+<td class="gt_row gt_left">/pics/twitter_logo_v2.png</td></tr>
   </tbody>
   
   
@@ -1298,7 +1297,7 @@ p</code></pre>
 <p>Got interested in playing with these kind of plots? I’d love to see your ideas!</p>
 <ul>
 <li><p><a href="https://www.kaggle.com/discussions/general/317093">Join the Hidden Gems challenge</a> and show us your skills, or fork my <a href="https://www.kaggle.com/code/headsortails/hidden-gems-a-collection-of-underrated-notebooks">Starter Notebook</a> to tinker with the code and get inspired.</p></li>
-<li><p>The TidyTuesday crossover is still running, and you are very welcome to share your ideas with the community on Twitter.</p></li>
+<li><p>The <a href="https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-04-26/readme.md">TidyTuesday crossover</a> is still running, and you are very welcome to share your ideas with the community on Twitter.</p></li>
 </ul>
 <p>Have fun!</p>
 </div>
