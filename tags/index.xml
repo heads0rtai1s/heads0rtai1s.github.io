@@ -6,13 +6,40 @@
     <description>Recent content in Tags on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 28 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 23 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>community</title>
       <link>https://heads0rtai1s.github.io/tags/community/</link>
-      <pubDate>Thu, 28 Apr 2022 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 23 Jun 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/tags/community/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kaggle</title>
+      <link>https://heads0rtai1s.github.io/tags/kaggle/</link>
+      <pubDate>Thu, 23 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/kaggle/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>R</title>
+      <link>https://heads0rtai1s.github.io/tags/r/</link>
+      <pubDate>Thu, 23 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>visualisation</title>
+      <link>https://heads0rtai1s.github.io/tags/visualisation/</link>
+      <pubDate>Thu, 23 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/visualisation/</guid>
       <description></description>
     </item>
     
@@ -26,38 +53,11 @@
     </item>
     
     <item>
-      <title>kaggle</title>
-      <link>https://heads0rtai1s.github.io/tags/kaggle/</link>
-      <pubDate>Thu, 28 Apr 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://heads0rtai1s.github.io/tags/kaggle/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>R</title>
-      <link>https://heads0rtai1s.github.io/tags/r/</link>
-      <pubDate>Thu, 28 Apr 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://heads0rtai1s.github.io/tags/r/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>tidytuesday</title>
       <link>https://heads0rtai1s.github.io/tags/tidytuesday/</link>
       <pubDate>Thu, 28 Apr 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/tags/tidytuesday/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>visualisation</title>
-      <link>https://heads0rtai1s.github.io/tags/visualisation/</link>
-      <pubDate>Thu, 28 Apr 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://heads0rtai1s.github.io/tags/visualisation/</guid>
       <description></description>
     </item>
     

@@ -5,10 +5,125 @@
     <description>Recent content in kaggle on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 28 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 23 Jun 2022 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://heads0rtai1s.github.io/categories/kaggle/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Charting Kaggle&#39;s growth to 10 million users</title>
+      <link>https://heads0rtai1s.github.io/2022/06/23/kaggle-10-million/</link>
+      <pubDate>Thu, 23 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/2022/06/23/kaggle-10-million/</guid>
+      <description>
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;A few days ago, the Kaggle community crossed the amazing milestone of 10 million registered users! In celebration, I’ve put together a &lt;a href=&#34;https://www.kaggle.com/discussions/general/332147&#34;&gt;forum post that visualises the accelerated growth over the years&lt;/a&gt;. Here I show the R code behind those plots and talk a bit about my visualisation choices.&lt;/p&gt;
+&lt;p&gt;For this post, we’ll need a small set of fundamental libraries:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;readr&amp;#39;,         # wrangling
+          &amp;#39;lubridate&amp;#39;, &amp;#39;ggrepel&amp;#39;,   # datetime, plots
+          &amp;#39;ggthemes&amp;#39;, &amp;#39;ggplot2&amp;#39;)    # plots
+invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The data we’ll be using are a slightly processed version of what’s available from the public &lt;a href=&#34;https://www.kaggle.com/datasets/kaggle/meta-kaggle&#34;&gt;Meta Kaggle dataset&lt;/a&gt;. I downloaded the &lt;a href=&#34;https://www.kaggle.com/datasets/kaggle/meta-kaggle?select=Users.csv&#34;&gt;Users.csv table&lt;/a&gt; and aggregated the daily user counts and cumulated counts into this input table:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;users &amp;lt;- read_csv(&amp;quot;../../static/files/users_daily.csv&amp;quot;, col_types = cols())&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Before we break it down, here’s the full visual to illustrate the growth of the community:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;foo &amp;lt;- users %&amp;gt;%
+  filter(date &amp;lt; max(date)) %&amp;gt;% 
+  mutate(millions = ct %/% 1e6) %&amp;gt;% 
+  mutate(year = year(date))
+
+year(foo$date) &amp;lt;- 2017
+
+col_values = rep(c(&amp;quot;#008abc&amp;quot;, &amp;quot;#e56c3a&amp;quot;), 10)[1:nrow(distinct(foo, millions))]
+
+foo %&amp;gt;% 
+  ggplot(aes(date, n, col = as.factor(millions))) +
+  geom_line(na.rm = TRUE) +
+  facet_wrap(~ year, scales = &amp;quot;free_y&amp;quot;) +
+  scale_x_date(date_labels= &amp;quot;%b&amp;quot;) +
+  scale_color_manual(values = col_values) +
+  theme_hc() +
+  theme(legend.position = &amp;quot;none&amp;quot;) +
+  labs(x = &amp;quot;&amp;quot;, y = &amp;quot;New Daily Users&amp;quot;,
+  title = &amp;quot;13 years of Kaggle Community growth up to 10 million registered users&amp;quot;,
+  subtitle = &amp;quot;New daily users over time for each year from 2010 to 2022. Note the scaled y-axis for each facet. Change in colour = Million Cumulative User Milestones.&amp;quot;,
+  caption = &amp;quot;@headsortails with Meta Kaggle dataset&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2022-06-23-kaggle-10-million_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;I chose this chart to visualise the accelerated growth over the years: Each change in colour represents the crossing of a million users milestone. In addition to the growth trend, the plot also showcases the seasonal pattern, the weekly cycle, and some interesting spikes.&lt;/p&gt;
+&lt;p&gt;But most prominently, the periods between colour changes are becoming shorter and shorter as the user numbers increase faster and faster. From 2016 being the last year with only a single colour, we crossed the 1 million users mark in 2017, and 2021 showed a total of four colour changes.&lt;/p&gt;
+&lt;p&gt;The construction of the plot starts with a little trick. After extracting a &lt;code&gt;year&lt;/code&gt; column, we’ll transform the year of each &lt;code&gt;date&lt;/code&gt; to 2017. This way, we can construct a facet wrap visual that still shows each year but also has shared x-axes. Maybe there’s a more elegant way to do this, but it works for me. (And why 2017? Because that’s the year I joined the Kaggle community. But that year doesn’t appear in the plot, so it’s a subtle easter egg for myself.) The &lt;code&gt;millions&lt;/code&gt; column will help with the colouring:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;foo &amp;lt;- users %&amp;gt;%
+  filter(date &amp;lt; max(date)) %&amp;gt;% 
+  mutate(millions = ct %/% 1e6) %&amp;gt;% 
+  mutate(year = year(date))
+
+year(foo$date) &amp;lt;- 2017&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We’re getting the sequence of colours dynamically based on the number on million user milestones:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;col_values = rep(c(&amp;quot;#008abc&amp;quot;, &amp;quot;#e56c3a&amp;quot;), 10)[1:nrow(distinct(foo, millions))]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The actual visual starts with a line plot of daily users, which is split into facets by year. The modification of the &lt;code&gt;date&lt;/code&gt; feature now allows us share the x-axis between each facet. Here we haven’t done any styling on the theme or colours yet.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;foo %&amp;gt;% 
+  ggplot(aes(date, n, col = as.factor(millions))) +
+  geom_line(na.rm = TRUE) +
+  facet_wrap(~ year, scales = &amp;quot;free_y&amp;quot;) +
+  scale_x_date(date_labels= &amp;quot;%b&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2022-06-23-kaggle-10-million_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Now we’re adding the alternating colours and choose a theme that fades a bit more into the background. The colour legend disappears; we will describe the colours in the subtitle instead:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;foo %&amp;gt;% 
+  ggplot(aes(date, n, col = as.factor(millions))) +
+  geom_line(na.rm = TRUE) +
+  facet_wrap(~ year, scales = &amp;quot;free_y&amp;quot;) +
+  scale_x_date(date_labels= &amp;quot;%b&amp;quot;) +
+  scale_color_manual(values = col_values) +
+  theme_hc() +
+  theme(legend.position = &amp;quot;none&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2022-06-23-kaggle-10-million_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The final touches: we remove the x-axis label, since a date axis is pretty self-explanatory. Adding a title to communicate the big picture. And a subtitle to put an emphasis on some plot details:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;foo %&amp;gt;% 
+  ggplot(aes(date, n, col = as.factor(millions))) +
+  geom_line(na.rm = TRUE) +
+  facet_wrap(~ year, scales = &amp;quot;free_y&amp;quot;) +
+  scale_x_date(date_labels= &amp;quot;%b&amp;quot;) +
+  scale_color_manual(values = col_values) +
+  theme_hc() +
+  theme(legend.position = &amp;quot;none&amp;quot;) +
+  labs(x = &amp;quot;&amp;quot;, y = &amp;quot;New Daily Users&amp;quot;,
+  title = &amp;quot;13 years of Kaggle Community growth up to 10 million registered users&amp;quot;,
+  subtitle = &amp;quot;New daily users over time for each year from 2010 to 2022. Note the scaled y-axis for each facet. Change in colour = Million Cumulative User Milestones.&amp;quot;,
+  caption = &amp;quot;@headsortails with Meta Kaggle dataset&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2022-06-23-kaggle-10-million_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The accelerated growth of the community is testament to Kaggle’s great reputation as the home for Machine Learning and Data Science. Back when I joined, &lt;a href=&#34;https://www.kaggle.com/headsortails&#34;&gt;5 years ago in 2017&lt;/a&gt;, I was user ID 1,014,468. Since then, so much has happened: competitions have shifted their focus from tabular to NLP &amp;amp; Vision (with Deep Learning); we got a Datasets category; Discussion communities came and went; Kernels became Notebooks; Notebooks competitions became more frequent; and so much more.&lt;/p&gt;
+&lt;p&gt;Many new faces rose to popularity through their creative and inspiring contributions. And many seasoned Kagglers grew their skillset by being consistently innovative and supportive. We had the occasional drama or argument; but who doesn’t? Through all this, the community grew faster and faster, by an order of magnitude, to keep up with the breathless developments in Machine Learning.&lt;/p&gt;
+&lt;p&gt;Everything points towards this growth continuing in the near future. As a community, we are in a unique position to learn from the ongoing advancements in Data Science and Machine Learning, and to contribute our practitioner’s perspective to these exciting developments. It is also our responsibility to preserve the welcoming and supportive nature of our community, to nurture talent and enthusiasm, to fight spam, to maintain a safe and inclusive environment, to promote meritocracy, and to stay curious.&lt;/p&gt;
+&lt;p&gt;There are many new adventures, but also challenges ahead of us.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;Finally, here’s a bonus plot for you to deconstruct. This visualisation records the day of June 18th 2022, when the Kaggle community first reached 10 million unique registered members.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;users %&amp;gt;%
+    filter(date &amp;gt;= date(&amp;quot;2022-06-20&amp;quot;) - 7) %&amp;gt;%
+    filter(date != max(date)) %&amp;gt;%
+    group_by(date) %&amp;gt;%
+    mutate(lab = max(ct)) %&amp;gt;%
+    ungroup()  %&amp;gt;%
+    ggplot(aes(date, n)) +
+    geom_line(col = &amp;quot;black&amp;quot;) +
+    geom_label_repel(aes(date, n, label = scales::comma(lab)), size = 8, col = &amp;quot;#008abc&amp;quot;,
+                     alpha = 0.8, force = 10, na.rm = TRUE) +
+    scale_y_continuous(labels = scales::comma) +
+    labs(x = &amp;quot;&amp;quot;, y = &amp;quot;New Daily Users&amp;quot;,
+        title = &amp;quot;Kaggle crosses 10 million unique users on June 18th 2022!&amp;quot;,
+        subtitle = &amp;quot;Black curve shows new daily users over time. Blue labels show total number of users.&amp;quot;,
+        caption = &amp;quot;@headsortails with Meta Kaggle dataset&amp;quot;) +
+    theme_minimal() +
+    theme(axis.text = element_text(size = 12, colour = &amp;quot;black&amp;quot;),
+          title = element_text(size = 15, colour = &amp;quot;#008abc&amp;quot;),  # &amp;quot;#e56c3a&amp;quot;
+          axis.title = element_text(colour = &amp;quot;black&amp;quot;),
+         plot.subtitle = element_text(size = 12, colour = &amp;quot;black&amp;quot;),
+         plot.caption = element_text(colour = &amp;quot;black&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2022-06-23-kaggle-10-million_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Have fun!&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>TidyTuesday and Barplots with Images</title>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.92.1" />
+
+
+<title>Charting Kaggle&#39;s growth to 10 million users - head spin - the Heads or Tails blog</title>
+<meta property="og:title" content="Charting Kaggle&#39;s growth to 10 million users - head spin - the Heads or Tails blog">
+
+
+  <link href='https://heads0rtai1s.github.io/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/avatar.png"
+         width="50"
+         height="50"
+         alt="Heads or Tails">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="/blogroll/">Blogroll</a></li>
+    
+    <li><a href="https://twitter.com/heads0rtai1s">Twitter</a></li>
+    
+    <li><a href="https://www.kaggle.com/headsortails">Kaggle</a></li>
+    
+    <li><a href="https://www.linkedin.com/in/martin-henze">LinkedIn</a></li>
+    
+    <li><a href="https://github.com/heads0rtai1s">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">6 min read</span>
+    
+
+    <h1 class="article-title">Charting Kaggle&#39;s growth to 10 million users</h1>
+
+    
+    <span class="article-date">2022-06-23</span>
+    
+
+    <div class="article-content">
+      
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>A few days ago, the Kaggle community crossed the amazing milestone of 10 million registered users! In celebration, I’ve put together a <a href="https://www.kaggle.com/discussions/general/332147">forum post that visualises the accelerated growth over the years</a>. Here I show the R code behind those plots and talk a bit about my visualisation choices.</p>
+<p>For this post, we’ll need a small set of fundamental libraries:</p>
+<pre class="r"><code>libs &lt;- c(&#39;dplyr&#39;, &#39;readr&#39;,         # wrangling
+          &#39;lubridate&#39;, &#39;ggrepel&#39;,   # datetime, plots
+          &#39;ggthemes&#39;, &#39;ggplot2&#39;)    # plots
+invisible(lapply(libs, library, character.only = TRUE))</code></pre>
+<p>The data we’ll be using are a slightly processed version of what’s available from the public <a href="https://www.kaggle.com/datasets/kaggle/meta-kaggle">Meta Kaggle dataset</a>. I downloaded the <a href="https://www.kaggle.com/datasets/kaggle/meta-kaggle?select=Users.csv">Users.csv table</a> and aggregated the daily user counts and cumulated counts into this input table:</p>
+<pre class="r"><code>users &lt;- read_csv(&quot;../../static/files/users_daily.csv&quot;, col_types = cols())</code></pre>
+<p>Before we break it down, here’s the full visual to illustrate the growth of the community:</p>
+<pre class="r"><code>foo &lt;- users %&gt;%
+  filter(date &lt; max(date)) %&gt;% 
+  mutate(millions = ct %/% 1e6) %&gt;% 
+  mutate(year = year(date))
+
+year(foo$date) &lt;- 2017
+
+col_values = rep(c(&quot;#008abc&quot;, &quot;#e56c3a&quot;), 10)[1:nrow(distinct(foo, millions))]
+
+foo %&gt;% 
+  ggplot(aes(date, n, col = as.factor(millions))) +
+  geom_line(na.rm = TRUE) +
+  facet_wrap(~ year, scales = &quot;free_y&quot;) +
+  scale_x_date(date_labels= &quot;%b&quot;) +
+  scale_color_manual(values = col_values) +
+  theme_hc() +
+  theme(legend.position = &quot;none&quot;) +
+  labs(x = &quot;&quot;, y = &quot;New Daily Users&quot;,
+  title = &quot;13 years of Kaggle Community growth up to 10 million registered users&quot;,
+  subtitle = &quot;New daily users over time for each year from 2010 to 2022. Note the scaled y-axis for each facet. Change in colour = Million Cumulative User Milestones.&quot;,
+  caption = &quot;@headsortails with Meta Kaggle dataset&quot;) </code></pre>
+<p><img src="/post/2022-06-23-kaggle-10-million_files/figure-html/unnamed-chunk-3-1.png" width="1152" /></p>
+<p>I chose this chart to visualise the accelerated growth over the years: Each change in colour represents the crossing of a million users milestone. In addition to the growth trend, the plot also showcases the seasonal pattern, the weekly cycle, and some interesting spikes.</p>
+<p>But most prominently, the periods between colour changes are becoming shorter and shorter as the user numbers increase faster and faster. From 2016 being the last year with only a single colour, we crossed the 1 million users mark in 2017, and 2021 showed a total of four colour changes.</p>
+<p>The construction of the plot starts with a little trick. After extracting a <code>year</code> column, we’ll transform the year of each <code>date</code> to 2017. This way, we can construct a facet wrap visual that still shows each year but also has shared x-axes. Maybe there’s a more elegant way to do this, but it works for me. (And why 2017? Because that’s the year I joined the Kaggle community. But that year doesn’t appear in the plot, so it’s a subtle easter egg for myself.) The <code>millions</code> column will help with the colouring:</p>
+<pre class="r"><code>foo &lt;- users %&gt;%
+  filter(date &lt; max(date)) %&gt;% 
+  mutate(millions = ct %/% 1e6) %&gt;% 
+  mutate(year = year(date))
+
+year(foo$date) &lt;- 2017</code></pre>
+<p>We’re getting the sequence of colours dynamically based on the number on million user milestones:</p>
+<pre class="r"><code>col_values = rep(c(&quot;#008abc&quot;, &quot;#e56c3a&quot;), 10)[1:nrow(distinct(foo, millions))]</code></pre>
+<p>The actual visual starts with a line plot of daily users, which is split into facets by year. The modification of the <code>date</code> feature now allows us share the x-axis between each facet. Here we haven’t done any styling on the theme or colours yet.</p>
+<pre class="r"><code>foo %&gt;% 
+  ggplot(aes(date, n, col = as.factor(millions))) +
+  geom_line(na.rm = TRUE) +
+  facet_wrap(~ year, scales = &quot;free_y&quot;) +
+  scale_x_date(date_labels= &quot;%b&quot;)</code></pre>
+<p><img src="/post/2022-06-23-kaggle-10-million_files/figure-html/unnamed-chunk-6-1.png" width="1152" /></p>
+<p>Now we’re adding the alternating colours and choose a theme that fades a bit more into the background. The colour legend disappears; we will describe the colours in the subtitle instead:</p>
+<pre class="r"><code>foo %&gt;% 
+  ggplot(aes(date, n, col = as.factor(millions))) +
+  geom_line(na.rm = TRUE) +
+  facet_wrap(~ year, scales = &quot;free_y&quot;) +
+  scale_x_date(date_labels= &quot;%b&quot;) +
+  scale_color_manual(values = col_values) +
+  theme_hc() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/post/2022-06-23-kaggle-10-million_files/figure-html/unnamed-chunk-7-1.png" width="1152" /></p>
+<p>The final touches: we remove the x-axis label, since a date axis is pretty self-explanatory. Adding a title to communicate the big picture. And a subtitle to put an emphasis on some plot details:</p>
+<pre class="r"><code>foo %&gt;% 
+  ggplot(aes(date, n, col = as.factor(millions))) +
+  geom_line(na.rm = TRUE) +
+  facet_wrap(~ year, scales = &quot;free_y&quot;) +
+  scale_x_date(date_labels= &quot;%b&quot;) +
+  scale_color_manual(values = col_values) +
+  theme_hc() +
+  theme(legend.position = &quot;none&quot;) +
+  labs(x = &quot;&quot;, y = &quot;New Daily Users&quot;,
+  title = &quot;13 years of Kaggle Community growth up to 10 million registered users&quot;,
+  subtitle = &quot;New daily users over time for each year from 2010 to 2022. Note the scaled y-axis for each facet. Change in colour = Million Cumulative User Milestones.&quot;,
+  caption = &quot;@headsortails with Meta Kaggle dataset&quot;) </code></pre>
+<p><img src="/post/2022-06-23-kaggle-10-million_files/figure-html/unnamed-chunk-8-1.png" width="1152" /></p>
+<p>The accelerated growth of the community is testament to Kaggle’s great reputation as the home for Machine Learning and Data Science. Back when I joined, <a href="https://www.kaggle.com/headsortails">5 years ago in 2017</a>, I was user ID 1,014,468. Since then, so much has happened: competitions have shifted their focus from tabular to NLP &amp; Vision (with Deep Learning); we got a Datasets category; Discussion communities came and went; Kernels became Notebooks; Notebooks competitions became more frequent; and so much more.</p>
+<p>Many new faces rose to popularity through their creative and inspiring contributions. And many seasoned Kagglers grew their skillset by being consistently innovative and supportive. We had the occasional drama or argument; but who doesn’t? Through all this, the community grew faster and faster, by an order of magnitude, to keep up with the breathless developments in Machine Learning.</p>
+<p>Everything points towards this growth continuing in the near future. As a community, we are in a unique position to learn from the ongoing advancements in Data Science and Machine Learning, and to contribute our practitioner’s perspective to these exciting developments. It is also our responsibility to preserve the welcoming and supportive nature of our community, to nurture talent and enthusiasm, to fight spam, to maintain a safe and inclusive environment, to promote meritocracy, and to stay curious.</p>
+<p>There are many new adventures, but also challenges ahead of us.</p>
+<hr />
+<p>Finally, here’s a bonus plot for you to deconstruct. This visualisation records the day of June 18th 2022, when the Kaggle community first reached 10 million unique registered members.</p>
+<pre class="r"><code>users %&gt;%
+    filter(date &gt;= date(&quot;2022-06-20&quot;) - 7) %&gt;%
+    filter(date != max(date)) %&gt;%
+    group_by(date) %&gt;%
+    mutate(lab = max(ct)) %&gt;%
+    ungroup()  %&gt;%
+    ggplot(aes(date, n)) +
+    geom_line(col = &quot;black&quot;) +
+    geom_label_repel(aes(date, n, label = scales::comma(lab)), size = 8, col = &quot;#008abc&quot;,
+                     alpha = 0.8, force = 10, na.rm = TRUE) +
+    scale_y_continuous(labels = scales::comma) +
+    labs(x = &quot;&quot;, y = &quot;New Daily Users&quot;,
+        title = &quot;Kaggle crosses 10 million unique users on June 18th 2022!&quot;,
+        subtitle = &quot;Black curve shows new daily users over time. Blue labels show total number of users.&quot;,
+        caption = &quot;@headsortails with Meta Kaggle dataset&quot;) +
+    theme_minimal() +
+    theme(axis.text = element_text(size = 12, colour = &quot;black&quot;),
+          title = element_text(size = 15, colour = &quot;#008abc&quot;),  # &quot;#e56c3a&quot;
+          axis.title = element_text(colour = &quot;black&quot;),
+         plot.subtitle = element_text(size = 12, colour = &quot;black&quot;),
+         plot.caption = element_text(colour = &quot;black&quot;))</code></pre>
+<p><img src="/post/2022-06-23-kaggle-10-million_files/figure-html/unnamed-chunk-9-1.png" width="1152" /></p>
+<p>Have fun!</p>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//headsortails.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/python.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137904077-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  </body>
+</html>
+

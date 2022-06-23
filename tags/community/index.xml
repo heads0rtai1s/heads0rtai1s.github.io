@@ -6,7 +6,18 @@
     <description>Recent content in community on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 28 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/community/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 23 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/community/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Charting Kaggle&#39;s growth to 10 million users</title>
+      <link>https://heads0rtai1s.github.io/2022/06/23/kaggle-10-million/</link>
+      <pubDate>Thu, 23 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/2022/06/23/kaggle-10-million/</guid>
+      <description>A few days ago, the Kaggle community crossed the amazing milestone of 10 million registered users! In celebration, I’ve put together a forum post that visualises the accelerated growth over the years. Here I show the R code behind those plots and talk a bit about my visualisation choices.
+For this post, we’ll need a small set of fundamental libraries:
+libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;readr&amp;#39;, # wrangling &amp;#39;lubridate&amp;#39;, &amp;#39;ggrepel&amp;#39;, # datetime, plots &amp;#39;ggthemes&amp;#39;, &amp;#39;ggplot2&amp;#39;) # plots invisible(lapply(libs, library, character.</description>
+    </item>
+    
     <item>
       <title>TidyTuesday and Barplots with Images</title>
       <link>https://heads0rtai1s.github.io/2022/04/28/gems-tidytuesday/</link>
