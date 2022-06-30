@@ -6,7 +6,17 @@
     <description>Recent content on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 23 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 30 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Building a Kaggle Leaderboard with gtExtras</title>
+      <link>https://heads0rtai1s.github.io/2022/06/30/kaggle-leaderboard-gtextras/</link>
+      <pubDate>Thu, 30 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/2022/06/30/kaggle-leaderboard-gtextras/</guid>
+      <description>My Kaggle Hidden Gems Notebooks competition officially concluded on May 17th. A number of great notebooks were being submitted, and I wanted to design a nice leaderboard to announce the final scores and winners. When I discovered the new gtExtras package, I instantly knew that it would be the perfect tool for this task. Let me show you how.
+The goal of the Hidden Gems competition was to build insightful and engaging notebooks, in R or Python, exploring aspect of my Hidden Gems dataset on Kaggle, which chronicles 100 episodes of me highlighting underrated notebooks published by Kagglers.</description>
+    </item>
+    
     <item>
       <title>Charting Kaggle&#39;s growth to 10 million users</title>
       <link>https://heads0rtai1s.github.io/2022/06/23/kaggle-10-million/</link>
