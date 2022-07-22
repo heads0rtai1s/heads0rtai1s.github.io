@@ -5,10 +5,2734 @@
     <description>Recent content in R on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 30 Jun 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 22 Jul 2022 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://heads0rtai1s.github.io/categories/r/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>A Kaggle Dataset of R Package History for rstudio::conf(2022)</title>
+      <link>https://heads0rtai1s.github.io/2022/07/22/kaggle-dataset-cran-packages/</link>
+      <pubDate>Fri, 22 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/2022/07/22/kaggle-dataset-cran-packages/</guid>
+      <description>
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;It’s summer, and the long-awaited Rstudio conference for 2022 is only days away. Next week, a large number of R aficionados will &lt;a href=&#34;https://www.rstudio.com/conference&#34;&gt;gather in Washington DC&lt;/a&gt; for the first time in person since the beginning of the pandemic. A pandemic, mind you, that is far from over. But Covid precautions are in place, and I trust the R community more than most to be responsible and thoughtful. With masks, social distance, and outdoor events: I’m excited to meet new people and see again many familiar faces from &lt;a href=&#34;https://heads0rtai1s.github.io/2020/02/13/rstudio-conf/&#34;&gt;my first Rstudio conference in 2020&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;To create even more excitement, this time I’m giving a talk about the Kaggle and R communities, and all the good things that can happen when those worlds interact. In addition to this talk, which is aiming at introducing an R audience to the opportunities of Kaggle, I have also prepared &lt;a href=&#34;https://www.kaggle.com/datasets/headsortails/r-package-history-on-cran&#34;&gt;a new Kaggle dataset&lt;/a&gt; for this audience to get started on the platform. This post is about that dataset: comprehensive data on all R packages currently on &lt;a href=&#34;https://cran.r-project.org/&#34;&gt;CRAN&lt;/a&gt;, and on their full release history.&lt;/p&gt;
+&lt;p&gt;Let’s get started with the packages; including those that I found instrumental for querying info from CRAN: the powerful &lt;a href=&#34;https://stat.ethz.ch/R-manual/R-devel/library/tools/html/CRANtools.html&#34;&gt;tools package&lt;/a&gt; and the more specialised &lt;a href=&#34;https://cran.r-project.org/web/packages/packageRank/index.html&#34;&gt;packageRank package&lt;/a&gt;. Together, the functions in those packages made my task much easier than expected.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;libs &amp;lt;- c(&amp;#39;dplyr&amp;#39;, &amp;#39;tibble&amp;#39;,       # wrangling
+          &amp;#39;tidyr&amp;#39;, &amp;#39;stringr&amp;#39;,      # wrangling
+          &amp;#39;readr&amp;#39;,                 # read files
+          &amp;#39;tools&amp;#39;, &amp;#39;packageRank&amp;#39;,  # CRAN package info
+          &amp;#39;ggplot2&amp;#39;, &amp;#39;ggthemes&amp;#39;,   # plots
+          &amp;#39;gt&amp;#39;, &amp;#39;lubridate&amp;#39;)       # tables &amp;amp; time
+invisible(lapply(libs, library, character.only = TRUE))&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;complete-list-of-cran-packages&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Complete list of CRAN packages&lt;/h3&gt;
+&lt;p&gt;Initially, my thought was to scrape the package information directly from CRAN, the &lt;a href=&#34;https://cran.r-project.org/&#34;&gt;Comprehensive R Archive Network&lt;/a&gt;. It is the central repository for R packages. CRAN describes itself as “a network of ftp and web servers around the world that store identical, up-to-date, versions of code and documentation for R.” If you’re installing an R package in the standard way then it is provided by one of the CRAN mirrors. (The &lt;code&gt;install.packages&lt;/code&gt; function takes a &lt;code&gt;repos&lt;/code&gt; argument that you can set to any of the mirror or to the central “&lt;a href=&#34;http://cran.r-project.org&#34; class=&#34;uri&#34;&gt;http://cran.r-project.org&lt;/a&gt;”.)&lt;/p&gt;
+&lt;p&gt;CRAN provides full lists of all available package &lt;a href=&#34;https://cran.r-project.org/web/packages/available_packages_by_name.html&#34;&gt;by name&lt;/a&gt; and &lt;a href=&#34;https://cran.r-project.org/web/packages/available_packages_by_date.html&#34;&gt;by date of publication&lt;/a&gt;. The latter page in particular has a nice html table with all package names, titles, and dates. This would be easy to scrape. If you want to get an intro to webscraping with the &lt;a href=&#34;https://github.com/tidyverse/rvest&#34;&gt;rvest package&lt;/a&gt; then check out a &lt;a href=&#34;https://heads0rtai1s.github.io/2020/01/23/rvest-intro-astro/&#34;&gt;previous blogpost of mine&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;However, the R community had once again made my task much easier. As I was pondering a respectful and responsible scraping strategy, I came across this &lt;a href=&#34;https://stevenmortimer.com/scraping-responsibly-with-r/&#34;&gt;post on Scraping Responsibly with R&lt;/a&gt; by &lt;a href=&#34;https://stevenmortimer.com/&#34;&gt;Steven Mortimer&lt;/a&gt;, who was working on scraping CRAN downloads. In it, he quoted a tweet by &lt;a href=&#34;https://twitter.com/ma_salmon&#34;&gt;Maëlle Salmon&lt;/a&gt; recommending to use &lt;code&gt;tools::CRAN_package_db&lt;/code&gt; instead as a gentler approach.&lt;/p&gt;
+&lt;p&gt;This tool is indeed very fast and powerful. It provides a lot of columns. For the sake of a simple dataset, I’m only selecting a subset of those features here. Feel free to explore the full range.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df &amp;lt;- tools::CRAN_package_db() %&amp;gt;% 
+  as_tibble() %&amp;gt;% 
+  janitor::clean_names() %&amp;gt;% 
+  select(package, version, depends, imports, license, needs_compilation, author, bug_reports, url, date_published = published, description, title) %&amp;gt;% 
+  mutate(needs_compilation = needs_compilation == &amp;quot;yes&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The columns I picked include names, versions, dates, and information about dependencies, authors, descriptions, and web links. Here are the first 50 rows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df %&amp;gt;% 
+  head(50) %&amp;gt;% 
+  gt() %&amp;gt;% 
+  tab_header(
+    title = md(&amp;quot;**A full list of R packages on CRAN derived via tools::CRAN_package_db**&amp;quot;)
+    ) %&amp;gt;% 
+  opt_row_striping() %&amp;gt;% 
+  tab_options(container.height = px(400))&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;zradhtlzkv&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:400px;&#34;&gt;
+&lt;style&gt;html {
+  font-family: -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, Oxygen, Ubuntu, Cantarell, &#39;Helvetica Neue&#39;, &#39;Fira Sans&#39;, &#39;Droid Sans&#39;, Arial, sans-serif;
+}
+
+#zradhtlzkv .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#zradhtlzkv .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zradhtlzkv .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#zradhtlzkv .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#zradhtlzkv .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zradhtlzkv .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zradhtlzkv .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#zradhtlzkv .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#zradhtlzkv .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#zradhtlzkv .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#zradhtlzkv .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#zradhtlzkv .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#zradhtlzkv .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#zradhtlzkv .gt_from_md &gt; :first-child {
+  margin-top: 0;
+}
+
+#zradhtlzkv .gt_from_md &gt; :last-child {
+  margin-bottom: 0;
+}
+
+#zradhtlzkv .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#zradhtlzkv .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#zradhtlzkv .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zradhtlzkv .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#zradhtlzkv .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zradhtlzkv .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#zradhtlzkv .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#zradhtlzkv .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zradhtlzkv .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zradhtlzkv .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#zradhtlzkv .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zradhtlzkv .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#zradhtlzkv .gt_left {
+  text-align: left;
+}
+
+#zradhtlzkv .gt_center {
+  text-align: center;
+}
+
+#zradhtlzkv .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#zradhtlzkv .gt_font_normal {
+  font-weight: normal;
+}
+
+#zradhtlzkv .gt_font_bold {
+  font-weight: bold;
+}
+
+#zradhtlzkv .gt_font_italic {
+  font-style: italic;
+}
+
+#zradhtlzkv .gt_super {
+  font-size: 65%;
+}
+
+#zradhtlzkv .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+&lt;/style&gt;
+&lt;table class=&#34;gt_table&#34;&gt;
+  &lt;thead class=&#34;gt_header&#34;&gt;
+    &lt;tr&gt;
+      &lt;th colspan=&#34;12&#34; class=&#34;gt_heading gt_title gt_font_normal gt_bottom_border&#34; style&gt;&lt;strong&gt;A full list of R packages on CRAN derived via tools::CRAN_package_db&lt;/strong&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+    
+  &lt;/thead&gt;
+  &lt;thead class=&#34;gt_col_headings&#34;&gt;
+    &lt;tr&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;package&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;version&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;depends&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;imports&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;license&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_center&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;needs_compilation&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;author&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;bug_reports&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;url&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;date_published&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;description&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;title&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody class=&#34;gt_table_body&#34;&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;A3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;R (&amp;gt;= 2.15.0), xtable, pbapply&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;GPL (&amp;gt;= 2)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Scott Fortmann-Roe&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2015-08-16&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Supplies tools for tabulating and analyzing the results of predictive models. The methods employed are applicable to virtually any predictive model and make comparisons between different methodologies straightforward.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Accurate, Adaptable, and Accessible Error Metrics for Predictive
+Models&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;AATtools&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.0.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;R (&amp;gt;= 3.6.0)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;magrittr, dplyr, doParallel, foreach&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL-3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Sercan Kahveci [aut, cre]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;https://github.com/Spiritspeak/AATtools/issues&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2020-06-14&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Compute approach bias scores using different scoring algorithms,
+    compute bootstrapped and exact split-half reliability estimates,
+    and compute confidence intervals for individual participant scores.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Reliability and Scoring Routines for the Approach-Avoidance Task&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;ABACUS&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;R (&amp;gt;= 3.1.0)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;ggplot2 (&amp;gt;= 3.1.0), shiny (&amp;gt;= 1.3.1),&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;GPL-3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Mintu Nath [aut, cre]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://shiny.abdn.ac.uk/Stats/apps/&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2019-09-20&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;A set of Shiny apps for effective communication and understanding in statistics. The current version includes properties of normal distribution, properties of sampling distribution, one-sample z and t tests, two samples independent (unpaired) t test and analysis of variance.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Apps Based Activities for Communicating and Understanding
+Statistics&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abbreviate&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL-3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Sigbert Klinke [aut, cre]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;https://github.com/sigbertklinke/abbreviate (development version)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2021-12-14&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Strings are abbreviated to at least &#34;minlength&#34; characters, such that they remain unique 
+    (if they were). The abbreviations should be recognisable.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Readable String Abbreviation&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abbyyR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.5.5&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;R (&amp;gt;= 3.2.0)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;httr, XML, curl, readr, plyr, progress&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;MIT + file LICENSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Gaurav Sood [aut, cre]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;http://github.com/soodoku/abbyyR/issues&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;http://github.com/soodoku/abbyyR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2019-06-25&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Get text from images of text using Abbyy Cloud Optical Character
+    Recognition (OCR) API. Easily OCR images, barcodes, forms, documents with
+    machine readable zones, e.g. passports. Get the results in a variety of formats
+    including plain text and XML. To learn more about the Abbyy OCR API, see 
+    &amp;lt;http://ocrsdk.com/&amp;gt;.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Access to Abbyy Optical Character Recognition (OCR) API&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abc&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2.2.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;R (&amp;gt;= 2.10), abc.data, nnet, quantreg, MASS, locfit&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL (&amp;gt;= 3)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Csillery Katalin [aut],
+  Lemaire Louisiane [aut],
+  Francois Olivier [aut],
+  Blum Michael [aut, cre]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2022-05-19&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Implements several ABC algorithms for
+        performing parameter estimation, model selection, and goodness-of-fit.
+        Cross-validation tools are also available for measuring the
+        accuracy of ABC estimates, and to calculate the
+        misclassification probabilities of different models.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Tools for Approximate Bayesian Computation (ABC)&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abc.data&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;R (&amp;gt;= 2.10)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;GPL (&amp;gt;= 3)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Csillery Katalin [aut],
+  Lemaire Louisiane [aut],
+  Francois Olivier [aut],
+  Blum Michael [aut, cre]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2015-05-05&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Contains data which are used by functions of the &#39;abc&#39; package.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Data Only: Tools for Approximate Bayesian Computation (ABC)&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;ABC.RAP&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.9.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;R (&amp;gt;= 3.1.0)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;graphics, stats, utils&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL-3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Abdulmonem Alsaleh [cre, aut], Robert Weeks [aut], Ian Morison [aut], RStudio [ctb]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2016-10-20&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;It aims to identify candidate genes that are “differentially
+    methylated” between cases and controls. It applies Student’s t-test and delta beta analysis to
+    identify candidate genes containing multiple “CpG sites”.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Array Based CpG Region Analysis Pipeline&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abcADM&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Rcpp (&amp;gt;= 1.0.1)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;GPL-3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;TRUE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Zongjun Liu [aut],
+  Chun-Hao Yang [aut],
+  John Burkardt [ctb],
+  Samuel W.K. Wong [aut, cre]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2019-11-13&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Estimate parameters of accumulated damage (load duration) models based on failure time data under a Bayesian framework, using Approximate Bayesian Computation (ABC). Assess long-term reliability under stochastic load profiles. Yang, Zidek, and Wong (2019) &amp;lt;doi:10.1080/00401706.2018.1512900&amp;gt;.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Fit Accumulated Damage Models and Estimate Reliability using ABC&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;ABCanalysis&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.2.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;R (&amp;gt;= 2.10)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;plotrix&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL-3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Michael Thrun, Jorn Lotsch, Alfred Ultsch&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;https://www.uni-marburg.de/fb12/datenbionik/software-en&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2017-03-13&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;For a given data set, the package provides a novel method of computing precise limits to acquire subsets which are easily interpreted. Closely related to the Lorenz curve, the ABC curve visualizes the data by graphically representing the cumulative distribution function. Based on an ABC analysis the algorithm calculates, with the help of the ABC curve, the optimal limits by exploiting the mathematical properties pertaining to distribution of analyzed items. The data containing positive values is divided into three disjoint subsets A, B and C, with subset A comprising very profitable values, i.e. largest data values (&#34;the important few&#34;), subset B comprising values where the yield equals to the effort required to obtain it, and the subset C comprising of non-profitable values, i.e., the smallest data sets (&#34;the trivial many&#34;). Package is based on &#34;Computed ABC Analysis for rational Selection of most informative Variables in multivariate Data&#34;, PLoS One. Ultsch. A., Lotsch J. (2015) &amp;lt;DOI:10.1371/journal.pone.0129767&amp;gt;.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Computed ABC Analysis&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abclass&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.3.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;R (&amp;gt;= 3.5.0)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Rcpp, stats&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;GPL (&amp;gt;= 3)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;TRUE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Wenjie Wang [aut, cre] (&amp;lt;https://orcid.org/0000-0003-0363-3180&amp;gt;),
+  Eli Lilly and Company [cph]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://github.com/wenjie2wang/abclass/issues&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://wwenjie.org/abclass,
+https://github.com/wenjie2wang/abclass&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2022-05-28&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Multi-category angle-based large-margin classifiers.
+    See Zhang and Liu (2014) &amp;lt;doi:10.1093/biomet/asu017&amp;gt; for details.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Angle-Based Large-Margin Classifiers&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;ABCoptim&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.15.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Rcpp, graphics, stats, utils&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;MIT + file LICENSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;TRUE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;George Vega Yon [aut, cre],
+  Enyelbert Muñoz [ctb]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;http://github.com/gvegayon/ABCoptim, http://mf.erciyes.edu.tr/abc/&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2017-11-06&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;An implementation of Karaboga (2005) Artificial Bee Colony
+    Optimization algorithm &amp;lt;http://mf.erciyes.edu.tr/abc/pub/tr06_2005.pdf&amp;gt;.
+    This (working) version is a Work-in-progress, which is
+    why it has been implemented using pure R code. This was developed upon the basic
+    version programmed in C and distributed at the algorithm&#39;s official website.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Implementation of Artificial Bee Colony (ABC) Optimization&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;ABCp2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;MASS&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;GPL-2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;M. Catherine Duryea, Andrew D. Kern, Robert M. Cox, and Ryan Calsbeek &lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2016-02-04&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Tests the goodness of fit of a distribution of offspring to the Normal, Poisson, and Gamma distribution and estimates the proportional paternity of the second male (P2) based on the best fit distribution.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Approximate Bayesian Computational Model for Estimating P2&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abcrlda&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.0.3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;stats&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL-3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Dmitriy Fedorov [aut, cre],
+  Amin Zollanvari [aut],
+  Aresh Dadlani [aut],
+  Berdakh Abibullaev [aut]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;https://ieeexplore.ieee.org/document/8720003/,
+https://dx.doi.org/10.1109/LSP.2019.2918485&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2020-05-28&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Offers methods to perform asymptotically bias-corrected regularized linear discriminant analysis (ABC_RLDA) for cost-sensitive binary classification. The bias-correction is an estimate of the bias term added to regularized discriminant analysis (RLDA) that minimizes the overall risk. The default magnitude of misclassification costs are equal and set to 0.5; however, the package also offers the options to set them to some predetermined values or, alternatively, take them as hyperparameters to tune.
+    A. Zollanvari, M. Abdirash, A. Dadlani and B. Abibullaev (2019) &amp;lt;doi:10.1109/LSP.2019.2918485&amp;gt;.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Asymptotically Bias-Corrected Regularized Linear Discriminant
+Analysis&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abctools&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.1.3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;R (&amp;gt;= 2.10), abc, abind, parallel, plyr, Hmisc&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;GPL (&amp;gt;= 2)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;TRUE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Matt Nunes [aut, cre],
+  Dennis Prangle [aut],
+  Guilhereme Rodrigues [ctb]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://github.com/dennisprangle/abctools/issues&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://github.com/dennisprangle/abctools&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2018-07-17&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Tools for approximate Bayesian computation including summary statistic selection and assessing coverage.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Tools for ABC Analyses&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abd&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.2-8&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;R (&amp;gt;= 3.0), nlme, lattice, grid, mosaic&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL-2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Kevin M. Middleton &amp;lt;middletonk@missouri.edu&amp;gt;, Randall Pruim
+    &amp;lt;rpruim@calvin.edu&amp;gt;&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2015-07-03&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;The abd package contains data sets and sample code for The
+    Analysis of Biological Data by Michael Whitlock and Dolph Schluter (2009;
+    Roberts &amp;amp; Company Publishers).&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;The Analysis of Biological Data&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abdiv&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.2.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;ape&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;MIT + file LICENSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Kyle Bittinger [aut, cre]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://github.com/kylebittinger/abdiv/issues&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://github.com/kylebittinger/abdiv&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2020-01-20&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;A collection of measures for measuring ecological diversity.
+  Ecological diversity comes in two flavors: alpha diversity measures the
+  diversity within a single site or sample, and beta diversity measures the
+  diversity across two sites or samples. This package overlaps considerably
+  with other R packages such as &#39;vegan&#39;, &#39;gUniFrac&#39;, &#39;betapart&#39;, and &#39;fossil&#39;.
+  We also include a wide range of functions that are implemented in software
+  outside the R ecosystem, such as &#39;scipy&#39;, &#39;Mothur&#39;, and &#39;scikit-bio&#39;.  The
+  implementations here are designed to be basic and clear to the reader.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Alpha and Beta Diversity Measures&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abe&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;3.0.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL (&amp;gt;= 2)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Rok Blagus [aut, cre],  Sladana Babic [ctb]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2017-10-30&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Performs augmented backward elimination and checks the stability of the obtained model. Augmented backward elimination combines significance or information based criteria with the change in estimate to either select the optimal model for prediction purposes or to serve as a tool to obtain a practically sound, highly interpretable model. More details can be found in Dunkler et al. (2014) &amp;lt;doi:10.1371/journal.pone.0113677&amp;gt;. &lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Augmented Backward Elimination&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abess&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.4.5&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;R (&amp;gt;= 3.1.0)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Rcpp, MASS, methods, Matrix&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;GPL (&amp;gt;= 3) | file LICENSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;TRUE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Jin Zhu [aut, cre] (&amp;lt;https://orcid.org/0000-0001-8550-5822&amp;gt;),
+  Liyuan Hu [aut],
+  Junhao Huang [aut],
+  Kangkang Jiang [aut],
+  Yanhang Zhang [aut],
+  Zezhi Wang [aut],
+  Borui Tang [aut],
+  Shiyun Lin [aut],
+  Junxian Zhu [aut],
+  Canhong Wen [aut],
+  Heping Zhang [aut] (&amp;lt;https://orcid.org/0000-0002-0688-4076&amp;gt;),
+  Xueqin Wang [aut] (&amp;lt;https://orcid.org/0000-0001-5205-9950&amp;gt;),
+  spectra contributors [cph] (Spectra implementation)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://github.com/abess-team/abess/issues&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://github.com/abess-team/abess,
+https://abess-team.github.io/abess/,
+https://abess.readthedocs.io&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2022-03-22&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Extremely efficient toolkit for solving the best subset selection problem &amp;lt;arXiv:2110.09697&amp;gt;. This package is its R interface. The package implements and generalizes algorithms designed in &amp;lt;doi:10.1073/pnas.2014241117&amp;gt; that exploits a novel sequencing-and-splicing technique to guarantee exact support recovery and globally optimal solution in polynomial times for linear model. It also supports best subset selection for logistic regression, Poisson regression, Cox proportional hazard model, Gamma regression, multiple-response regression, multinomial logistic regression, ordinal regression, (sequential) principal component analysis, and robust principal component analysis. The other valuable features such as the best subset of group selection &amp;lt;arXiv:2104.12576&amp;gt; and sure independence screening &amp;lt;doi:10.1111/j.1467-9868.2008.00674.x&amp;gt; are also provided.  &lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Fast Best Subset Selection&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abglasso&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.1.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;MASS, pracma, stats, statmod&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL-3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Jarod Smith [aut, cre] (&amp;lt;https://orcid.org/0000-0003-4235-6147&amp;gt;),
+  Mohammad Arashi [aut] (&amp;lt;https://orcid.org/0000-0003-4793-5674&amp;gt;),
+  Andriette Bekker [aut] (&amp;lt;https://orcid.org/0000-0002-5881-9241&amp;gt;)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2021-07-13&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Implements a Bayesian adaptive graphical lasso data-augmented block Gibbs sampler. The sampler simulates the posterior distribution of precision matrices of a Gaussian Graphical Model. This sampler was adapted from the original MATLAB routine proposed in Wang (2012) &amp;lt;doi:10.1214/12-BA729&amp;gt;.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Adaptive Bayesian Graphical Lasso&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;ABHgenotypeR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;ggplot2, reshape2, utils&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;GPL-3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Stefan Reuscher [aut, cre],
+  Tomoyuki Furuta [aut]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;http://github.com/StefanReuscher/ABHgenotypeR/issues&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;http://github.com/StefanReuscher/ABHgenotypeR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2016-02-04&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Easy to use functions to visualize marker data
+    from biparental populations. Useful for both analyzing and
+    presenting genotypes in the ABH format.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Easy Visualization of ABH Genotypes&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abind&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.4-5&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;R (&amp;gt;= 1.5.0)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;methods, utils&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;LGPL (&amp;gt;= 2)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Tony Plate &amp;lt;tplate@acm.org&amp;gt; and Richard Heiberger&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2016-07-21&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Combine multidimensional arrays into a single array.
+  This is a generalization of &#39;cbind&#39; and &#39;rbind&#39;.  Works with
+  vectors, matrices, and higher-dimensional arrays.  Also
+  provides functions &#39;adrop&#39;, &#39;asub&#39;, and &#39;afill&#39; for manipulating,
+  extracting and replacing data in arrays.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Combine Multidimensional Arrays&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abjData&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.1.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;R (&amp;gt;= 3.3.1)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;MIT + file LICENSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Julio Trecenti [aut, cre] (&amp;lt;https://orcid.org/0000-0002-1680-6389&amp;gt;),
+  Renata Hirota [ctb],
+  Katerine Witkoski [aut] (&amp;lt;https://orcid.org/0000-0002-3691-6569&amp;gt;),
+  Associação Brasileira de Jurimetria [cph, fnd]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://abjur.github.io/abjData/&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2022-06-15&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;The Brazilian Jurimetrics Association (ABJ in
+    Portuguese, see &amp;lt;https://abj.org.br/&amp;gt; for more information) is
+    a non-profit organization which aims to investigate and promote the
+    use of statistics and probability in the study of Law and its
+    institutions. This package has a set of datasets commonly used in
+    our book.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Databases Used Routinely by the Brazilian Jurimetrics
+Association&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abjutils&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.3.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;R (&amp;gt;= 3.6)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr, magrittr, purrr, rlang, rstudioapi, stringi, stringr,
+tidyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;MIT + file LICENSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Caio Lente [aut, cre] (&amp;lt;https://orcid.org/0000-0001-8473-069X&amp;gt;),
+  Julio Trecenti [aut] (&amp;lt;https://orcid.org/0000-0002-1680-6389&amp;gt;),
+  Katerine Witkoski [ctb] (&amp;lt;https://orcid.org/0000-0002-3691-6569&amp;gt;),
+  Associação Brasileira de Jurimetria [cph, fnd]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;https://github.com/abjur/abjutils&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2022-02-01&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;The Brazilian Jurimetrics Association (ABJ in Portuguese, see
+    &amp;lt;https://abj.org.br/&amp;gt; for more information) is a non-profit
+    organization which aims to investigate and promote the use of
+    statistics and probability in the study of Law and its institutions.
+    This package implements general purpose tools used by ABJ, such as
+    functions for sampling and basic manipulation of Brazilian lawsuits
+    identification number. It also implements functions for text cleaning,
+    such as accentuation removal.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Useful Tools for Jurimetrical Analysis Used by the Brazilian
+Jurimetrics Association&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abn&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2.7-1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;R (&amp;gt;= 4.0.0)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;methods, rjags, nnet, lme4, graph, Rgraphviz, doParallel,
+foreach&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;GPL (&amp;gt;= 2)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;TRUE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Reinhard Furrer [cre, aut] (&amp;lt;https://orcid.org/0000-0002-6319-2332&amp;gt;),
+  Gilles Kratzer [aut] (&amp;lt;https://orcid.org/0000-0002-5929-8935&amp;gt;),
+  Fraser Iain Lewis [aut] (&amp;lt;https://orcid.org/0000-0003-4580-2712&amp;gt;),
+  Marta Pittavino [ctb] (&amp;lt;https://orcid.org/0000-0002-1232-1034&amp;gt;),
+  Kalina Cherneva [ctr]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://git.math.uzh.ch/reinhard.furrer/abn/-/issues&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;http://r-bayesian-networks.org&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2022-04-25&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Bayesian network analysis is a form of probabilistic graphical models which derives from empirical data a directed acyclic graph, DAG, describing the dependency structure between random variables. 
+ An additive Bayesian network model consists of a form of a DAG where each node comprises a generalized linear model, GLM. Additive Bayesian network models are equivalent to Bayesian multivariate regression using graphical modelling, they generalises the usual multivariable regression, GLM, to multiple dependent variables. 
+ &#39;abn&#39; provides routines to help determine optimal Bayesian network models for a given data set, where these models are used to identify statistical dependencies in messy, complex data. The additive formulation of these models is equivalent to multivariate generalised linear modelling (including mixed models with iid random effects). 
+ The usual term to describe this model selection process is structure discovery. 
+ The core functionality is concerned with model selection - determining the most robust empirical model of data from interdependent variables. Laplace approximations are used to estimate goodness of fit metrics and model parameters, and wrappers are also included to the INLA package which can be obtained from &amp;lt;https://www.r-inla.org&amp;gt;. 
+ The computing library JAGS &amp;lt;https://mcmc-jags.sourceforge.io&amp;gt; is used to simulate &#39;abn&#39;-like data. 
+ A comprehensive set of documented case studies, numerical accuracy/quality assurance exercises, and additional documentation are available from the &#39;abn&#39; website &amp;lt;http://r-bayesian-networks.org&amp;gt;.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Modelling Multivariate Data with Additive Bayesian Networks&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abnormality&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.1.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;MASS (&amp;gt;= 7.3.0), Matrix&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;MIT + file LICENSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Michael Marks [aut, cre]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2018-03-13&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Contains the functions to implement the methodology and considerations laid out by Marks et al. in the manuscript Measuring Abnormality in High Dimensional Spaces: Applications in Biomechanical Gait Analysis. As of 2/27/2018 this paper has been submitted and is under scientific review. Using high-dimensional datasets to measure a subject’s overall level of abnormality as compared to a reference population is often needed in outcomes research. Utilizing applications in instrumented gait analysis, that article demonstrates how using data that is inherently non-independent to measure overall abnormality may bias results. A methodology is introduced to address this bias to accurately measure overall abnormality in high dimensional spaces. While this methodology is in line with previous literature, it differs in two major ways. Advantageously, it can be applied to datasets in which the number of observations is less than the number of features/variables, and it can be abstracted to practically any number of domains or dimensions. After applying the proposed methodology to the original data, the researcher is left with a set of uncorrelated variables (i.e. principal components) with which overall abnormality can be measured without bias. Different considerations are discussed in that article in deciding the appropriate number of principal components to keep and the aggregate distance measure to utilize.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Measure a Subject&#39;s Abnormality with Respect to a Reference
+Population&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abodOutlier&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;cluster, R (&amp;gt;= 3.1.2)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;MIT + file LICENSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Jose Jimenez &amp;lt;jose@jimenezluna.com&amp;gt;&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2015-08-31&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Performs angle-based outlier detection on a given dataframe. Three methods are available, a full but slow implementation using all the data that has cubic complexity, a fully randomized one which is way more efficient and another using k-nearest neighbours. These algorithms are specially well suited for high dimensional data outlier detection.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Angle-Based Outlier Detection&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;ABPS&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;kernlab&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL (&amp;gt;= 2)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Frédéric Schütz [aut, cre],
+  Alix Zollinger [aut]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2018-10-18&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;An implementation of the Abnormal Blood Profile Score (ABPS,
+    part of the Athlete Biological Passport program of the World Anti-Doping
+    Agency), which combines several blood parameters into a single score in
+    order to detect blood doping (Sottas et al. (2006)
+    &amp;lt;doi:10.2202/1557-4679.1011&amp;gt;). The package also contains functions to
+    calculate other scores used in anti-doping programs, such as the
+    OFF-score (Gore et al. (2003) &amp;lt;http://www.haematologica.org/content/88/3/333&amp;gt;),
+    as well as example data.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;The Abnormal Blood Profile Score to Detect Blood Doping&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abstr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.4.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;R (&amp;gt;= 4.0.0)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;jsonlite (&amp;gt;= 1.7.2), lwgeom (&amp;gt;= 0.2.5), magrittr (&amp;gt;= 2.0.1),
+methods, od (&amp;gt;= 0.3.1), sf (&amp;gt;= 1.0.1), tibble (&amp;gt;= 3.0.6), tidyr
+(&amp;gt;= 1.1.3)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Apache License (&amp;gt;= 2)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Nathanael Sheehan [aut, cre] (&amp;lt;https://orcid.org/0000-0002-2779-0976&amp;gt;),
+  Robin Lovelace [aut] (&amp;lt;https://orcid.org/0000-0001-5679-6536&amp;gt;),
+  Trevor Nederlof [aut],
+  Lucas Dias [ctb],
+  Dustin Carlino [aut]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://github.com/a-b-street/abstr/issues&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://github.com/a-b-street/abstr,
+https://a-b-street.github.io/abstr/&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2021-11-30&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Provides functions to convert origin-destination data,
+    represented as straight &#39;desire lines&#39; in the &#39;sf&#39; Simple Features
+    class system, into JSON files that can be directly imported into
+    A/B Street &amp;lt;https://www.abstreet.org&amp;gt;, a free and open source tool
+    for simulating urban transport systems and scenarios of change
+    &amp;lt;doi:10.1007/s10109-020-00342-2&amp;gt;.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;R Interface to the A/B Street Transport System Simulation
+Software&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abstractr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.1.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;shiny (&amp;gt;= 1.2.0), ggplot2 (&amp;gt;= 3.0.0), gridExtra (&amp;gt;= 2.3.0),
+colourpicker, shinythemes, emojifont, rintrojs&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL-3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Matthew Kumar &amp;lt;mattkumar@gmail.com&amp;gt;&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;https://matt-kumar.shinyapps.io/portfolio&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2019-01-20&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;An R-Shiny application to create visual abstracts for original research. A variety of user defined options and formatting are included.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;An R-Shiny Application for Creating Visual Abstracts&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abtest&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;R (&amp;gt;= 3.0.0)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Rcpp (&amp;gt;= 0.12.14), mvtnorm, sn, qgam, truncnorm, plotrix,
+grDevices, RColorBrewer, Matrix, parallel&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;GPL (&amp;gt;= 2)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;TRUE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Quentin F. Gronau [aut, cre],
+  Akash Raj [ctb],
+  Eric-Jan Wagenmakers [ths]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2021-11-22&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Provides functions for Bayesian A/B testing including prior elicitation
+    options based on Kass and Vaidyanathan (1992) &amp;lt;doi:10.1111/j.2517-6161.1992.tb01868.x&amp;gt;. 
+    Gronau, Raj K. N., &amp;amp; Wagenmakers (2021) &amp;lt;doi:10.18637/jss.v100.i17&amp;gt;.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Bayesian A/B Testing&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abundant&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;R (&amp;gt;= 2.10), glasso&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL-2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;TRUE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Adam J. Rothman&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2022-01-04&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Fit and predict with the high-dimensional principal fitted
+        components model.  This model is described by Cook, Forzani, and Rothman (2012)
+    &amp;lt;doi:10.1214/11-AOS962&amp;gt;.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;High-Dimensional Principal Fitted Components and Abundant
+Regression&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;Ac3net&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.2.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;R (&amp;gt;= 3.3.0), data.table&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;GPL (&amp;gt;= 3)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Gokmen Altay&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2018-02-26&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Infers directional conservative causal core (gene) networks. It is an advanced version of the algorithm C3NET by providing directional network. Gokmen Altay (2018) &amp;lt;doi:10.1101/271031&amp;gt;, bioRxiv.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Inferring Directional Conservative Causal Core Gene Networks&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;ACA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;R (&amp;gt;= 3.2.2)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;graphics, grDevices, stats, utils&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Daniel Amorese  &lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2018-07-02&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Offers an interactive function for the detection of breakpoints in series. &lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Abrupt Change-Point or Aberration Detection in Point Series&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;academictwitteR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.3.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;R (&amp;gt;= 3.4)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr (&amp;gt;= 1.0.0), httr, jsonlite, magrittr, lubridate,
+usethis, tibble, tidyr, tidyselect, purrr, rlang, utils&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;MIT + file LICENSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Christopher Barrie [aut, cre] (&amp;lt;https://orcid.org/0000-0002-9156-990X&amp;gt;),
+  Justin Chun-ting Ho [aut] (&amp;lt;https://orcid.org/0000-0002-7884-1059&amp;gt;),
+  Chung-hong Chan [ctb] (&amp;lt;https://orcid.org/0000-0002-6232-7530&amp;gt;),
+  Noelia Rico [ctb] (&amp;lt;https://orcid.org/0000-0002-6169-4523&amp;gt;),
+  Tim König [ctb] (&amp;lt;https://orcid.org/0000-0002-2852-2690&amp;gt;),
+  Thomas Davidson [ctb] (&amp;lt;https://orcid.org/0000-0002-5947-7490&amp;gt;)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://github.com/cjbarrie/academictwitteR/issues&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://github.com/cjbarrie/academictwitteR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2022-02-16&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Package to query the Twitter Academic Research Product Track,
+    providing access to full-archive search and other v2 API endpoints. Functions
+    are written with academic research in mind. They provide flexibility in how 
+    the user wishes to store collected data, and encourage regular storage of data
+    to mitigate loss when collecting large volumes of tweets. They also provide
+    workarounds to manage and reshape the format in which data is provided on
+    the client side.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Access the Twitter Academic Research Product Track V2 API
+Endpoint&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;acc&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.3.3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;R (&amp;gt;= 2.10), mhsmm&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;zoo, PhysicalActivity, nleqslv, plyr, methods, DBI, RSQLite,
+circlize, ggplot2, R.utils, iterators, Rcpp&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL (&amp;gt;= 2)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;TRUE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Jaejoon Song, Matthew G. Cox&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2016-12-16&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Processes accelerometer data from uni-axial and tri-axial devices,
+    and generates data summaries. Also includes functions to plot, analyze, and
+    simulate accelerometer data.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Exploring Accelerometer Data&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;acca&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;methods, stats, ggplot2, plyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;GPL (&amp;gt;= 2)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Livio Finos&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2022-01-28&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;It performs Canonical Correlation Analysis and provides inferential guaranties on the correlation components. The p-values are computed following the resampling method developed in Winkler, A. M., Renaud, O., Smith, S. M., &amp;amp; Nichols, T. E. (2020). Permutation inference for canonical correlation analysis. NeuroImage, &amp;lt;doi:10.1016/j.neuroimage.2020.117065&amp;gt;. Furthermore, it provides plotting tools to visualize the results.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;A Canonical Correlation Analysis with Inferential Guaranties&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;accelerometry&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;3.1.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;R (&amp;gt;= 3.0.0)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Rcpp (&amp;gt;= 0.12.15), dvmisc&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL-3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;TRUE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Dane R. Van Domelen&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2018-08-24&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;A collection of functions that perform operations on time-series accelerometer data, such as identify non-wear time, flag minutes that are part of an activity bout, and find the maximum 10-minute average count value. The functions are generally very flexible, allowing for a variety of algorithms to be implemented. Most of the functions are written in C++ for efficiency.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Functions for Processing Accelerometer Data&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;accelmissing&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.4&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;R (&amp;gt;= 2.10), mice, pscl&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;GPL (&amp;gt;= 2)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Jung Ae Lee &amp;lt;julee@uark.edu&amp;gt;&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2018-04-06&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Imputation for the missing count values in accelerometer data. The methodology includes both parametric and semi-parametric multiple imputations under the zero-inflated Poisson lognormal model. This package also provides multiple functions to pre-process the accelerometer data previous to the missing data imputation. These includes detecting wearing and non-wearing time, selecting valid days and subjects, and creating plots.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Missing Value Imputation for Accelerometer Data&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;accept&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.9.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;R (&amp;gt;= 3.6.0)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;stats, dplyr, reldist, splines&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL-3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Amin Adibi [aut, cre],
+  Mohsen Sadatsafavi [aut, cph],
+  Abdollah Safari [aut],
+  Ainsleigh Hill [aut]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2022-07-15&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Allows clinicians to predict the rate and severity of future acute exacerbation in Chronic Obstructive Pulmonary Disease (COPD) patients, based on the clinical prediction model published in Adibi et al. (2020) &amp;lt;doi:10.1016/S2213-2600(19)30397-2&amp;gt;. &lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;The Acute COPD Exacerbation Prediction Tool (ACCEPT)&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;AcceptanceSampling&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0-8&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;methods, R(&amp;gt;= 2.4.0), stats&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;graphics, utils&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;GPL (&amp;gt;= 3)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Andreas Kiermeier [aut, cre],
+  Peter Bloomfield [ctb]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2022-04-06&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Provides functionality for creating and
+    evaluating acceptance sampling plans. Sampling plans can be single,
+    double or multiple.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Creation and Evaluation of Acceptance Sampling Plans&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;accessibility&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.1.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;R (&amp;gt;= 3.5.0)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;checkmate, data.table, utils&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;MIT + file LICENSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Rafael H. M. Pereira [aut, cre]
+    (&amp;lt;https://orcid.org/0000-0003-2125-7465&amp;gt;),
+  Daniel Herszenhut [aut] (&amp;lt;https://orcid.org/0000-0001-8066-1105&amp;gt;),
+  Ipea - Institute for Applied Economic Research [cph, fnd]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;https://github.com/ipeaGIT/accessibility/issues&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;https://github.com/ipeaGIT/accessibility&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2022-06-30&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;A set of fast and convenient functions to calculate multiple 
+             transport accessibility measures. Given a pre-computed travel cost 
+             matrix in long format combined with land-use  data (e.g. location 
+             of  jobs, healthcare, population), the package  allows one to 
+             calculate active and passive accessibility levels using multiple 
+             accessibility metrics such as: cumulative opportunity measure 
+             (using either travel time cutoff or interval), minimum travel cost 
+             to closest N number of activities, gravitational measures and 
+             different floating catchment area methods.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Transport Accessibility Metrics&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;accessrmd&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;ggplot2, R (&amp;gt;= 2.10)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;htmltools, stringr, rlist, knitr, RCurl&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;MIT + file LICENSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Rich Leyshon [aut, cre],
+  Crown Copyright 2021 [cph]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2022-05-03&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Provides a simple method to improve the accessibility of
+    &#39;rmarkdown&#39; documents. The package provides functions for creating or
+    modifying &#39;rmarkdown&#39; documents, resolving known errors and alerts that
+    result in accessibility issues for screen reader users.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Improving the Accessibility of &#39;rmarkdown&#39; Documents&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;accrual&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;R(&amp;gt;= 3.1.3), tcltk2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;fgui, SMPracticals&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL-2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Junhao Liu, Yu Jiang, Cen Wu, Steve Simon, Matthew S. Mayo, Rama Raghavan, Byron J. Gajewski&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2017-10-20&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Subject recruitment for medical research is challenging. Slow patient accrual leads to delay in research. Accrual monitoring during the process of recruitment is critical. Researchers need reliable tools to manage the accrual rate. We developed a Bayesian method that integrates researcher&#39;s experience on previous trials and data from the current study, providing reliable prediction on accrual rate for clinical studies. In this R package, we present functions for Bayesian accrual prediction which can be easily used by statisticians and clinical researchers.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Bayesian Accrual Prediction&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;accrualPlot&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;lubridate&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr, ggplot2, grid, magrittr, purrr, rlang&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;MIT + file LICENSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Lukas Bütikofer [cre, aut],
+  Alan G. Haynes [aut]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://github.com/CTU-Bern/accrualPlot/issues&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://github.com/CTU-Bern/accrualPlot&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2022-05-09&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Tracking accrual in clinical trials is important for trial success. 
+    If accrual is too slow, the trial will take too long and be too expensive. If
+    accrual is much faster than expected, time sensitive tasks such as the writing 
+    of statistical analysis plans might need to be rushed. &#39;accrualPlot&#39; provides 
+    functions to aid the tracking of accrual and predict when a trial will reach 
+    it&#39;s intended sample size.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Accrual Plots and Predictions for Clinical Trials&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;accSDA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.1.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;R (&amp;gt;= 3.2)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;MASS (&amp;gt;= 7.3.45), ggplot2 (&amp;gt;= 2.1.0), ggthemes (&amp;gt;= 3.2.0),
+grid (&amp;gt;= 3.2.2), gridExtra (&amp;gt;= 2.2.1)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL (&amp;gt;= 2)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Gudmundur Einarsson [aut, cre, trl],
+  Line Clemmensen [aut, ths],
+  Brendan Ames [aut],
+  Summer Atkins [aut]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;https://github.com/gumeo/accSDA/issues&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;https://github.com/gumeo/accSDA/wiki&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2022-04-05&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Implementation of sparse linear discriminant analysis, which is a supervised
+    classification method for multiple classes. Various novel optimization approaches to
+    this problem are implemented including alternating direction method of multipliers (ADMM),
+    proximal gradient (PG) and accelerated proximal gradient (APG) (See Atkins et al. &amp;lt;arXiv:1705.07194&amp;gt;).
+    Functions for performing cross validation are also supplied along with basic prediction
+    and plotting functions.
+    Sparse zero variance discriminant analysis (SZVD) is also included in the package
+    (See Ames and Hong, &amp;lt;arXiv:1401.5492&amp;gt;). See the github wiki for a more extended description.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Accelerated Sparse Discriminant Analysis&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;accucor&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.3.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;nnls, dplyr, stringr, readxl, readr, rlang, tibble, writexl,
+CHNOSZ&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;MIT + file LICENSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Xiaoyang Su [aut] (&amp;lt;https://orcid.org/0000-0001-8081-1396&amp;gt;),
+  Lance Parsons [aut, cre] (&amp;lt;https://orcid.org/0000-0002-8521-714X&amp;gt;),
+  Yujue Wang [ctb] (&amp;lt;https://orcid.org/0000-0001-7088-1729&amp;gt;),
+  Princeton University [cph]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://github.com/XiaoyangSu/AccuCor/issues&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://github.com/XiaoyangSu/AccuCor&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2021-11-17&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;An isotope natural abundance correction algorithm that
+  is needed especially for high resolution mass spectrometers. Supports
+  correction for 13C, 2H and 15N. Su X, Lu W and Rabinowitz J (2017)
+  &amp;lt;doi:10.1021/acs.analchem.7b00396&amp;gt;.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Natural Abundance Correction of Mass Spectrometer Data&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;ACDC&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.0.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;R (&amp;gt;= 3.5.0), ggplot2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;magrittr, deSolve, dplyr, tibble, colorspace, patchwork,
+latex2exp, tidyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL-3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Bjørn Tore Kopperud [aut, cre],
+  Sebastian Höhna [aut],
+  Andrew F. Magee [aut]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;https://github.com/afmagee/ACDC&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2022-01-12&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Features tools for exploring congruent phylogenetic birth-death models. It can construct the pulled speciation- and net-diversification rates from a reference model. Given alternative speciation- or extinction rates, it can construct new models that are congruent with the reference model. Functionality is included to sample new rate functions, and to visualize the distribution of one congruence class. See also Louca &amp;amp; Pennell (2020) &amp;lt;doi:10.1038/s41586-020-2176-1&amp;gt;.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Analysis of Congruent Diversification Classes&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;acdcR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;R (&amp;gt;= 4.0.0), raster, data.table, stats&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;GPL (&amp;gt;= 2)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;FALSE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Seong D. Yun [aut, cre]&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;https://github.com/ysd2004/acdcR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2022-06-27&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;The functions are designed to calculate the most widely-used county-level variables in 
+  agricultural production or agricultural-climatic and weather analyses. To operate some functions 
+  in this package needs download of the bulk PRISM raster. See the examples, testing versions and 
+  more details from: &amp;lt;https://github.com/ysd2004/acdcR&amp;gt;.&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Agro-Climatic Data by County&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;ACDm&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.0.4.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;R(&amp;gt;= 2.10.0)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;plyr, dplyr, ggplot2, Rsolnp, zoo, graphics,&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;GPL (&amp;gt;= 2)&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center gt_striped&#34;&gt;TRUE&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Markus Belfrage&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;NA&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2022-07-08&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Package for Autoregressive Conditional Duration (ACD, Engle and Russell, 1998) models. Creates trade, price or volume durations from transactions (tic) data, performs diurnal adjustments, fits various ACD models and tests them. &lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Tools for Autoregressive Conditional Duration Models&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+  
+  
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;p&gt;Now you could take this data, aggregate the &lt;code&gt;date_published&lt;/code&gt; by month, and plot the growth of the R ecosystem for yourself. For instance like this:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df %&amp;gt;% 
+  mutate(date = floor_date(ymd(date_published), unit = &amp;quot;month&amp;quot;)) %&amp;gt;% 
+  filter(!is.na(date)) %&amp;gt;% 
+  count(date) %&amp;gt;% 
+  arrange(date) %&amp;gt;% 
+  mutate(cumul = cumsum(n)) %&amp;gt;% 
+  ggplot(aes(date, cumul)) +
+  geom_line(col = &amp;quot;blue&amp;quot;) +
+  theme_minimal() +
+  labs(x = &amp;quot;Date&amp;quot;, y = &amp;quot;Cumlative count&amp;quot;, title = &amp;quot;Cumulative count of CRAN package by date of latest version&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2022-07-22-kaggle-dataset-cran-packages_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;But this doesn’t really show you the true historical growth, does it? The x-axis range and my plot title are already telling you what’s going on here. The &lt;code&gt;date_published&lt;/code&gt; that &lt;code&gt;CRAN_package_db&lt;/code&gt; gives us (and that the CRAN website lists) corresponds to the last published version of the package. See for instance the entry for &lt;code&gt;dplyr&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df %&amp;gt;% 
+  filter(package == &amp;quot;dplyr&amp;quot;) %&amp;gt;% 
+  select(package, version, date_published) %&amp;gt;% 
+  gt()&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;hnqvzlerji&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:auto;&#34;&gt;
+&lt;style&gt;html {
+  font-family: -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, Oxygen, Ubuntu, Cantarell, &#39;Helvetica Neue&#39;, &#39;Fira Sans&#39;, &#39;Droid Sans&#39;, Arial, sans-serif;
+}
+
+#hnqvzlerji .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#hnqvzlerji .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hnqvzlerji .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#hnqvzlerji .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#hnqvzlerji .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hnqvzlerji .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hnqvzlerji .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#hnqvzlerji .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#hnqvzlerji .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#hnqvzlerji .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#hnqvzlerji .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#hnqvzlerji .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#hnqvzlerji .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#hnqvzlerji .gt_from_md &gt; :first-child {
+  margin-top: 0;
+}
+
+#hnqvzlerji .gt_from_md &gt; :last-child {
+  margin-bottom: 0;
+}
+
+#hnqvzlerji .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#hnqvzlerji .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#hnqvzlerji .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hnqvzlerji .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#hnqvzlerji .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hnqvzlerji .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#hnqvzlerji .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#hnqvzlerji .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hnqvzlerji .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hnqvzlerji .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#hnqvzlerji .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hnqvzlerji .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#hnqvzlerji .gt_left {
+  text-align: left;
+}
+
+#hnqvzlerji .gt_center {
+  text-align: center;
+}
+
+#hnqvzlerji .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#hnqvzlerji .gt_font_normal {
+  font-weight: normal;
+}
+
+#hnqvzlerji .gt_font_bold {
+  font-weight: bold;
+}
+
+#hnqvzlerji .gt_font_italic {
+  font-style: italic;
+}
+
+#hnqvzlerji .gt_super {
+  font-size: 65%;
+}
+
+#hnqvzlerji .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+&lt;/style&gt;
+&lt;table class=&#34;gt_table&#34;&gt;
+  
+  &lt;thead class=&#34;gt_col_headings&#34;&gt;
+    &lt;tr&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;package&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;version&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;date_published&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody class=&#34;gt_table_body&#34;&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0.9&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2022-04-28&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+  
+  
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;p&gt;The cornerstone of the tidyverse was first published a little while before April 2022. Version 1.0.9 is the most recent one, at the time of writing.&lt;/p&gt;
+&lt;p&gt;Naturally, that means that in this table those packages with frequent updates will be weighted heavier towards more recent dates. Which is perfectly fine if you’re only interested in the most recent package. But if you, like me, want to see how the R ecosystem grew over time, then you need the historical dates of the first published versions. This is where our next package comes in.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;package-history&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Package history&lt;/h3&gt;
+&lt;p&gt;I found the &lt;a href=&#34;https://github.com/lindbrook/packageRank&#34;&gt;packageRank package&lt;/a&gt; through googling “R package history”. Its documentation on github is detailed, and it performs very well for me. In the &lt;code&gt;packageHistory&lt;/code&gt; function you give it a package name and it does the rest. Let’s find out more about the release history of our favourite &lt;code&gt;dplyr&lt;/code&gt; package:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_hist_dplyr &amp;lt;- packageRank::packageHistory(package = &amp;quot;dplyr&amp;quot;, check.package = TRUE) %&amp;gt;% 
+    as_tibble() %&amp;gt;% 
+    janitor::clean_names()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_hist_dplyr %&amp;gt;% 
+  gt() %&amp;gt;% 
+  tab_header(
+    title = md(&amp;quot;**The release history of the dplyr package**&amp;quot;)
+    ) %&amp;gt;% 
+  opt_row_striping() %&amp;gt;% 
+  tab_options(container.height = px(400))&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;boxomtksqb&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:400px;&#34;&gt;
+&lt;style&gt;html {
+  font-family: -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, Oxygen, Ubuntu, Cantarell, &#39;Helvetica Neue&#39;, &#39;Fira Sans&#39;, &#39;Droid Sans&#39;, Arial, sans-serif;
+}
+
+#boxomtksqb .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#boxomtksqb .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#boxomtksqb .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#boxomtksqb .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#boxomtksqb .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#boxomtksqb .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#boxomtksqb .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#boxomtksqb .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#boxomtksqb .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#boxomtksqb .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#boxomtksqb .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#boxomtksqb .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#boxomtksqb .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#boxomtksqb .gt_from_md &gt; :first-child {
+  margin-top: 0;
+}
+
+#boxomtksqb .gt_from_md &gt; :last-child {
+  margin-bottom: 0;
+}
+
+#boxomtksqb .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#boxomtksqb .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#boxomtksqb .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#boxomtksqb .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#boxomtksqb .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#boxomtksqb .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#boxomtksqb .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#boxomtksqb .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#boxomtksqb .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#boxomtksqb .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#boxomtksqb .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#boxomtksqb .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#boxomtksqb .gt_left {
+  text-align: left;
+}
+
+#boxomtksqb .gt_center {
+  text-align: center;
+}
+
+#boxomtksqb .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#boxomtksqb .gt_font_normal {
+  font-weight: normal;
+}
+
+#boxomtksqb .gt_font_bold {
+  font-weight: bold;
+}
+
+#boxomtksqb .gt_font_italic {
+  font-style: italic;
+}
+
+#boxomtksqb .gt_super {
+  font-size: 65%;
+}
+
+#boxomtksqb .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+&lt;/style&gt;
+&lt;table class=&#34;gt_table&#34;&gt;
+  &lt;thead class=&#34;gt_header&#34;&gt;
+    &lt;tr&gt;
+      &lt;th colspan=&#34;4&#34; class=&#34;gt_heading gt_title gt_font_normal gt_bottom_border&#34; style&gt;&lt;strong&gt;The release history of the dplyr package&lt;/strong&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+    
+  &lt;/thead&gt;
+  &lt;thead class=&#34;gt_col_headings&#34;&gt;
+    &lt;tr&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;package&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;version&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;date&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;repository&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody class=&#34;gt_table_body&#34;&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2014-01-16&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.1.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2014-01-29&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.1.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2014-02-24&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.1.3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2014-03-15&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2014-05-21&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2014-10-04&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.3.0.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2014-10-08&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.3.0.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2014-10-11&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.4.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2015-01-08&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.4.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2015-01-14&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.4.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2015-06-16&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.4.3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2015-09-01&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.5.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2016-06-24&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.7.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2017-06-09&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.7.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2017-06-22&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.7.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2017-07-20&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.7.3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2017-09-09&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.7.4&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2017-09-28&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.7.5&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2018-05-19&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.7.6&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2018-06-29&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.7.7&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2018-10-16&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.7.8&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2018-11-10&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.8.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2019-02-14&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.8.0.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2019-02-15&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.8.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2019-05-14&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.8.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2019-06-29&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.8.3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2019-07-04&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.8.4&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2020-01-31&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.8.5&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2020-03-07&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.0.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2020-05-29&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2020-07-31&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.0.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2020-08-18&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0.3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2021-01-15&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.0.4&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2021-02-02&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0.5&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2021-03-05&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.0.6&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2021-05-05&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0.7&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2021-06-18&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.0.8&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2022-02-08&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;dplyr&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0.9&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2022-04-28&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;CRAN&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+  
+  
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;p&gt;First released in January 2014. It’s been an interesting journey for the tidyverse since then. I started using the tidy packages first in 2017, and I would find it hard to go back to base R now.&lt;/p&gt;
+&lt;p&gt;With data like this for a single R package, you could for instance investigate the yearly frequency of releases over time:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_hist_dplyr %&amp;gt;% 
+  mutate(year = floor_date(date, unit = &amp;quot;year&amp;quot;)) %&amp;gt;% 
+  count(year) %&amp;gt;% 
+  ggplot(aes(year, n)) +
+  geom_col(fill = &amp;quot;purple&amp;quot;) +
+  scale_x_date() +
+  theme_hc() +
+  labs(x = &amp;quot;&amp;quot;, y = &amp;quot;&amp;quot;, title = &amp;quot;Number of releases of &amp;#39;dplyr&amp;#39; per year - in July 2022&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2022-07-22-kaggle-dataset-cran-packages_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Interesting pattern there from 2014 to 2016. Since then the number of releases have been pretty consistent. At the time of writing, we are still in the middle of 2022.&lt;/p&gt;
+&lt;p&gt;(As a side note, you’ll see that I’ve decided not to use an x-axis label here. I feel like a year axis is often self-explanatory; and I’ve used a descriptive title to prevent misinterpretation. Let me know if you disagree.)&lt;/p&gt;
+&lt;p&gt;To get the history for all the entries in our complete list of CRAN packages, we can then simply loop through the package names. The loop takes about an hour, but you don’t have to run it yourself. This is what I created the Kaggle dataset for. You can download &lt;a href=&#34;https://www.kaggle.com/datasets/headsortails/r-package-history-on-cran?select=cran_package_history.csv&#34;&gt;“cran_package_history.csv”&lt;/a&gt; and start working with it immediately.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_hist &amp;lt;- read_csv(&amp;quot;../../static/files/cran_package_history.csv&amp;quot;, col_types = cols())&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here are the first 50 rows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_hist %&amp;gt;%
+  head(50) %&amp;gt;% 
+  gt() %&amp;gt;% 
+  tab_header(
+    title = md(&amp;quot;**The first rows of the cran_package_history.csv table**&amp;quot;)
+    ) %&amp;gt;% 
+  opt_row_striping() %&amp;gt;% 
+  tab_options(container.height = px(600))&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;cfyktlgjrt&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:600px;&#34;&gt;
+&lt;style&gt;html {
+  font-family: -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, Oxygen, Ubuntu, Cantarell, &#39;Helvetica Neue&#39;, &#39;Fira Sans&#39;, &#39;Droid Sans&#39;, Arial, sans-serif;
+}
+
+#cfyktlgjrt .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#cfyktlgjrt .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#cfyktlgjrt .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#cfyktlgjrt .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#cfyktlgjrt .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#cfyktlgjrt .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#cfyktlgjrt .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#cfyktlgjrt .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#cfyktlgjrt .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#cfyktlgjrt .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#cfyktlgjrt .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#cfyktlgjrt .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#cfyktlgjrt .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#cfyktlgjrt .gt_from_md &gt; :first-child {
+  margin-top: 0;
+}
+
+#cfyktlgjrt .gt_from_md &gt; :last-child {
+  margin-bottom: 0;
+}
+
+#cfyktlgjrt .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#cfyktlgjrt .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#cfyktlgjrt .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cfyktlgjrt .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#cfyktlgjrt .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cfyktlgjrt .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#cfyktlgjrt .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#cfyktlgjrt .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#cfyktlgjrt .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#cfyktlgjrt .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#cfyktlgjrt .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#cfyktlgjrt .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#cfyktlgjrt .gt_left {
+  text-align: left;
+}
+
+#cfyktlgjrt .gt_center {
+  text-align: center;
+}
+
+#cfyktlgjrt .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#cfyktlgjrt .gt_font_normal {
+  font-weight: normal;
+}
+
+#cfyktlgjrt .gt_font_bold {
+  font-weight: bold;
+}
+
+#cfyktlgjrt .gt_font_italic {
+  font-style: italic;
+}
+
+#cfyktlgjrt .gt_super {
+  font-size: 65%;
+}
+
+#cfyktlgjrt .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+&lt;/style&gt;
+&lt;table class=&#34;gt_table&#34;&gt;
+  &lt;thead class=&#34;gt_header&#34;&gt;
+    &lt;tr&gt;
+      &lt;th colspan=&#34;4&#34; class=&#34;gt_heading gt_title gt_font_normal gt_bottom_border&#34; style&gt;&lt;strong&gt;The first rows of the cran_package_history.csv table&lt;/strong&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+    
+  &lt;/thead&gt;
+  &lt;thead class=&#34;gt_col_headings&#34;&gt;
+    &lt;tr&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;package&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;version&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;date&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;repository&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody class=&#34;gt_table_body&#34;&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;A3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.9.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2013-02-07&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;A3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.9.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2013-03-26&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;A3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2015-08-16&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;CRAN&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;AATtools&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.0.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2020-06-14&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;CRAN&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;ABACUS&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2019-09-20&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;CRAN&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abbreviate&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2021-12-14&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;CRAN&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abbyyR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2015-06-12&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abbyyR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2015-09-12&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abbyyR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.2.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2015-11-04&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abbyyR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.2.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2015-11-06&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abbyyR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.2.3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2015-12-06&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abbyyR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2016-02-04&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abbyyR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.4.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2016-05-16&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abbyyR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.5.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2016-06-20&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abbyyR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.5.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2017-04-12&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abbyyR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.5.3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2018-05-28&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abbyyR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.5.4&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2018-05-30&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abbyyR&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.5.5&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2019-06-25&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;CRAN&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abc&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2010-10-05&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abc&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2010-10-11&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abc&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2011-01-15&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abc&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2011-05-10&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abc&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.4&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2011-09-04&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abc&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.5&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2012-08-08&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abc&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.6&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2012-08-14&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abc&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.7&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2013-06-06&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abc&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.8&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2013-10-29&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abc&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2014-07-11&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abc&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2015-05-05&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abc&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2.2.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2022-05-19&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;CRAN&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abc.data&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2015-05-05&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;CRAN&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;ABC.RAP&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.9.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2016-10-20&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;CRAN&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abcADM&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2019-11-13&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;CRAN&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;ABCanalysis&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2015-02-13&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;ABCanalysis&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.0.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2015-04-20&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;ABCanalysis&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.0.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2015-06-15&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;ABCanalysis&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.1.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2015-09-28&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;ABCanalysis&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.1.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2016-06-15&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;ABCanalysis&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.1.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2016-08-23&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;ABCanalysis&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.2.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2017-03-13&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;CRAN&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abclass&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.1.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2022-03-07&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;abclass&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.2.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2022-04-12&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;abclass&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.3.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2022-05-28&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;CRAN&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;ABCoptim&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.13.10&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2013-10-21&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;ABCoptim&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.13.11&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2013-11-06&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;ABCoptim&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;0.14.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2016-11-17&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;ABCoptim&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;0.15.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2017-11-06&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;CRAN&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;ABCp2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2013-04-10&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;ABCp2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;1.1&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;2013-07-23&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left&#34;&gt;Archive&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;ABCp2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;1.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;2016-02-04&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_left gt_striped&#34;&gt;CRAN&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+  
+  
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;p&gt;Now we can filter the initial release date for each package and visualise the number of CRAN packages created over time:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_hist %&amp;gt;% 
+  group_by(package) %&amp;gt;% 
+  slice_min(order_by = date, n = 1) %&amp;gt;% 
+  ungroup() %&amp;gt;% 
+  mutate(month = floor_date(date, unit = &amp;quot;month&amp;quot;)) %&amp;gt;% 
+  count(month) %&amp;gt;% 
+  arrange(month) %&amp;gt;% 
+  mutate(cumul = cumsum(n)) %&amp;gt;% 
+  ggplot(aes(month, cumul)) +
+  geom_line(col = &amp;quot;purple&amp;quot;) +
+  theme_minimal() +
+  labs(x = &amp;quot;Date&amp;quot;, y = &amp;quot;Cumlative count&amp;quot;, title = &amp;quot;Cumulative count of CRAN package by date of first release&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://heads0rtai1s.github.io/post/2022-07-22-kaggle-dataset-cran-packages_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Still an impressive growth, and now we give proper emphasis to the early history of CRAN; reaching back all the way to before the year 2000. There are many more angles and visuals that this dataset will allow you to explore.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;Notes and suggestions:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;I will keep updating this dataset on a monthly basis. After the initial collection of all the version histories, from now on I only need to update the histories for those packages that have a new version released. This should simplify the process significantly.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Some ideas for EDA and analysis: how long did packages take from their first release to version 1.0? What type of packages were most frequent in different years? Who are the most productive authors? Can you predict the growth toward 2025?&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;All of this analysis can be done directly on the Kaggle platform! On the &lt;a href=&#34;https://www.kaggle.com/datasets/headsortails/r-package-history-on-cran&#34;&gt;dataset page&lt;/a&gt;, on the top right, you will see a button called “New Notebook”. Click that to get an interactive editor in R or Python and start exploring immediately.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Have fun!&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Building a Kaggle Leaderboard with gtExtras</title>

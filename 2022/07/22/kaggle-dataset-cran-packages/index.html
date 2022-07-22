@@ -1,0 +1,2871 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.92.0" />
+
+
+<title>A Kaggle Dataset of R Package History for rstudio::conf(2022) - head spin - the Heads or Tails blog</title>
+<meta property="og:title" content="A Kaggle Dataset of R Package History for rstudio::conf(2022) - head spin - the Heads or Tails blog">
+
+
+  <link href='https://heads0rtai1s.github.io/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/avatar.png"
+         width="50"
+         height="50"
+         alt="Heads or Tails">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="/blogroll/">Blogroll</a></li>
+    
+    <li><a href="https://twitter.com/heads0rtai1s">Twitter</a></li>
+    
+    <li><a href="https://www.kaggle.com/headsortails">Kaggle</a></li>
+    
+    <li><a href="https://www.linkedin.com/in/martin-henze">LinkedIn</a></li>
+    
+    <li><a href="https://github.com/heads0rtai1s">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">40 min read</span>
+    
+
+    <h1 class="article-title">A Kaggle Dataset of R Package History for rstudio::conf(2022)</h1>
+
+    
+    <span class="article-date">2022-07-22</span>
+    
+
+    <div class="article-content">
+      
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>It’s summer, and the long-awaited Rstudio conference for 2022 is only days away. Next week, a large number of R aficionados will <a href="https://www.rstudio.com/conference">gather in Washington DC</a> for the first time in person since the beginning of the pandemic. A pandemic, mind you, that is far from over. But Covid precautions are in place, and I trust the R community more than most to be responsible and thoughtful. With masks, social distance, and outdoor events: I’m excited to meet new people and see again many familiar faces from <a href="https://heads0rtai1s.github.io/2020/02/13/rstudio-conf/">my first Rstudio conference in 2020</a>.</p>
+<p>To create even more excitement, this time I’m giving a talk about the Kaggle and R communities, and all the good things that can happen when those worlds interact. In addition to this talk, which is aiming at introducing an R audience to the opportunities of Kaggle, I have also prepared <a href="https://www.kaggle.com/datasets/headsortails/r-package-history-on-cran">a new Kaggle dataset</a> for this audience to get started on the platform. This post is about that dataset: comprehensive data on all R packages currently on <a href="https://cran.r-project.org/">CRAN</a>, and on their full release history.</p>
+<p>Let’s get started with the packages; including those that I found instrumental for querying info from CRAN: the powerful <a href="https://stat.ethz.ch/R-manual/R-devel/library/tools/html/CRANtools.html">tools package</a> and the more specialised <a href="https://cran.r-project.org/web/packages/packageRank/index.html">packageRank package</a>. Together, the functions in those packages made my task much easier than expected.</p>
+<pre class="r"><code>libs &lt;- c(&#39;dplyr&#39;, &#39;tibble&#39;,       # wrangling
+          &#39;tidyr&#39;, &#39;stringr&#39;,      # wrangling
+          &#39;readr&#39;,                 # read files
+          &#39;tools&#39;, &#39;packageRank&#39;,  # CRAN package info
+          &#39;ggplot2&#39;, &#39;ggthemes&#39;,   # plots
+          &#39;gt&#39;, &#39;lubridate&#39;)       # tables &amp; time
+invisible(lapply(libs, library, character.only = TRUE))</code></pre>
+<div id="complete-list-of-cran-packages" class="section level3">
+<h3>Complete list of CRAN packages</h3>
+<p>Initially, my thought was to scrape the package information directly from CRAN, the <a href="https://cran.r-project.org/">Comprehensive R Archive Network</a>. It is the central repository for R packages. CRAN describes itself as “a network of ftp and web servers around the world that store identical, up-to-date, versions of code and documentation for R.” If you’re installing an R package in the standard way then it is provided by one of the CRAN mirrors. (The <code>install.packages</code> function takes a <code>repos</code> argument that you can set to any of the mirror or to the central “<a href="http://cran.r-project.org" class="uri">http://cran.r-project.org</a>”.)</p>
+<p>CRAN provides full lists of all available package <a href="https://cran.r-project.org/web/packages/available_packages_by_name.html">by name</a> and <a href="https://cran.r-project.org/web/packages/available_packages_by_date.html">by date of publication</a>. The latter page in particular has a nice html table with all package names, titles, and dates. This would be easy to scrape. If you want to get an intro to webscraping with the <a href="https://github.com/tidyverse/rvest">rvest package</a> then check out a <a href="https://heads0rtai1s.github.io/2020/01/23/rvest-intro-astro/">previous blogpost of mine</a>.</p>
+<p>However, the R community had once again made my task much easier. As I was pondering a respectful and responsible scraping strategy, I came across this <a href="https://stevenmortimer.com/scraping-responsibly-with-r/">post on Scraping Responsibly with R</a> by <a href="https://stevenmortimer.com/">Steven Mortimer</a>, who was working on scraping CRAN downloads. In it, he quoted a tweet by <a href="https://twitter.com/ma_salmon">Maëlle Salmon</a> recommending to use <code>tools::CRAN_package_db</code> instead as a gentler approach.</p>
+<p>This tool is indeed very fast and powerful. It provides a lot of columns. For the sake of a simple dataset, I’m only selecting a subset of those features here. Feel free to explore the full range.</p>
+<pre class="r"><code>df &lt;- tools::CRAN_package_db() %&gt;% 
+  as_tibble() %&gt;% 
+  janitor::clean_names() %&gt;% 
+  select(package, version, depends, imports, license, needs_compilation, author, bug_reports, url, date_published = published, description, title) %&gt;% 
+  mutate(needs_compilation = needs_compilation == &quot;yes&quot;)</code></pre>
+<p>The columns I picked include names, versions, dates, and information about dependencies, authors, descriptions, and web links. Here are the first 50 rows:</p>
+<pre class="r"><code>df %&gt;% 
+  head(50) %&gt;% 
+  gt() %&gt;% 
+  tab_header(
+    title = md(&quot;**A full list of R packages on CRAN derived via tools::CRAN_package_db**&quot;)
+    ) %&gt;% 
+  opt_row_striping() %&gt;% 
+  tab_options(container.height = px(400))</code></pre>
+<div id="zradhtlzkv" style="overflow-x:auto;overflow-y:auto;width:auto;height:400px;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#zradhtlzkv .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#zradhtlzkv .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zradhtlzkv .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#zradhtlzkv .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#zradhtlzkv .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zradhtlzkv .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zradhtlzkv .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#zradhtlzkv .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#zradhtlzkv .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#zradhtlzkv .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#zradhtlzkv .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#zradhtlzkv .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#zradhtlzkv .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#zradhtlzkv .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#zradhtlzkv .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#zradhtlzkv .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#zradhtlzkv .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#zradhtlzkv .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zradhtlzkv .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#zradhtlzkv .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zradhtlzkv .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#zradhtlzkv .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#zradhtlzkv .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zradhtlzkv .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zradhtlzkv .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#zradhtlzkv .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zradhtlzkv .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#zradhtlzkv .gt_left {
+  text-align: left;
+}
+
+#zradhtlzkv .gt_center {
+  text-align: center;
+}
+
+#zradhtlzkv .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#zradhtlzkv .gt_font_normal {
+  font-weight: normal;
+}
+
+#zradhtlzkv .gt_font_bold {
+  font-weight: bold;
+}
+
+#zradhtlzkv .gt_font_italic {
+  font-style: italic;
+}
+
+#zradhtlzkv .gt_super {
+  font-size: 65%;
+}
+
+#zradhtlzkv .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="12" class="gt_heading gt_title gt_font_normal gt_bottom_border" style><strong>A full list of R packages on CRAN derived via tools::CRAN_package_db</strong></th>
+    </tr>
+    
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">package</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">version</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">depends</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">imports</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">license</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">needs_compilation</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">author</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">bug_reports</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">url</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">date_published</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">description</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">title</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">A3</td>
+<td class="gt_row gt_left">1.0.0</td>
+<td class="gt_row gt_left">R (&gt;= 2.15.0), xtable, pbapply</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">GPL (&gt;= 2)</td>
+<td class="gt_row gt_center">FALSE</td>
+<td class="gt_row gt_left">Scott Fortmann-Roe</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">2015-08-16</td>
+<td class="gt_row gt_left">Supplies tools for tabulating and analyzing the results of predictive models. The methods employed are applicable to virtually any predictive model and make comparisons between different methodologies straightforward.</td>
+<td class="gt_row gt_left">Accurate, Adaptable, and Accessible Error Metrics for Predictive
+Models</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">AATtools</td>
+<td class="gt_row gt_left gt_striped">0.0.1</td>
+<td class="gt_row gt_left gt_striped">R (&gt;= 3.6.0)</td>
+<td class="gt_row gt_left gt_striped">magrittr, dplyr, doParallel, foreach</td>
+<td class="gt_row gt_left gt_striped">GPL-3</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Sercan Kahveci [aut, cre]</td>
+<td class="gt_row gt_left gt_striped">https://github.com/Spiritspeak/AATtools/issues</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">2020-06-14</td>
+<td class="gt_row gt_left gt_striped">Compute approach bias scores using different scoring algorithms,
+    compute bootstrapped and exact split-half reliability estimates,
+    and compute confidence intervals for individual participant scores.</td>
+<td class="gt_row gt_left gt_striped">Reliability and Scoring Routines for the Approach-Avoidance Task</td></tr>
+    <tr><td class="gt_row gt_left">ABACUS</td>
+<td class="gt_row gt_left">1.0.0</td>
+<td class="gt_row gt_left">R (&gt;= 3.1.0)</td>
+<td class="gt_row gt_left">ggplot2 (&gt;= 3.1.0), shiny (&gt;= 1.3.1),</td>
+<td class="gt_row gt_left">GPL-3</td>
+<td class="gt_row gt_center">FALSE</td>
+<td class="gt_row gt_left">Mintu Nath [aut, cre]</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">https://shiny.abdn.ac.uk/Stats/apps/</td>
+<td class="gt_row gt_left">2019-09-20</td>
+<td class="gt_row gt_left">A set of Shiny apps for effective communication and understanding in statistics. The current version includes properties of normal distribution, properties of sampling distribution, one-sample z and t tests, two samples independent (unpaired) t test and analysis of variance.</td>
+<td class="gt_row gt_left">Apps Based Activities for Communicating and Understanding
+Statistics</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abbreviate</td>
+<td class="gt_row gt_left gt_striped">0.1</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">GPL-3</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Sigbert Klinke [aut, cre]</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">https://github.com/sigbertklinke/abbreviate (development version)</td>
+<td class="gt_row gt_left gt_striped">2021-12-14</td>
+<td class="gt_row gt_left gt_striped">Strings are abbreviated to at least "minlength" characters, such that they remain unique 
+    (if they were). The abbreviations should be recognisable.</td>
+<td class="gt_row gt_left gt_striped">Readable String Abbreviation</td></tr>
+    <tr><td class="gt_row gt_left">abbyyR</td>
+<td class="gt_row gt_left">0.5.5</td>
+<td class="gt_row gt_left">R (&gt;= 3.2.0)</td>
+<td class="gt_row gt_left">httr, XML, curl, readr, plyr, progress</td>
+<td class="gt_row gt_left">MIT + file LICENSE</td>
+<td class="gt_row gt_center">FALSE</td>
+<td class="gt_row gt_left">Gaurav Sood [aut, cre]</td>
+<td class="gt_row gt_left">http://github.com/soodoku/abbyyR/issues</td>
+<td class="gt_row gt_left">http://github.com/soodoku/abbyyR</td>
+<td class="gt_row gt_left">2019-06-25</td>
+<td class="gt_row gt_left">Get text from images of text using Abbyy Cloud Optical Character
+    Recognition (OCR) API. Easily OCR images, barcodes, forms, documents with
+    machine readable zones, e.g. passports. Get the results in a variety of formats
+    including plain text and XML. To learn more about the Abbyy OCR API, see 
+    &lt;http://ocrsdk.com/&gt;.</td>
+<td class="gt_row gt_left">Access to Abbyy Optical Character Recognition (OCR) API</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abc</td>
+<td class="gt_row gt_left gt_striped">2.2.1</td>
+<td class="gt_row gt_left gt_striped">R (&gt;= 2.10), abc.data, nnet, quantreg, MASS, locfit</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">GPL (&gt;= 3)</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Csillery Katalin [aut],
+  Lemaire Louisiane [aut],
+  Francois Olivier [aut],
+  Blum Michael [aut, cre]</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">2022-05-19</td>
+<td class="gt_row gt_left gt_striped">Implements several ABC algorithms for
+        performing parameter estimation, model selection, and goodness-of-fit.
+        Cross-validation tools are also available for measuring the
+        accuracy of ABC estimates, and to calculate the
+        misclassification probabilities of different models.</td>
+<td class="gt_row gt_left gt_striped">Tools for Approximate Bayesian Computation (ABC)</td></tr>
+    <tr><td class="gt_row gt_left">abc.data</td>
+<td class="gt_row gt_left">1.0</td>
+<td class="gt_row gt_left">R (&gt;= 2.10)</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">GPL (&gt;= 3)</td>
+<td class="gt_row gt_center">FALSE</td>
+<td class="gt_row gt_left">Csillery Katalin [aut],
+  Lemaire Louisiane [aut],
+  Francois Olivier [aut],
+  Blum Michael [aut, cre]</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">2015-05-05</td>
+<td class="gt_row gt_left">Contains data which are used by functions of the 'abc' package.</td>
+<td class="gt_row gt_left">Data Only: Tools for Approximate Bayesian Computation (ABC)</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">ABC.RAP</td>
+<td class="gt_row gt_left gt_striped">0.9.0</td>
+<td class="gt_row gt_left gt_striped">R (&gt;= 3.1.0)</td>
+<td class="gt_row gt_left gt_striped">graphics, stats, utils</td>
+<td class="gt_row gt_left gt_striped">GPL-3</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Abdulmonem Alsaleh [cre, aut], Robert Weeks [aut], Ian Morison [aut], RStudio [ctb]</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">2016-10-20</td>
+<td class="gt_row gt_left gt_striped">It aims to identify candidate genes that are “differentially
+    methylated” between cases and controls. It applies Student’s t-test and delta beta analysis to
+    identify candidate genes containing multiple “CpG sites”.</td>
+<td class="gt_row gt_left gt_striped">Array Based CpG Region Analysis Pipeline</td></tr>
+    <tr><td class="gt_row gt_left">abcADM</td>
+<td class="gt_row gt_left">1.0</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">Rcpp (&gt;= 1.0.1)</td>
+<td class="gt_row gt_left">GPL-3</td>
+<td class="gt_row gt_center">TRUE</td>
+<td class="gt_row gt_left">Zongjun Liu [aut],
+  Chun-Hao Yang [aut],
+  John Burkardt [ctb],
+  Samuel W.K. Wong [aut, cre]</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">2019-11-13</td>
+<td class="gt_row gt_left">Estimate parameters of accumulated damage (load duration) models based on failure time data under a Bayesian framework, using Approximate Bayesian Computation (ABC). Assess long-term reliability under stochastic load profiles. Yang, Zidek, and Wong (2019) &lt;doi:10.1080/00401706.2018.1512900&gt;.</td>
+<td class="gt_row gt_left">Fit Accumulated Damage Models and Estimate Reliability using ABC</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">ABCanalysis</td>
+<td class="gt_row gt_left gt_striped">1.2.1</td>
+<td class="gt_row gt_left gt_striped">R (&gt;= 2.10)</td>
+<td class="gt_row gt_left gt_striped">plotrix</td>
+<td class="gt_row gt_left gt_striped">GPL-3</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Michael Thrun, Jorn Lotsch, Alfred Ultsch</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">https://www.uni-marburg.de/fb12/datenbionik/software-en</td>
+<td class="gt_row gt_left gt_striped">2017-03-13</td>
+<td class="gt_row gt_left gt_striped">For a given data set, the package provides a novel method of computing precise limits to acquire subsets which are easily interpreted. Closely related to the Lorenz curve, the ABC curve visualizes the data by graphically representing the cumulative distribution function. Based on an ABC analysis the algorithm calculates, with the help of the ABC curve, the optimal limits by exploiting the mathematical properties pertaining to distribution of analyzed items. The data containing positive values is divided into three disjoint subsets A, B and C, with subset A comprising very profitable values, i.e. largest data values ("the important few"), subset B comprising values where the yield equals to the effort required to obtain it, and the subset C comprising of non-profitable values, i.e., the smallest data sets ("the trivial many"). Package is based on "Computed ABC Analysis for rational Selection of most informative Variables in multivariate Data", PLoS One. Ultsch. A., Lotsch J. (2015) &lt;DOI:10.1371/journal.pone.0129767&gt;.</td>
+<td class="gt_row gt_left gt_striped">Computed ABC Analysis</td></tr>
+    <tr><td class="gt_row gt_left">abclass</td>
+<td class="gt_row gt_left">0.3.0</td>
+<td class="gt_row gt_left">R (&gt;= 3.5.0)</td>
+<td class="gt_row gt_left">Rcpp, stats</td>
+<td class="gt_row gt_left">GPL (&gt;= 3)</td>
+<td class="gt_row gt_center">TRUE</td>
+<td class="gt_row gt_left">Wenjie Wang [aut, cre] (&lt;https://orcid.org/0000-0003-0363-3180&gt;),
+  Eli Lilly and Company [cph]</td>
+<td class="gt_row gt_left">https://github.com/wenjie2wang/abclass/issues</td>
+<td class="gt_row gt_left">https://wwenjie.org/abclass,
+https://github.com/wenjie2wang/abclass</td>
+<td class="gt_row gt_left">2022-05-28</td>
+<td class="gt_row gt_left">Multi-category angle-based large-margin classifiers.
+    See Zhang and Liu (2014) &lt;doi:10.1093/biomet/asu017&gt; for details.</td>
+<td class="gt_row gt_left">Angle-Based Large-Margin Classifiers</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">ABCoptim</td>
+<td class="gt_row gt_left gt_striped">0.15.0</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">Rcpp, graphics, stats, utils</td>
+<td class="gt_row gt_left gt_striped">MIT + file LICENSE</td>
+<td class="gt_row gt_center gt_striped">TRUE</td>
+<td class="gt_row gt_left gt_striped">George Vega Yon [aut, cre],
+  Enyelbert Muñoz [ctb]</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">http://github.com/gvegayon/ABCoptim, http://mf.erciyes.edu.tr/abc/</td>
+<td class="gt_row gt_left gt_striped">2017-11-06</td>
+<td class="gt_row gt_left gt_striped">An implementation of Karaboga (2005) Artificial Bee Colony
+    Optimization algorithm &lt;http://mf.erciyes.edu.tr/abc/pub/tr06_2005.pdf&gt;.
+    This (working) version is a Work-in-progress, which is
+    why it has been implemented using pure R code. This was developed upon the basic
+    version programmed in C and distributed at the algorithm's official website.</td>
+<td class="gt_row gt_left gt_striped">Implementation of Artificial Bee Colony (ABC) Optimization</td></tr>
+    <tr><td class="gt_row gt_left">ABCp2</td>
+<td class="gt_row gt_left">1.2</td>
+<td class="gt_row gt_left">MASS</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">GPL-2</td>
+<td class="gt_row gt_center">FALSE</td>
+<td class="gt_row gt_left">M. Catherine Duryea, Andrew D. Kern, Robert M. Cox, and Ryan Calsbeek </td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">2016-02-04</td>
+<td class="gt_row gt_left">Tests the goodness of fit of a distribution of offspring to the Normal, Poisson, and Gamma distribution and estimates the proportional paternity of the second male (P2) based on the best fit distribution.</td>
+<td class="gt_row gt_left">Approximate Bayesian Computational Model for Estimating P2</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abcrlda</td>
+<td class="gt_row gt_left gt_striped">1.0.3</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">stats</td>
+<td class="gt_row gt_left gt_striped">GPL-3</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Dmitriy Fedorov [aut, cre],
+  Amin Zollanvari [aut],
+  Aresh Dadlani [aut],
+  Berdakh Abibullaev [aut]</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">https://ieeexplore.ieee.org/document/8720003/,
+https://dx.doi.org/10.1109/LSP.2019.2918485</td>
+<td class="gt_row gt_left gt_striped">2020-05-28</td>
+<td class="gt_row gt_left gt_striped">Offers methods to perform asymptotically bias-corrected regularized linear discriminant analysis (ABC_RLDA) for cost-sensitive binary classification. The bias-correction is an estimate of the bias term added to regularized discriminant analysis (RLDA) that minimizes the overall risk. The default magnitude of misclassification costs are equal and set to 0.5; however, the package also offers the options to set them to some predetermined values or, alternatively, take them as hyperparameters to tune.
+    A. Zollanvari, M. Abdirash, A. Dadlani and B. Abibullaev (2019) &lt;doi:10.1109/LSP.2019.2918485&gt;.</td>
+<td class="gt_row gt_left gt_striped">Asymptotically Bias-Corrected Regularized Linear Discriminant
+Analysis</td></tr>
+    <tr><td class="gt_row gt_left">abctools</td>
+<td class="gt_row gt_left">1.1.3</td>
+<td class="gt_row gt_left">R (&gt;= 2.10), abc, abind, parallel, plyr, Hmisc</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">GPL (&gt;= 2)</td>
+<td class="gt_row gt_center">TRUE</td>
+<td class="gt_row gt_left">Matt Nunes [aut, cre],
+  Dennis Prangle [aut],
+  Guilhereme Rodrigues [ctb]</td>
+<td class="gt_row gt_left">https://github.com/dennisprangle/abctools/issues</td>
+<td class="gt_row gt_left">https://github.com/dennisprangle/abctools</td>
+<td class="gt_row gt_left">2018-07-17</td>
+<td class="gt_row gt_left">Tools for approximate Bayesian computation including summary statistic selection and assessing coverage.</td>
+<td class="gt_row gt_left">Tools for ABC Analyses</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abd</td>
+<td class="gt_row gt_left gt_striped">0.2-8</td>
+<td class="gt_row gt_left gt_striped">R (&gt;= 3.0), nlme, lattice, grid, mosaic</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">GPL-2</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Kevin M. Middleton &lt;middletonk@missouri.edu&gt;, Randall Pruim
+    &lt;rpruim@calvin.edu&gt;</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">2015-07-03</td>
+<td class="gt_row gt_left gt_striped">The abd package contains data sets and sample code for The
+    Analysis of Biological Data by Michael Whitlock and Dolph Schluter (2009;
+    Roberts &amp; Company Publishers).</td>
+<td class="gt_row gt_left gt_striped">The Analysis of Biological Data</td></tr>
+    <tr><td class="gt_row gt_left">abdiv</td>
+<td class="gt_row gt_left">0.2.0</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">ape</td>
+<td class="gt_row gt_left">MIT + file LICENSE</td>
+<td class="gt_row gt_center">FALSE</td>
+<td class="gt_row gt_left">Kyle Bittinger [aut, cre]</td>
+<td class="gt_row gt_left">https://github.com/kylebittinger/abdiv/issues</td>
+<td class="gt_row gt_left">https://github.com/kylebittinger/abdiv</td>
+<td class="gt_row gt_left">2020-01-20</td>
+<td class="gt_row gt_left">A collection of measures for measuring ecological diversity.
+  Ecological diversity comes in two flavors: alpha diversity measures the
+  diversity within a single site or sample, and beta diversity measures the
+  diversity across two sites or samples. This package overlaps considerably
+  with other R packages such as 'vegan', 'gUniFrac', 'betapart', and 'fossil'.
+  We also include a wide range of functions that are implemented in software
+  outside the R ecosystem, such as 'scipy', 'Mothur', and 'scikit-bio'.  The
+  implementations here are designed to be basic and clear to the reader.</td>
+<td class="gt_row gt_left">Alpha and Beta Diversity Measures</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abe</td>
+<td class="gt_row gt_left gt_striped">3.0.1</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">GPL (&gt;= 2)</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Rok Blagus [aut, cre],  Sladana Babic [ctb]</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">2017-10-30</td>
+<td class="gt_row gt_left gt_striped">Performs augmented backward elimination and checks the stability of the obtained model. Augmented backward elimination combines significance or information based criteria with the change in estimate to either select the optimal model for prediction purposes or to serve as a tool to obtain a practically sound, highly interpretable model. More details can be found in Dunkler et al. (2014) &lt;doi:10.1371/journal.pone.0113677&gt;. </td>
+<td class="gt_row gt_left gt_striped">Augmented Backward Elimination</td></tr>
+    <tr><td class="gt_row gt_left">abess</td>
+<td class="gt_row gt_left">0.4.5</td>
+<td class="gt_row gt_left">R (&gt;= 3.1.0)</td>
+<td class="gt_row gt_left">Rcpp, MASS, methods, Matrix</td>
+<td class="gt_row gt_left">GPL (&gt;= 3) | file LICENSE</td>
+<td class="gt_row gt_center">TRUE</td>
+<td class="gt_row gt_left">Jin Zhu [aut, cre] (&lt;https://orcid.org/0000-0001-8550-5822&gt;),
+  Liyuan Hu [aut],
+  Junhao Huang [aut],
+  Kangkang Jiang [aut],
+  Yanhang Zhang [aut],
+  Zezhi Wang [aut],
+  Borui Tang [aut],
+  Shiyun Lin [aut],
+  Junxian Zhu [aut],
+  Canhong Wen [aut],
+  Heping Zhang [aut] (&lt;https://orcid.org/0000-0002-0688-4076&gt;),
+  Xueqin Wang [aut] (&lt;https://orcid.org/0000-0001-5205-9950&gt;),
+  spectra contributors [cph] (Spectra implementation)</td>
+<td class="gt_row gt_left">https://github.com/abess-team/abess/issues</td>
+<td class="gt_row gt_left">https://github.com/abess-team/abess,
+https://abess-team.github.io/abess/,
+https://abess.readthedocs.io</td>
+<td class="gt_row gt_left">2022-03-22</td>
+<td class="gt_row gt_left">Extremely efficient toolkit for solving the best subset selection problem &lt;arXiv:2110.09697&gt;. This package is its R interface. The package implements and generalizes algorithms designed in &lt;doi:10.1073/pnas.2014241117&gt; that exploits a novel sequencing-and-splicing technique to guarantee exact support recovery and globally optimal solution in polynomial times for linear model. It also supports best subset selection for logistic regression, Poisson regression, Cox proportional hazard model, Gamma regression, multiple-response regression, multinomial logistic regression, ordinal regression, (sequential) principal component analysis, and robust principal component analysis. The other valuable features such as the best subset of group selection &lt;arXiv:2104.12576&gt; and sure independence screening &lt;doi:10.1111/j.1467-9868.2008.00674.x&gt; are also provided.  </td>
+<td class="gt_row gt_left">Fast Best Subset Selection</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abglasso</td>
+<td class="gt_row gt_left gt_striped">0.1.1</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">MASS, pracma, stats, statmod</td>
+<td class="gt_row gt_left gt_striped">GPL-3</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Jarod Smith [aut, cre] (&lt;https://orcid.org/0000-0003-4235-6147&gt;),
+  Mohammad Arashi [aut] (&lt;https://orcid.org/0000-0003-4793-5674&gt;),
+  Andriette Bekker [aut] (&lt;https://orcid.org/0000-0002-5881-9241&gt;)</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">2021-07-13</td>
+<td class="gt_row gt_left gt_striped">Implements a Bayesian adaptive graphical lasso data-augmented block Gibbs sampler. The sampler simulates the posterior distribution of precision matrices of a Gaussian Graphical Model. This sampler was adapted from the original MATLAB routine proposed in Wang (2012) &lt;doi:10.1214/12-BA729&gt;.</td>
+<td class="gt_row gt_left gt_striped">Adaptive Bayesian Graphical Lasso</td></tr>
+    <tr><td class="gt_row gt_left">ABHgenotypeR</td>
+<td class="gt_row gt_left">1.0.1</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">ggplot2, reshape2, utils</td>
+<td class="gt_row gt_left">GPL-3</td>
+<td class="gt_row gt_center">FALSE</td>
+<td class="gt_row gt_left">Stefan Reuscher [aut, cre],
+  Tomoyuki Furuta [aut]</td>
+<td class="gt_row gt_left">http://github.com/StefanReuscher/ABHgenotypeR/issues</td>
+<td class="gt_row gt_left">http://github.com/StefanReuscher/ABHgenotypeR</td>
+<td class="gt_row gt_left">2016-02-04</td>
+<td class="gt_row gt_left">Easy to use functions to visualize marker data
+    from biparental populations. Useful for both analyzing and
+    presenting genotypes in the ABH format.</td>
+<td class="gt_row gt_left">Easy Visualization of ABH Genotypes</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abind</td>
+<td class="gt_row gt_left gt_striped">1.4-5</td>
+<td class="gt_row gt_left gt_striped">R (&gt;= 1.5.0)</td>
+<td class="gt_row gt_left gt_striped">methods, utils</td>
+<td class="gt_row gt_left gt_striped">LGPL (&gt;= 2)</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Tony Plate &lt;tplate@acm.org&gt; and Richard Heiberger</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">2016-07-21</td>
+<td class="gt_row gt_left gt_striped">Combine multidimensional arrays into a single array.
+  This is a generalization of 'cbind' and 'rbind'.  Works with
+  vectors, matrices, and higher-dimensional arrays.  Also
+  provides functions 'adrop', 'asub', and 'afill' for manipulating,
+  extracting and replacing data in arrays.</td>
+<td class="gt_row gt_left gt_striped">Combine Multidimensional Arrays</td></tr>
+    <tr><td class="gt_row gt_left">abjData</td>
+<td class="gt_row gt_left">1.1.2</td>
+<td class="gt_row gt_left">R (&gt;= 3.3.1)</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">MIT + file LICENSE</td>
+<td class="gt_row gt_center">FALSE</td>
+<td class="gt_row gt_left">Julio Trecenti [aut, cre] (&lt;https://orcid.org/0000-0002-1680-6389&gt;),
+  Renata Hirota [ctb],
+  Katerine Witkoski [aut] (&lt;https://orcid.org/0000-0002-3691-6569&gt;),
+  Associação Brasileira de Jurimetria [cph, fnd]</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">https://abjur.github.io/abjData/</td>
+<td class="gt_row gt_left">2022-06-15</td>
+<td class="gt_row gt_left">The Brazilian Jurimetrics Association (ABJ in
+    Portuguese, see &lt;https://abj.org.br/&gt; for more information) is
+    a non-profit organization which aims to investigate and promote the
+    use of statistics and probability in the study of Law and its
+    institutions. This package has a set of datasets commonly used in
+    our book.</td>
+<td class="gt_row gt_left">Databases Used Routinely by the Brazilian Jurimetrics
+Association</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abjutils</td>
+<td class="gt_row gt_left gt_striped">0.3.2</td>
+<td class="gt_row gt_left gt_striped">R (&gt;= 3.6)</td>
+<td class="gt_row gt_left gt_striped">dplyr, magrittr, purrr, rlang, rstudioapi, stringi, stringr,
+tidyr</td>
+<td class="gt_row gt_left gt_striped">MIT + file LICENSE</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Caio Lente [aut, cre] (&lt;https://orcid.org/0000-0001-8473-069X&gt;),
+  Julio Trecenti [aut] (&lt;https://orcid.org/0000-0002-1680-6389&gt;),
+  Katerine Witkoski [ctb] (&lt;https://orcid.org/0000-0002-3691-6569&gt;),
+  Associação Brasileira de Jurimetria [cph, fnd]</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">https://github.com/abjur/abjutils</td>
+<td class="gt_row gt_left gt_striped">2022-02-01</td>
+<td class="gt_row gt_left gt_striped">The Brazilian Jurimetrics Association (ABJ in Portuguese, see
+    &lt;https://abj.org.br/&gt; for more information) is a non-profit
+    organization which aims to investigate and promote the use of
+    statistics and probability in the study of Law and its institutions.
+    This package implements general purpose tools used by ABJ, such as
+    functions for sampling and basic manipulation of Brazilian lawsuits
+    identification number. It also implements functions for text cleaning,
+    such as accentuation removal.</td>
+<td class="gt_row gt_left gt_striped">Useful Tools for Jurimetrical Analysis Used by the Brazilian
+Jurimetrics Association</td></tr>
+    <tr><td class="gt_row gt_left">abn</td>
+<td class="gt_row gt_left">2.7-1</td>
+<td class="gt_row gt_left">R (&gt;= 4.0.0)</td>
+<td class="gt_row gt_left">methods, rjags, nnet, lme4, graph, Rgraphviz, doParallel,
+foreach</td>
+<td class="gt_row gt_left">GPL (&gt;= 2)</td>
+<td class="gt_row gt_center">TRUE</td>
+<td class="gt_row gt_left">Reinhard Furrer [cre, aut] (&lt;https://orcid.org/0000-0002-6319-2332&gt;),
+  Gilles Kratzer [aut] (&lt;https://orcid.org/0000-0002-5929-8935&gt;),
+  Fraser Iain Lewis [aut] (&lt;https://orcid.org/0000-0003-4580-2712&gt;),
+  Marta Pittavino [ctb] (&lt;https://orcid.org/0000-0002-1232-1034&gt;),
+  Kalina Cherneva [ctr]</td>
+<td class="gt_row gt_left">https://git.math.uzh.ch/reinhard.furrer/abn/-/issues</td>
+<td class="gt_row gt_left">http://r-bayesian-networks.org</td>
+<td class="gt_row gt_left">2022-04-25</td>
+<td class="gt_row gt_left">Bayesian network analysis is a form of probabilistic graphical models which derives from empirical data a directed acyclic graph, DAG, describing the dependency structure between random variables. 
+ An additive Bayesian network model consists of a form of a DAG where each node comprises a generalized linear model, GLM. Additive Bayesian network models are equivalent to Bayesian multivariate regression using graphical modelling, they generalises the usual multivariable regression, GLM, to multiple dependent variables. 
+ 'abn' provides routines to help determine optimal Bayesian network models for a given data set, where these models are used to identify statistical dependencies in messy, complex data. The additive formulation of these models is equivalent to multivariate generalised linear modelling (including mixed models with iid random effects). 
+ The usual term to describe this model selection process is structure discovery. 
+ The core functionality is concerned with model selection - determining the most robust empirical model of data from interdependent variables. Laplace approximations are used to estimate goodness of fit metrics and model parameters, and wrappers are also included to the INLA package which can be obtained from &lt;https://www.r-inla.org&gt;. 
+ The computing library JAGS &lt;https://mcmc-jags.sourceforge.io&gt; is used to simulate 'abn'-like data. 
+ A comprehensive set of documented case studies, numerical accuracy/quality assurance exercises, and additional documentation are available from the 'abn' website &lt;http://r-bayesian-networks.org&gt;.</td>
+<td class="gt_row gt_left">Modelling Multivariate Data with Additive Bayesian Networks</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abnormality</td>
+<td class="gt_row gt_left gt_striped">0.1.0</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">MASS (&gt;= 7.3.0), Matrix</td>
+<td class="gt_row gt_left gt_striped">MIT + file LICENSE</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Michael Marks [aut, cre]</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">2018-03-13</td>
+<td class="gt_row gt_left gt_striped">Contains the functions to implement the methodology and considerations laid out by Marks et al. in the manuscript Measuring Abnormality in High Dimensional Spaces: Applications in Biomechanical Gait Analysis. As of 2/27/2018 this paper has been submitted and is under scientific review. Using high-dimensional datasets to measure a subject’s overall level of abnormality as compared to a reference population is often needed in outcomes research. Utilizing applications in instrumented gait analysis, that article demonstrates how using data that is inherently non-independent to measure overall abnormality may bias results. A methodology is introduced to address this bias to accurately measure overall abnormality in high dimensional spaces. While this methodology is in line with previous literature, it differs in two major ways. Advantageously, it can be applied to datasets in which the number of observations is less than the number of features/variables, and it can be abstracted to practically any number of domains or dimensions. After applying the proposed methodology to the original data, the researcher is left with a set of uncorrelated variables (i.e. principal components) with which overall abnormality can be measured without bias. Different considerations are discussed in that article in deciding the appropriate number of principal components to keep and the aggregate distance measure to utilize.</td>
+<td class="gt_row gt_left gt_striped">Measure a Subject's Abnormality with Respect to a Reference
+Population</td></tr>
+    <tr><td class="gt_row gt_left">abodOutlier</td>
+<td class="gt_row gt_left">0.1</td>
+<td class="gt_row gt_left">cluster, R (&gt;= 3.1.2)</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">MIT + file LICENSE</td>
+<td class="gt_row gt_center">FALSE</td>
+<td class="gt_row gt_left">Jose Jimenez &lt;jose@jimenezluna.com&gt;</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">2015-08-31</td>
+<td class="gt_row gt_left">Performs angle-based outlier detection on a given dataframe. Three methods are available, a full but slow implementation using all the data that has cubic complexity, a fully randomized one which is way more efficient and another using k-nearest neighbours. These algorithms are specially well suited for high dimensional data outlier detection.</td>
+<td class="gt_row gt_left">Angle-Based Outlier Detection</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">ABPS</td>
+<td class="gt_row gt_left gt_striped">0.3</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">kernlab</td>
+<td class="gt_row gt_left gt_striped">GPL (&gt;= 2)</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Frédéric Schütz [aut, cre],
+  Alix Zollinger [aut]</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">2018-10-18</td>
+<td class="gt_row gt_left gt_striped">An implementation of the Abnormal Blood Profile Score (ABPS,
+    part of the Athlete Biological Passport program of the World Anti-Doping
+    Agency), which combines several blood parameters into a single score in
+    order to detect blood doping (Sottas et al. (2006)
+    &lt;doi:10.2202/1557-4679.1011&gt;). The package also contains functions to
+    calculate other scores used in anti-doping programs, such as the
+    OFF-score (Gore et al. (2003) &lt;http://www.haematologica.org/content/88/3/333&gt;),
+    as well as example data.</td>
+<td class="gt_row gt_left gt_striped">The Abnormal Blood Profile Score to Detect Blood Doping</td></tr>
+    <tr><td class="gt_row gt_left">abstr</td>
+<td class="gt_row gt_left">0.4.1</td>
+<td class="gt_row gt_left">R (&gt;= 4.0.0)</td>
+<td class="gt_row gt_left">jsonlite (&gt;= 1.7.2), lwgeom (&gt;= 0.2.5), magrittr (&gt;= 2.0.1),
+methods, od (&gt;= 0.3.1), sf (&gt;= 1.0.1), tibble (&gt;= 3.0.6), tidyr
+(&gt;= 1.1.3)</td>
+<td class="gt_row gt_left">Apache License (&gt;= 2)</td>
+<td class="gt_row gt_center">FALSE</td>
+<td class="gt_row gt_left">Nathanael Sheehan [aut, cre] (&lt;https://orcid.org/0000-0002-2779-0976&gt;),
+  Robin Lovelace [aut] (&lt;https://orcid.org/0000-0001-5679-6536&gt;),
+  Trevor Nederlof [aut],
+  Lucas Dias [ctb],
+  Dustin Carlino [aut]</td>
+<td class="gt_row gt_left">https://github.com/a-b-street/abstr/issues</td>
+<td class="gt_row gt_left">https://github.com/a-b-street/abstr,
+https://a-b-street.github.io/abstr/</td>
+<td class="gt_row gt_left">2021-11-30</td>
+<td class="gt_row gt_left">Provides functions to convert origin-destination data,
+    represented as straight 'desire lines' in the 'sf' Simple Features
+    class system, into JSON files that can be directly imported into
+    A/B Street &lt;https://www.abstreet.org&gt;, a free and open source tool
+    for simulating urban transport systems and scenarios of change
+    &lt;doi:10.1007/s10109-020-00342-2&gt;.</td>
+<td class="gt_row gt_left">R Interface to the A/B Street Transport System Simulation
+Software</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abstractr</td>
+<td class="gt_row gt_left gt_striped">0.1.0</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">shiny (&gt;= 1.2.0), ggplot2 (&gt;= 3.0.0), gridExtra (&gt;= 2.3.0),
+colourpicker, shinythemes, emojifont, rintrojs</td>
+<td class="gt_row gt_left gt_striped">GPL-3</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Matthew Kumar &lt;mattkumar@gmail.com&gt;</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">https://matt-kumar.shinyapps.io/portfolio</td>
+<td class="gt_row gt_left gt_striped">2019-01-20</td>
+<td class="gt_row gt_left gt_striped">An R-Shiny application to create visual abstracts for original research. A variety of user defined options and formatting are included.</td>
+<td class="gt_row gt_left gt_striped">An R-Shiny Application for Creating Visual Abstracts</td></tr>
+    <tr><td class="gt_row gt_left">abtest</td>
+<td class="gt_row gt_left">1.0.1</td>
+<td class="gt_row gt_left">R (&gt;= 3.0.0)</td>
+<td class="gt_row gt_left">Rcpp (&gt;= 0.12.14), mvtnorm, sn, qgam, truncnorm, plotrix,
+grDevices, RColorBrewer, Matrix, parallel</td>
+<td class="gt_row gt_left">GPL (&gt;= 2)</td>
+<td class="gt_row gt_center">TRUE</td>
+<td class="gt_row gt_left">Quentin F. Gronau [aut, cre],
+  Akash Raj [ctb],
+  Eric-Jan Wagenmakers [ths]</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">2021-11-22</td>
+<td class="gt_row gt_left">Provides functions for Bayesian A/B testing including prior elicitation
+    options based on Kass and Vaidyanathan (1992) &lt;doi:10.1111/j.2517-6161.1992.tb01868.x&gt;. 
+    Gronau, Raj K. N., &amp; Wagenmakers (2021) &lt;doi:10.18637/jss.v100.i17&gt;.</td>
+<td class="gt_row gt_left">Bayesian A/B Testing</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abundant</td>
+<td class="gt_row gt_left gt_striped">1.2</td>
+<td class="gt_row gt_left gt_striped">R (&gt;= 2.10), glasso</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">GPL-2</td>
+<td class="gt_row gt_center gt_striped">TRUE</td>
+<td class="gt_row gt_left gt_striped">Adam J. Rothman</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">2022-01-04</td>
+<td class="gt_row gt_left gt_striped">Fit and predict with the high-dimensional principal fitted
+        components model.  This model is described by Cook, Forzani, and Rothman (2012)
+    &lt;doi:10.1214/11-AOS962&gt;.</td>
+<td class="gt_row gt_left gt_striped">High-Dimensional Principal Fitted Components and Abundant
+Regression</td></tr>
+    <tr><td class="gt_row gt_left">Ac3net</td>
+<td class="gt_row gt_left">1.2.2</td>
+<td class="gt_row gt_left">R (&gt;= 3.3.0), data.table</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">GPL (&gt;= 3)</td>
+<td class="gt_row gt_center">FALSE</td>
+<td class="gt_row gt_left">Gokmen Altay</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">2018-02-26</td>
+<td class="gt_row gt_left">Infers directional conservative causal core (gene) networks. It is an advanced version of the algorithm C3NET by providing directional network. Gokmen Altay (2018) &lt;doi:10.1101/271031&gt;, bioRxiv.</td>
+<td class="gt_row gt_left">Inferring Directional Conservative Causal Core Gene Networks</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">ACA</td>
+<td class="gt_row gt_left gt_striped">1.1</td>
+<td class="gt_row gt_left gt_striped">R (&gt;= 3.2.2)</td>
+<td class="gt_row gt_left gt_striped">graphics, grDevices, stats, utils</td>
+<td class="gt_row gt_left gt_striped">GPL</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Daniel Amorese  </td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">2018-07-02</td>
+<td class="gt_row gt_left gt_striped">Offers an interactive function for the detection of breakpoints in series. </td>
+<td class="gt_row gt_left gt_striped">Abrupt Change-Point or Aberration Detection in Point Series</td></tr>
+    <tr><td class="gt_row gt_left">academictwitteR</td>
+<td class="gt_row gt_left">0.3.1</td>
+<td class="gt_row gt_left">R (&gt;= 3.4)</td>
+<td class="gt_row gt_left">dplyr (&gt;= 1.0.0), httr, jsonlite, magrittr, lubridate,
+usethis, tibble, tidyr, tidyselect, purrr, rlang, utils</td>
+<td class="gt_row gt_left">MIT + file LICENSE</td>
+<td class="gt_row gt_center">FALSE</td>
+<td class="gt_row gt_left">Christopher Barrie [aut, cre] (&lt;https://orcid.org/0000-0002-9156-990X&gt;),
+  Justin Chun-ting Ho [aut] (&lt;https://orcid.org/0000-0002-7884-1059&gt;),
+  Chung-hong Chan [ctb] (&lt;https://orcid.org/0000-0002-6232-7530&gt;),
+  Noelia Rico [ctb] (&lt;https://orcid.org/0000-0002-6169-4523&gt;),
+  Tim König [ctb] (&lt;https://orcid.org/0000-0002-2852-2690&gt;),
+  Thomas Davidson [ctb] (&lt;https://orcid.org/0000-0002-5947-7490&gt;)</td>
+<td class="gt_row gt_left">https://github.com/cjbarrie/academictwitteR/issues</td>
+<td class="gt_row gt_left">https://github.com/cjbarrie/academictwitteR</td>
+<td class="gt_row gt_left">2022-02-16</td>
+<td class="gt_row gt_left">Package to query the Twitter Academic Research Product Track,
+    providing access to full-archive search and other v2 API endpoints. Functions
+    are written with academic research in mind. They provide flexibility in how 
+    the user wishes to store collected data, and encourage regular storage of data
+    to mitigate loss when collecting large volumes of tweets. They also provide
+    workarounds to manage and reshape the format in which data is provided on
+    the client side.</td>
+<td class="gt_row gt_left">Access the Twitter Academic Research Product Track V2 API
+Endpoint</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">acc</td>
+<td class="gt_row gt_left gt_striped">1.3.3</td>
+<td class="gt_row gt_left gt_striped">R (&gt;= 2.10), mhsmm</td>
+<td class="gt_row gt_left gt_striped">zoo, PhysicalActivity, nleqslv, plyr, methods, DBI, RSQLite,
+circlize, ggplot2, R.utils, iterators, Rcpp</td>
+<td class="gt_row gt_left gt_striped">GPL (&gt;= 2)</td>
+<td class="gt_row gt_center gt_striped">TRUE</td>
+<td class="gt_row gt_left gt_striped">Jaejoon Song, Matthew G. Cox</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">2016-12-16</td>
+<td class="gt_row gt_left gt_striped">Processes accelerometer data from uni-axial and tri-axial devices,
+    and generates data summaries. Also includes functions to plot, analyze, and
+    simulate accelerometer data.</td>
+<td class="gt_row gt_left gt_striped">Exploring Accelerometer Data</td></tr>
+    <tr><td class="gt_row gt_left">acca</td>
+<td class="gt_row gt_left">0.2</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">methods, stats, ggplot2, plyr</td>
+<td class="gt_row gt_left">GPL (&gt;= 2)</td>
+<td class="gt_row gt_center">FALSE</td>
+<td class="gt_row gt_left">Livio Finos</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">2022-01-28</td>
+<td class="gt_row gt_left">It performs Canonical Correlation Analysis and provides inferential guaranties on the correlation components. The p-values are computed following the resampling method developed in Winkler, A. M., Renaud, O., Smith, S. M., &amp; Nichols, T. E. (2020). Permutation inference for canonical correlation analysis. NeuroImage, &lt;doi:10.1016/j.neuroimage.2020.117065&gt;. Furthermore, it provides plotting tools to visualize the results.</td>
+<td class="gt_row gt_left">A Canonical Correlation Analysis with Inferential Guaranties</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">accelerometry</td>
+<td class="gt_row gt_left gt_striped">3.1.2</td>
+<td class="gt_row gt_left gt_striped">R (&gt;= 3.0.0)</td>
+<td class="gt_row gt_left gt_striped">Rcpp (&gt;= 0.12.15), dvmisc</td>
+<td class="gt_row gt_left gt_striped">GPL-3</td>
+<td class="gt_row gt_center gt_striped">TRUE</td>
+<td class="gt_row gt_left gt_striped">Dane R. Van Domelen</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">2018-08-24</td>
+<td class="gt_row gt_left gt_striped">A collection of functions that perform operations on time-series accelerometer data, such as identify non-wear time, flag minutes that are part of an activity bout, and find the maximum 10-minute average count value. The functions are generally very flexible, allowing for a variety of algorithms to be implemented. Most of the functions are written in C++ for efficiency.</td>
+<td class="gt_row gt_left gt_striped">Functions for Processing Accelerometer Data</td></tr>
+    <tr><td class="gt_row gt_left">accelmissing</td>
+<td class="gt_row gt_left">1.4</td>
+<td class="gt_row gt_left">R (&gt;= 2.10), mice, pscl</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">GPL (&gt;= 2)</td>
+<td class="gt_row gt_center">FALSE</td>
+<td class="gt_row gt_left">Jung Ae Lee &lt;julee@uark.edu&gt;</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">2018-04-06</td>
+<td class="gt_row gt_left">Imputation for the missing count values in accelerometer data. The methodology includes both parametric and semi-parametric multiple imputations under the zero-inflated Poisson lognormal model. This package also provides multiple functions to pre-process the accelerometer data previous to the missing data imputation. These includes detecting wearing and non-wearing time, selecting valid days and subjects, and creating plots.</td>
+<td class="gt_row gt_left">Missing Value Imputation for Accelerometer Data</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">accept</td>
+<td class="gt_row gt_left gt_striped">0.9.1</td>
+<td class="gt_row gt_left gt_striped">R (&gt;= 3.6.0)</td>
+<td class="gt_row gt_left gt_striped">stats, dplyr, reldist, splines</td>
+<td class="gt_row gt_left gt_striped">GPL-3</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Amin Adibi [aut, cre],
+  Mohsen Sadatsafavi [aut, cph],
+  Abdollah Safari [aut],
+  Ainsleigh Hill [aut]</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">2022-07-15</td>
+<td class="gt_row gt_left gt_striped">Allows clinicians to predict the rate and severity of future acute exacerbation in Chronic Obstructive Pulmonary Disease (COPD) patients, based on the clinical prediction model published in Adibi et al. (2020) &lt;doi:10.1016/S2213-2600(19)30397-2&gt;. </td>
+<td class="gt_row gt_left gt_striped">The Acute COPD Exacerbation Prediction Tool (ACCEPT)</td></tr>
+    <tr><td class="gt_row gt_left">AcceptanceSampling</td>
+<td class="gt_row gt_left">1.0-8</td>
+<td class="gt_row gt_left">methods, R(&gt;= 2.4.0), stats</td>
+<td class="gt_row gt_left">graphics, utils</td>
+<td class="gt_row gt_left">GPL (&gt;= 3)</td>
+<td class="gt_row gt_center">FALSE</td>
+<td class="gt_row gt_left">Andreas Kiermeier [aut, cre],
+  Peter Bloomfield [ctb]</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">2022-04-06</td>
+<td class="gt_row gt_left">Provides functionality for creating and
+    evaluating acceptance sampling plans. Sampling plans can be single,
+    double or multiple.</td>
+<td class="gt_row gt_left">Creation and Evaluation of Acceptance Sampling Plans</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">accessibility</td>
+<td class="gt_row gt_left gt_striped">0.1.0</td>
+<td class="gt_row gt_left gt_striped">R (&gt;= 3.5.0)</td>
+<td class="gt_row gt_left gt_striped">checkmate, data.table, utils</td>
+<td class="gt_row gt_left gt_striped">MIT + file LICENSE</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Rafael H. M. Pereira [aut, cre]
+    (&lt;https://orcid.org/0000-0003-2125-7465&gt;),
+  Daniel Herszenhut [aut] (&lt;https://orcid.org/0000-0001-8066-1105&gt;),
+  Ipea - Institute for Applied Economic Research [cph, fnd]</td>
+<td class="gt_row gt_left gt_striped">https://github.com/ipeaGIT/accessibility/issues</td>
+<td class="gt_row gt_left gt_striped">https://github.com/ipeaGIT/accessibility</td>
+<td class="gt_row gt_left gt_striped">2022-06-30</td>
+<td class="gt_row gt_left gt_striped">A set of fast and convenient functions to calculate multiple 
+             transport accessibility measures. Given a pre-computed travel cost 
+             matrix in long format combined with land-use  data (e.g. location 
+             of  jobs, healthcare, population), the package  allows one to 
+             calculate active and passive accessibility levels using multiple 
+             accessibility metrics such as: cumulative opportunity measure 
+             (using either travel time cutoff or interval), minimum travel cost 
+             to closest N number of activities, gravitational measures and 
+             different floating catchment area methods.</td>
+<td class="gt_row gt_left gt_striped">Transport Accessibility Metrics</td></tr>
+    <tr><td class="gt_row gt_left">accessrmd</td>
+<td class="gt_row gt_left">1.0.0</td>
+<td class="gt_row gt_left">ggplot2, R (&gt;= 2.10)</td>
+<td class="gt_row gt_left">htmltools, stringr, rlist, knitr, RCurl</td>
+<td class="gt_row gt_left">MIT + file LICENSE</td>
+<td class="gt_row gt_center">FALSE</td>
+<td class="gt_row gt_left">Rich Leyshon [aut, cre],
+  Crown Copyright 2021 [cph]</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">2022-05-03</td>
+<td class="gt_row gt_left">Provides a simple method to improve the accessibility of
+    'rmarkdown' documents. The package provides functions for creating or
+    modifying 'rmarkdown' documents, resolving known errors and alerts that
+    result in accessibility issues for screen reader users.</td>
+<td class="gt_row gt_left">Improving the Accessibility of 'rmarkdown' Documents</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">accrual</td>
+<td class="gt_row gt_left gt_striped">1.3</td>
+<td class="gt_row gt_left gt_striped">R(&gt;= 3.1.3), tcltk2</td>
+<td class="gt_row gt_left gt_striped">fgui, SMPracticals</td>
+<td class="gt_row gt_left gt_striped">GPL-2</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Junhao Liu, Yu Jiang, Cen Wu, Steve Simon, Matthew S. Mayo, Rama Raghavan, Byron J. Gajewski</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">2017-10-20</td>
+<td class="gt_row gt_left gt_striped">Subject recruitment for medical research is challenging. Slow patient accrual leads to delay in research. Accrual monitoring during the process of recruitment is critical. Researchers need reliable tools to manage the accrual rate. We developed a Bayesian method that integrates researcher's experience on previous trials and data from the current study, providing reliable prediction on accrual rate for clinical studies. In this R package, we present functions for Bayesian accrual prediction which can be easily used by statisticians and clinical researchers.</td>
+<td class="gt_row gt_left gt_striped">Bayesian Accrual Prediction</td></tr>
+    <tr><td class="gt_row gt_left">accrualPlot</td>
+<td class="gt_row gt_left">1.0.1</td>
+<td class="gt_row gt_left">lubridate</td>
+<td class="gt_row gt_left">dplyr, ggplot2, grid, magrittr, purrr, rlang</td>
+<td class="gt_row gt_left">MIT + file LICENSE</td>
+<td class="gt_row gt_center">FALSE</td>
+<td class="gt_row gt_left">Lukas Bütikofer [cre, aut],
+  Alan G. Haynes [aut]</td>
+<td class="gt_row gt_left">https://github.com/CTU-Bern/accrualPlot/issues</td>
+<td class="gt_row gt_left">https://github.com/CTU-Bern/accrualPlot</td>
+<td class="gt_row gt_left">2022-05-09</td>
+<td class="gt_row gt_left">Tracking accrual in clinical trials is important for trial success. 
+    If accrual is too slow, the trial will take too long and be too expensive. If
+    accrual is much faster than expected, time sensitive tasks such as the writing 
+    of statistical analysis plans might need to be rushed. 'accrualPlot' provides 
+    functions to aid the tracking of accrual and predict when a trial will reach 
+    it's intended sample size.</td>
+<td class="gt_row gt_left">Accrual Plots and Predictions for Clinical Trials</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">accSDA</td>
+<td class="gt_row gt_left gt_striped">1.1.1</td>
+<td class="gt_row gt_left gt_striped">R (&gt;= 3.2)</td>
+<td class="gt_row gt_left gt_striped">MASS (&gt;= 7.3.45), ggplot2 (&gt;= 2.1.0), ggthemes (&gt;= 3.2.0),
+grid (&gt;= 3.2.2), gridExtra (&gt;= 2.2.1)</td>
+<td class="gt_row gt_left gt_striped">GPL (&gt;= 2)</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Gudmundur Einarsson [aut, cre, trl],
+  Line Clemmensen [aut, ths],
+  Brendan Ames [aut],
+  Summer Atkins [aut]</td>
+<td class="gt_row gt_left gt_striped">https://github.com/gumeo/accSDA/issues</td>
+<td class="gt_row gt_left gt_striped">https://github.com/gumeo/accSDA/wiki</td>
+<td class="gt_row gt_left gt_striped">2022-04-05</td>
+<td class="gt_row gt_left gt_striped">Implementation of sparse linear discriminant analysis, which is a supervised
+    classification method for multiple classes. Various novel optimization approaches to
+    this problem are implemented including alternating direction method of multipliers (ADMM),
+    proximal gradient (PG) and accelerated proximal gradient (APG) (See Atkins et al. &lt;arXiv:1705.07194&gt;).
+    Functions for performing cross validation are also supplied along with basic prediction
+    and plotting functions.
+    Sparse zero variance discriminant analysis (SZVD) is also included in the package
+    (See Ames and Hong, &lt;arXiv:1401.5492&gt;). See the github wiki for a more extended description.</td>
+<td class="gt_row gt_left gt_striped">Accelerated Sparse Discriminant Analysis</td></tr>
+    <tr><td class="gt_row gt_left">accucor</td>
+<td class="gt_row gt_left">0.3.0</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">nnls, dplyr, stringr, readxl, readr, rlang, tibble, writexl,
+CHNOSZ</td>
+<td class="gt_row gt_left">MIT + file LICENSE</td>
+<td class="gt_row gt_center">FALSE</td>
+<td class="gt_row gt_left">Xiaoyang Su [aut] (&lt;https://orcid.org/0000-0001-8081-1396&gt;),
+  Lance Parsons [aut, cre] (&lt;https://orcid.org/0000-0002-8521-714X&gt;),
+  Yujue Wang [ctb] (&lt;https://orcid.org/0000-0001-7088-1729&gt;),
+  Princeton University [cph]</td>
+<td class="gt_row gt_left">https://github.com/XiaoyangSu/AccuCor/issues</td>
+<td class="gt_row gt_left">https://github.com/XiaoyangSu/AccuCor</td>
+<td class="gt_row gt_left">2021-11-17</td>
+<td class="gt_row gt_left">An isotope natural abundance correction algorithm that
+  is needed especially for high resolution mass spectrometers. Supports
+  correction for 13C, 2H and 15N. Su X, Lu W and Rabinowitz J (2017)
+  &lt;doi:10.1021/acs.analchem.7b00396&gt;.</td>
+<td class="gt_row gt_left">Natural Abundance Correction of Mass Spectrometer Data</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">ACDC</td>
+<td class="gt_row gt_left gt_striped">1.0.0</td>
+<td class="gt_row gt_left gt_striped">R (&gt;= 3.5.0), ggplot2</td>
+<td class="gt_row gt_left gt_striped">magrittr, deSolve, dplyr, tibble, colorspace, patchwork,
+latex2exp, tidyr</td>
+<td class="gt_row gt_left gt_striped">GPL-3</td>
+<td class="gt_row gt_center gt_striped">FALSE</td>
+<td class="gt_row gt_left gt_striped">Bjørn Tore Kopperud [aut, cre],
+  Sebastian Höhna [aut],
+  Andrew F. Magee [aut]</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">https://github.com/afmagee/ACDC</td>
+<td class="gt_row gt_left gt_striped">2022-01-12</td>
+<td class="gt_row gt_left gt_striped">Features tools for exploring congruent phylogenetic birth-death models. It can construct the pulled speciation- and net-diversification rates from a reference model. Given alternative speciation- or extinction rates, it can construct new models that are congruent with the reference model. Functionality is included to sample new rate functions, and to visualize the distribution of one congruence class. See also Louca &amp; Pennell (2020) &lt;doi:10.1038/s41586-020-2176-1&gt;.</td>
+<td class="gt_row gt_left gt_striped">Analysis of Congruent Diversification Classes</td></tr>
+    <tr><td class="gt_row gt_left">acdcR</td>
+<td class="gt_row gt_left">1.0.0</td>
+<td class="gt_row gt_left">R (&gt;= 4.0.0), raster, data.table, stats</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">GPL (&gt;= 2)</td>
+<td class="gt_row gt_center">FALSE</td>
+<td class="gt_row gt_left">Seong D. Yun [aut, cre]</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">https://github.com/ysd2004/acdcR</td>
+<td class="gt_row gt_left">2022-06-27</td>
+<td class="gt_row gt_left">The functions are designed to calculate the most widely-used county-level variables in 
+  agricultural production or agricultural-climatic and weather analyses. To operate some functions 
+  in this package needs download of the bulk PRISM raster. See the examples, testing versions and 
+  more details from: &lt;https://github.com/ysd2004/acdcR&gt;.</td>
+<td class="gt_row gt_left">Agro-Climatic Data by County</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">ACDm</td>
+<td class="gt_row gt_left gt_striped">1.0.4.1</td>
+<td class="gt_row gt_left gt_striped">R(&gt;= 2.10.0)</td>
+<td class="gt_row gt_left gt_striped">plyr, dplyr, ggplot2, Rsolnp, zoo, graphics,</td>
+<td class="gt_row gt_left gt_striped">GPL (&gt;= 2)</td>
+<td class="gt_row gt_center gt_striped">TRUE</td>
+<td class="gt_row gt_left gt_striped">Markus Belfrage</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">NA</td>
+<td class="gt_row gt_left gt_striped">2022-07-08</td>
+<td class="gt_row gt_left gt_striped">Package for Autoregressive Conditional Duration (ACD, Engle and Russell, 1998) models. Creates trade, price or volume durations from transactions (tic) data, performs diurnal adjustments, fits various ACD models and tests them. </td>
+<td class="gt_row gt_left gt_striped">Tools for Autoregressive Conditional Duration Models</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<p>Now you could take this data, aggregate the <code>date_published</code> by month, and plot the growth of the R ecosystem for yourself. For instance like this:</p>
+<pre class="r"><code>df %&gt;% 
+  mutate(date = floor_date(ymd(date_published), unit = &quot;month&quot;)) %&gt;% 
+  filter(!is.na(date)) %&gt;% 
+  count(date) %&gt;% 
+  arrange(date) %&gt;% 
+  mutate(cumul = cumsum(n)) %&gt;% 
+  ggplot(aes(date, cumul)) +
+  geom_line(col = &quot;blue&quot;) +
+  theme_minimal() +
+  labs(x = &quot;Date&quot;, y = &quot;Cumlative count&quot;, title = &quot;Cumulative count of CRAN package by date of latest version&quot;)</code></pre>
+<p><img src="/post/2022-07-22-kaggle-dataset-cran-packages_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>But this doesn’t really show you the true historical growth, does it? The x-axis range and my plot title are already telling you what’s going on here. The <code>date_published</code> that <code>CRAN_package_db</code> gives us (and that the CRAN website lists) corresponds to the last published version of the package. See for instance the entry for <code>dplyr</code>:</p>
+<pre class="r"><code>df %&gt;% 
+  filter(package == &quot;dplyr&quot;) %&gt;% 
+  select(package, version, date_published) %&gt;% 
+  gt()</code></pre>
+<div id="hnqvzlerji" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#hnqvzlerji .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#hnqvzlerji .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hnqvzlerji .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#hnqvzlerji .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#hnqvzlerji .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hnqvzlerji .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hnqvzlerji .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#hnqvzlerji .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#hnqvzlerji .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#hnqvzlerji .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#hnqvzlerji .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#hnqvzlerji .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#hnqvzlerji .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#hnqvzlerji .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#hnqvzlerji .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#hnqvzlerji .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#hnqvzlerji .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#hnqvzlerji .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hnqvzlerji .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#hnqvzlerji .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hnqvzlerji .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#hnqvzlerji .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#hnqvzlerji .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hnqvzlerji .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hnqvzlerji .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#hnqvzlerji .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hnqvzlerji .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#hnqvzlerji .gt_left {
+  text-align: left;
+}
+
+#hnqvzlerji .gt_center {
+  text-align: center;
+}
+
+#hnqvzlerji .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#hnqvzlerji .gt_font_normal {
+  font-weight: normal;
+}
+
+#hnqvzlerji .gt_font_bold {
+  font-weight: bold;
+}
+
+#hnqvzlerji .gt_font_italic {
+  font-style: italic;
+}
+
+#hnqvzlerji .gt_super {
+  font-size: 65%;
+}
+
+#hnqvzlerji .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">package</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">version</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">date_published</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">1.0.9</td>
+<td class="gt_row gt_left">2022-04-28</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<p>The cornerstone of the tidyverse was first published a little while before April 2022. Version 1.0.9 is the most recent one, at the time of writing.</p>
+<p>Naturally, that means that in this table those packages with frequent updates will be weighted heavier towards more recent dates. Which is perfectly fine if you’re only interested in the most recent package. But if you, like me, want to see how the R ecosystem grew over time, then you need the historical dates of the first published versions. This is where our next package comes in.</p>
+</div>
+<div id="package-history" class="section level3">
+<h3>Package history</h3>
+<p>I found the <a href="https://github.com/lindbrook/packageRank">packageRank package</a> through googling “R package history”. Its documentation on github is detailed, and it performs very well for me. In the <code>packageHistory</code> function you give it a package name and it does the rest. Let’s find out more about the release history of our favourite <code>dplyr</code> package:</p>
+<pre class="r"><code>df_hist_dplyr &lt;- packageRank::packageHistory(package = &quot;dplyr&quot;, check.package = TRUE) %&gt;% 
+    as_tibble() %&gt;% 
+    janitor::clean_names()</code></pre>
+<pre class="r"><code>df_hist_dplyr %&gt;% 
+  gt() %&gt;% 
+  tab_header(
+    title = md(&quot;**The release history of the dplyr package**&quot;)
+    ) %&gt;% 
+  opt_row_striping() %&gt;% 
+  tab_options(container.height = px(400))</code></pre>
+<div id="boxomtksqb" style="overflow-x:auto;overflow-y:auto;width:auto;height:400px;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#boxomtksqb .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#boxomtksqb .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#boxomtksqb .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#boxomtksqb .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#boxomtksqb .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#boxomtksqb .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#boxomtksqb .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#boxomtksqb .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#boxomtksqb .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#boxomtksqb .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#boxomtksqb .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#boxomtksqb .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#boxomtksqb .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#boxomtksqb .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#boxomtksqb .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#boxomtksqb .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#boxomtksqb .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#boxomtksqb .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#boxomtksqb .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#boxomtksqb .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#boxomtksqb .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#boxomtksqb .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#boxomtksqb .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#boxomtksqb .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#boxomtksqb .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#boxomtksqb .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#boxomtksqb .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#boxomtksqb .gt_left {
+  text-align: left;
+}
+
+#boxomtksqb .gt_center {
+  text-align: center;
+}
+
+#boxomtksqb .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#boxomtksqb .gt_font_normal {
+  font-weight: normal;
+}
+
+#boxomtksqb .gt_font_bold {
+  font-weight: bold;
+}
+
+#boxomtksqb .gt_font_italic {
+  font-style: italic;
+}
+
+#boxomtksqb .gt_super {
+  font-size: 65%;
+}
+
+#boxomtksqb .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style><strong>The release history of the dplyr package</strong></th>
+    </tr>
+    
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">package</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">version</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">date</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">repository</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">0.1</td>
+<td class="gt_row gt_left">2014-01-16</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">dplyr</td>
+<td class="gt_row gt_left gt_striped">0.1.1</td>
+<td class="gt_row gt_left gt_striped">2014-01-29</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">0.1.2</td>
+<td class="gt_row gt_left">2014-02-24</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">dplyr</td>
+<td class="gt_row gt_left gt_striped">0.1.3</td>
+<td class="gt_row gt_left gt_striped">2014-03-15</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">0.2</td>
+<td class="gt_row gt_left">2014-05-21</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">dplyr</td>
+<td class="gt_row gt_left gt_striped">0.3</td>
+<td class="gt_row gt_left gt_striped">2014-10-04</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">0.3.0.1</td>
+<td class="gt_row gt_left">2014-10-08</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">dplyr</td>
+<td class="gt_row gt_left gt_striped">0.3.0.2</td>
+<td class="gt_row gt_left gt_striped">2014-10-11</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">0.4.0</td>
+<td class="gt_row gt_left">2015-01-08</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">dplyr</td>
+<td class="gt_row gt_left gt_striped">0.4.1</td>
+<td class="gt_row gt_left gt_striped">2015-01-14</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">0.4.2</td>
+<td class="gt_row gt_left">2015-06-16</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">dplyr</td>
+<td class="gt_row gt_left gt_striped">0.4.3</td>
+<td class="gt_row gt_left gt_striped">2015-09-01</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">0.5.0</td>
+<td class="gt_row gt_left">2016-06-24</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">dplyr</td>
+<td class="gt_row gt_left gt_striped">0.7.0</td>
+<td class="gt_row gt_left gt_striped">2017-06-09</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">0.7.1</td>
+<td class="gt_row gt_left">2017-06-22</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">dplyr</td>
+<td class="gt_row gt_left gt_striped">0.7.2</td>
+<td class="gt_row gt_left gt_striped">2017-07-20</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">0.7.3</td>
+<td class="gt_row gt_left">2017-09-09</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">dplyr</td>
+<td class="gt_row gt_left gt_striped">0.7.4</td>
+<td class="gt_row gt_left gt_striped">2017-09-28</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">0.7.5</td>
+<td class="gt_row gt_left">2018-05-19</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">dplyr</td>
+<td class="gt_row gt_left gt_striped">0.7.6</td>
+<td class="gt_row gt_left gt_striped">2018-06-29</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">0.7.7</td>
+<td class="gt_row gt_left">2018-10-16</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">dplyr</td>
+<td class="gt_row gt_left gt_striped">0.7.8</td>
+<td class="gt_row gt_left gt_striped">2018-11-10</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">0.8.0</td>
+<td class="gt_row gt_left">2019-02-14</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">dplyr</td>
+<td class="gt_row gt_left gt_striped">0.8.0.1</td>
+<td class="gt_row gt_left gt_striped">2019-02-15</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">0.8.1</td>
+<td class="gt_row gt_left">2019-05-14</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">dplyr</td>
+<td class="gt_row gt_left gt_striped">0.8.2</td>
+<td class="gt_row gt_left gt_striped">2019-06-29</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">0.8.3</td>
+<td class="gt_row gt_left">2019-07-04</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">dplyr</td>
+<td class="gt_row gt_left gt_striped">0.8.4</td>
+<td class="gt_row gt_left gt_striped">2020-01-31</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">0.8.5</td>
+<td class="gt_row gt_left">2020-03-07</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">dplyr</td>
+<td class="gt_row gt_left gt_striped">1.0.0</td>
+<td class="gt_row gt_left gt_striped">2020-05-29</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">1.0.1</td>
+<td class="gt_row gt_left">2020-07-31</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">dplyr</td>
+<td class="gt_row gt_left gt_striped">1.0.2</td>
+<td class="gt_row gt_left gt_striped">2020-08-18</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">1.0.3</td>
+<td class="gt_row gt_left">2021-01-15</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">dplyr</td>
+<td class="gt_row gt_left gt_striped">1.0.4</td>
+<td class="gt_row gt_left gt_striped">2021-02-02</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">1.0.5</td>
+<td class="gt_row gt_left">2021-03-05</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">dplyr</td>
+<td class="gt_row gt_left gt_striped">1.0.6</td>
+<td class="gt_row gt_left gt_striped">2021-05-05</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">1.0.7</td>
+<td class="gt_row gt_left">2021-06-18</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">dplyr</td>
+<td class="gt_row gt_left gt_striped">1.0.8</td>
+<td class="gt_row gt_left gt_striped">2022-02-08</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">dplyr</td>
+<td class="gt_row gt_left">1.0.9</td>
+<td class="gt_row gt_left">2022-04-28</td>
+<td class="gt_row gt_left">CRAN</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<p>First released in January 2014. It’s been an interesting journey for the tidyverse since then. I started using the tidy packages first in 2017, and I would find it hard to go back to base R now.</p>
+<p>With data like this for a single R package, you could for instance investigate the yearly frequency of releases over time:</p>
+<pre class="r"><code>df_hist_dplyr %&gt;% 
+  mutate(year = floor_date(date, unit = &quot;year&quot;)) %&gt;% 
+  count(year) %&gt;% 
+  ggplot(aes(year, n)) +
+  geom_col(fill = &quot;purple&quot;) +
+  scale_x_date() +
+  theme_hc() +
+  labs(x = &quot;&quot;, y = &quot;&quot;, title = &quot;Number of releases of &#39;dplyr&#39; per year - in July 2022&quot;)</code></pre>
+<p><img src="/post/2022-07-22-kaggle-dataset-cran-packages_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Interesting pattern there from 2014 to 2016. Since then the number of releases have been pretty consistent. At the time of writing, we are still in the middle of 2022.</p>
+<p>(As a side note, you’ll see that I’ve decided not to use an x-axis label here. I feel like a year axis is often self-explanatory; and I’ve used a descriptive title to prevent misinterpretation. Let me know if you disagree.)</p>
+<p>To get the history for all the entries in our complete list of CRAN packages, we can then simply loop through the package names. The loop takes about an hour, but you don’t have to run it yourself. This is what I created the Kaggle dataset for. You can download <a href="https://www.kaggle.com/datasets/headsortails/r-package-history-on-cran?select=cran_package_history.csv">“cran_package_history.csv”</a> and start working with it immediately.</p>
+<pre class="r"><code>df_hist &lt;- read_csv(&quot;../../static/files/cran_package_history.csv&quot;, col_types = cols())</code></pre>
+<p>Here are the first 50 rows:</p>
+<pre class="r"><code>df_hist %&gt;%
+  head(50) %&gt;% 
+  gt() %&gt;% 
+  tab_header(
+    title = md(&quot;**The first rows of the cran_package_history.csv table**&quot;)
+    ) %&gt;% 
+  opt_row_striping() %&gt;% 
+  tab_options(container.height = px(600))</code></pre>
+<div id="cfyktlgjrt" style="overflow-x:auto;overflow-y:auto;width:auto;height:600px;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#cfyktlgjrt .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#cfyktlgjrt .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#cfyktlgjrt .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#cfyktlgjrt .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#cfyktlgjrt .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#cfyktlgjrt .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#cfyktlgjrt .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#cfyktlgjrt .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#cfyktlgjrt .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#cfyktlgjrt .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#cfyktlgjrt .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#cfyktlgjrt .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#cfyktlgjrt .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#cfyktlgjrt .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#cfyktlgjrt .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#cfyktlgjrt .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#cfyktlgjrt .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#cfyktlgjrt .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cfyktlgjrt .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#cfyktlgjrt .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cfyktlgjrt .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#cfyktlgjrt .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#cfyktlgjrt .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#cfyktlgjrt .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#cfyktlgjrt .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#cfyktlgjrt .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#cfyktlgjrt .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#cfyktlgjrt .gt_left {
+  text-align: left;
+}
+
+#cfyktlgjrt .gt_center {
+  text-align: center;
+}
+
+#cfyktlgjrt .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#cfyktlgjrt .gt_font_normal {
+  font-weight: normal;
+}
+
+#cfyktlgjrt .gt_font_bold {
+  font-weight: bold;
+}
+
+#cfyktlgjrt .gt_font_italic {
+  font-style: italic;
+}
+
+#cfyktlgjrt .gt_super {
+  font-size: 65%;
+}
+
+#cfyktlgjrt .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style><strong>The first rows of the cran_package_history.csv table</strong></th>
+    </tr>
+    
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">package</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">version</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">date</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">repository</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">A3</td>
+<td class="gt_row gt_left">0.9.1</td>
+<td class="gt_row gt_left">2013-02-07</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">A3</td>
+<td class="gt_row gt_left gt_striped">0.9.2</td>
+<td class="gt_row gt_left gt_striped">2013-03-26</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">A3</td>
+<td class="gt_row gt_left">1.0.0</td>
+<td class="gt_row gt_left">2015-08-16</td>
+<td class="gt_row gt_left">CRAN</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">AATtools</td>
+<td class="gt_row gt_left gt_striped">0.0.1</td>
+<td class="gt_row gt_left gt_striped">2020-06-14</td>
+<td class="gt_row gt_left gt_striped">CRAN</td></tr>
+    <tr><td class="gt_row gt_left">ABACUS</td>
+<td class="gt_row gt_left">1.0.0</td>
+<td class="gt_row gt_left">2019-09-20</td>
+<td class="gt_row gt_left">CRAN</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abbreviate</td>
+<td class="gt_row gt_left gt_striped">0.1</td>
+<td class="gt_row gt_left gt_striped">2021-12-14</td>
+<td class="gt_row gt_left gt_striped">CRAN</td></tr>
+    <tr><td class="gt_row gt_left">abbyyR</td>
+<td class="gt_row gt_left">0.1</td>
+<td class="gt_row gt_left">2015-06-12</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abbyyR</td>
+<td class="gt_row gt_left gt_striped">0.2</td>
+<td class="gt_row gt_left gt_striped">2015-09-12</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">abbyyR</td>
+<td class="gt_row gt_left">0.2.1</td>
+<td class="gt_row gt_left">2015-11-04</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abbyyR</td>
+<td class="gt_row gt_left gt_striped">0.2.2</td>
+<td class="gt_row gt_left gt_striped">2015-11-06</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">abbyyR</td>
+<td class="gt_row gt_left">0.2.3</td>
+<td class="gt_row gt_left">2015-12-06</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abbyyR</td>
+<td class="gt_row gt_left gt_striped">0.3</td>
+<td class="gt_row gt_left gt_striped">2016-02-04</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">abbyyR</td>
+<td class="gt_row gt_left">0.4.0</td>
+<td class="gt_row gt_left">2016-05-16</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abbyyR</td>
+<td class="gt_row gt_left gt_striped">0.5.0</td>
+<td class="gt_row gt_left gt_striped">2016-06-20</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">abbyyR</td>
+<td class="gt_row gt_left">0.5.1</td>
+<td class="gt_row gt_left">2017-04-12</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abbyyR</td>
+<td class="gt_row gt_left gt_striped">0.5.3</td>
+<td class="gt_row gt_left gt_striped">2018-05-28</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">abbyyR</td>
+<td class="gt_row gt_left">0.5.4</td>
+<td class="gt_row gt_left">2018-05-30</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abbyyR</td>
+<td class="gt_row gt_left gt_striped">0.5.5</td>
+<td class="gt_row gt_left gt_striped">2019-06-25</td>
+<td class="gt_row gt_left gt_striped">CRAN</td></tr>
+    <tr><td class="gt_row gt_left">abc</td>
+<td class="gt_row gt_left">1.0</td>
+<td class="gt_row gt_left">2010-10-05</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abc</td>
+<td class="gt_row gt_left gt_striped">1.1</td>
+<td class="gt_row gt_left gt_striped">2010-10-11</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">abc</td>
+<td class="gt_row gt_left">1.2</td>
+<td class="gt_row gt_left">2011-01-15</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abc</td>
+<td class="gt_row gt_left gt_striped">1.3</td>
+<td class="gt_row gt_left gt_striped">2011-05-10</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">abc</td>
+<td class="gt_row gt_left">1.4</td>
+<td class="gt_row gt_left">2011-09-04</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abc</td>
+<td class="gt_row gt_left gt_striped">1.5</td>
+<td class="gt_row gt_left gt_striped">2012-08-08</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">abc</td>
+<td class="gt_row gt_left">1.6</td>
+<td class="gt_row gt_left">2012-08-14</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abc</td>
+<td class="gt_row gt_left gt_striped">1.7</td>
+<td class="gt_row gt_left gt_striped">2013-06-06</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">abc</td>
+<td class="gt_row gt_left">1.8</td>
+<td class="gt_row gt_left">2013-10-29</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abc</td>
+<td class="gt_row gt_left gt_striped">2.0</td>
+<td class="gt_row gt_left gt_striped">2014-07-11</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">abc</td>
+<td class="gt_row gt_left">2.1</td>
+<td class="gt_row gt_left">2015-05-05</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abc</td>
+<td class="gt_row gt_left gt_striped">2.2.1</td>
+<td class="gt_row gt_left gt_striped">2022-05-19</td>
+<td class="gt_row gt_left gt_striped">CRAN</td></tr>
+    <tr><td class="gt_row gt_left">abc.data</td>
+<td class="gt_row gt_left">1.0</td>
+<td class="gt_row gt_left">2015-05-05</td>
+<td class="gt_row gt_left">CRAN</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">ABC.RAP</td>
+<td class="gt_row gt_left gt_striped">0.9.0</td>
+<td class="gt_row gt_left gt_striped">2016-10-20</td>
+<td class="gt_row gt_left gt_striped">CRAN</td></tr>
+    <tr><td class="gt_row gt_left">abcADM</td>
+<td class="gt_row gt_left">1.0</td>
+<td class="gt_row gt_left">2019-11-13</td>
+<td class="gt_row gt_left">CRAN</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">ABCanalysis</td>
+<td class="gt_row gt_left gt_striped">1.0</td>
+<td class="gt_row gt_left gt_striped">2015-02-13</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">ABCanalysis</td>
+<td class="gt_row gt_left">1.0.1</td>
+<td class="gt_row gt_left">2015-04-20</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">ABCanalysis</td>
+<td class="gt_row gt_left gt_striped">1.0.2</td>
+<td class="gt_row gt_left gt_striped">2015-06-15</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">ABCanalysis</td>
+<td class="gt_row gt_left">1.1.0</td>
+<td class="gt_row gt_left">2015-09-28</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">ABCanalysis</td>
+<td class="gt_row gt_left gt_striped">1.1.1</td>
+<td class="gt_row gt_left gt_striped">2016-06-15</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">ABCanalysis</td>
+<td class="gt_row gt_left">1.1.2</td>
+<td class="gt_row gt_left">2016-08-23</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">ABCanalysis</td>
+<td class="gt_row gt_left gt_striped">1.2.1</td>
+<td class="gt_row gt_left gt_striped">2017-03-13</td>
+<td class="gt_row gt_left gt_striped">CRAN</td></tr>
+    <tr><td class="gt_row gt_left">abclass</td>
+<td class="gt_row gt_left">0.1.0</td>
+<td class="gt_row gt_left">2022-03-07</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">abclass</td>
+<td class="gt_row gt_left gt_striped">0.2.0</td>
+<td class="gt_row gt_left gt_striped">2022-04-12</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">abclass</td>
+<td class="gt_row gt_left">0.3.0</td>
+<td class="gt_row gt_left">2022-05-28</td>
+<td class="gt_row gt_left">CRAN</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">ABCoptim</td>
+<td class="gt_row gt_left gt_striped">0.13.10</td>
+<td class="gt_row gt_left gt_striped">2013-10-21</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">ABCoptim</td>
+<td class="gt_row gt_left">0.13.11</td>
+<td class="gt_row gt_left">2013-11-06</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">ABCoptim</td>
+<td class="gt_row gt_left gt_striped">0.14.0</td>
+<td class="gt_row gt_left gt_striped">2016-11-17</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">ABCoptim</td>
+<td class="gt_row gt_left">0.15.0</td>
+<td class="gt_row gt_left">2017-11-06</td>
+<td class="gt_row gt_left">CRAN</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">ABCp2</td>
+<td class="gt_row gt_left gt_striped">1.0</td>
+<td class="gt_row gt_left gt_striped">2013-04-10</td>
+<td class="gt_row gt_left gt_striped">Archive</td></tr>
+    <tr><td class="gt_row gt_left">ABCp2</td>
+<td class="gt_row gt_left">1.1</td>
+<td class="gt_row gt_left">2013-07-23</td>
+<td class="gt_row gt_left">Archive</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">ABCp2</td>
+<td class="gt_row gt_left gt_striped">1.2</td>
+<td class="gt_row gt_left gt_striped">2016-02-04</td>
+<td class="gt_row gt_left gt_striped">CRAN</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<p>Now we can filter the initial release date for each package and visualise the number of CRAN packages created over time:</p>
+<pre class="r"><code>df_hist %&gt;% 
+  group_by(package) %&gt;% 
+  slice_min(order_by = date, n = 1) %&gt;% 
+  ungroup() %&gt;% 
+  mutate(month = floor_date(date, unit = &quot;month&quot;)) %&gt;% 
+  count(month) %&gt;% 
+  arrange(month) %&gt;% 
+  mutate(cumul = cumsum(n)) %&gt;% 
+  ggplot(aes(month, cumul)) +
+  geom_line(col = &quot;purple&quot;) +
+  theme_minimal() +
+  labs(x = &quot;Date&quot;, y = &quot;Cumlative count&quot;, title = &quot;Cumulative count of CRAN package by date of first release&quot;)</code></pre>
+<p><img src="/post/2022-07-22-kaggle-dataset-cran-packages_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Still an impressive growth, and now we give proper emphasis to the early history of CRAN; reaching back all the way to before the year 2000. There are many more angles and visuals that this dataset will allow you to explore.</p>
+<hr />
+<p>Notes and suggestions:</p>
+<ul>
+<li><p>I will keep updating this dataset on a monthly basis. After the initial collection of all the version histories, from now on I only need to update the histories for those packages that have a new version released. This should simplify the process significantly.</p></li>
+<li><p>Some ideas for EDA and analysis: how long did packages take from their first release to version 1.0? What type of packages were most frequent in different years? Who are the most productive authors? Can you predict the growth toward 2025?</p></li>
+<li><p>All of this analysis can be done directly on the Kaggle platform! On the <a href="https://www.kaggle.com/datasets/headsortails/r-package-history-on-cran">dataset page</a>, on the top right, you will see a button called “New Notebook”. Click that to get an interactive editor in R or Python and start exploring immediately.</p></li>
+</ul>
+<p>Have fun!</p>
+</div>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//headsortails.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/python.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137904077-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  </body>
+</html>
+

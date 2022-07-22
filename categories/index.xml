@@ -5,7 +5,7 @@
     <description>Recent content in Categories on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 30 Jun 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 22 Jul 2022 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://heads0rtai1s.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
@@ -13,16 +13,25 @@
     <item>
       <title>community</title>
       <link>https://heads0rtai1s.github.io/categories/community/</link>
-      <pubDate>Thu, 30 Jun 2022 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 22 Jul 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/categories/community/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>dataset</title>
+      <link>https://heads0rtai1s.github.io/categories/dataset/</link>
+      <pubDate>Fri, 22 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/categories/dataset/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>kaggle</title>
       <link>https://heads0rtai1s.github.io/categories/kaggle/</link>
-      <pubDate>Thu, 30 Jun 2022 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 22 Jul 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/categories/kaggle/</guid>
       <description></description>
@@ -31,7 +40,7 @@
     <item>
       <title>R</title>
       <link>https://heads0rtai1s.github.io/categories/r/</link>
-      <pubDate>Thu, 30 Jun 2022 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 22 Jul 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/categories/r/</guid>
       <description></description>

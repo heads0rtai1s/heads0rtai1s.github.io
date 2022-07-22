@@ -6,7 +6,16 @@
     <description>Recent content in community on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 30 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/community/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 22 Jul 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/community/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A Kaggle Dataset of R Package History for rstudio::conf(2022)</title>
+      <link>https://heads0rtai1s.github.io/2022/07/22/kaggle-dataset-cran-packages/</link>
+      <pubDate>Fri, 22 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/2022/07/22/kaggle-dataset-cran-packages/</guid>
+      <description>It’s summer, and the long-awaited Rstudio conference for 2022 is only days away. Next week, a large number of R aficionados will gather in Washington DC for the first time in person since the beginning of the pandemic. A pandemic, mind you, that is far from over. But Covid precautions are in place, and I trust the R community more than most to be responsible and thoughtful. With masks, social distance, and outdoor events: I’m excited to meet new people and see again many familiar faces from my first Rstudio conference in 2020.</description>
+    </item>
+    
     <item>
       <title>Building a Kaggle Leaderboard with gtExtras</title>
       <link>https://heads0rtai1s.github.io/2022/06/30/kaggle-leaderboard-gtextras/</link>
