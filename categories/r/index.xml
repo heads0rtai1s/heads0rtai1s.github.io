@@ -5,10 +5,62 @@
     <description>Recent content in R on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 22 Jul 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 02 Aug 2022 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://heads0rtai1s.github.io/categories/r/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>rstudio::conf(2022) restrospective</title>
+      <link>https://heads0rtai1s.github.io/2022/08/02/rstudio-conf-2022/</link>
+      <pubDate>Tue, 02 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/2022/08/02/rstudio-conf-2022/</guid>
+      <description>
+&lt;script src=&#34;https://heads0rtai1s.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;It is the day after &lt;a href=&#34;https://www.rstudio.com/conference/&#34;&gt;rstudio::conf(2022)&lt;/a&gt;, and I’m sitting in the lobby of the ridiculously oversized conference hotel, trying to collect my thoughts and impressions. It was a densely packed two days of presentation and events (plus the earlier two days of workshops). Lots of new inspirations, ideas, impressions; all of which takes a little time to digest.&lt;/p&gt;
+&lt;p&gt;And of course there was the community experience, after two years of pandemic. The previous &lt;a href=&#34;https://heads0rtai1s.github.io/2020/02/13/rstudio-conf/&#34;&gt;rstudio::conf(2020) in San Francisco&lt;/a&gt; was my last in-person conference before Covid hit. And even though Covid is far from over, I have great trust in the R community and made this my first in-person conference in more than 2 years. I believe that the community is R’s strongest asset. And it was a great joy to see many familiar faces again, and meet new friends. In an ever-changing data science and machine learning landscape, it is the community that will ensure the continued success of R as an integral part of the data scientists’ toolbox.&lt;/p&gt;
+&lt;p&gt;Much will be written about the big announcements of the week, so I’ll keep my reflections on those brief, and will add a few of my own lessons and impressions on other aspects.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;https://heads0rtai1s.github.io/home/theheadsortails/blog/public/pics/rstudioconf22_1.jpg&#34; style=&#34;width:100.0%&#34; alt=&#34;&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;&lt;em&gt;Hadley Wickham and J.J. Alaire are announcing the rebranding of Rstudio to Posit&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rstudio-rebrands-as-posit-to-expand-to-other-languages&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;RStudio rebrands as Posit to expand to other languages&lt;/h3&gt;
+&lt;p&gt;I strongly believe that &lt;a href=&#34;https://www.rstudio.com/blog/rstudio-is-becoming-posit/&#34;&gt;this is the right move&lt;/a&gt;. Programming languages are tools, and it is the best strategy to choose the right tool for each particular problem. Rather than being constrained by the limits of one specific language. R certainly has many limits, and so has every single language. But R also has impressive strengths, where its performance can lead to unbelievable results. Combining the strengths of R with the strengths of other languages is already a winning strategy. And it will be even more so in the future.&lt;/p&gt;
+&lt;p&gt;Specifically, R and Python have been developing closer ties since the days of &lt;code&gt;rpy&lt;/code&gt; (now there’s &lt;a href=&#34;https://rpy2.github.io/&#34;&gt;rpy2&lt;/a&gt;), and likely even earlier. The &lt;a href=&#34;https://rstudio.github.io/reticulate/&#34;&gt;reticulate package&lt;/a&gt; is the latest and greatest of these initiatives from the R side. And Jupyter notebooks have been supporting R robustly and successfully since the project emerged from ipython. (Ju - py - teR = Julia - Python - R.) Now we have &lt;a href=&#34;https://quarto.org/&#34;&gt;Quarto&lt;/a&gt;, as an extension of Rmarkdown to several other languages including Python.&lt;/p&gt;
+&lt;p&gt;Multilingual efforts have always been a part of the development philosophy. Both R and Python have well-established and reliable interfaces to C that speed up code. And a newer startup like &lt;a href=&#34;https://huggingface.co/&#34;&gt;huggingface&lt;/a&gt;, which has exploded onto the scene, uses Rust to boost the performance of their Python &lt;a href=&#34;https://huggingface.co/docs/transformers/index&#34;&gt;transformers library&lt;/a&gt; under the hood.&lt;/p&gt;
+&lt;p&gt;My recommendation is to learn tools, rather than languages.&lt;/p&gt;
+&lt;p&gt;As for the new name, I confess that I don’t feel strongly about “Posit” in any particular way. I believe it will grow on us, though, and will quickly develop connotations with its amazing community.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;everybody-talks-about-quarto&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Everybody talks about Quarto&lt;/h3&gt;
+&lt;p&gt;The second main theme at this conference has been the significant focus on Quarto, the new and (even more) multilingual successor of the Rmarkdown framework. I think the seeds for this development had been sown several years ago, and &lt;code&gt;reticulate&lt;/code&gt; had already made it possible to combine R and Python code chunks in the same document. But outside the R community, this development hadn’t seen much adoption. Jupyter notebooks remain the most common way for Python folks to design notebook-style content.&lt;/p&gt;
+&lt;p&gt;But while &lt;code&gt;reticulate&lt;/code&gt; was one specialised package among many (and it might have been more difficult to recognise its full potential), Quarto is well positioned to change the game. One early success is the &lt;a href=&#34;https://www.fast.ai/2022/07/28/nbdev-v2/&#34;&gt;collaboration of the nbdev and Quarto projects&lt;/a&gt; to create &lt;a href=&#34;https://nbdev.fast.ai/&#34;&gt;nbdev v2&lt;/a&gt;, the next version of the popular Python software development system built around notebooks. Here is &lt;a href=&#34;https://youtu.be/xxVVSxcjNQs&#34;&gt;a conversation between the Posit CEO J.J. Allaire and FastAI’s Jeremy Howard&lt;/a&gt; on the topic.&lt;/p&gt;
+&lt;p&gt;The &lt;a href=&#34;https://quarto.org/docs/gallery/&#34;&gt;Quarto gallery&lt;/a&gt; already contains a bunch of high-quality examples for books, websites, blogs, and more. In fact, I’ve been thinking about updating the style &amp;amp; presentation for this blog. Might be a good excuse to move it over to Quarto at the same time.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;https://heads0rtai1s.github.io/home/theheadsortails/blog/public/pics/rstudioconf22_2.jpg&#34; style=&#34;width:100.0%&#34; alt=&#34;&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;&lt;em&gt;The famous wall of hex stickers at rstudio::conf&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;workshop-musings-and-network-analysis&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Workshop musings and network analysis&lt;/h3&gt;
+&lt;p&gt;Just like the workshop that I took back at the 2020 rstudio::conf, this year’s one was well-designed and densely packed with useful information. And I’ve only ever heard good things about rstudio::conf workshops from various participants. The topics that are being offered usually cover a wide range of aspects and experience levels. This year, I decided to attend the &lt;a href=&#34;https://github.com/rstudio-conf-2022/people-analytics-rstats&#34;&gt;R for People Analytics workshop&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;My primary interest was to learn about network analysis, which was covered in detail on the second day of the 2-day workshop. The first day focused on a general introduction to people analytics methodology, along with different statistical and regression approaches. I had worked with these methods before, but it had been a while and it was nice to get a systematic refresher and some new perspectives. And I hadn’t really done things like ordinal regression or used the MASS package. So the entire workshop was useful, and I definitely got what I wanted out of the network analysis sections. Expect a related blog post pretty soon.&lt;/p&gt;
+&lt;p&gt;One interesting aspect of this workshop was that it was taught from a statistical perspective; versus the machine learning mindset that I’m more used to now through Kaggle. These statistical tools were what I started out with when learning more about R, and it was a helpful experience to encounter them again through the lens of a machine learning practitioner.&lt;/p&gt;
+&lt;p&gt;For instance, concepts like distribution tests (e.g. t-test), p-values, or information criteria rarely play a role in machine learning applications. Feature importances are often extracted, but models are usually evaluated on their validation performance on a particular metric. Maybe there could be a bit more emphasis on distribution tests during data preprocessing. But generally those differences in philosophy seem to reflect the different goals of building predictive vs explanatory models.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;There are a couple other disconnected thoughts and reflections from rstudio::conf(2022) that are buzzing around in my head, and I might follow up some of them in a future post. Such as vetiver for MLOps, some spatial ideas, Shiny for Python, and more. But the ones above are the main takeaways for me. These kind of conferences always give me a boost in motivation and energy. I have several other blog entries planned out for the coming weeks. Watch this space ;-)&lt;/p&gt;
+&lt;p&gt;For now, my closing thought is that next year’s posit::conf(2023) is already planned for Orlando, FL, on May 22-25. And I’m absolutely certain that between now and then, the R community will create and share a lot of cool stuff.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;https://heads0rtai1s.github.io/home/theheadsortails/blog/public/pics/rstudioconf22_3.jpg&#34; style=&#34;width:100.0%&#34; alt=&#34;&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;&lt;em&gt;See you next year in Orlando!&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>A Kaggle Dataset of R Package History for rstudio::conf(2022)</title>
@@ -6806,7 +6858,7 @@ year(foo$date) &amp;lt;- 2017&lt;/code&gt;&lt;/pre&gt;
 
 
 &lt;p&gt;This week, the &lt;a href=&#34;https://www.kaggle.com/discussions/general/317093&#34;&gt;Kaggle Hidden Gems Competition&lt;/a&gt; is featured in a special crossover event with the fantastic &lt;a href=&#34;https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-04-26/readme.md&#34;&gt;TidyTuesday project&lt;/a&gt; to further strengthen the connections between the R &amp;amp; Kaggle communities. The TidyTuesday participants are invited to expand their beautifully crafted data visuals into narrative notebooks on the Kaggle platform, and receive feedback and prizes for their work. This post will briefly describe my goals and motivation for this collaboration, and then show the code for one of my own visuals where I learned how to include images in ggplot2 barplots.&lt;/p&gt;
-&lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;The &lt;a href=&#34;https://twitter.com/R4DScommunity?ref_src=twsrc%5Etfw&#34;&gt;@R4DScommunity&lt;/a&gt; welcomes you to week 17 of &lt;a href=&#34;https://twitter.com/hashtag/TidyTuesday?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#TidyTuesday&lt;/a&gt;!  We&amp;#39;re exploring Kaggle Hidden Gems courtesy of &lt;a href=&#34;https://twitter.com/heads0rtai1s?ref_src=twsrc%5Etfw&#34;&gt;@heads0rtai1s&lt;/a&gt; !!&lt;br&gt;&lt;br&gt;📂 &lt;a href=&#34;https://t.co/sElb4fcv3u&#34;&gt;https://t.co/sElb4fcv3u&lt;/a&gt;&lt;br&gt;🗞 &lt;a href=&#34;https://t.co/OVy4t58mvO&#34;&gt;https://t.co/OVy4t58mvO&lt;/a&gt;&lt;a href=&#34;https://twitter.com/hashtag/r4ds?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#r4ds&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/tidyverse?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#tidyverse&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/rstats?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#rstats&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/dataviz?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#dataviz&lt;/a&gt; &lt;a href=&#34;https://t.co/MP85A6im6h&#34;&gt;pic.twitter.com/MP85A6im6h&lt;/a&gt;&lt;/p&gt;&amp;mdash; Tom Mock (@thomas_mock) &lt;a href=&#34;https://twitter.com/thomas_mock/status/1518729259828797445?ref_src=twsrc%5Etfw&#34;&gt;April 25, 2022&lt;/a&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;The &lt;a href=&#34;https://twitter.com/R4DScommunity?ref_src=twsrc%5Etfw&#34;&gt;@R4DScommunity&lt;/a&gt; welcomes you to week 17 of &lt;a href=&#34;https://twitter.com/hashtag/TidyTuesday?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#TidyTuesday&lt;/a&gt;!  We&amp;#39;re exploring Kaggle Hidden Gems courtesy of &lt;a href=&#34;https://twitter.com/heads0rtai1s?ref_src=twsrc%5Etfw&#34;&gt;@heads0rtai1s&lt;/a&gt; !!&lt;br&gt;&lt;br&gt;📂 &lt;a href=&#34;https://t.co/sElb4fcv3u&#34;&gt;https://t.co/sElb4fcv3u&lt;/a&gt;&lt;br&gt;🗞 &lt;a href=&#34;https://t.co/OVy4t58mvO&#34;&gt;https://t.co/OVy4t58mvO&lt;/a&gt;&lt;a href=&#34;https://twitter.com/hashtag/r4ds?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#r4ds&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/tidyverse?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#tidyverse&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/rstats?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#rstats&lt;/a&gt; &lt;a href=&#34;https://twitter.com/hashtag/dataviz?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#dataviz&lt;/a&gt; &lt;a href=&#34;https://t.co/MP85A6im6h&#34;&gt;pic.twitter.com/MP85A6im6h&lt;/a&gt;&lt;/p&gt;&amp;mdash; Tom Mock ❤️ Quarto (@thomas_mock) &lt;a href=&#34;https://twitter.com/thomas_mock/status/1518729259828797445?ref_src=twsrc%5Etfw&#34;&gt;April 25, 2022&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
 &lt;/p&gt;
 &lt;div id=&#34;a-tidytuesday-crossover-episode&#34; class=&#34;section level3&#34;&gt;

@@ -2,16 +2,40 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://heads0rtai1s.github.io/2022/07/22/kaggle-dataset-cran-packages/</loc>
-    <lastmod>2022-07-22T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://heads0rtai1s.github.io/categories/</loc>
-    <lastmod>2022-07-22T00:00:00+00:00</lastmod>
+    <lastmod>2022-08-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://heads0rtai1s.github.io/tags/community/</loc>
-    <lastmod>2022-07-22T00:00:00+00:00</lastmod>
+    <lastmod>2022-08-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://heads0rtai1s.github.io/categories/community/</loc>
+    <lastmod>2022-08-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/</loc>
+    <lastmod>2022-08-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/post/</loc>
+    <lastmod>2022-08-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/python/</loc>
+    <lastmod>2022-08-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/python/</loc>
+    <lastmod>2022-08-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/r/</loc>
+    <lastmod>2022-08-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/categories/r/</loc>
+    <lastmod>2022-08-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2022/08/02/rstudio-conf-2022/</loc>
+    <lastmod>2022-08-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/tags/</loc>
+    <lastmod>2022-08-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://heads0rtai1s.github.io/2022/07/22/kaggle-dataset-cran-packages/</loc>
     <lastmod>2022-07-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://heads0rtai1s.github.io/tags/dataset/</loc>
@@ -20,25 +44,10 @@
     <loc>https://heads0rtai1s.github.io/categories/dataset/</loc>
     <lastmod>2022-07-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://heads0rtai1s.github.io/</loc>
-    <lastmod>2022-07-22T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://heads0rtai1s.github.io/tags/kaggle/</loc>
     <lastmod>2022-07-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://heads0rtai1s.github.io/categories/kaggle/</loc>
-    <lastmod>2022-07-22T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://heads0rtai1s.github.io/post/</loc>
-    <lastmod>2022-07-22T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://heads0rtai1s.github.io/tags/r/</loc>
-    <lastmod>2022-07-22T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://heads0rtai1s.github.io/categories/r/</loc>
-    <lastmod>2022-07-22T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://heads0rtai1s.github.io/tags/</loc>
     <lastmod>2022-07-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://heads0rtai1s.github.io/2022/06/30/kaggle-leaderboard-gtextras/</loc>
@@ -69,12 +78,6 @@
     <lastmod>2022-04-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://heads0rtai1s.github.io/2022/04/19/gems-comp-design/</loc>
-    <lastmod>2022-04-19T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://heads0rtai1s.github.io/tags/python/</loc>
-    <lastmod>2022-04-19T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://heads0rtai1s.github.io/categories/python/</loc>
     <lastmod>2022-04-19T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://heads0rtai1s.github.io/tags/programming/</loc>

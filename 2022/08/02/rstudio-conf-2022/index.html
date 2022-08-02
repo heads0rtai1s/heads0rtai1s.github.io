@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.92.0" />
+
+
+<title>rstudio::conf(2022) restrospective - head spin - the Heads or Tails blog</title>
+<meta property="og:title" content="rstudio::conf(2022) restrospective - head spin - the Heads or Tails blog">
+
+
+  <link href='https://heads0rtai1s.github.io/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/avatar.png"
+         width="50"
+         height="50"
+         alt="Heads or Tails">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="/blogroll/">Blogroll</a></li>
+    
+    <li><a href="https://twitter.com/heads0rtai1s">Twitter</a></li>
+    
+    <li><a href="https://www.kaggle.com/headsortails">Kaggle</a></li>
+    
+    <li><a href="https://www.linkedin.com/in/martin-henze">LinkedIn</a></li>
+    
+    <li><a href="https://github.com/heads0rtai1s">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">6 min read</span>
+    
+
+    <h1 class="article-title">rstudio::conf(2022) restrospective</h1>
+
+    
+    <span class="article-date">2022-08-02</span>
+    
+
+    <div class="article-content">
+      
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>It is the day after <a href="https://www.rstudio.com/conference/">rstudio::conf(2022)</a>, and I’m sitting in the lobby of the ridiculously oversized conference hotel, trying to collect my thoughts and impressions. It was a densely packed two days of presentation and events (plus the earlier two days of workshops). Lots of new inspirations, ideas, impressions; all of which takes a little time to digest.</p>
+<p>And of course there was the community experience, after two years of pandemic. The previous <a href="https://heads0rtai1s.github.io/2020/02/13/rstudio-conf/">rstudio::conf(2020) in San Francisco</a> was my last in-person conference before Covid hit. And even though Covid is far from over, I have great trust in the R community and made this my first in-person conference in more than 2 years. I believe that the community is R’s strongest asset. And it was a great joy to see many familiar faces again, and meet new friends. In an ever-changing data science and machine learning landscape, it is the community that will ensure the continued success of R as an integral part of the data scientists’ toolbox.</p>
+<p>Much will be written about the big announcements of the week, so I’ll keep my reflections on those brief, and will add a few of my own lessons and impressions on other aspects.</p>
+<div class="figure">
+<img src="/home/theheadsortails/blog/public/pics/rstudioconf22_1.jpg" style="width:100.0%" alt="" />
+<p class="caption"><em>Hadley Wickham and J.J. Alaire are announcing the rebranding of Rstudio to Posit</em></p>
+</div>
+<div id="rstudio-rebrands-as-posit-to-expand-to-other-languages" class="section level3">
+<h3>RStudio rebrands as Posit to expand to other languages</h3>
+<p>I strongly believe that <a href="https://www.rstudio.com/blog/rstudio-is-becoming-posit/">this is the right move</a>. Programming languages are tools, and it is the best strategy to choose the right tool for each particular problem. Rather than being constrained by the limits of one specific language. R certainly has many limits, and so has every single language. But R also has impressive strengths, where its performance can lead to unbelievable results. Combining the strengths of R with the strengths of other languages is already a winning strategy. And it will be even more so in the future.</p>
+<p>Specifically, R and Python have been developing closer ties since the days of <code>rpy</code> (now there’s <a href="https://rpy2.github.io/">rpy2</a>), and likely even earlier. The <a href="https://rstudio.github.io/reticulate/">reticulate package</a> is the latest and greatest of these initiatives from the R side. And Jupyter notebooks have been supporting R robustly and successfully since the project emerged from ipython. (Ju - py - teR = Julia - Python - R.) Now we have <a href="https://quarto.org/">Quarto</a>, as an extension of Rmarkdown to several other languages including Python.</p>
+<p>Multilingual efforts have always been a part of the development philosophy. Both R and Python have well-established and reliable interfaces to C that speed up code. And a newer startup like <a href="https://huggingface.co/">huggingface</a>, which has exploded onto the scene, uses Rust to boost the performance of their Python <a href="https://huggingface.co/docs/transformers/index">transformers library</a> under the hood.</p>
+<p>My recommendation is to learn tools, rather than languages.</p>
+<p>As for the new name, I confess that I don’t feel strongly about “Posit” in any particular way. I believe it will grow on us, though, and will quickly develop connotations with its amazing community.</p>
+</div>
+<div id="everybody-talks-about-quarto" class="section level3">
+<h3>Everybody talks about Quarto</h3>
+<p>The second main theme at this conference has been the significant focus on Quarto, the new and (even more) multilingual successor of the Rmarkdown framework. I think the seeds for this development had been sown several years ago, and <code>reticulate</code> had already made it possible to combine R and Python code chunks in the same document. But outside the R community, this development hadn’t seen much adoption. Jupyter notebooks remain the most common way for Python folks to design notebook-style content.</p>
+<p>But while <code>reticulate</code> was one specialised package among many (and it might have been more difficult to recognise its full potential), Quarto is well positioned to change the game. One early success is the <a href="https://www.fast.ai/2022/07/28/nbdev-v2/">collaboration of the nbdev and Quarto projects</a> to create <a href="https://nbdev.fast.ai/">nbdev v2</a>, the next version of the popular Python software development system built around notebooks. Here is <a href="https://youtu.be/xxVVSxcjNQs">a conversation between the Posit CEO J.J. Allaire and FastAI’s Jeremy Howard</a> on the topic.</p>
+<p>The <a href="https://quarto.org/docs/gallery/">Quarto gallery</a> already contains a bunch of high-quality examples for books, websites, blogs, and more. In fact, I’ve been thinking about updating the style &amp; presentation for this blog. Might be a good excuse to move it over to Quarto at the same time.</p>
+<div class="figure">
+<img src="/home/theheadsortails/blog/public/pics/rstudioconf22_2.jpg" style="width:100.0%" alt="" />
+<p class="caption"><em>The famous wall of hex stickers at rstudio::conf</em></p>
+</div>
+</div>
+<div id="workshop-musings-and-network-analysis" class="section level3">
+<h3>Workshop musings and network analysis</h3>
+<p>Just like the workshop that I took back at the 2020 rstudio::conf, this year’s one was well-designed and densely packed with useful information. And I’ve only ever heard good things about rstudio::conf workshops from various participants. The topics that are being offered usually cover a wide range of aspects and experience levels. This year, I decided to attend the <a href="https://github.com/rstudio-conf-2022/people-analytics-rstats">R for People Analytics workshop</a>.</p>
+<p>My primary interest was to learn about network analysis, which was covered in detail on the second day of the 2-day workshop. The first day focused on a general introduction to people analytics methodology, along with different statistical and regression approaches. I had worked with these methods before, but it had been a while and it was nice to get a systematic refresher and some new perspectives. And I hadn’t really done things like ordinal regression or used the MASS package. So the entire workshop was useful, and I definitely got what I wanted out of the network analysis sections. Expect a related blog post pretty soon.</p>
+<p>One interesting aspect of this workshop was that it was taught from a statistical perspective; versus the machine learning mindset that I’m more used to now through Kaggle. These statistical tools were what I started out with when learning more about R, and it was a helpful experience to encounter them again through the lens of a machine learning practitioner.</p>
+<p>For instance, concepts like distribution tests (e.g. t-test), p-values, or information criteria rarely play a role in machine learning applications. Feature importances are often extracted, but models are usually evaluated on their validation performance on a particular metric. Maybe there could be a bit more emphasis on distribution tests during data preprocessing. But generally those differences in philosophy seem to reflect the different goals of building predictive vs explanatory models.</p>
+<hr />
+<p>There are a couple other disconnected thoughts and reflections from rstudio::conf(2022) that are buzzing around in my head, and I might follow up some of them in a future post. Such as vetiver for MLOps, some spatial ideas, Shiny for Python, and more. But the ones above are the main takeaways for me. These kind of conferences always give me a boost in motivation and energy. I have several other blog entries planned out for the coming weeks. Watch this space ;-)</p>
+<p>For now, my closing thought is that next year’s posit::conf(2023) is already planned for Orlando, FL, on May 22-25. And I’m absolutely certain that between now and then, the R community will create and share a lot of cool stuff.</p>
+<div class="figure">
+<img src="/home/theheadsortails/blog/public/pics/rstudioconf22_3.jpg" style="width:100.0%" alt="" />
+<p class="caption"><em>See you next year in Orlando!</em></p>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//headsortails.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+    
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137904077-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  </body>
+</html>
+
