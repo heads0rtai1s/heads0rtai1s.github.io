@@ -24,7 +24,7 @@
 &lt;p&gt;And of course there was the community experience, after two years of pandemic. The previous &lt;a href=&#34;https://heads0rtai1s.github.io/2020/02/13/rstudio-conf/&#34;&gt;rstudio::conf(2020) in San Francisco&lt;/a&gt; was my last in-person conference before Covid hit. And even though Covid is far from over, I have great trust in the R community and made this my first in-person conference in more than 2 years. I believe that the community is R’s strongest asset. And it was a great joy to see many familiar faces again, and meet new friends. In an ever-changing data science and machine learning landscape, it is the community that will ensure the continued success of R as an integral part of the data scientists’ toolbox.&lt;/p&gt;
 &lt;p&gt;Much will be written about the big announcements of the week, so I’ll keep my reflections on those brief, and will add a few of my own lessons and impressions on other aspects.&lt;/p&gt;
 &lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;https://heads0rtai1s.github.io/home/theheadsortails/blog/public/pics/rstudioconf22_1.jpg&#34; style=&#34;width:100.0%&#34; alt=&#34;&#34; /&gt;
+&lt;img src=&#34;https://heads0rtai1s.github.io/pics/rstudioconf22_1.jpg&#34; style=&#34;width:100.0%&#34; alt=&#34;&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;&lt;em&gt;Hadley Wickham and J.J. Alaire are announcing the rebranding of Rstudio to Posit&lt;/em&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;rstudio-rebrands-as-posit-to-expand-to-other-languages&#34; class=&#34;section level3&#34;&gt;
@@ -41,7 +41,7 @@
 &lt;p&gt;But while &lt;code&gt;reticulate&lt;/code&gt; was one specialised package among many (and it might have been more difficult to recognise its full potential), Quarto is well positioned to change the game. One early success is the &lt;a href=&#34;https://www.fast.ai/2022/07/28/nbdev-v2/&#34;&gt;collaboration of the nbdev and Quarto projects&lt;/a&gt; to create &lt;a href=&#34;https://nbdev.fast.ai/&#34;&gt;nbdev v2&lt;/a&gt;, the next version of the popular Python software development system built around notebooks. Here is &lt;a href=&#34;https://youtu.be/xxVVSxcjNQs&#34;&gt;a conversation between the Posit CEO J.J. Allaire and FastAI’s Jeremy Howard&lt;/a&gt; on the topic.&lt;/p&gt;
 &lt;p&gt;The &lt;a href=&#34;https://quarto.org/docs/gallery/&#34;&gt;Quarto gallery&lt;/a&gt; already contains a bunch of high-quality examples for books, websites, blogs, and more. In fact, I’ve been thinking about updating the style &amp;amp; presentation for this blog. Might be a good excuse to move it over to Quarto at the same time.&lt;/p&gt;
 &lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;https://heads0rtai1s.github.io/home/theheadsortails/blog/public/pics/rstudioconf22_2.jpg&#34; style=&#34;width:100.0%&#34; alt=&#34;&#34; /&gt;
+&lt;img src=&#34;https://heads0rtai1s.github.io/pics/rstudioconf22_2.jpg&#34; style=&#34;width:100.0%&#34; alt=&#34;&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;&lt;em&gt;The famous wall of hex stickers at rstudio::conf&lt;/em&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -55,7 +55,7 @@
 &lt;p&gt;There are a couple other disconnected thoughts and reflections from rstudio::conf(2022) that are buzzing around in my head, and I might follow up some of them in a future post. Such as vetiver for MLOps, some spatial ideas, Shiny for Python, and more. But the ones above are the main takeaways for me. These kind of conferences always give me a boost in motivation and energy. I have several other blog entries planned out for the coming weeks. Watch this space ;-)&lt;/p&gt;
 &lt;p&gt;For now, my closing thought is that next year’s posit::conf(2023) is already planned for Orlando, FL, on May 22-25. And I’m absolutely certain that between now and then, the R community will create and share a lot of cool stuff.&lt;/p&gt;
 &lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;https://heads0rtai1s.github.io/home/theheadsortails/blog/public/pics/rstudioconf22_3.jpg&#34; style=&#34;width:100.0%&#34; alt=&#34;&#34; /&gt;
+&lt;img src=&#34;https://heads0rtai1s.github.io/pics/rstudioconf22_3.jpg&#34; style=&#34;width:100.0%&#34; alt=&#34;&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;&lt;em&gt;See you next year in Orlando!&lt;/em&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
