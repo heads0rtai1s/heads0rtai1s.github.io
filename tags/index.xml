@@ -6,7 +6,43 @@
     <description>Recent content in Tags on head spin - the Heads or Tails blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 02 Aug 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 09 Aug 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://heads0rtai1s.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>kaggle</title>
+      <link>https://heads0rtai1s.github.io/tags/kaggle/</link>
+      <pubDate>Tue, 09 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/kaggle/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>networks</title>
+      <link>https://heads0rtai1s.github.io/tags/networks/</link>
+      <pubDate>Tue, 09 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/networks/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>programming</title>
+      <link>https://heads0rtai1s.github.io/tags/programming/</link>
+      <pubDate>Tue, 09 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/programming/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>R</title>
+      <link>https://heads0rtai1s.github.io/tags/r/</link>
+      <pubDate>Tue, 09 Aug 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://heads0rtai1s.github.io/tags/r/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>community</title>
       <link>https://heads0rtai1s.github.io/tags/community/</link>
@@ -26,29 +62,11 @@
     </item>
     
     <item>
-      <title>R</title>
-      <link>https://heads0rtai1s.github.io/tags/r/</link>
-      <pubDate>Tue, 02 Aug 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://heads0rtai1s.github.io/tags/r/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>dataset</title>
       <link>https://heads0rtai1s.github.io/tags/dataset/</link>
       <pubDate>Fri, 22 Jul 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/tags/dataset/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kaggle</title>
-      <link>https://heads0rtai1s.github.io/tags/kaggle/</link>
-      <pubDate>Fri, 22 Jul 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://heads0rtai1s.github.io/tags/kaggle/</guid>
       <description></description>
     </item>
     
@@ -76,15 +94,6 @@
       <pubDate>Thu, 28 Apr 2022 00:00:00 +0000</pubDate>
       
       <guid>https://heads0rtai1s.github.io/tags/tidytuesday/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>programming</title>
-      <link>https://heads0rtai1s.github.io/tags/programming/</link>
-      <pubDate>Thu, 24 Feb 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://heads0rtai1s.github.io/tags/programming/</guid>
       <description></description>
     </item>
     

@@ -1,0 +1,685 @@
+Id,UserName,DisplayName,RegisterDate,PerformanceTier
+1,kaggleteam,Kaggle Team,03/24/2011,5
+368,antgoldbloom,Anthony Goldbloom,01/20/2010,2
+808,alexxanderlarko,Alexander  Larko,05/14/2010,4
+993,benhamner,Ben Hamner,05/31/2010,3
+1455,mjahrer,Michael Jahrer,06/25/2010,4
+1902,solorzano,José H. Solórzano,07/21/2010,4
+1988,jasonbrownlee,Jason Brownlee,07/31/2010,2
+2036,konradb,Konrad Banachewicz,08/03/2010,4
+2140,dslate,David J. Slate,08/05/2010,4
+2242,domcastro,Bluefool,08/08/2010,4
+3090,dyakonov,Alexander D'yakonov,09/28/2010,4
+3256,jhoward,Jeremy Howard,10/13/2010,4
+3258,wcukierski,Will Cukierski,10/13/2010,5
+3346,ejlok1,Eu Jin Lok,10/21/2010,4
+4398,ccccat,Sergey Yurgenson,12/02/2010,4
+5309,abhishek,Abhishek Thakur,01/12/2011,4
+5642,blindape,José A. Guerrero,01/27/2011,4
+6234,martinpiotte,Martin Piotte,02/12/2011,0
+6388,confirm,Kohei,02/16/2011,4
+6696,zachmayer,Zach,03/02/2011,4
+7756,owenzhang1,Owen,04/04/2011,4
+8507,antorsae,Andres Torrubia,04/05/2011,3
+9028,dansbecker,DanB,04/06/2011,4
+9766,breakfastpirate,BreakfastPirate,04/14/2011,4
+9974,gertjac,Gert,04/19/2011,4
+10171,dynamic24,dynamic24,04/23/2011,4
+14756,nigelcarpenter,Nigel Carpenter,08/17/2011,3
+16295,pjreddie,pjreddie,09/12/2011,2
+17379,xavierconort,Xavier Conort,09/23/2011,4
+18102,gaborfodor,beluga,10/05/2011,4
+18463,mathurinache,Mathurin Aché,10/11/2011,3
+19099,alexryzhkov,Alexander Ryzhkov,10/22/2011,4
+19298,lucamassaron,Luca Massaron,10/26/2011,4
+19390,lopuhin,Konstantin Lopuhin,10/27/2011,4
+19605,jeongyoonlee,Jeong-Yoon Lee,11/01/2011,3
+23583,claytonmiller,Clayton Miller,11/17/2011,2
+24266,leustagos,Leustagos,11/22/2011,4
+26782,paweljankiewicz,Paweł Jankiewicz,12/13/2011,4
+29346,efimov,Dmitry Efimov,01/12/2012,4
+29756,qwang88,Qingchen,01/17/2012,4
+32300,tqchen,Tianqi Chen,02/22/2012,3
+35069,takiba,iwiwi,03/12/2012,4
+35609,gmobaz,gmobaz,03/17/2012,3
+37166,philippsinger,Psi,03/29/2012,4
+37594,wendykan,Wendy Kan,04/01/2012,3
+41959,thakurrajanand,DataGeek,05/03/2012,3
+42188,joseffeigl,Josef Feigl,05/05/2012,4
+42245,goldenlock,gezi,05/06/2012,3
+47226,anttip,anttip,06/19/2012,3
+48625,mlandry,mlandry,07/01/2012,4
+54836,titericz,Giba,08/23/2012,4
+59561,inversion,inversion,09/21/2012,5
+64274,dmitrylarko,Dmitry Larko,10/20/2012,4
+64626,mikeskim,Mike Kim,10/22/2012,4
+67483,kmader,K Scott Mader,11/04/2012,4
+68889,clustifier,clustifier,11/11/2012,4
+69060,ckomaki,Komaki,11/13/2012,4
+71388,sudalairajkumar,SRK,11/28/2012,4
+71783,sergeifironov,Sergei Fironov,11/30/2012,4
+73703,psilogram,Silogram,12/09/2012,4
+75976,cpmpml,CPMP,12/16/2012,4
+78344,dataraj,Raju Kumar Mishra,12/31/2012,4
+83267,radek1,Radek Osmulski,02/02/2013,3
+83934,iangoodfellow,Ian Goodfellow,02/06/2013,2
+85156,dott1718,dott,02/14/2013,4
+87114,santiagomota,Santiago Mota,02/26/2013,3
+89435,kailex,kxx,03/11/2013,4
+90001,nthanhtam,Tam T. Nguyen,03/15/2013,4
+91264,davidthaler,David Thaler,03/23/2013,4
+96423,mikhailtrofimov,Mikhail Trofimov,04/19/2013,4
+99029,davutpolat,Davut Polat,05/02/2013,3
+100236,jiweiliu,Jiwei Liu,05/09/2013,4
+101136,ceshine,Ceshine Lee,05/14/2013,3
+102203,chenglongchen,ChenglongChen,05/21/2013,4
+103225,ambarish,Bukun,05/27/2013,3
+106249,mariofilho,Mario Filho,06/08/2013,4
+108364,mlwhiz,Rahul Agarwal,06/12/2013,2
+109123,danofer,Dan Ofer,06/14/2013,2
+111640,kazanova,Μαριος Μιχαηλιδης KazAnova,06/24/2013,4
+112010,ben519,Ben Gorman,06/26/2013,3
+113389,rohanrao,Vopani,07/09/2013,4
+113431,belindatrotta,Belinda Trotta,07/09/2013,3
+113660,hengck23,‎‎‎‎‎‎‎‎,07/11/2013,4
+114032,speculation,idle_speculation,07/13/2013,4
+114978,triskelion,Triskelion,07/20/2013,3
+115173,philculliton,Phil Culliton,07/22/2013,5
+123235,fchollet,fchollet,09/01/2013,3
+127599,loveall,Gokagglers,09/23/2013,2
+128750,selfishgene,David Beniaguev,09/27/2013,3
+135296,mchahhou,Chahhou Mohamed,10/19/2013,4
+145599,btgraham,Benjamin Graham,12/01/2013,3
+149229,stasg7,Stanislav Semenov,12/13/2013,4
+150338,yifanxie,Yifan Xie,12/19/2013,3
+150865,brandenkmurray,Branden Murray,12/21/2013,4
+158147,mulicmu,Mu Li,01/19/2014,1
+159959,dulyanov,Dmitry Ulyanov,01/27/2014,3
+160106,nagadomi,nagadomi,01/27/2014,4
+161283,ryanzhang,Ren,02/01/2014,2
+163663,sushize,Shize Su,02/06/2014,4
+168767,fakeplastictrees,fakeplastictrees,02/24/2014,4
+169364,rsakata,Jack (Japan),02/26/2014,4
+170170,pengyan,Eureka,02/28/2014,4
+172060,toshik,toshi_k,03/07/2014,4
+172795,jeffheaton,Jeff Heaton,03/10/2014,2
+172860,yassinealouini,Yassine Alouini,03/10/2014,3
+175415,pmarcelino,"Pedro Marcelino, PhD",03/15/2014,1
+178864,kashnitsky,Yury Kashnitsky,03/27/2014,4
+183041,hamelg,Greg Hamel,04/08/2014,2
+183287,dwin183287,Sharlto Cope,04/09/2014,4
+189197,xiaozhouwang,Little Boat,04/20/2014,4
+194067,peterhurford,Peter Hurford,05/08/2014,3
+200451,aguschin,Alexander Guschin,05/24/2014,4
+201774,markpeng,Mark Peng,05/29/2014,3
+204232,weimin,Weimin Wang,06/04/2014,4
+207256,opanichev,Oleg Panichev,06/10/2014,3
+210078,mmueller,Faron,06/23/2014,4
+213493,darraghdog,Darragh,07/03/2014,4
+213812,mihaskalic,Miha Skalic,07/05/2014,3
+214870,crained,Charlie Craine,07/08/2014,4
+226555,maxhalford,Max Halford,08/18/2014,3
+232403,bguberfain,Bruno G. do Amaral,09/02/2014,3
+241438,scirpus,Scirpus,09/29/2014,4
+254602,ashhafez,ash hafez,11/04/2014,4
+254638,vicensgaitan,Vicens Gaitan,11/04/2014,4
+259561,annavictoria,Anna Montoya,11/17/2014,2
+260287,tezdhar,Mohsin hasan,11/19/2014,3
+263583,carloshuertas,NxGTR,11/25/2014,4
+269623,utility,utility,12/09/2014,4
+275512,chaiml,Cardal,12/25/2014,3
+277395,poonaml,Poonam Ligade,01/02/2015,3
+278167,pheadrus,Phaedrus,01/05/2015,3
+278531,sanarasheed,Sana Rasheed,01/06/2015,1
+281652,vaillant,Ian Pan,01/14/2015,4
+282250,tereka,tereka,01/16/2015,4
+286455,iglovikov,Vladimir Iglovikov,01/28/2015,4
+290833,gzuidhof,Guido Zuidhof,02/06/2015,3
+291298,rdizzl3,RDizzl3,02/08/2015,4
+299743,kelexu,Kele Xu,02/23/2015,4
+299834,hiro5299834,BIZEN,02/24/2015,3
+300713,bishwarup,Bishwarup B,02/25/2015,4
+304662,ybabakhin,Yauhen Babakhin,03/04/2015,4
+304806,mylesoneill,Myles O'Neill,03/05/2015,5
+317344,onodera,ONODERA,03/24/2015,4
+324229,stassl,Stas Sl,04/03/2015,3
+331718,mmotoki,Matt Motoki,04/11/2015,4
+338701,nimashahbazi,Nima Shahbazi,04/20/2015,4
+347463,jtrotman,James Trotman,05/05/2015,3
+360751,jpmiller,JohnM,05/31/2015,4
+367178,tentotheminus9,Rob Harrand,06/12/2015,2
+369212,godaibo,DavidGbodiOdaibo,06/16/2015,4
+371860,drgilermo,Omri Goldstein,06/22/2015,2
+372183,nulldata,amrrs,06/23/2015,3
+373959,usharengaraju,Tensor Girl,06/27/2015,4
+379860,captcalculator,Troy Walters,07/08/2015,3
+381412,tascj0,tascj,07/10/2015,4
+391404,parulpandey,Parul Pandey,07/26/2015,4
+393246,sasrdw,Russ Wolfinger,07/30/2015,4
+394451,btbpanda,Btbpanda,08/01/2015,4
+400262,apapiu,Alexandru Papiu,08/14/2015,3
+405318,raddar,raddar,08/24/2015,4
+406384,qqgeogor,qianqian,08/26/2015,4
+407384,drn01z3,n01z3,08/27/2015,4
+409174,davletag,Azat Davletshin,08/31/2015,4
+409812,sattree,Sandeep Attree,09/01/2015,2
+410443,rajanand,Rajanand Ilangovan,09/01/2015,3
+413252,amiras,Miras Amir,09/05/2015,4
+417337,tunguz,Bojan Tunguz,09/11/2015,4
+421386,bobutis,bobutis,09/17/2015,4
+421965,anjum48,datasaurus,09/18/2015,3
+436401,tkm2261,tkm2261,10/06/2015,4
+443651,group16,Gilles Vandewiele,10/15/2015,3
+448347,haqishen,Qishen Ha,10/22/2015,4
+449071,nickycan,🐳鲲(China),10/23/2015,3
+451025,hmendonca,Henrique Mendonça,10/26/2015,3
+452924,omarelgabry,OMAR ELGABRY,10/27/2015,2
+458815,allunia,Laura Fink,11/04/2015,4
+459082,brandao,"Humberto Brandão, Ph.D.",11/04/2015,3
+459771,poteman,poteman,11/05/2015,3
+461723,zfturbo,ZFTurbo,11/08/2015,4
+462889,albedan,Alberto Danese,11/09/2015,4
+471945,aerdem4,Ahmet Erdem,11/22/2015,4
+473234,ttahara,Tawara,11/24/2015,3
+473824,colinmorris,ColinMorris,11/25/2015,3
+476352,seanjv,sjv,11/28/2015,4
+478989,wowfattie,Guanshuo Xu,12/02/2015,4
+479538,maxwell110,Maxwell,12/02/2015,3
+484516,crawford,Chris Crawford,12/09/2015,4
+485000,jagangupta,Jagan,12/10/2015,2
+486077,whitebird,bird,12/12/2015,4
+490001,jonathanbouchet,Jonathan Bouchet,12/18/2015,3
+494641,narsil,narsil,12/28/2015,4
+495305,mrisdal,Meg Risdal,12/29/2015,5
+495818,kylelee,Kyle Lee,12/30/2015,4
+496907,ogrellier,olivier,01/02/2016,4
+501283,liaofz,Fangzhou Liao,01/10/2016,3
+502737,sggpls,Sergey Bryansky,01/12/2016,3
+505747,anokas,anokas,01/16/2016,4
+509829,datahobbit,MichaelP,01/21/2016,3
+512750,ddanevskyi,Dmytro Danevskyi,01/25/2016,4
+518134,corochann,corochann,02/01/2016,4
+518185,victorsd,Victor Durnov,02/01/2016,4
+520839,johnpateha,Evgeny Patekha,02/04/2016,4
+522210,shujian,Shujian Liu,02/05/2016,3
+522645,laurae2,Laurae,02/06/2016,3
+530572,lftuwujie,Jie Wu,02/16/2016,3
+532347,romul0212,Ruslan Baikulov,02/18/2016,4
+534152,selimsef,Selim Seferbekov,02/20/2016,4
+535639,paulorzp,Paulo Pinto,02/22/2016,4
+536790,sneddy,Aimoldin Anuar [dsmlkz],02/23/2016,3
+536977,aakashnain,"NAIN",02/23/2016,3
+537017,pavelost,Pavel Ostyakov,02/23/2016,4
+541964,cczaixian,KALE,02/28/2016,3
+548996,its7171,tito,03/06/2016,4
+549055,tilii7,Tilii,03/06/2016,4
+554211,fengari,Fengari,03/11/2016,4
+565506,pureheart,piupiu,03/23/2016,4
+568948,aquatic,Joe Eddy,03/27/2016,3
+570506,nejumi,YuyaYamamoto,03/29/2016,4
+582611,tvdwiele,Tom Van de Wiele,04/11/2016,4
+588067,shixw125,weiwei,04/16/2016,4
+590240,code1110,katsu1110,04/18/2016,3
+590653,zusmani,Zeeshan-ul-hassan Usmani,04/19/2016,4
+596499,vecxoz,vecxoz,04/25/2016,4
+603584,juliaelliott,Julia Elliott,05/03/2016,5
+612360,meminozturk,Emin Ozturk,05/13/2016,3
+612429,mksaad,Motaz Saad,05/13/2016,2
+617508,tarobxl,tarobxl,05/19/2016,4
+622458,gvyshnya,Georgii Vyshnia,05/23/2016,3
+622729,finlay,MaXXX,05/24/2016,2
+623370,takoihiraokazu,Takoi,05/24/2016,4
+635128,jeffd23,Jeff Delaney,06/07/2016,2
+644036,robikscube,Rob Mulla,06/18/2016,4
+662963,devisangeetha,DSangeetha,07/15/2016,2
+663832,icecuber,icecuber,07/16/2016,2
+663904,hiteshp,Hitesh palamada,07/16/2016,2
+666918,alijs1,alijs,07/20/2016,4
+674553,tanlikesmath,ilovescience,07/29/2016,3
+682501,yiheng,Yiheng Wang,08/09/2016,3
+687211,panfeiyang,Feiyang Pan,08/15/2016,3
+687570,fizzbuzz,Zafar,08/15/2016,2
+689495,masumrumi,Masum Rumi,08/18/2016,2
+689824,venheads,ValeriyBabushkin,08/18/2016,4
+690886,kingychiu,nlgn,08/19/2016,3
+698363,mpware,MPWARE,08/28/2016,4
+701191,keetar,keetar,08/31/2016,4
+708204,jiashenliu,Jiashen Liu,09/07/2016,2
+708283,bestfitting,bestfitting,09/07/2016,4
+712087,seesee,See--,09/11/2016,3
+715257,senkin13,senkin13,09/14/2016,4
+717970,a763337092,Lindada,09/16/2016,3
+719125,drknope,Dr. Knope,09/18/2016,3
+727004,artgor,Andrew Lukyanenko,09/24/2016,4
+727797,arthurtok,Anisotropic,09/25/2016,4
+728954,sentdex,Sentdex,09/26/2016,1
+732424,isaienkov,Kostiantyn Isaienkov,09/28/2016,4
+740429,ash316,Ashwini Swain,10/05/2016,3
+743064,dmytropoplavskiy,Dmytro Poplavskiy,10/07/2016,4
+744730,pranav84,Pranav Pandya,10/08/2016,3
+748899,plantsgo,plantsgo,10/12/2016,4
+750643,lystdo,icebai,10/13/2016,3
+753574,residentmario,Aleksey Bilogur,10/15/2016,4
+754781,bryanb,BryanB,10/16/2016,3
+761104,arashnic,Möbius,10/21/2016,3
+761152,rishabhiitbhu,Rishabh Agrahari,10/21/2016,2
+762513,emorej,Jerome Vallet,10/22/2016,3
+762938,mamasinkgs,mamas,10/23/2016,4
+769452,gpreda,Gabriel Preda,10/27/2016,4
+770427,nuhsikander,Nooh,10/28/2016,2
+772323,dempton,Konstantin Gavrilchik,10/30/2016,4
+793761,andrewmvd,Larxel,11/15/2016,4
+795565,sgalib,Shai,11/16/2016,4
+797864,abigaillarion,Abigail Larion,11/16/2016,4
+801148,khsamaha,Kheirallah Samaha,11/18/2016,3
+805012,yaroshevskiy,Oleg Yaroshevskiy,11/21/2016,4
+812001,steamedsheep,sheep,11/27/2016,4
+814006,startupsci,Manav Sehgal,11/28/2016,1
+826901,fabiendaniel,FabienDaniel,12/07/2016,3
+829300,rhgrossm,To Train Them Is My Cause,12/08/2016,3
+833948,tetyanayatsenko,Tetyana Yatsenko,12/13/2016,3
+835774,adityaecdrid,Aditya Soni,12/14/2016,3
+841938,takuok,takuoko,12/20/2016,4
+843848,pocketsuteado,pocket,12/21/2016,4
+844176,olgabelitskaya,Olga Belitskaya,12/21/2016,2
+846032,aashita,Aashita Kesarwani,12/23/2016,2
+847605,qiaoshiji,0ct0pus,12/26/2016,4
+848555,ishivinal,Ouassim Adnane,12/27/2016,3
+851857,shrutimechlearn,Shruti_Iyyer,12/30/2016,2
+852781,pudae81,pudae,01/01/2017,4
+854613,h4211819,30CrMnSiA,01/03/2017,4
+859104,ashishpatel26,NowYSM,01/07/2017,3
+864216,fatihozturk,Fatih Ozturk,01/11/2017,4
+864684,pestipeti,Peter,01/12/2017,4
+866788,nicapotato,nicapotato,01/13/2017,3
+873724,bminixhofer,Benjamin Minixhofer,01/18/2017,2
+876835,aharless,Andy Harless,01/21/2017,3
+888191,tivfrvqhs5,David Austin,01/29/2017,4
+915913,carlossouza,Carlos Souza,02/16/2017,2
+921947,taindow,Tom Aindow,02/20/2017,3
+927562,rounakbanik,Rounak Banik,02/23/2017,2
+933480,authman,عثمان,02/28/2017,4
+933653,outrunner,outrunner,02/28/2017,4
+934783,philippsp,Philipp Spachtholz,02/28/2017,2
+940556,pavel92,Pavel Iakubovskii (qubvel),03/03/2017,3
+941167,currypurin,currypurin,03/04/2017,4
+944350,vincentlugat,Vincent Lugat,03/06/2017,3
+949803,arunkumarramanan,Arunkumar Venkataramanan,03/08/2017,3
+951222,ilialar,Ilia Larchenko,03/08/2017,3
+953273,sudhirnl7,Sudhir Kumar,03/09/2017,2
+959829,aakashns,Aakash N S,03/11/2017,2
+974295,serigne,Serigne,03/18/2017,4
+976501,thousandvoices,thousandvoices,03/19/2017,4
+978409,willkoehrsen,Will Koehrsen,03/20/2017,3
+983147,baomengjiao,spongebob,03/23/2017,4
+991320,drhabib,DrHB,03/27/2017,4
+995397,maggiemd,Maggie,03/29/2017,5
+996327,mzr2017,zr,03/30/2017,4
+998023,timoboz,Timo Bozsolik,03/31/2017,3
+998934,osciiart,OsciiArt,03/31/2017,3
+999074,naivelamb,Xuan Cao,03/31/2017,4
+1013678,lovedm,安静,04/09/2017,3
+1014468,headsortails,Heads or Tails,04/09/2017,4
+1018689,codename007,Lathwal,04/11/2017,3
+1020983,pliptor,Oscar Takeshita,04/13/2017,2
+1025394,meli19,Mengfei Li,04/15/2017,3
+1025985,shentao,SeuTao,04/16/2017,4
+1029053,leecming,Chun Ming Lee,04/18/2017,4
+1033015,samratp,Samrat Pandiri,04/20/2017,3
+1034065,asuilin,Arthur Suilin,04/20/2017,2
+1034305,shahules,Shahules,04/20/2017,4
+1035002,ryches,ryches,04/21/2017,4
+1035112,mahluo,Young for you,04/21/2017,4
+1039460,mathormad,KeepLearning,04/24/2017,4
+1047408,kylinorange,Jun Xie,04/28/2017,3
+1049037,jkokatjuhha,Jekaterina Kokatjuhha,04/29/2017,1
+1053903,kostoglot,Konstantin Nikolaev,05/02/2017,3
+1056223,ekrembayar,Ekrem Bayar,05/03/2017,4
+1060411,hortonhearsafoo,William Horton,05/06/2017,2
+1064140,bayoadekanmbi,Bayo Adekanmbi,05/08/2017,1
+1069377,chenxin1991,Ethan,05/11/2017,3
+1075081,anshumoudgil,Solve for Fun,05/15/2017,3
+1095143,addisonhoward,Addison Howard,05/26/2017,5
+1097838,kabure,Leonardo Ferreira,05/29/2017,4
+1098915,daishu,daishu,05/29/2017,4
+1102334,jesperdramsch,Jesper Sören Dramsch,05/31/2017,2
+1107109,chauhuynh,Chau Huynh,06/03/2017,3
+1112870,randylaosat,randy lao,06/06/2017,1
+1120704,boliu0,Bo,06/11/2017,4
+1131996,xucheng,大顺,06/19/2017,3
+1132983,sohier,Sohier Dane,06/19/2017,5
+1134433,andy2709,NguyenThanhNhan,06/20/2017,4
+1134767,berserker408,Light,06/21/2017,4
+1142083,rjqian,Renjie Qian,06/26/2017,2
+1155353,youhanlee,YouHan Lee,07/05/2017,4
+1156831,xvivancos,Xavier,07/06/2017,4
+1157642,kanncaa1,DATAI,07/06/2017,4
+1157784,yassineghouzam,Yassine Ghouzam,07/06/2017,2
+1160082,shaz13,Mohammad Shahebaz,07/08/2017,4
+1160522,julian3833,dataista0 (Julián Peller),07/09/2017,4
+1162990,rtatman,Rachael Tatman,07/10/2017,4
+1174995,vikumsw,Vikum Sri Wijesinghe,07/18/2017,3
+1182060,dimitreoliveira,DimitreOliveira,07/23/2017,4
+1183151,lucabasa,Luca Basanisi,07/24/2017,3
+1183600,atanasova,Atanas Atanasov,07/24/2017,3
+1187537,yufengg,Yufeng Guo,07/26/2017,1
+1191573,lyakaap,lyakaap,07/29/2017,4
+1192776,bolkonsky,YuryBolkonsky,07/30/2017,4
+1195275,seriousran,Chanran Kim,08/01/2017,3
+1200650,vetrirah,Vetrivel-PS,08/04/2017,2
+1200915,bulentsiyah,Bulent Siyah,08/04/2017,3
+1209130,longyin2,LongYin/杰少,08/10/2017,2
+1210562,meaninglesslives,Siddhartha,08/11/2017,3
+1212661,iafoss,Iafoss,08/12/2017,4
+1220228,gomes555,Fellipe Gomes,08/17/2017,3
+1231596,ragnar123,Martin Kovacevic Buvinic,08/24/2017,4
+1236717,datasnaek,Mitchell J,08/28/2017,2
+1238844,returnofsputnik,CoreyLevinson,08/29/2017,4
+1245336,janiobachmann,Janio Martinez Bachmann,09/03/2017,4
+1255206,nadintamer,Nadin Tamer,09/08/2017,1
+1260510,kritidoneria,KritiDoneria,09/11/2017,3
+1264580,khyeh0719,khyeh,09/13/2017,4
+1270655,garybios,Gary,09/16/2017,4
+1270958,prashantkikani,Prashant Kikani,09/16/2017,3
+1277206,golubev,Vlad Golubev,09/19/2017,4
+1289116,wuyhbb,Yuanhao,09/25/2017,4
+1300362,taniaj,Tania J,09/29/2017,2
+1302389,imdevskp,Devakumar K. P.,09/30/2017,3
+1309337,aliceadativa,Alice Adativa,10/03/2017,2
+1313949,ihelon,Yaroslav Isaienkov,10/05/2017,4
+1314380,paultimothymooney,Paul Mooney,10/05/2017,5
+1314864,rhtsingh,torch,10/05/2017,4
+1315989,nitishabharathi,Nitisha,10/06/2017,2
+1318517,harunshimanto,Harun-Ur-Rashid,10/07/2017,3
+1327805,anshuls235,Anshul Sharma,10/11/2017,3
+1328185,thedrcat,Darek Kłeczek,10/11/2017,3
+1330987,alexanderliao,Liao,10/12/2017,4
+1350598,arbazkhan971,ask9,10/21/2017,3
+1351163,tarunpaparaju,Tarun Paparaju,10/22/2017,4
+1364892,ratthachat,Jung,10/27/2017,3
+1369356,jiuzhang,jiuzhang,10/29/2017,0
+1393170,nguyenbadung,DungNB,11/06/2017,4
+1397798,qiaojian,earhian,11/07/2017,4
+1403305,burhanykiyakoglu,Burhan Y. Kiyakoglu,11/09/2017,1
+1424766,christofhenkel,Dieter,11/17/2017,4
+1429925,funxexcel,Kunaal Naik,11/19/2017,3
+1430849,ldfreeman3,LD Freeman,11/19/2017,1
+1443335,erikbruin,Erik Bruin,11/24/2017,4
+1454111,coreacasa,Manuel Campos,11/28/2017,3
+1468913,marcuslin,Marcus Lin,12/04/2017,3
+1478649,yamsam,Isamu,12/07/2017,4
+1489975,hidehisaarai1213,Hidehisa Arai,12/12/2017,4
+1496622,ubamba98,Udbhav Bamba,12/14/2017,3
+1498852,kneroma,kkiller,12/15/2017,3
+1501029,fatmakursun,Fatma Kurşun,12/17/2017,2
+1504864,bloodaxe,Eugene Khvedchenya,12/19/2017,4
+1504891,serkanpeldek,Serkan Peldek,12/19/2017,3
+1507390,thebrownviking20,Siddharth Yadav,12/20/2017,3
+1510728,yashvi,Yashvi Patel,12/22/2017,3
+1516652,ruslankl,def me(x),12/26/2017,3
+1528571,bibek777,Bibek,01/03/2018,3
+1532198,nyanpn,nyanp,01/05/2018,4
+1537034,aleksandradeis,Aleksandra Deis,01/08/2018,3
+1547055,agoodman,Allen Goodman,01/12/2018,2
+1549225,andresionek,Andre Sionek,01/13/2018,2
+1552664,yuval6967,yuval reina,01/15/2018,4
+1562031,pavansanagapati,Pavan Sanagapati,01/18/2018,3
+1565399,tikutiku,Tom,01/19/2018,3
+1566519,jsaguiar,Aguiar,01/20/2018,3
+1571785,shivamb,Shivam Bansal,01/22/2018,4
+1577135,suicaokhoailang,Khoi Nguyen,01/24/2018,4
+1603890,chizhu2018,chizhu,02/02/2018,3
+1610294,heshamasem,Hesham Asem,02/05/2018,0
+1611072,omercolakoglu,Omer Colakoglu,02/05/2018,3
+1611087,ibtesama,Ibtesam Ahmed,02/05/2018,3
+1616098,mirichoi0218,Miri Choi,02/07/2018,2
+1620223,phalanx,phalanx,02/08/2018,3
+1622856,sishihara,u++,02/09/2018,3
+1636313,dschettler8845,Darien Schettler,02/14/2018,4
+1649622,ratan123,ratan rohith,02/19/2018,3
+1658108,limerobot,Limerobot,02/22/2018,4
+1663522,lavanyashukla01,Lavanya Shukla,02/23/2018,2
+1664460,goyalshalini93,Shalini Goyal,02/24/2018,1
+1667710,unofficialmerve,unofficialmerve,02/25/2018,2
+1673888,hamditarek,Tarek Hamdi,02/27/2018,3
+1684129,shivamcyborg,Shivam Gupta,03/02/2018,3
+1687851,chocozzz,SeaOtter,03/04/2018,3
+1690611,basu369victor,Victor Basu,03/05/2018,3
+1695531,yasufuminakama,Y.Nakama,03/06/2018,4
+1696976,nroman,Roman,03/06/2018,3
+1712516,kralmachine,KraLMachine,03/11/2018,2
+1723677,cdeotte,Chris Deotte,03/14/2018,4
+1727329,mbnb8317,Yeonjun In,03/16/2018,3
+1738095,khoongweihao,Wei Hao Khoong,03/20/2018,4
+1748051,marketneutral,marketneutral,03/22/2018,3
+1750726,hely333,Dandelion,03/23/2018,2
+1772071,jessicali9530,Jessica Li,03/29/2018,5
+1776773,zikazika,Noah Weber,03/31/2018,4
+1785459,adnanzaidi,Adnan Zaidi,04/03/2018,2
+1786637,rinnqd,Firas Baba,04/04/2018,3
+1788308,muhakabartay,Mukharbek Organokov,04/04/2018,3
+1790018,init27,Sanyam Bhutani,04/04/2018,4
+1796795,harangdev,YoonSoo,04/07/2018,4
+1798416,vbmokin,Vitalii Mokin,04/07/2018,4
+1829450,khahuras,Kha Vo,04/17/2018,3
+1840354,mjbahmani,MJ Bahmani,04/20/2018,2
+1853329,phunghieu,Hieu Phung,04/24/2018,3
+1891177,dster,DJ Sterling,05/07/2018,5
+1918280,roydatascience,Ashish Gupta,05/16/2018,3
+1920073,shonenkov,Alex Shonenkov,05/17/2018,4
+1920818,prashant111,Prashant Banerjee,05/17/2018,4
+1938879,backaggle,automata,05/24/2018,3
+1953180,zzy990106,zzy,05/30/2018,3
+1956324,carlolepelaars,Carlo Lepelaars,05/31/2018,3
+1962670,nageshsingh,Nagesh Singh Chauhan,06/03/2018,3
+1971276,krishnaik06,Krish Naik,06/06/2018,0
+1984321,ipythonx,M.Innat,06/11/2018,3
+1993754,yslee04,Youngsoo Lee,06/14/2018,3
+1999738,phamdinhkhanh,KhanhPhamDinh,06/17/2018,1
+2003505,ryanholbrook,Ryan Holbrook,06/19/2018,5
+2029256,ks2019,KS,06/29/2018,4
+2034058,mobassir,Mobassir,07/01/2018,4
+2034098,slawekbiel,Slawek Biel,07/01/2018,3
+2062758,theoviel,Theo Viel,07/12/2018,4
+2073090,appian,Appian,07/16/2018,3
+2080166,kerneler,Kaggle Kerneler,07/19/2018,5
+2085560,aladdinpersson,Aladdin Persson,07/20/2018,2
+2087558,nitindatta,Nitin Datta,07/21/2018,3
+2093237,goldens,Golden,07/24/2018,2
+2103971,michau96,Michal Bogacz,07/27/2018,3
+2115707,lava18,Lavanya,07/31/2018,1
+2132795,kaerunantoka,kaerururu,08/07/2018,3
+2133818,sakami,sakami,08/07/2018,3
+2186594,lanjunyelan,yelan,08/28/2018,4
+2208565,pavlofesenko,Pavlo Fesenko,09/04/2018,2
+2212893,ayuraj,Ayush Thakur,09/05/2018,3
+2218684,sirajr,sirajr,09/06/2018,0
+2234817,phoenix9032,Doomsday,09/11/2018,3
+2243477,zaharch,nosound,09/13/2018,4
+2245304,terenceshin,Terence Shin,09/13/2018,1
+2332181,frtgnn,Firat Gonen,10/07/2018,4
+2332373,loaiabdalslam,Loai abdalslam,10/07/2018,2
+2334083,mariapushkareva,Marie,10/08/2018,3
+2352583,xhlulu,xhlulu,10/12/2018,4
+2353638,simgeerek,Simge Erek,10/12/2018,2
+2357264,mragpavank,PAVAN KUMAR D,10/13/2018,3
+2363297,jazivxt,Daniel Preciado,10/15/2018,3
+2405813,kyakovlev,Konstantin Yakovlev,10/25/2018,4
+2411256,saurabhshahane,Saurabh Shahane,10/26/2018,4
+2449180,spidy20,Kushal Bhavsar,11/05/2018,2
+2476631,tientd95,Tien Tran,11/11/2018,3
+2487225,agileteam,KIM TAE HEON,11/13/2018,2
+2497612,uomislab,Information Systems Lab,11/15/2018,0
+2497784,duykhanh99,KhanhVD,11/15/2018,3
+2527236,nancyalaswad90,Ms. Nancy Al Aswad,11/22/2018,3
+2533892,gpiosenka,Gerry,11/24/2018,2
+2535352,elcaiseri,Kassem,11/24/2018,3
+2545270,nvnnghia,nvnn,11/27/2018,4
+2551086,gulsahdemiryurek,Gulsah Demiryurek,11/28/2018,2
+2560033,khotijahs1,Siti Khotijah,11/30/2018,3
+2563180,yogeshtak,Yogesh Tak,12/01/2018,1
+2586938,siavrez,Siavash,12/06/2018,3
+2591209,tavoosi,Saba Tavoosi,12/07/2018,2
+2591653,abhinand05,Abhinand,12/08/2018,3
+2603295,alexisbcook,Alexis Cook,12/11/2018,5
+2648923,stpeteishii,stpete_ishii,12/26/2018,2
+2660090,amithasanshuvo,Amit Hasan Shuvo,12/31/2018,2
+2675447,ilu000,Ilu,01/05/2019,4
+2679105,subinium,Subin An,01/07/2019,4
+2681031,brendan45774,Brenda N,01/07/2019,3
+2706866,gunesevitan,Gunes Evitan,01/15/2019,4
+2713379,onefourthlabs,One Fourth Labs,01/17/2019,0
+2723137,niharika41298,Niharika Pandit,01/20/2019,2
+2779868,jesucristo,Nanashi,02/04/2019,4
+2779944,tanulsingh077,Mr_KnowNothing,02/04/2019,4
+2781854,kmldas,Kamal Das,02/05/2019,4
+2837179,therealcyberlord,Xingyu Bian,02/19/2019,2
+2845720,bhuvanchennoju,Bhuvan Chennoju,02/21/2019,2
+2926451,sercanyesiloz,Sercan Yeşilöz,03/11/2019,3
+2931338,devvret,devrishi,03/12/2019,2
+2934599,ravichaubey1506,Ravi Ranjan Chaubey,03/13/2019,3
+2938236,kmat2019,K_mat,03/14/2019,2
+2980755,redwankarimsony,Md. Redwan Karim Sony,03/23/2019,2
+2986914,akshat0007,Akshat Dubey,03/24/2019,3
+3012786,mpwolke,Marília Prata,03/29/2019,4
+3027960,vivek468,Vivek Chowdhury,04/02/2019,3
+3063341,gcdatkin,Gabriel Atkin,04/09/2019,2
+3107144,saurav9786,Saurav Anand,04/18/2019,3
+3108974,matleonard,Mat Leonard,04/18/2019,2
+3177784,gogo827jz,Yirun Zhang,05/04/2019,4
+3226852,sreshta140,Sreshta Putchala,05/15/2019,3
+3251841,snanilim,nilim,05/21/2019,3
+3264446,berkayalan,Berkay Alan,05/23/2019,3
+3270621,utkukubilay,Utku_Kubilay,05/25/2019,3
+3288534,sonalisingh1411,🚀𝐒𝐨𝐧𝐚𝐥𝐢 𝐒𝐢𝐧𝐠𝐡,05/29/2019,3
+3309826,ruchi798,Ruchi Bhatia,06/04/2019,4
+3335785,shivan118,shivan kumar,06/11/2019,3
+3336206,aishu2218,Aishwarya Wuntkal,06/11/2019,2
+3363440,faressayah,Fares Sayah,06/18/2019,3
+3381067,hasanbasriakcay,Hasan Basri Akçay,06/22/2019,3
+3390641,divyansh22,Divyansh Agrawal,06/25/2019,3
+3399844,karnikakapoor,Karnika Kapoor,06/27/2019,4
+3446939,heyytanay,Tanay Mehta,07/10/2019,4
+3474172,reighns,Hongnan G,07/17/2019,3
+3487556,sahib12,sahib singh,07/21/2019,3
+3490494,caesarmario,Mario Caesar,07/22/2019,4
+3492127,piantic,Heroseo,07/22/2019,3
+3492504,salmaneunus,Salman Ibne Eunus,07/22/2019,3
+3505796,andreshg,AndresHG,07/25/2019,4
+3512471,eswarchandt,Eswar Chand,07/27/2019,3
+3514793,morizin,Mohammed Rizin V K,07/28/2019,3
+3539107,songulerdem,Songul Erdem Guler,08/02/2019,3
+3545140,ligtfeather,Tanishq Gautam,08/04/2019,3
+3564129,andradaolteanu,Andrada Olteanu,08/09/2019,4
+3564674,marcovasquez,Marco Vasquez E,08/09/2019,3
+3574256,awsaf49,Awsaf,08/12/2019,4
+3577701,vlomme,Kramarenko Vladislav,08/13/2019,4
+3595464,caesarlupum,Caesar Lupum,08/18/2019,3
+3607160,mohamedhanyyy,Mohamed Hany,08/21/2019,3
+3612572,louise2001,Loulou,08/22/2019,3
+3649586,twinkle0705,Twinkle Khanna,09/01/2019,2
+3650837,mathchi,Mehmet Akturk,09/01/2019,3
+3652230,nullrecurrent,Jiayang Gao,09/02/2019,3
+3713272,hadeux,Woo Seung Han,09/16/2019,3
+3740202,upadorprofzs,Murilão,09/20/2019,4
+3773993,naim99,Naim Mhedhbi,09/27/2019,3
+3774216,mitramir5,mitra mirshafiee,09/27/2019,2
+3808888,mvahit,MVK,10/05/2019,1
+3809469,rezaghari,Mohammad Reza Ghari,10/05/2019,2
+3823514,iamleonie,Leonie,10/08/2019,4
+3869118,anshigupta01,Anshi Gupta,10/16/2019,3
+3924325,kirderf,Kirderf,10/25/2019,3
+3982638,rohitsingh9990,Rohit Singh,11/05/2019,3
+4001300,chumajin,chumajin,11/08/2019,4
+4037336,lucasmorin,Lucas Morin,11/14/2019,3
+4051350,carlmcbrideellis,Carl McBride Ellis,11/17/2019,4
+4074355,tasnimnishatislam,Tasnim Nishat Islam,11/20/2019,2
+4082938,tensorchoko,tensor choko,11/22/2019,3
+4089857,jadecacho,Jade,11/23/2019,1
+4114579,linshokaku,deoxy,11/27/2019,3
+4122826,faisalalsrheed,Faisal Alsrheed,11/28/2019,3
+4182566,aayushmishra1512,Aayush Mishra,12/10/2019,3
+4248073,mdmahmudferdous,Md Mahmud Ferdous,12/25/2019,2
+4256756,nareshbhat,Naresha Bhat,12/27/2019,3
+4288588,joshuaswords,Josh,01/05/2020,3
+4306089,frankmollard,🌵,01/09/2020,3
+4321234,nxrprime,Trigram,01/13/2020,3
+4333519,yasserhessein,Yasir Hussein Shakir,01/15/2020,3
+4359632,atharvaingle,Atharva Ingle,01/21/2020,2
+4403788,abheeshthmishra,Abheeshth Mishra,01/29/2020,3
+4432707,kalilurrahman,Kalilur Rahman,02/04/2020,3
+4476084,jessemostipak,Jesse Mostipak,02/11/2020,2
+4574214,madz2000,Madhav Mathur,02/28/2020,3
+4578277,yuanzhezhou,yuanzhe zhou,02/28/2020,3
+4616296,datafan07,Ertuğrul Demir,03/05/2020,4
+4627242,ishandutta,Ishan Dutta,03/07/2020,3
+4627771,nguncedasci,Nehir Gunce Dasci,03/07/2020,2
+4686011,bextuychiev,bexgboost,03/17/2020,3
+4688022,thomaskonstantin,Thomas Konstantin,03/17/2020,3
+4712534,nischaydnk,Nischay Dhankhar,03/21/2020,3
+4730101,rashikrahmanpritom,Rashik Rahman,03/24/2020,3
+4760409,gauravduttakiit,Gaurav Dutta,03/28/2020,2
+4801400,somayyehgholami,Somayyeh Gholami,04/03/2020,3
+4804850,remekkinas,Remek Kinas,04/03/2020,4
+4874474,midouazerty,salah sammari,04/13/2020,3
+4878232,debarshichanda,Debarshi Chanda,04/14/2020,4
+4920916,psycon,Batucan Senkal,04/20/2020,3
+4956172,alincijov,Alin Cijov,04/25/2020,3
+4956446,ohseokkim,OH SEOK KIM,04/25/2020,4
+4962648,niteshyadav3103,Nitesh Yadav,04/26/2020,3
+4972751,shivavashishtha,Shiva Vashishtha,04/27/2020,2
+4999317,pranjalverma08,Pranjal Verma,05/01/2020,3
+5077172,anasofiauzsoy,Ana Sofia Uzsoy,05/12/2020,2
+5118474,shreyasajal,Shreya Sajal,05/18/2020,3
+5168115,underwearfitting,sin,05/26/2020,4
+5193682,amyjang,Amy Jang,05/29/2020,2
+5196267,blurredmachine,Paras Varshney,05/30/2020,3
+5223111,vyombhatia,vyom bhatia,06/03/2020,3
+5274255,lordozvlad,Devlikamov Vlad,06/10/2020,4
+5304379,kellibelcher,Kelli Belcher,06/14/2020,3
+5337747,imoore,Moore,06/20/2020,3
+5367665,studymart,Study Mart,06/25/2020,0
+5379999,kenjee,Ken Jee,06/28/2020,2
+5398372,theblackmamba31,Black Mamba,07/01/2020,3
+5429962,chebotinaa,Anastasiia Chebotina,07/07/2020,2
+5430373,desalegngeb,des.,07/07/2020,3
+5447474,vahidehdashti,Vahideh Dashti,07/10/2020,4
+5484076,vikasukani,Vikas Ukani,07/17/2020,3
+5515046,fahadmehfoooz,Fahad Mehfooz,07/23/2020,4
+5518265,mmoralesr,Mario Morales,07/23/2020,0
+5753671,vad13irt,Vadim Irtlach,09/10/2020,4
+5754568,arezoodahesh,Arezoo Dahesh,09/10/2020,3
+5966695,ammarnassanalhajali,Ammar Alhaj Ali,10/15/2020,4
+6052154,jeongbinpark,JeongBin Park,10/28/2020,3
+6086706,sisharaneranjana,Ishara Neranjana,11/03/2020,3
+6096594,anandhuh,Anandhu H,11/04/2020,4
+6097832,shtrausslearning,Andrey Shtrauss,11/04/2020,4
+6125196,halimedogan,Halime Doğan,11/08/2020,3
+6140628,jizhouwei,Jizhou Wei,11/11/2020,1
+6191256,pourchot,Laurent Pourchot,11/18/2020,3
+6245640,subhamjain,Subham Surana,11/25/2020,3
+6402661,fedesoriano,fedesoriano,12/18/2020,4
+6421220,muhammadahmed68,Moezilda,12/23/2020,4
+6454812,dikshabhati2002,Diksha Bhati,01/02/2021,3
+6470511,mohamedbakrey,Mohamed Bakrey,01/05/2021,3
+6614570,yogidsba,Yogita Darade,01/28/2021,3
+6693435,odins0n,Sanskar Hasija,02/09/2021,4
+6700236,heyrobin,Robin S.,02/10/2021,3
+6812336,scitdeeplearninglab,SCITDeepLearningLab,02/26/2021,0
+6925588,muhammadimran112233,Muhammad Imran Zaman,03/12/2021,3
+7024923,iamsouravbanerjee,Sourav Banerjee,03/25/2021,4
+7042824,brsdincer,Baris Dincer,03/27/2021,2
+7061666,aditimulye,Aditi Mulye,03/30/2021,3
+7300186,rhythmcam,blue7red,04/29/2021,2
+7378363,aminizahra,Zahra Amini,05/09/2021,3
+7662674,andrej0marinchenko,Andrej Marinchenko,06/12/2021,3
+7677930,kaanboke,Kaan BOKE,06/14/2021,3
+7771997,azizozmen,Aziz Özmen,06/25/2021,3
+7917824,ambrosm,AmbrosM,07/16/2021,4
+8517730,datathon2021,Datathon-IndoML-2021,10/05/2021,1
+8669781,rakshitvig,Rakshit Vig,10/22/2021,0
+8739243,samuelcortinhas,Samuel Cortinhas,10/29/2021,2
+8833583,yasserh,M Yasser H,11/09/2021,2
+9285556,aishwarya2210,Padmavathi D,12/30/2021,3
+9590174,surajjha101,Suraj Jha,02/06/2022,4
+10654180,thedevastator,The Devastator,05/26/2022,4

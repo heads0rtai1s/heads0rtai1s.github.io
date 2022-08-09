@@ -1,0 +1,4847 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.92.0" />
+
+
+<title>Counting Kaggle Followers through Meta Kaggle - head spin - the Heads or Tails blog</title>
+<meta property="og:title" content="Counting Kaggle Followers through Meta Kaggle - head spin - the Heads or Tails blog">
+
+
+  <link href='https://heads0rtai1s.github.io/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/avatar.png"
+         width="50"
+         height="50"
+         alt="Heads or Tails">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="/blogroll/">Blogroll</a></li>
+    
+    <li><a href="https://twitter.com/heads0rtai1s">Twitter</a></li>
+    
+    <li><a href="https://www.kaggle.com/headsortails">Kaggle</a></li>
+    
+    <li><a href="https://www.linkedin.com/in/martin-henze">LinkedIn</a></li>
+    
+    <li><a href="https://github.com/heads0rtai1s">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">35 min read</span>
+    
+
+    <h1 class="article-title">Counting Kaggle Followers through Meta Kaggle</h1>
+
+    
+    <span class="article-date">2022-08-09</span>
+    
+
+    <div class="article-content">
+      
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>This is a short post on how to count your followers on <a href="https://www.kaggle.com">Kaggle</a>, and who the current Kagglers are with the largest following. It also serves as preparation for my next blog post in which I will practice some network analysis on the table that we’ll create in this post.</p>
+<p>Kaggle, true to form as the home of data science and machine learning on the internet, provides a lot of information on the activity of the community in the appropriately named <a href="https://www.kaggle.com/datasets/kaggle/meta-kaggle">Meta Kaggle dataset</a>. Here you can find tables for all the notebooks, datasets, or discussions on the platform. And much more. Many insightful notebooks are built on Meta Kaggle, and many datasets, such as <a href="https://www.kaggle.com/datasets/headsortails/notebooks-of-the-week-hidden-gems">Hidden Gems</a> and its <a href="https://www.kaggle.com/code/headsortails/hidden-gems-a-collection-of-underrated-notebooks">summary notebook</a>, are linked to it.</p>
+<p>Let’s get started with our set of standard tabular reading and wrangling libraries:</p>
+<pre class="r"><code>libs &lt;- c(&#39;dplyr&#39;, &#39;tibble&#39;,   # wrangling
+          &#39;lubridate&#39;,         # datetime
+          &#39;tidyr&#39;, &#39;gt&#39;,       # wrangling, table styling
+          &#39;vroom&#39;, &#39;readr&#39;)    # read &amp; write data
+invisible(lapply(libs, library, character.only = TRUE))</code></pre>
+<div id="follow-the-white-rabbit" class="section level3">
+<h3>Follow the white rabbit</h3>
+<p>The wondrous land of Kaggle community connections is chiefly contained in the file <a href="https://www.kaggle.com/datasets/kaggle/meta-kaggle?datasetId=9&amp;select=UserFollowers.csv">UserFollowers.csv</a>. Let’s download and read it:</p>
+<pre class="r"><code>follow &lt;- vroom(&quot;../../static/files/UserFollowers.csv&quot;, col_types = cols())</code></pre>
+<p>Here are the first few rows of that table:</p>
+<pre class="r"><code>follow |&gt; 
+  head(10) |&gt; 
+  gt() |&gt; 
+  opt_row_striping()</code></pre>
+<div id="xnuchtdpzx" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#xnuchtdpzx .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#xnuchtdpzx .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#xnuchtdpzx .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#xnuchtdpzx .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#xnuchtdpzx .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#xnuchtdpzx .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#xnuchtdpzx .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#xnuchtdpzx .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#xnuchtdpzx .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#xnuchtdpzx .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#xnuchtdpzx .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#xnuchtdpzx .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#xnuchtdpzx .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#xnuchtdpzx .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#xnuchtdpzx .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#xnuchtdpzx .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#xnuchtdpzx .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#xnuchtdpzx .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xnuchtdpzx .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#xnuchtdpzx .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xnuchtdpzx .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#xnuchtdpzx .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#xnuchtdpzx .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#xnuchtdpzx .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#xnuchtdpzx .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#xnuchtdpzx .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#xnuchtdpzx .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#xnuchtdpzx .gt_left {
+  text-align: left;
+}
+
+#xnuchtdpzx .gt_center {
+  text-align: center;
+}
+
+#xnuchtdpzx .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#xnuchtdpzx .gt_font_normal {
+  font-weight: normal;
+}
+
+#xnuchtdpzx .gt_font_bold {
+  font-weight: bold;
+}
+
+#xnuchtdpzx .gt_font_italic {
+  font-style: italic;
+}
+
+#xnuchtdpzx .gt_super {
+  font-size: 65%;
+}
+
+#xnuchtdpzx .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">UserId</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">FollowingUserId</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">CreationDate</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_right">64</td>
+<td class="gt_row gt_right">368</td>
+<td class="gt_row gt_right">993</td>
+<td class="gt_row gt_left">05/23/2017</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">122289</td>
+<td class="gt_row gt_right gt_striped">368</td>
+<td class="gt_row gt_right gt_striped">67483</td>
+<td class="gt_row gt_left gt_striped">08/07/2018</td></tr>
+    <tr><td class="gt_row gt_right">323230</td>
+<td class="gt_row gt_right">368</td>
+<td class="gt_row gt_right">1663522</td>
+<td class="gt_row gt_left">09/18/2019</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">412502</td>
+<td class="gt_row gt_right gt_striped">368</td>
+<td class="gt_row gt_right gt_striped">1302389</td>
+<td class="gt_row gt_left gt_striped">03/08/2020</td></tr>
+    <tr><td class="gt_row gt_right">447841</td>
+<td class="gt_row gt_right">368</td>
+<td class="gt_row gt_right">391404</td>
+<td class="gt_row gt_left">04/27/2020</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">798317</td>
+<td class="gt_row gt_right gt_striped">368</td>
+<td class="gt_row gt_right gt_striped">769452</td>
+<td class="gt_row gt_left gt_striped">06/21/2021</td></tr>
+    <tr><td class="gt_row gt_right">851009</td>
+<td class="gt_row gt_right">421</td>
+<td class="gt_row gt_right">1053193</td>
+<td class="gt_row gt_left">08/18/2021</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">851010</td>
+<td class="gt_row gt_right gt_striped">421</td>
+<td class="gt_row gt_right gt_striped">727004</td>
+<td class="gt_row gt_left gt_striped">08/18/2021</td></tr>
+    <tr><td class="gt_row gt_right">970078</td>
+<td class="gt_row gt_right">421</td>
+<td class="gt_row gt_right">656212</td>
+<td class="gt_row gt_left">01/11/2022</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">448467</td>
+<td class="gt_row gt_right gt_striped">440</td>
+<td class="gt_row gt_right gt_striped">473824</td>
+<td class="gt_row gt_left gt_striped">04/27/2020</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<p>It is constructed from the point of view of the individual user, and their <code>UserId</code> and <code>CreationDate</code> (i.e join date), which has decided to follow other Kagglers with a certain <code>FollowingUserId</code>. So if we want to aggregate it from the point of view of the Kagglers that are being followed, we count the <code>FollowingUserId</code> instances.</p>
+<p>The goal is to have a table of the top 500 followed Kagglers. But we also want to join this table later to another table that contains more user info; but that doesn’t have some Kagglers that no longer have an account on the platform (for whichever reason). So we’re being a bit more generous and start with the top 700 here. The first 5 rows of that table look as follows:</p>
+<pre class="r"><code>top500 &lt;- follow |&gt; 
+  count(FollowingUserId, sort = TRUE) |&gt; 
+  slice_head(n = 700)
+
+top500 |&gt; 
+  head(5) |&gt; 
+  gt()</code></pre>
+<div id="lhomvsjnxn" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#lhomvsjnxn .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#lhomvsjnxn .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#lhomvsjnxn .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#lhomvsjnxn .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#lhomvsjnxn .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lhomvsjnxn .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#lhomvsjnxn .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#lhomvsjnxn .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#lhomvsjnxn .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#lhomvsjnxn .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#lhomvsjnxn .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#lhomvsjnxn .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#lhomvsjnxn .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#lhomvsjnxn .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#lhomvsjnxn .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#lhomvsjnxn .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#lhomvsjnxn .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#lhomvsjnxn .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lhomvsjnxn .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#lhomvsjnxn .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lhomvsjnxn .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#lhomvsjnxn .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#lhomvsjnxn .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lhomvsjnxn .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#lhomvsjnxn .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#lhomvsjnxn .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#lhomvsjnxn .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#lhomvsjnxn .gt_left {
+  text-align: left;
+}
+
+#lhomvsjnxn .gt_center {
+  text-align: center;
+}
+
+#lhomvsjnxn .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#lhomvsjnxn .gt_font_normal {
+  font-weight: normal;
+}
+
+#lhomvsjnxn .gt_font_bold {
+  font-weight: bold;
+}
+
+#lhomvsjnxn .gt_font_italic {
+  font-style: italic;
+}
+
+#lhomvsjnxn .gt_super {
+  font-size: 65%;
+}
+
+#lhomvsjnxn .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">FollowingUserId</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">n</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_right">5309</td>
+<td class="gt_row gt_right">17091</td></tr>
+    <tr><td class="gt_row gt_right">71388</td>
+<td class="gt_row gt_right">13855</td></tr>
+    <tr><td class="gt_row gt_right">708283</td>
+<td class="gt_row gt_right">13307</td></tr>
+    <tr><td class="gt_row gt_right">1723677</td>
+<td class="gt_row gt_right">11885</td></tr>
+    <tr><td class="gt_row gt_right">54836</td>
+<td class="gt_row gt_right">10829</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<p>The most popular Kagglers have more than 10,000 followers. That’s very impressive! But who exactly are they? This table only contains their user ID. If you’re on Kaggle, then you might have an idea of who might be hiding behind these numbers. But we’d like to know for sure. This is where another Meta Kaggle table comes to the rescue.</p>
+</div>
+<div id="join-the-fun" class="section level3">
+<h3>Join the fun</h3>
+<p>What we need is the <a href="https://www.kaggle.com/datasets/kaggle/meta-kaggle?datasetId=9&amp;select=Users.csv">Users.csv</a>, which contains the details for each of the (<a href="https://heads0rtai1s.github.io/2022/06/23/kaggle-10-million/">more than 10 million!</a>) Kagglers. (This is a large file, and I recommend downloading the most recent version). Let’s read that in as well:</p>
+<pre class="r"><code>users &lt;- vroom(&quot;./Users.csv&quot;, col_types = cols())</code></pre>
+<p>The user ID here is encoded as <code>Id</code>, and we also have the <code>UserName</code> (your unique user name), <code>DisplayName</code> (how your name is shown on your Kaggle profile, can be changed), and the date of joining Kaggle (<code>RegisterDate</code>) together with the current <code>PerformanceTier</code>. The latter goes from 0 to 4 for Novice, Contributor, Expert, Master, and Grandmaster; with tier 5 indicating a member of the Kaggle team.</p>
+<p>Here are some sample rows, which already contain a number of familiar names:</p>
+<pre class="r"><code>users |&gt; 
+  head(50) |&gt; 
+  gt() |&gt; 
+  opt_row_striping() |&gt; 
+  tab_options(container.height = px(400))</code></pre>
+<div id="gejrmytqig" style="overflow-x:auto;overflow-y:auto;width:auto;height:400px;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#gejrmytqig .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#gejrmytqig .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#gejrmytqig .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#gejrmytqig .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#gejrmytqig .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#gejrmytqig .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#gejrmytqig .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#gejrmytqig .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#gejrmytqig .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#gejrmytqig .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#gejrmytqig .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#gejrmytqig .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#gejrmytqig .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#gejrmytqig .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#gejrmytqig .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#gejrmytqig .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#gejrmytqig .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#gejrmytqig .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#gejrmytqig .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#gejrmytqig .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#gejrmytqig .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#gejrmytqig .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#gejrmytqig .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#gejrmytqig .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#gejrmytqig .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#gejrmytqig .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#gejrmytqig .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#gejrmytqig .gt_left {
+  text-align: left;
+}
+
+#gejrmytqig .gt_center {
+  text-align: center;
+}
+
+#gejrmytqig .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#gejrmytqig .gt_font_normal {
+  font-weight: normal;
+}
+
+#gejrmytqig .gt_font_bold {
+  font-weight: bold;
+}
+
+#gejrmytqig .gt_font_italic {
+  font-style: italic;
+}
+
+#gejrmytqig .gt_super {
+  font-size: 65%;
+}
+
+#gejrmytqig .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">UserName</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">DisplayName</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">RegisterDate</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">PerformanceTier</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left">kaggleteam</td>
+<td class="gt_row gt_left">Kaggle Team</td>
+<td class="gt_row gt_left">03/24/2011</td>
+<td class="gt_row gt_right">5</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">368</td>
+<td class="gt_row gt_left gt_striped">antgoldbloom</td>
+<td class="gt_row gt_left gt_striped">Anthony Goldbloom</td>
+<td class="gt_row gt_left gt_striped">01/20/2010</td>
+<td class="gt_row gt_right gt_striped">2</td></tr>
+    <tr><td class="gt_row gt_right">808</td>
+<td class="gt_row gt_left">alexxanderlarko</td>
+<td class="gt_row gt_left">Alexander  Larko</td>
+<td class="gt_row gt_left">05/14/2010</td>
+<td class="gt_row gt_right">4</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">993</td>
+<td class="gt_row gt_left gt_striped">benhamner</td>
+<td class="gt_row gt_left gt_striped">Ben Hamner</td>
+<td class="gt_row gt_left gt_striped">05/31/2010</td>
+<td class="gt_row gt_right gt_striped">3</td></tr>
+    <tr><td class="gt_row gt_right">1455</td>
+<td class="gt_row gt_left">mjahrer</td>
+<td class="gt_row gt_left">Michael Jahrer</td>
+<td class="gt_row gt_left">06/25/2010</td>
+<td class="gt_row gt_right">4</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">1902</td>
+<td class="gt_row gt_left gt_striped">solorzano</td>
+<td class="gt_row gt_left gt_striped">José H. Solórzano</td>
+<td class="gt_row gt_left gt_striped">07/21/2010</td>
+<td class="gt_row gt_right gt_striped">4</td></tr>
+    <tr><td class="gt_row gt_right">1988</td>
+<td class="gt_row gt_left">jasonbrownlee</td>
+<td class="gt_row gt_left">Jason Brownlee</td>
+<td class="gt_row gt_left">07/31/2010</td>
+<td class="gt_row gt_right">2</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">2036</td>
+<td class="gt_row gt_left gt_striped">konradb</td>
+<td class="gt_row gt_left gt_striped">Konrad Banachewicz</td>
+<td class="gt_row gt_left gt_striped">08/03/2010</td>
+<td class="gt_row gt_right gt_striped">4</td></tr>
+    <tr><td class="gt_row gt_right">2140</td>
+<td class="gt_row gt_left">dslate</td>
+<td class="gt_row gt_left">David J. Slate</td>
+<td class="gt_row gt_left">08/05/2010</td>
+<td class="gt_row gt_right">4</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">2242</td>
+<td class="gt_row gt_left gt_striped">domcastro</td>
+<td class="gt_row gt_left gt_striped">Bluefool</td>
+<td class="gt_row gt_left gt_striped">08/08/2010</td>
+<td class="gt_row gt_right gt_striped">4</td></tr>
+    <tr><td class="gt_row gt_right">3090</td>
+<td class="gt_row gt_left">dyakonov</td>
+<td class="gt_row gt_left">Alexander D'yakonov</td>
+<td class="gt_row gt_left">09/28/2010</td>
+<td class="gt_row gt_right">4</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">3256</td>
+<td class="gt_row gt_left gt_striped">jhoward</td>
+<td class="gt_row gt_left gt_striped">Jeremy Howard</td>
+<td class="gt_row gt_left gt_striped">10/13/2010</td>
+<td class="gt_row gt_right gt_striped">4</td></tr>
+    <tr><td class="gt_row gt_right">3258</td>
+<td class="gt_row gt_left">wcukierski</td>
+<td class="gt_row gt_left">Will Cukierski</td>
+<td class="gt_row gt_left">10/13/2010</td>
+<td class="gt_row gt_right">5</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">3346</td>
+<td class="gt_row gt_left gt_striped">ejlok1</td>
+<td class="gt_row gt_left gt_striped">Eu Jin Lok</td>
+<td class="gt_row gt_left gt_striped">10/21/2010</td>
+<td class="gt_row gt_right gt_striped">4</td></tr>
+    <tr><td class="gt_row gt_right">4398</td>
+<td class="gt_row gt_left">ccccat</td>
+<td class="gt_row gt_left">Sergey Yurgenson</td>
+<td class="gt_row gt_left">12/02/2010</td>
+<td class="gt_row gt_right">4</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">5309</td>
+<td class="gt_row gt_left gt_striped">abhishek</td>
+<td class="gt_row gt_left gt_striped">Abhishek Thakur</td>
+<td class="gt_row gt_left gt_striped">01/12/2011</td>
+<td class="gt_row gt_right gt_striped">4</td></tr>
+    <tr><td class="gt_row gt_right">5642</td>
+<td class="gt_row gt_left">blindape</td>
+<td class="gt_row gt_left">José A. Guerrero</td>
+<td class="gt_row gt_left">01/27/2011</td>
+<td class="gt_row gt_right">4</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">6234</td>
+<td class="gt_row gt_left gt_striped">martinpiotte</td>
+<td class="gt_row gt_left gt_striped">Martin Piotte</td>
+<td class="gt_row gt_left gt_striped">02/12/2011</td>
+<td class="gt_row gt_right gt_striped">0</td></tr>
+    <tr><td class="gt_row gt_right">6388</td>
+<td class="gt_row gt_left">confirm</td>
+<td class="gt_row gt_left">Kohei</td>
+<td class="gt_row gt_left">02/16/2011</td>
+<td class="gt_row gt_right">4</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">6696</td>
+<td class="gt_row gt_left gt_striped">zachmayer</td>
+<td class="gt_row gt_left gt_striped">Zach</td>
+<td class="gt_row gt_left gt_striped">03/02/2011</td>
+<td class="gt_row gt_right gt_striped">4</td></tr>
+    <tr><td class="gt_row gt_right">7756</td>
+<td class="gt_row gt_left">owenzhang1</td>
+<td class="gt_row gt_left">Owen</td>
+<td class="gt_row gt_left">04/04/2011</td>
+<td class="gt_row gt_right">4</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">8507</td>
+<td class="gt_row gt_left gt_striped">antorsae</td>
+<td class="gt_row gt_left gt_striped">Andres Torrubia</td>
+<td class="gt_row gt_left gt_striped">04/05/2011</td>
+<td class="gt_row gt_right gt_striped">3</td></tr>
+    <tr><td class="gt_row gt_right">9028</td>
+<td class="gt_row gt_left">dansbecker</td>
+<td class="gt_row gt_left">DanB</td>
+<td class="gt_row gt_left">04/06/2011</td>
+<td class="gt_row gt_right">4</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">9766</td>
+<td class="gt_row gt_left gt_striped">breakfastpirate</td>
+<td class="gt_row gt_left gt_striped">BreakfastPirate</td>
+<td class="gt_row gt_left gt_striped">04/14/2011</td>
+<td class="gt_row gt_right gt_striped">4</td></tr>
+    <tr><td class="gt_row gt_right">9974</td>
+<td class="gt_row gt_left">gertjac</td>
+<td class="gt_row gt_left">Gert</td>
+<td class="gt_row gt_left">04/19/2011</td>
+<td class="gt_row gt_right">4</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">10171</td>
+<td class="gt_row gt_left gt_striped">dynamic24</td>
+<td class="gt_row gt_left gt_striped">dynamic24</td>
+<td class="gt_row gt_left gt_striped">04/23/2011</td>
+<td class="gt_row gt_right gt_striped">4</td></tr>
+    <tr><td class="gt_row gt_right">14756</td>
+<td class="gt_row gt_left">nigelcarpenter</td>
+<td class="gt_row gt_left">Nigel Carpenter</td>
+<td class="gt_row gt_left">08/17/2011</td>
+<td class="gt_row gt_right">3</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">16295</td>
+<td class="gt_row gt_left gt_striped">pjreddie</td>
+<td class="gt_row gt_left gt_striped">pjreddie</td>
+<td class="gt_row gt_left gt_striped">09/12/2011</td>
+<td class="gt_row gt_right gt_striped">2</td></tr>
+    <tr><td class="gt_row gt_right">17379</td>
+<td class="gt_row gt_left">xavierconort</td>
+<td class="gt_row gt_left">Xavier Conort</td>
+<td class="gt_row gt_left">09/23/2011</td>
+<td class="gt_row gt_right">4</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">18102</td>
+<td class="gt_row gt_left gt_striped">gaborfodor</td>
+<td class="gt_row gt_left gt_striped">beluga</td>
+<td class="gt_row gt_left gt_striped">10/05/2011</td>
+<td class="gt_row gt_right gt_striped">4</td></tr>
+    <tr><td class="gt_row gt_right">18463</td>
+<td class="gt_row gt_left">mathurinache</td>
+<td class="gt_row gt_left">Mathurin Aché</td>
+<td class="gt_row gt_left">10/11/2011</td>
+<td class="gt_row gt_right">3</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">19099</td>
+<td class="gt_row gt_left gt_striped">alexryzhkov</td>
+<td class="gt_row gt_left gt_striped">Alexander Ryzhkov</td>
+<td class="gt_row gt_left gt_striped">10/22/2011</td>
+<td class="gt_row gt_right gt_striped">4</td></tr>
+    <tr><td class="gt_row gt_right">19298</td>
+<td class="gt_row gt_left">lucamassaron</td>
+<td class="gt_row gt_left">Luca Massaron</td>
+<td class="gt_row gt_left">10/26/2011</td>
+<td class="gt_row gt_right">4</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">19390</td>
+<td class="gt_row gt_left gt_striped">lopuhin</td>
+<td class="gt_row gt_left gt_striped">Konstantin Lopuhin</td>
+<td class="gt_row gt_left gt_striped">10/27/2011</td>
+<td class="gt_row gt_right gt_striped">4</td></tr>
+    <tr><td class="gt_row gt_right">19605</td>
+<td class="gt_row gt_left">jeongyoonlee</td>
+<td class="gt_row gt_left">Jeong-Yoon Lee</td>
+<td class="gt_row gt_left">11/01/2011</td>
+<td class="gt_row gt_right">3</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">23583</td>
+<td class="gt_row gt_left gt_striped">claytonmiller</td>
+<td class="gt_row gt_left gt_striped">Clayton Miller</td>
+<td class="gt_row gt_left gt_striped">11/17/2011</td>
+<td class="gt_row gt_right gt_striped">2</td></tr>
+    <tr><td class="gt_row gt_right">24266</td>
+<td class="gt_row gt_left">leustagos</td>
+<td class="gt_row gt_left">Leustagos</td>
+<td class="gt_row gt_left">11/22/2011</td>
+<td class="gt_row gt_right">4</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">26782</td>
+<td class="gt_row gt_left gt_striped">paweljankiewicz</td>
+<td class="gt_row gt_left gt_striped">Paweł Jankiewicz</td>
+<td class="gt_row gt_left gt_striped">12/13/2011</td>
+<td class="gt_row gt_right gt_striped">4</td></tr>
+    <tr><td class="gt_row gt_right">29346</td>
+<td class="gt_row gt_left">efimov</td>
+<td class="gt_row gt_left">Dmitry Efimov</td>
+<td class="gt_row gt_left">01/12/2012</td>
+<td class="gt_row gt_right">4</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">29756</td>
+<td class="gt_row gt_left gt_striped">qwang88</td>
+<td class="gt_row gt_left gt_striped">Qingchen</td>
+<td class="gt_row gt_left gt_striped">01/17/2012</td>
+<td class="gt_row gt_right gt_striped">4</td></tr>
+    <tr><td class="gt_row gt_right">32300</td>
+<td class="gt_row gt_left">tqchen</td>
+<td class="gt_row gt_left">Tianqi Chen</td>
+<td class="gt_row gt_left">02/22/2012</td>
+<td class="gt_row gt_right">3</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">35069</td>
+<td class="gt_row gt_left gt_striped">takiba</td>
+<td class="gt_row gt_left gt_striped">iwiwi</td>
+<td class="gt_row gt_left gt_striped">03/12/2012</td>
+<td class="gt_row gt_right gt_striped">4</td></tr>
+    <tr><td class="gt_row gt_right">35609</td>
+<td class="gt_row gt_left">gmobaz</td>
+<td class="gt_row gt_left">gmobaz</td>
+<td class="gt_row gt_left">03/17/2012</td>
+<td class="gt_row gt_right">3</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">37166</td>
+<td class="gt_row gt_left gt_striped">philippsinger</td>
+<td class="gt_row gt_left gt_striped">Psi</td>
+<td class="gt_row gt_left gt_striped">03/29/2012</td>
+<td class="gt_row gt_right gt_striped">4</td></tr>
+    <tr><td class="gt_row gt_right">37594</td>
+<td class="gt_row gt_left">wendykan</td>
+<td class="gt_row gt_left">Wendy Kan</td>
+<td class="gt_row gt_left">04/01/2012</td>
+<td class="gt_row gt_right">3</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">41959</td>
+<td class="gt_row gt_left gt_striped">thakurrajanand</td>
+<td class="gt_row gt_left gt_striped">DataGeek</td>
+<td class="gt_row gt_left gt_striped">05/03/2012</td>
+<td class="gt_row gt_right gt_striped">3</td></tr>
+    <tr><td class="gt_row gt_right">42188</td>
+<td class="gt_row gt_left">joseffeigl</td>
+<td class="gt_row gt_left">Josef Feigl</td>
+<td class="gt_row gt_left">05/05/2012</td>
+<td class="gt_row gt_right">4</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">42245</td>
+<td class="gt_row gt_left gt_striped">goldenlock</td>
+<td class="gt_row gt_left gt_striped">gezi</td>
+<td class="gt_row gt_left gt_striped">05/06/2012</td>
+<td class="gt_row gt_right gt_striped">3</td></tr>
+    <tr><td class="gt_row gt_right">47226</td>
+<td class="gt_row gt_left">anttip</td>
+<td class="gt_row gt_left">anttip</td>
+<td class="gt_row gt_left">06/19/2012</td>
+<td class="gt_row gt_right">3</td></tr>
+    <tr><td class="gt_row gt_right gt_striped">48625</td>
+<td class="gt_row gt_left gt_striped">mlandry</td>
+<td class="gt_row gt_left gt_striped">mlandry</td>
+<td class="gt_row gt_left gt_striped">07/01/2012</td>
+<td class="gt_row gt_right gt_striped">4</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<p>Now we’re joining this table to our followers ranking on <code>"FollowingUserId" = "Id"</code>, and take the top 500 users that are present in both tables:</p>
+<pre class="r"><code>top500 &lt;- top500 |&gt; 
+  left_join(users, by = c(&quot;FollowingUserId&quot; = &quot;Id&quot;)) |&gt; 
+    filter(!is.na((UserName))) |&gt;
+    slice_head(n = 500) |&gt; 
+    rownames_to_column(&quot;rank&quot;)</code></pre>
+<p>This is the result, the full table of the top 500 followed Kaggle users, ranked by number of followers:</p>
+<pre class="r"><code>top500 |&gt; 
+  select(rank, UserName, DisplayName, RegisterDate, n) |&gt; 
+  gt() |&gt; 
+  opt_row_striping() |&gt; 
+  tab_options(container.height = px(400))</code></pre>
+<div id="kmuchhtnfy" style="overflow-x:auto;overflow-y:auto;width:auto;height:400px;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#kmuchhtnfy .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#kmuchhtnfy .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kmuchhtnfy .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#kmuchhtnfy .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#kmuchhtnfy .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kmuchhtnfy .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kmuchhtnfy .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#kmuchhtnfy .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#kmuchhtnfy .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#kmuchhtnfy .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#kmuchhtnfy .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#kmuchhtnfy .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kmuchhtnfy .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kmuchhtnfy .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#kmuchhtnfy .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#kmuchhtnfy .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#kmuchhtnfy .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#kmuchhtnfy .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kmuchhtnfy .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#kmuchhtnfy .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kmuchhtnfy .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#kmuchhtnfy .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#kmuchhtnfy .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kmuchhtnfy .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kmuchhtnfy .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#kmuchhtnfy .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kmuchhtnfy .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#kmuchhtnfy .gt_left {
+  text-align: left;
+}
+
+#kmuchhtnfy .gt_center {
+  text-align: center;
+}
+
+#kmuchhtnfy .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#kmuchhtnfy .gt_font_normal {
+  font-weight: normal;
+}
+
+#kmuchhtnfy .gt_font_bold {
+  font-weight: bold;
+}
+
+#kmuchhtnfy .gt_font_italic {
+  font-style: italic;
+}
+
+#kmuchhtnfy .gt_super {
+  font-size: 65%;
+}
+
+#kmuchhtnfy .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">rank</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">UserName</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">DisplayName</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">RegisterDate</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">n</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">1</td>
+<td class="gt_row gt_left">abhishek</td>
+<td class="gt_row gt_left">Abhishek Thakur</td>
+<td class="gt_row gt_left">01/12/2011</td>
+<td class="gt_row gt_right">17091</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">2</td>
+<td class="gt_row gt_left gt_striped">sudalairajkumar</td>
+<td class="gt_row gt_left gt_striped">SRK</td>
+<td class="gt_row gt_left gt_striped">11/28/2012</td>
+<td class="gt_row gt_right gt_striped">13855</td></tr>
+    <tr><td class="gt_row gt_left">3</td>
+<td class="gt_row gt_left">bestfitting</td>
+<td class="gt_row gt_left">bestfitting</td>
+<td class="gt_row gt_left">09/07/2016</td>
+<td class="gt_row gt_right">13307</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">4</td>
+<td class="gt_row gt_left gt_striped">cdeotte</td>
+<td class="gt_row gt_left gt_striped">Chris Deotte</td>
+<td class="gt_row gt_left gt_striped">03/14/2018</td>
+<td class="gt_row gt_right gt_striped">11885</td></tr>
+    <tr><td class="gt_row gt_left">5</td>
+<td class="gt_row gt_left">titericz</td>
+<td class="gt_row gt_left">Giba</td>
+<td class="gt_row gt_left">08/23/2012</td>
+<td class="gt_row gt_right">10829</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">6</td>
+<td class="gt_row gt_left gt_striped">jessemostipak</td>
+<td class="gt_row gt_left gt_striped">Jesse Mostipak</td>
+<td class="gt_row gt_left gt_striped">02/11/2020</td>
+<td class="gt_row gt_right gt_striped">9686</td></tr>
+    <tr><td class="gt_row gt_left">7</td>
+<td class="gt_row gt_left">headsortails</td>
+<td class="gt_row gt_left">Heads or Tails</td>
+<td class="gt_row gt_left">04/09/2017</td>
+<td class="gt_row gt_right">9351</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">8</td>
+<td class="gt_row gt_left gt_striped">rtatman</td>
+<td class="gt_row gt_left gt_striped">Rachael Tatman</td>
+<td class="gt_row gt_left gt_striped">07/10/2017</td>
+<td class="gt_row gt_right gt_striped">9127</td></tr>
+    <tr><td class="gt_row gt_left">9</td>
+<td class="gt_row gt_left">tunguz</td>
+<td class="gt_row gt_left">Bojan Tunguz</td>
+<td class="gt_row gt_left">09/11/2015</td>
+<td class="gt_row gt_right">8669</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">10</td>
+<td class="gt_row gt_left gt_striped">dansbecker</td>
+<td class="gt_row gt_left gt_striped">DanB</td>
+<td class="gt_row gt_left gt_striped">04/06/2011</td>
+<td class="gt_row gt_right gt_striped">8452</td></tr>
+    <tr><td class="gt_row gt_left">11</td>
+<td class="gt_row gt_left">kanncaa1</td>
+<td class="gt_row gt_left">DATAI</td>
+<td class="gt_row gt_left">07/06/2017</td>
+<td class="gt_row gt_right">7605</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">12</td>
+<td class="gt_row gt_left gt_striped">mrisdal</td>
+<td class="gt_row gt_left gt_striped">Meg Risdal</td>
+<td class="gt_row gt_left gt_striped">12/29/2015</td>
+<td class="gt_row gt_right gt_striped">6852</td></tr>
+    <tr><td class="gt_row gt_left">13</td>
+<td class="gt_row gt_left">cpmpml</td>
+<td class="gt_row gt_left">CPMP</td>
+<td class="gt_row gt_left">12/16/2012</td>
+<td class="gt_row gt_right">5931</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">14</td>
+<td class="gt_row gt_left gt_striped">christofhenkel</td>
+<td class="gt_row gt_left gt_striped">Dieter</td>
+<td class="gt_row gt_left gt_striped">11/17/2017</td>
+<td class="gt_row gt_right gt_striped">5517</td></tr>
+    <tr><td class="gt_row gt_left">15</td>
+<td class="gt_row gt_left">hengck23</td>
+<td class="gt_row gt_left">‎‎‎‎‎‎‎‎</td>
+<td class="gt_row gt_left">07/11/2013</td>
+<td class="gt_row gt_right">5244</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">16</td>
+<td class="gt_row gt_left gt_striped">philippsinger</td>
+<td class="gt_row gt_left gt_striped">Psi</td>
+<td class="gt_row gt_left gt_striped">03/29/2012</td>
+<td class="gt_row gt_right gt_striped">5232</td></tr>
+    <tr><td class="gt_row gt_left">17</td>
+<td class="gt_row gt_left">alexisbcook</td>
+<td class="gt_row gt_left">Alexis Cook</td>
+<td class="gt_row gt_left">12/11/2018</td>
+<td class="gt_row gt_right">5013</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">18</td>
+<td class="gt_row gt_left gt_striped">kazanova</td>
+<td class="gt_row gt_left gt_striped">Μαριος Μιχαηλιδης KazAnova</td>
+<td class="gt_row gt_left gt_striped">06/24/2013</td>
+<td class="gt_row gt_right gt_striped">4621</td></tr>
+    <tr><td class="gt_row gt_left">19</td>
+<td class="gt_row gt_left">wowfattie</td>
+<td class="gt_row gt_left">Guanshuo Xu</td>
+<td class="gt_row gt_left">12/02/2015</td>
+<td class="gt_row gt_right">4621</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">20</td>
+<td class="gt_row gt_left gt_striped">shivamb</td>
+<td class="gt_row gt_left gt_striped">Shivam Bansal</td>
+<td class="gt_row gt_left gt_striped">01/22/2018</td>
+<td class="gt_row gt_right gt_striped">4543</td></tr>
+    <tr><td class="gt_row gt_left">21</td>
+<td class="gt_row gt_left">jhoward</td>
+<td class="gt_row gt_left">Jeremy Howard</td>
+<td class="gt_row gt_left">10/13/2010</td>
+<td class="gt_row gt_right">4498</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">22</td>
+<td class="gt_row gt_left gt_striped">usharengaraju</td>
+<td class="gt_row gt_left gt_striped">Tensor Girl</td>
+<td class="gt_row gt_left gt_striped">06/27/2015</td>
+<td class="gt_row gt_right gt_striped">4270</td></tr>
+    <tr><td class="gt_row gt_left">23</td>
+<td class="gt_row gt_left">artgor</td>
+<td class="gt_row gt_left">Andrew Lukyanenko</td>
+<td class="gt_row gt_left">09/24/2016</td>
+<td class="gt_row gt_right">4180</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">24</td>
+<td class="gt_row gt_left gt_striped">anokas</td>
+<td class="gt_row gt_left gt_striped">anokas</td>
+<td class="gt_row gt_left gt_striped">01/16/2016</td>
+<td class="gt_row gt_right gt_striped">4017</td></tr>
+    <tr><td class="gt_row gt_left">25</td>
+<td class="gt_row gt_left">parulpandey</td>
+<td class="gt_row gt_left">Parul Pandey</td>
+<td class="gt_row gt_left">07/26/2015</td>
+<td class="gt_row gt_right">3974</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">26</td>
+<td class="gt_row gt_left gt_striped">gpreda</td>
+<td class="gt_row gt_left gt_striped">Gabriel Preda</td>
+<td class="gt_row gt_left gt_striped">10/27/2016</td>
+<td class="gt_row gt_right gt_striped">3961</td></tr>
+    <tr><td class="gt_row gt_left">27</td>
+<td class="gt_row gt_left">ruchi798</td>
+<td class="gt_row gt_left">Ruchi Bhatia</td>
+<td class="gt_row gt_left">06/04/2019</td>
+<td class="gt_row gt_right">3924</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">28</td>
+<td class="gt_row gt_left gt_striped">andradaolteanu</td>
+<td class="gt_row gt_left gt_striped">Andrada Olteanu</td>
+<td class="gt_row gt_left gt_striped">08/09/2019</td>
+<td class="gt_row gt_right gt_striped">3847</td></tr>
+    <tr><td class="gt_row gt_left">29</td>
+<td class="gt_row gt_left">zusmani</td>
+<td class="gt_row gt_left">Zeeshan-ul-hassan Usmani</td>
+<td class="gt_row gt_left">04/19/2016</td>
+<td class="gt_row gt_right">3669</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">30</td>
+<td class="gt_row gt_left gt_striped">rohanrao</td>
+<td class="gt_row gt_left gt_striped">Vopani</td>
+<td class="gt_row gt_left gt_striped">07/09/2013</td>
+<td class="gt_row gt_right gt_striped">3359</td></tr>
+    <tr><td class="gt_row gt_left">31</td>
+<td class="gt_row gt_left">colinmorris</td>
+<td class="gt_row gt_left">ColinMorris</td>
+<td class="gt_row gt_left">11/25/2015</td>
+<td class="gt_row gt_right">3280</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">32</td>
+<td class="gt_row gt_left gt_striped">kenjee</td>
+<td class="gt_row gt_left gt_striped">Ken Jee</td>
+<td class="gt_row gt_left gt_striped">06/28/2020</td>
+<td class="gt_row gt_right gt_striped">3162</td></tr>
+    <tr><td class="gt_row gt_left">33</td>
+<td class="gt_row gt_left">kashnitsky</td>
+<td class="gt_row gt_left">Yury Kashnitsky</td>
+<td class="gt_row gt_left">03/27/2014</td>
+<td class="gt_row gt_right">2730</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">34</td>
+<td class="gt_row gt_left gt_striped">frtgnn</td>
+<td class="gt_row gt_left gt_striped">Firat Gonen</td>
+<td class="gt_row gt_left gt_striped">10/07/2018</td>
+<td class="gt_row gt_right gt_striped">2556</td></tr>
+    <tr><td class="gt_row gt_left">35</td>
+<td class="gt_row gt_left">psilogram</td>
+<td class="gt_row gt_left">Silogram</td>
+<td class="gt_row gt_left">12/09/2012</td>
+<td class="gt_row gt_right">2552</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">36</td>
+<td class="gt_row gt_left gt_striped">mjahrer</td>
+<td class="gt_row gt_left gt_striped">Michael Jahrer</td>
+<td class="gt_row gt_left gt_striped">06/25/2010</td>
+<td class="gt_row gt_right gt_striped">2508</td></tr>
+    <tr><td class="gt_row gt_left">37</td>
+<td class="gt_row gt_left">raddar</td>
+<td class="gt_row gt_left">raddar</td>
+<td class="gt_row gt_left">08/24/2015</td>
+<td class="gt_row gt_right">2414</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">38</td>
+<td class="gt_row gt_left gt_striped">janiobachmann</td>
+<td class="gt_row gt_left gt_striped">Janio Martinez Bachmann</td>
+<td class="gt_row gt_left gt_striped">09/03/2017</td>
+<td class="gt_row gt_right gt_striped">2351</td></tr>
+    <tr><td class="gt_row gt_left">39</td>
+<td class="gt_row gt_left">mpwolke</td>
+<td class="gt_row gt_left">Marília Prata</td>
+<td class="gt_row gt_left">03/29/2019</td>
+<td class="gt_row gt_right">2322</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">40</td>
+<td class="gt_row gt_left gt_striped">allunia</td>
+<td class="gt_row gt_left gt_striped">Laura Fink</td>
+<td class="gt_row gt_left gt_striped">11/04/2015</td>
+<td class="gt_row gt_right gt_striped">2200</td></tr>
+    <tr><td class="gt_row gt_left">41</td>
+<td class="gt_row gt_left">zfturbo</td>
+<td class="gt_row gt_left">ZFTurbo</td>
+<td class="gt_row gt_left">11/08/2015</td>
+<td class="gt_row gt_right">2169</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">42</td>
+<td class="gt_row gt_left gt_striped">gaborfodor</td>
+<td class="gt_row gt_left gt_striped">beluga</td>
+<td class="gt_row gt_left gt_striped">10/05/2011</td>
+<td class="gt_row gt_right gt_striped">2133</td></tr>
+    <tr><td class="gt_row gt_left">43</td>
+<td class="gt_row gt_left">ogrellier</td>
+<td class="gt_row gt_left">olivier</td>
+<td class="gt_row gt_left">01/02/2016</td>
+<td class="gt_row gt_right">2111</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">44</td>
+<td class="gt_row gt_left gt_striped">arthurtok</td>
+<td class="gt_row gt_left gt_striped">Anisotropic</td>
+<td class="gt_row gt_left gt_striped">09/25/2016</td>
+<td class="gt_row gt_right gt_striped">2027</td></tr>
+    <tr><td class="gt_row gt_left">45</td>
+<td class="gt_row gt_left">kabure</td>
+<td class="gt_row gt_left">Leonardo Ferreira</td>
+<td class="gt_row gt_left">05/29/2017</td>
+<td class="gt_row gt_right">2003</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">46</td>
+<td class="gt_row gt_left gt_striped">sushize</td>
+<td class="gt_row gt_left gt_striped">Shize Su</td>
+<td class="gt_row gt_left gt_striped">02/06/2014</td>
+<td class="gt_row gt_right gt_striped">1989</td></tr>
+    <tr><td class="gt_row gt_left">47</td>
+<td class="gt_row gt_left">aerdem4</td>
+<td class="gt_row gt_left">Ahmet Erdem</td>
+<td class="gt_row gt_left">11/22/2015</td>
+<td class="gt_row gt_right">1958</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">48</td>
+<td class="gt_row gt_left gt_striped">stasg7</td>
+<td class="gt_row gt_left gt_striped">Stanislav Semenov</td>
+<td class="gt_row gt_left gt_striped">12/13/2013</td>
+<td class="gt_row gt_right gt_striped">1926</td></tr>
+    <tr><td class="gt_row gt_left">49</td>
+<td class="gt_row gt_left">onodera</td>
+<td class="gt_row gt_left">ONODERA</td>
+<td class="gt_row gt_left">03/24/2015</td>
+<td class="gt_row gt_right">1911</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">50</td>
+<td class="gt_row gt_left gt_striped">willkoehrsen</td>
+<td class="gt_row gt_left gt_striped">Will Koehrsen</td>
+<td class="gt_row gt_left gt_striped">03/20/2017</td>
+<td class="gt_row gt_right gt_striped">1895</td></tr>
+    <tr><td class="gt_row gt_left">51</td>
+<td class="gt_row gt_left">tanulsingh077</td>
+<td class="gt_row gt_left">Mr_KnowNothing</td>
+<td class="gt_row gt_left">02/04/2019</td>
+<td class="gt_row gt_right">1819</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">52</td>
+<td class="gt_row gt_left gt_striped">robikscube</td>
+<td class="gt_row gt_left gt_striped">Rob Mulla</td>
+<td class="gt_row gt_left gt_striped">06/18/2016</td>
+<td class="gt_row gt_right gt_striped">1799</td></tr>
+    <tr><td class="gt_row gt_left">53</td>
+<td class="gt_row gt_left">residentmario</td>
+<td class="gt_row gt_left">Aleksey Bilogur</td>
+<td class="gt_row gt_left">10/15/2016</td>
+<td class="gt_row gt_right">1765</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">54</td>
+<td class="gt_row gt_left gt_striped">subinium</td>
+<td class="gt_row gt_left gt_striped">Subin An</td>
+<td class="gt_row gt_left gt_striped">01/07/2019</td>
+<td class="gt_row gt_right gt_striped">1764</td></tr>
+    <tr><td class="gt_row gt_left">55</td>
+<td class="gt_row gt_left">andrewmvd</td>
+<td class="gt_row gt_left">Larxel</td>
+<td class="gt_row gt_left">11/15/2016</td>
+<td class="gt_row gt_right">1740</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">56</td>
+<td class="gt_row gt_left gt_striped">pmarcelino</td>
+<td class="gt_row gt_left gt_striped">Pedro Marcelino, PhD</td>
+<td class="gt_row gt_left gt_striped">03/15/2014</td>
+<td class="gt_row gt_right gt_striped">1717</td></tr>
+    <tr><td class="gt_row gt_left">57</td>
+<td class="gt_row gt_left">serigne</td>
+<td class="gt_row gt_left">Serigne</td>
+<td class="gt_row gt_left">03/18/2017</td>
+<td class="gt_row gt_right">1680</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">58</td>
+<td class="gt_row gt_left gt_striped">kyakovlev</td>
+<td class="gt_row gt_left gt_striped">Konstantin Yakovlev</td>
+<td class="gt_row gt_left gt_striped">10/25/2018</td>
+<td class="gt_row gt_right gt_striped">1676</td></tr>
+    <tr><td class="gt_row gt_left">59</td>
+<td class="gt_row gt_left">confirm</td>
+<td class="gt_row gt_left">Kohei</td>
+<td class="gt_row gt_left">02/16/2011</td>
+<td class="gt_row gt_right">1649</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">60</td>
+<td class="gt_row gt_left gt_striped">kmader</td>
+<td class="gt_row gt_left gt_striped">K Scott Mader</td>
+<td class="gt_row gt_left gt_striped">11/04/2012</td>
+<td class="gt_row gt_right gt_striped">1614</td></tr>
+    <tr><td class="gt_row gt_left">61</td>
+<td class="gt_row gt_left">mjbahmani</td>
+<td class="gt_row gt_left">MJ Bahmani</td>
+<td class="gt_row gt_left">04/20/2018</td>
+<td class="gt_row gt_right">1611</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">62</td>
+<td class="gt_row gt_left gt_striped">karnikakapoor</td>
+<td class="gt_row gt_left gt_striped">Karnika Kapoor</td>
+<td class="gt_row gt_left gt_striped">06/27/2019</td>
+<td class="gt_row gt_right gt_striped">1601</td></tr>
+    <tr><td class="gt_row gt_left">63</td>
+<td class="gt_row gt_left">jesucristo</td>
+<td class="gt_row gt_left">Nanashi</td>
+<td class="gt_row gt_left">02/04/2019</td>
+<td class="gt_row gt_right">1596</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">64</td>
+<td class="gt_row gt_left gt_striped">tarunpaparaju</td>
+<td class="gt_row gt_left gt_striped">Tarun Paparaju</td>
+<td class="gt_row gt_left gt_striped">10/22/2017</td>
+<td class="gt_row gt_right gt_striped">1590</td></tr>
+    <tr><td class="gt_row gt_left">65</td>
+<td class="gt_row gt_left">jiweiliu</td>
+<td class="gt_row gt_left">Jiwei Liu</td>
+<td class="gt_row gt_left">05/09/2013</td>
+<td class="gt_row gt_right">1547</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">66</td>
+<td class="gt_row gt_left gt_striped">pengyan</td>
+<td class="gt_row gt_left gt_striped">Eureka</td>
+<td class="gt_row gt_left gt_striped">02/28/2014</td>
+<td class="gt_row gt_right gt_striped">1544</td></tr>
+    <tr><td class="gt_row gt_left">67</td>
+<td class="gt_row gt_left">paultimothymooney</td>
+<td class="gt_row gt_left">Paul Mooney</td>
+<td class="gt_row gt_left">10/05/2017</td>
+<td class="gt_row gt_right">1528</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">68</td>
+<td class="gt_row gt_left gt_striped">benhamner</td>
+<td class="gt_row gt_left gt_striped">Ben Hamner</td>
+<td class="gt_row gt_left gt_striped">05/31/2010</td>
+<td class="gt_row gt_right gt_striped">1526</td></tr>
+    <tr><td class="gt_row gt_left">69</td>
+<td class="gt_row gt_left">prashant111</td>
+<td class="gt_row gt_left">Prashant Banerjee</td>
+<td class="gt_row gt_left">05/17/2018</td>
+<td class="gt_row gt_right">1486</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">70</td>
+<td class="gt_row gt_left gt_striped">iglovikov</td>
+<td class="gt_row gt_left gt_striped">Vladimir Iglovikov</td>
+<td class="gt_row gt_left gt_striped">01/28/2015</td>
+<td class="gt_row gt_right gt_striped">1465</td></tr>
+    <tr><td class="gt_row gt_left">71</td>
+<td class="gt_row gt_left">gogo827jz</td>
+<td class="gt_row gt_left">Yirun Zhang</td>
+<td class="gt_row gt_left">05/04/2019</td>
+<td class="gt_row gt_right">1393</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">72</td>
+<td class="gt_row gt_left gt_striped">haqishen</td>
+<td class="gt_row gt_left gt_striped">Qishen Ha</td>
+<td class="gt_row gt_left gt_striped">10/22/2015</td>
+<td class="gt_row gt_right gt_striped">1357</td></tr>
+    <tr><td class="gt_row gt_left">73</td>
+<td class="gt_row gt_left">dyakonov</td>
+<td class="gt_row gt_left">Alexander D'yakonov</td>
+<td class="gt_row gt_left">09/28/2010</td>
+<td class="gt_row gt_right">1346</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">74</td>
+<td class="gt_row gt_left gt_striped">selimsef</td>
+<td class="gt_row gt_left gt_striped">Selim Seferbekov</td>
+<td class="gt_row gt_left gt_striped">02/20/2016</td>
+<td class="gt_row gt_right gt_striped">1334</td></tr>
+    <tr><td class="gt_row gt_left">75</td>
+<td class="gt_row gt_left">mariofilho</td>
+<td class="gt_row gt_left">Mario Filho</td>
+<td class="gt_row gt_left">06/08/2013</td>
+<td class="gt_row gt_right">1329</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">76</td>
+<td class="gt_row gt_left gt_striped">jpmiller</td>
+<td class="gt_row gt_left gt_striped">JohnM</td>
+<td class="gt_row gt_left gt_striped">05/31/2015</td>
+<td class="gt_row gt_right gt_striped">1319</td></tr>
+    <tr><td class="gt_row gt_left">77</td>
+<td class="gt_row gt_left">yasufuminakama</td>
+<td class="gt_row gt_left">Y.Nakama</td>
+<td class="gt_row gt_left">03/06/2018</td>
+<td class="gt_row gt_right">1267</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">78</td>
+<td class="gt_row gt_left gt_striped">erikbruin</td>
+<td class="gt_row gt_left gt_striped">Erik Bruin</td>
+<td class="gt_row gt_left gt_striped">11/24/2017</td>
+<td class="gt_row gt_right gt_striped">1243</td></tr>
+    <tr><td class="gt_row gt_left">79</td>
+<td class="gt_row gt_left">inversion</td>
+<td class="gt_row gt_left">inversion</td>
+<td class="gt_row gt_left">09/21/2012</td>
+<td class="gt_row gt_right">1232</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">80</td>
+<td class="gt_row gt_left gt_striped">konradb</td>
+<td class="gt_row gt_left gt_striped">Konrad Banachewicz</td>
+<td class="gt_row gt_left gt_striped">08/03/2010</td>
+<td class="gt_row gt_right gt_striped">1230</td></tr>
+    <tr><td class="gt_row gt_left">81</td>
+<td class="gt_row gt_left">dott1718</td>
+<td class="gt_row gt_left">dott</td>
+<td class="gt_row gt_left">02/14/2013</td>
+<td class="gt_row gt_right">1181</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">82</td>
+<td class="gt_row gt_left gt_striped">gunesevitan</td>
+<td class="gt_row gt_left gt_striped">Gunes Evitan</td>
+<td class="gt_row gt_left gt_striped">01/15/2019</td>
+<td class="gt_row gt_right gt_striped">1177</td></tr>
+    <tr><td class="gt_row gt_left">83</td>
+<td class="gt_row gt_left">youhanlee</td>
+<td class="gt_row gt_left">YouHan Lee</td>
+<td class="gt_row gt_left">07/05/2017</td>
+<td class="gt_row gt_right">1162</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">84</td>
+<td class="gt_row gt_left gt_striped">jessicali9530</td>
+<td class="gt_row gt_left gt_striped">Jessica Li</td>
+<td class="gt_row gt_left gt_striped">03/29/2018</td>
+<td class="gt_row gt_right gt_striped">1154</td></tr>
+    <tr><td class="gt_row gt_left">85</td>
+<td class="gt_row gt_left">vbmokin</td>
+<td class="gt_row gt_left">Vitalii Mokin</td>
+<td class="gt_row gt_left">04/07/2018</td>
+<td class="gt_row gt_right">1138</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">86</td>
+<td class="gt_row gt_left gt_striped">mmueller</td>
+<td class="gt_row gt_left gt_striped">Faron</td>
+<td class="gt_row gt_left gt_striped">06/23/2014</td>
+<td class="gt_row gt_right gt_striped">1134</td></tr>
+    <tr><td class="gt_row gt_left">87</td>
+<td class="gt_row gt_left">ekrembayar</td>
+<td class="gt_row gt_left">Ekrem Bayar</td>
+<td class="gt_row gt_left">05/03/2017</td>
+<td class="gt_row gt_right">1119</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">88</td>
+<td class="gt_row gt_left gt_striped">speculation</td>
+<td class="gt_row gt_left gt_striped">idle_speculation</td>
+<td class="gt_row gt_left gt_striped">07/13/2013</td>
+<td class="gt_row gt_right gt_striped">1105</td></tr>
+    <tr><td class="gt_row gt_left">89</td>
+<td class="gt_row gt_left">xiaozhouwang</td>
+<td class="gt_row gt_left">Little Boat</td>
+<td class="gt_row gt_left">04/20/2014</td>
+<td class="gt_row gt_right">1101</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">90</td>
+<td class="gt_row gt_left gt_striped">shixw125</td>
+<td class="gt_row gt_left gt_striped">weiwei</td>
+<td class="gt_row gt_left gt_striped">04/16/2016</td>
+<td class="gt_row gt_right gt_striped">1066</td></tr>
+    <tr><td class="gt_row gt_left">91</td>
+<td class="gt_row gt_left">shentao</td>
+<td class="gt_row gt_left">SeuTao</td>
+<td class="gt_row gt_left">04/16/2017</td>
+<td class="gt_row gt_right">1062</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">92</td>
+<td class="gt_row gt_left gt_striped">wcukierski</td>
+<td class="gt_row gt_left gt_striped">Will Cukierski</td>
+<td class="gt_row gt_left gt_striped">10/13/2010</td>
+<td class="gt_row gt_right gt_striped">1057</td></tr>
+    <tr><td class="gt_row gt_left">93</td>
+<td class="gt_row gt_left">ryanholbrook</td>
+<td class="gt_row gt_left">Ryan Holbrook</td>
+<td class="gt_row gt_left">06/19/2018</td>
+<td class="gt_row gt_right">1038</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">94</td>
+<td class="gt_row gt_left gt_striped">mathurinache</td>
+<td class="gt_row gt_left gt_striped">Mathurin Aché</td>
+<td class="gt_row gt_left gt_striped">10/11/2011</td>
+<td class="gt_row gt_right gt_striped">1024</td></tr>
+    <tr><td class="gt_row gt_left">95</td>
+<td class="gt_row gt_left">xhlulu</td>
+<td class="gt_row gt_left">xhlulu</td>
+<td class="gt_row gt_left">10/12/2018</td>
+<td class="gt_row gt_right">1022</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">96</td>
+<td class="gt_row gt_left gt_striped">xvivancos</td>
+<td class="gt_row gt_left gt_striped">Xavier</td>
+<td class="gt_row gt_left gt_striped">07/06/2017</td>
+<td class="gt_row gt_right gt_striped">1001</td></tr>
+    <tr><td class="gt_row gt_left">97</td>
+<td class="gt_row gt_left">krishnaik06</td>
+<td class="gt_row gt_left">Krish Naik</td>
+<td class="gt_row gt_left">06/06/2018</td>
+<td class="gt_row gt_right">999</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">98</td>
+<td class="gt_row gt_left gt_striped">carloshuertas</td>
+<td class="gt_row gt_left gt_striped">NxGTR</td>
+<td class="gt_row gt_left gt_striped">11/25/2014</td>
+<td class="gt_row gt_right gt_striped">997</td></tr>
+    <tr><td class="gt_row gt_left">99</td>
+<td class="gt_row gt_left">antgoldbloom</td>
+<td class="gt_row gt_left">Anthony Goldbloom</td>
+<td class="gt_row gt_left">01/20/2010</td>
+<td class="gt_row gt_right">996</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">100</td>
+<td class="gt_row gt_left gt_striped">alexxanderlarko</td>
+<td class="gt_row gt_left gt_striped">Alexander  Larko</td>
+<td class="gt_row gt_left gt_striped">05/14/2010</td>
+<td class="gt_row gt_right gt_striped">990</td></tr>
+    <tr><td class="gt_row gt_left">101</td>
+<td class="gt_row gt_left">plantsgo</td>
+<td class="gt_row gt_left">plantsgo</td>
+<td class="gt_row gt_left">10/12/2016</td>
+<td class="gt_row gt_right">986</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">102</td>
+<td class="gt_row gt_left gt_striped">nguyenbadung</td>
+<td class="gt_row gt_left gt_striped">DungNB</td>
+<td class="gt_row gt_left gt_striped">11/06/2017</td>
+<td class="gt_row gt_right gt_striped">977</td></tr>
+    <tr><td class="gt_row gt_left">103</td>
+<td class="gt_row gt_left">faressayah</td>
+<td class="gt_row gt_left">Fares Sayah</td>
+<td class="gt_row gt_left">06/18/2019</td>
+<td class="gt_row gt_right">977</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">104</td>
+<td class="gt_row gt_left gt_striped">bishwarup</td>
+<td class="gt_row gt_left gt_striped">Bishwarup B</td>
+<td class="gt_row gt_left gt_striped">02/25/2015</td>
+<td class="gt_row gt_right gt_striped">968</td></tr>
+    <tr><td class="gt_row gt_left">105</td>
+<td class="gt_row gt_left">santiagomota</td>
+<td class="gt_row gt_left">Santiago Mota</td>
+<td class="gt_row gt_left">02/26/2013</td>
+<td class="gt_row gt_right">948</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">106</td>
+<td class="gt_row gt_left gt_striped">ash316</td>
+<td class="gt_row gt_left gt_striped">Ashwini Swain</td>
+<td class="gt_row gt_left gt_striped">10/05/2016</td>
+<td class="gt_row gt_right gt_striped">947</td></tr>
+    <tr><td class="gt_row gt_left">107</td>
+<td class="gt_row gt_left">iafoss</td>
+<td class="gt_row gt_left">Iafoss</td>
+<td class="gt_row gt_left">08/12/2017</td>
+<td class="gt_row gt_right">943</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">108</td>
+<td class="gt_row gt_left gt_striped">startupsci</td>
+<td class="gt_row gt_left gt_striped">Manav Sehgal</td>
+<td class="gt_row gt_left gt_striped">11/28/2016</td>
+<td class="gt_row gt_right gt_striped">932</td></tr>
+    <tr><td class="gt_row gt_left">109</td>
+<td class="gt_row gt_left">outrunner</td>
+<td class="gt_row gt_left">outrunner</td>
+<td class="gt_row gt_left">02/28/2017</td>
+<td class="gt_row gt_right">931</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">110</td>
+<td class="gt_row gt_left gt_striped">carlmcbrideellis</td>
+<td class="gt_row gt_left gt_striped">Carl McBride Ellis</td>
+<td class="gt_row gt_left gt_striped">11/17/2019</td>
+<td class="gt_row gt_right gt_striped">931</td></tr>
+    <tr><td class="gt_row gt_left">111</td>
+<td class="gt_row gt_left">pavansanagapati</td>
+<td class="gt_row gt_left">Pavan Sanagapati</td>
+<td class="gt_row gt_left">01/18/2018</td>
+<td class="gt_row gt_right">930</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">112</td>
+<td class="gt_row gt_left gt_striped">dmytropoplavskiy</td>
+<td class="gt_row gt_left gt_striped">Dmytro Poplavskiy</td>
+<td class="gt_row gt_left gt_striped">10/07/2016</td>
+<td class="gt_row gt_right gt_striped">927</td></tr>
+    <tr><td class="gt_row gt_left">113</td>
+<td class="gt_row gt_left">poonaml</td>
+<td class="gt_row gt_left">Poonam Ligade</td>
+<td class="gt_row gt_left">01/02/2015</td>
+<td class="gt_row gt_right">916</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">114</td>
+<td class="gt_row gt_left gt_striped">yassineghouzam</td>
+<td class="gt_row gt_left gt_striped">Yassine Ghouzam</td>
+<td class="gt_row gt_left gt_striped">07/06/2017</td>
+<td class="gt_row gt_right gt_striped">911</td></tr>
+    <tr><td class="gt_row gt_left">115</td>
+<td class="gt_row gt_left">lucamassaron</td>
+<td class="gt_row gt_left">Luca Massaron</td>
+<td class="gt_row gt_left">10/26/2011</td>
+<td class="gt_row gt_right">903</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">116</td>
+<td class="gt_row gt_left gt_striped">crawford</td>
+<td class="gt_row gt_left gt_striped">Chris Crawford</td>
+<td class="gt_row gt_left gt_striped">12/09/2015</td>
+<td class="gt_row gt_right gt_striped">896</td></tr>
+    <tr><td class="gt_row gt_left">117</td>
+<td class="gt_row gt_left">brandenkmurray</td>
+<td class="gt_row gt_left">Branden Murray</td>
+<td class="gt_row gt_left">12/21/2013</td>
+<td class="gt_row gt_right">894</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">118</td>
+<td class="gt_row gt_left gt_striped">sasrdw</td>
+<td class="gt_row gt_left gt_striped">Russ Wolfinger</td>
+<td class="gt_row gt_left gt_striped">07/30/2015</td>
+<td class="gt_row gt_right gt_striped">892</td></tr>
+    <tr><td class="gt_row gt_left">119</td>
+<td class="gt_row gt_left">alijs1</td>
+<td class="gt_row gt_left">alijs</td>
+<td class="gt_row gt_left">07/20/2016</td>
+<td class="gt_row gt_right">892</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">120</td>
+<td class="gt_row gt_left gt_striped">init27</td>
+<td class="gt_row gt_left gt_striped">Sanyam Bhutani</td>
+<td class="gt_row gt_left gt_striped">04/04/2018</td>
+<td class="gt_row gt_right gt_striped">889</td></tr>
+    <tr><td class="gt_row gt_left">121</td>
+<td class="gt_row gt_left">lavanyashukla01</td>
+<td class="gt_row gt_left">Lavanya Shukla</td>
+<td class="gt_row gt_left">02/23/2018</td>
+<td class="gt_row gt_right">876</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">122</td>
+<td class="gt_row gt_left gt_striped">tvdwiele</td>
+<td class="gt_row gt_left gt_striped">Tom Van de Wiele</td>
+<td class="gt_row gt_left gt_striped">04/11/2016</td>
+<td class="gt_row gt_right gt_striped">868</td></tr>
+    <tr><td class="gt_row gt_left">123</td>
+<td class="gt_row gt_left">pudae81</td>
+<td class="gt_row gt_left">pudae</td>
+<td class="gt_row gt_left">01/01/2017</td>
+<td class="gt_row gt_right">863</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">124</td>
+<td class="gt_row gt_left gt_striped">mathormad</td>
+<td class="gt_row gt_left gt_striped">KeepLearning</td>
+<td class="gt_row gt_left gt_striped">04/24/2017</td>
+<td class="gt_row gt_right gt_striped">862</td></tr>
+    <tr><td class="gt_row gt_left">125</td>
+<td class="gt_row gt_left">dmitrylarko</td>
+<td class="gt_row gt_left">Dmitry Larko</td>
+<td class="gt_row gt_left">10/20/2012</td>
+<td class="gt_row gt_right">861</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">126</td>
+<td class="gt_row gt_left gt_striped">upadorprofzs</td>
+<td class="gt_row gt_left gt_striped">Murilão</td>
+<td class="gt_row gt_left gt_striped">09/20/2019</td>
+<td class="gt_row gt_right gt_striped">850</td></tr>
+    <tr><td class="gt_row gt_left">127</td>
+<td class="gt_row gt_left">shonenkov</td>
+<td class="gt_row gt_left">Alex Shonenkov</td>
+<td class="gt_row gt_left">05/17/2018</td>
+<td class="gt_row gt_right">825</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">128</td>
+<td class="gt_row gt_left gt_striped">shujian</td>
+<td class="gt_row gt_left gt_striped">Shujian Liu</td>
+<td class="gt_row gt_left gt_striped">02/05/2016</td>
+<td class="gt_row gt_right gt_striped">822</td></tr>
+    <tr><td class="gt_row gt_left">129</td>
+<td class="gt_row gt_left">owenzhang1</td>
+<td class="gt_row gt_left">Owen</td>
+<td class="gt_row gt_left">04/04/2011</td>
+<td class="gt_row gt_right">820</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">130</td>
+<td class="gt_row gt_left gt_striped">pavelost</td>
+<td class="gt_row gt_left gt_striped">Pavel Ostyakov</td>
+<td class="gt_row gt_left gt_striped">02/23/2016</td>
+<td class="gt_row gt_right gt_striped">817</td></tr>
+    <tr><td class="gt_row gt_left">131</td>
+<td class="gt_row gt_left">wendykan</td>
+<td class="gt_row gt_left">Wendy Kan</td>
+<td class="gt_row gt_left">04/01/2012</td>
+<td class="gt_row gt_right">789</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">132</td>
+<td class="gt_row gt_left gt_striped">drn01z3</td>
+<td class="gt_row gt_left gt_striped">n01z3</td>
+<td class="gt_row gt_left gt_striped">08/27/2015</td>
+<td class="gt_row gt_right gt_striped">780</td></tr>
+    <tr><td class="gt_row gt_left">133</td>
+<td class="gt_row gt_left">andreshg</td>
+<td class="gt_row gt_left">AndresHG</td>
+<td class="gt_row gt_left">07/25/2019</td>
+<td class="gt_row gt_right">780</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">134</td>
+<td class="gt_row gt_left gt_striped">yogeshtak</td>
+<td class="gt_row gt_left gt_striped">Yogesh Tak</td>
+<td class="gt_row gt_left gt_striped">12/01/2018</td>
+<td class="gt_row gt_right gt_striped">778</td></tr>
+    <tr><td class="gt_row gt_left">135</td>
+<td class="gt_row gt_left">fatihozturk</td>
+<td class="gt_row gt_left">Fatih Ozturk</td>
+<td class="gt_row gt_left">01/11/2017</td>
+<td class="gt_row gt_right">774</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">136</td>
+<td class="gt_row gt_left gt_striped">mobassir</td>
+<td class="gt_row gt_left gt_striped">Mobassir</td>
+<td class="gt_row gt_left gt_striped">07/01/2018</td>
+<td class="gt_row gt_right gt_striped">772</td></tr>
+    <tr><td class="gt_row gt_left">137</td>
+<td class="gt_row gt_left">theoviel</td>
+<td class="gt_row gt_left">Theo Viel</td>
+<td class="gt_row gt_left">07/12/2018</td>
+<td class="gt_row gt_right">772</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">138</td>
+<td class="gt_row gt_left gt_striped">rsakata</td>
+<td class="gt_row gt_left gt_striped">Jack (Japan)</td>
+<td class="gt_row gt_left gt_striped">02/26/2014</td>
+<td class="gt_row gt_right gt_striped">747</td></tr>
+    <tr><td class="gt_row gt_left">139</td>
+<td class="gt_row gt_left">phalanx</td>
+<td class="gt_row gt_left">phalanx</td>
+<td class="gt_row gt_left">02/08/2018</td>
+<td class="gt_row gt_right">745</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">140</td>
+<td class="gt_row gt_left gt_striped">shtrausslearning</td>
+<td class="gt_row gt_left gt_striped">Andrey Shtrauss</td>
+<td class="gt_row gt_left gt_striped">11/04/2020</td>
+<td class="gt_row gt_right gt_striped">741</td></tr>
+    <tr><td class="gt_row gt_left">141</td>
+<td class="gt_row gt_left">leecming</td>
+<td class="gt_row gt_left">Chun Ming Lee</td>
+<td class="gt_row gt_left">04/18/2017</td>
+<td class="gt_row gt_right">733</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">142</td>
+<td class="gt_row gt_left gt_striped">limerobot</td>
+<td class="gt_row gt_left gt_striped">Limerobot</td>
+<td class="gt_row gt_left gt_striped">02/22/2018</td>
+<td class="gt_row gt_right gt_striped">727</td></tr>
+    <tr><td class="gt_row gt_left">143</td>
+<td class="gt_row gt_left">its7171</td>
+<td class="gt_row gt_left">tito</td>
+<td class="gt_row gt_left">03/06/2016</td>
+<td class="gt_row gt_right">726</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">144</td>
+<td class="gt_row gt_left gt_striped">tilii7</td>
+<td class="gt_row gt_left gt_striped">Tilii</td>
+<td class="gt_row gt_left gt_striped">03/06/2016</td>
+<td class="gt_row gt_right gt_striped">723</td></tr>
+    <tr><td class="gt_row gt_left">145</td>
+<td class="gt_row gt_left">aharless</td>
+<td class="gt_row gt_left">Andy Harless</td>
+<td class="gt_row gt_left">01/21/2017</td>
+<td class="gt_row gt_right">708</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">146</td>
+<td class="gt_row gt_left gt_striped">sishihara</td>
+<td class="gt_row gt_left gt_striped">u++</td>
+<td class="gt_row gt_left gt_striped">02/09/2018</td>
+<td class="gt_row gt_right gt_striped">691</td></tr>
+    <tr><td class="gt_row gt_left">147</td>
+<td class="gt_row gt_left">ashhafez</td>
+<td class="gt_row gt_left">ash hafez</td>
+<td class="gt_row gt_left">11/04/2014</td>
+<td class="gt_row gt_right">683</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">148</td>
+<td class="gt_row gt_left gt_striped">ashishpatel26</td>
+<td class="gt_row gt_left gt_striped">NowYSM</td>
+<td class="gt_row gt_left gt_striped">01/07/2017</td>
+<td class="gt_row gt_right gt_striped">682</td></tr>
+    <tr><td class="gt_row gt_left">149</td>
+<td class="gt_row gt_left">lopuhin</td>
+<td class="gt_row gt_left">Konstantin Lopuhin</td>
+<td class="gt_row gt_left">10/27/2011</td>
+<td class="gt_row gt_right">681</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">150</td>
+<td class="gt_row gt_left gt_striped">addisonhoward</td>
+<td class="gt_row gt_left gt_striped">Addison Howard</td>
+<td class="gt_row gt_left gt_striped">05/26/2017</td>
+<td class="gt_row gt_right gt_striped">681</td></tr>
+    <tr><td class="gt_row gt_left">151</td>
+<td class="gt_row gt_left">thebrownviking20</td>
+<td class="gt_row gt_left">Siddharth Yadav</td>
+<td class="gt_row gt_left">12/20/2017</td>
+<td class="gt_row gt_right">677</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">152</td>
+<td class="gt_row gt_left gt_striped">sentdex</td>
+<td class="gt_row gt_left gt_striped">Sentdex</td>
+<td class="gt_row gt_left gt_striped">09/26/2016</td>
+<td class="gt_row gt_right gt_striped">673</td></tr>
+    <tr><td class="gt_row gt_left">153</td>
+<td class="gt_row gt_left">khotijahs1</td>
+<td class="gt_row gt_left">Siti Khotijah</td>
+<td class="gt_row gt_left">11/30/2018</td>
+<td class="gt_row gt_right">665</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">154</td>
+<td class="gt_row gt_left gt_striped">ohseokkim</td>
+<td class="gt_row gt_left gt_striped">OH SEOK KIM</td>
+<td class="gt_row gt_left gt_striped">04/25/2020</td>
+<td class="gt_row gt_right gt_striped">661</td></tr>
+    <tr><td class="gt_row gt_left">155</td>
+<td class="gt_row gt_left">isaienkov</td>
+<td class="gt_row gt_left">Kostiantyn Isaienkov</td>
+<td class="gt_row gt_left">09/28/2016</td>
+<td class="gt_row gt_right">649</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">156</td>
+<td class="gt_row gt_left gt_striped">ilu000</td>
+<td class="gt_row gt_left gt_striped">Ilu</td>
+<td class="gt_row gt_left gt_striped">01/05/2019</td>
+<td class="gt_row gt_right gt_striped">647</td></tr>
+    <tr><td class="gt_row gt_left">157</td>
+<td class="gt_row gt_left">scirpus</td>
+<td class="gt_row gt_left">Scirpus</td>
+<td class="gt_row gt_left">09/29/2014</td>
+<td class="gt_row gt_right">643</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">158</td>
+<td class="gt_row gt_left gt_striped">sohier</td>
+<td class="gt_row gt_left gt_striped">Sohier Dane</td>
+<td class="gt_row gt_left gt_striped">06/19/2017</td>
+<td class="gt_row gt_right gt_striped">642</td></tr>
+    <tr><td class="gt_row gt_left">159</td>
+<td class="gt_row gt_left">ibtesama</td>
+<td class="gt_row gt_left">Ibtesam Ahmed</td>
+<td class="gt_row gt_left">02/05/2018</td>
+<td class="gt_row gt_right">638</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">160</td>
+<td class="gt_row gt_left gt_striped">alexryzhkov</td>
+<td class="gt_row gt_left gt_striped">Alexander Ryzhkov</td>
+<td class="gt_row gt_left gt_striped">10/22/2011</td>
+<td class="gt_row gt_right gt_striped">635</td></tr>
+    <tr><td class="gt_row gt_left">161</td>
+<td class="gt_row gt_left">adnanzaidi</td>
+<td class="gt_row gt_left">Adnan Zaidi</td>
+<td class="gt_row gt_left">04/03/2018</td>
+<td class="gt_row gt_right">635</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">162</td>
+<td class="gt_row gt_left gt_striped">fchollet</td>
+<td class="gt_row gt_left gt_striped">fchollet</td>
+<td class="gt_row gt_left gt_striped">09/01/2013</td>
+<td class="gt_row gt_right gt_striped">634</td></tr>
+    <tr><td class="gt_row gt_left">163</td>
+<td class="gt_row gt_left">nimashahbazi</td>
+<td class="gt_row gt_left">Nima Shahbazi</td>
+<td class="gt_row gt_left">04/20/2015</td>
+<td class="gt_row gt_right">630</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">164</td>
+<td class="gt_row gt_left gt_striped">iamleonie</td>
+<td class="gt_row gt_left gt_striped">Leonie</td>
+<td class="gt_row gt_left gt_striped">10/08/2019</td>
+<td class="gt_row gt_right gt_striped">626</td></tr>
+    <tr><td class="gt_row gt_left">165</td>
+<td class="gt_row gt_left">codename007</td>
+<td class="gt_row gt_left">Lathwal</td>
+<td class="gt_row gt_left">04/11/2017</td>
+<td class="gt_row gt_right">621</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">166</td>
+<td class="gt_row gt_left gt_striped">shaz13</td>
+<td class="gt_row gt_left gt_striped">Mohammad Shahebaz</td>
+<td class="gt_row gt_left gt_striped">07/08/2017</td>
+<td class="gt_row gt_right gt_striped">621</td></tr>
+    <tr><td class="gt_row gt_left">167</td>
+<td class="gt_row gt_left">pranav84</td>
+<td class="gt_row gt_left">Pranav Pandya</td>
+<td class="gt_row gt_left">10/08/2016</td>
+<td class="gt_row gt_right">618</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">168</td>
+<td class="gt_row gt_left gt_striped">fedesoriano</td>
+<td class="gt_row gt_left gt_striped">fedesoriano</td>
+<td class="gt_row gt_left gt_striped">12/18/2020</td>
+<td class="gt_row gt_right gt_striped">618</td></tr>
+    <tr><td class="gt_row gt_left">169</td>
+<td class="gt_row gt_left">dschettler8845</td>
+<td class="gt_row gt_left">Darien Schettler</td>
+<td class="gt_row gt_left">02/14/2018</td>
+<td class="gt_row gt_right">616</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">170</td>
+<td class="gt_row gt_left gt_striped">dimitreoliveira</td>
+<td class="gt_row gt_left gt_striped">DimitreOliveira</td>
+<td class="gt_row gt_left gt_striped">07/23/2017</td>
+<td class="gt_row gt_right gt_striped">612</td></tr>
+    <tr><td class="gt_row gt_left">171</td>
+<td class="gt_row gt_left">fabiendaniel</td>
+<td class="gt_row gt_left">FabienDaniel</td>
+<td class="gt_row gt_left">12/07/2016</td>
+<td class="gt_row gt_right">599</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">172</td>
+<td class="gt_row gt_left gt_striped">shivavashishtha</td>
+<td class="gt_row gt_left gt_striped">Shiva Vashishtha</td>
+<td class="gt_row gt_left gt_striped">04/27/2020</td>
+<td class="gt_row gt_right gt_striped">599</td></tr>
+    <tr><td class="gt_row gt_left">173</td>
+<td class="gt_row gt_left">yifanxie</td>
+<td class="gt_row gt_left">Yifan Xie</td>
+<td class="gt_row gt_left">12/19/2013</td>
+<td class="gt_row gt_right">596</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">174</td>
+<td class="gt_row gt_left gt_striped">chenglongchen</td>
+<td class="gt_row gt_left gt_striped">ChenglongChen</td>
+<td class="gt_row gt_left gt_striped">05/21/2013</td>
+<td class="gt_row gt_right gt_striped">594</td></tr>
+    <tr><td class="gt_row gt_left">175</td>
+<td class="gt_row gt_left">ihelon</td>
+<td class="gt_row gt_left">Yaroslav Isaienkov</td>
+<td class="gt_row gt_left">10/05/2017</td>
+<td class="gt_row gt_right">583</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">176</td>
+<td class="gt_row gt_left gt_striped">awsaf49</td>
+<td class="gt_row gt_left gt_striped">Awsaf</td>
+<td class="gt_row gt_left gt_striped">08/12/2019</td>
+<td class="gt_row gt_right gt_striped">583</td></tr>
+    <tr><td class="gt_row gt_left">177</td>
+<td class="gt_row gt_left">remekkinas</td>
+<td class="gt_row gt_left">Remek Kinas</td>
+<td class="gt_row gt_left">04/03/2020</td>
+<td class="gt_row gt_right">579</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">178</td>
+<td class="gt_row gt_left gt_striped">ryches</td>
+<td class="gt_row gt_left gt_striped">ryches</td>
+<td class="gt_row gt_left gt_striped">04/21/2017</td>
+<td class="gt_row gt_right gt_striped">571</td></tr>
+    <tr><td class="gt_row gt_left">179</td>
+<td class="gt_row gt_left">ambrosm</td>
+<td class="gt_row gt_left">AmbrosM</td>
+<td class="gt_row gt_left">07/16/2021</td>
+<td class="gt_row gt_right">571</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">180</td>
+<td class="gt_row gt_left gt_striped">jonathanbouchet</td>
+<td class="gt_row gt_left gt_striped">Jonathan Bouchet</td>
+<td class="gt_row gt_left gt_striped">12/18/2015</td>
+<td class="gt_row gt_right gt_striped">570</td></tr>
+    <tr><td class="gt_row gt_left">181</td>
+<td class="gt_row gt_left">currypurin</td>
+<td class="gt_row gt_left">currypurin</td>
+<td class="gt_row gt_left">03/04/2017</td>
+<td class="gt_row gt_right">568</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">182</td>
+<td class="gt_row gt_left gt_striped">alexanderliao</td>
+<td class="gt_row gt_left gt_striped">Liao</td>
+<td class="gt_row gt_left gt_striped">10/12/2017</td>
+<td class="gt_row gt_right gt_striped">566</td></tr>
+    <tr><td class="gt_row gt_left">183</td>
+<td class="gt_row gt_left">kylelee</td>
+<td class="gt_row gt_left">Kyle Lee</td>
+<td class="gt_row gt_left">12/30/2015</td>
+<td class="gt_row gt_right">564</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">184</td>
+<td class="gt_row gt_left gt_striped">nischaydnk</td>
+<td class="gt_row gt_left gt_striped">Nischay Dhankhar</td>
+<td class="gt_row gt_left gt_striped">03/21/2020</td>
+<td class="gt_row gt_right gt_striped">562</td></tr>
+    <tr><td class="gt_row gt_left">185</td>
+<td class="gt_row gt_left">garybios</td>
+<td class="gt_row gt_left">Gary</td>
+<td class="gt_row gt_left">09/16/2017</td>
+<td class="gt_row gt_right">561</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">186</td>
+<td class="gt_row gt_left gt_striped">senkin13</td>
+<td class="gt_row gt_left gt_striped">senkin13</td>
+<td class="gt_row gt_left gt_striped">09/14/2016</td>
+<td class="gt_row gt_right gt_striped">560</td></tr>
+    <tr><td class="gt_row gt_left">187</td>
+<td class="gt_row gt_left">paweljankiewicz</td>
+<td class="gt_row gt_left">Paweł Jankiewicz</td>
+<td class="gt_row gt_left">12/13/2011</td>
+<td class="gt_row gt_right">558</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">188</td>
+<td class="gt_row gt_left gt_striped">qqgeogor</td>
+<td class="gt_row gt_left gt_striped">qianqian</td>
+<td class="gt_row gt_left gt_striped">08/26/2015</td>
+<td class="gt_row gt_right gt_striped">557</td></tr>
+    <tr><td class="gt_row gt_left">189</td>
+<td class="gt_row gt_left">hidehisaarai1213</td>
+<td class="gt_row gt_left">Hidehisa Arai</td>
+<td class="gt_row gt_left">12/12/2017</td>
+<td class="gt_row gt_right">555</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">190</td>
+<td class="gt_row gt_left gt_striped">vaillant</td>
+<td class="gt_row gt_left gt_striped">Ian Pan</td>
+<td class="gt_row gt_left gt_striped">01/14/2015</td>
+<td class="gt_row gt_right gt_striped">550</td></tr>
+    <tr><td class="gt_row gt_left">191</td>
+<td class="gt_row gt_left">amyjang</td>
+<td class="gt_row gt_left">Amy Jang</td>
+<td class="gt_row gt_left">05/29/2020</td>
+<td class="gt_row gt_right">543</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">192</td>
+<td class="gt_row gt_left gt_striped">juliaelliott</td>
+<td class="gt_row gt_left gt_striped">Julia Elliott</td>
+<td class="gt_row gt_left gt_striped">05/03/2016</td>
+<td class="gt_row gt_right gt_striped">542</td></tr>
+    <tr><td class="gt_row gt_left">193</td>
+<td class="gt_row gt_left">mragpavank</td>
+<td class="gt_row gt_left">PAVAN KUMAR D</td>
+<td class="gt_row gt_left">10/13/2018</td>
+<td class="gt_row gt_right">538</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">194</td>
+<td class="gt_row gt_left gt_striped">venheads</td>
+<td class="gt_row gt_left gt_striped">ValeriyBabushkin</td>
+<td class="gt_row gt_left gt_striped">08/18/2016</td>
+<td class="gt_row gt_right gt_striped">530</td></tr>
+    <tr><td class="gt_row gt_left">195</td>
+<td class="gt_row gt_left">takuok</td>
+<td class="gt_row gt_left">takuoko</td>
+<td class="gt_row gt_left">12/20/2016</td>
+<td class="gt_row gt_right">530</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">196</td>
+<td class="gt_row gt_left gt_striped">suicaokhoailang</td>
+<td class="gt_row gt_left gt_striped">Khoi Nguyen</td>
+<td class="gt_row gt_left gt_striped">01/24/2018</td>
+<td class="gt_row gt_right gt_striped">529</td></tr>
+    <tr><td class="gt_row gt_left">197</td>
+<td class="gt_row gt_left">vahidehdashti</td>
+<td class="gt_row gt_left">Vahideh Dashti</td>
+<td class="gt_row gt_left">07/10/2020</td>
+<td class="gt_row gt_right">527</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">198</td>
+<td class="gt_row gt_left gt_striped">h4211819</td>
+<td class="gt_row gt_left gt_striped">30CrMnSiA</td>
+<td class="gt_row gt_left gt_striped">01/03/2017</td>
+<td class="gt_row gt_right gt_striped">526</td></tr>
+    <tr><td class="gt_row gt_left">199</td>
+<td class="gt_row gt_left">mlandry</td>
+<td class="gt_row gt_left">mlandry</td>
+<td class="gt_row gt_left">07/01/2012</td>
+<td class="gt_row gt_right">525</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">200</td>
+<td class="gt_row gt_left gt_striped">mikeskim</td>
+<td class="gt_row gt_left gt_striped">Mike Kim</td>
+<td class="gt_row gt_left gt_striped">10/22/2012</td>
+<td class="gt_row gt_right gt_striped">525</td></tr>
+    <tr><td class="gt_row gt_left">201</td>
+<td class="gt_row gt_left">michau96</td>
+<td class="gt_row gt_left">Michal Bogacz</td>
+<td class="gt_row gt_left">07/27/2018</td>
+<td class="gt_row gt_right">524</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">202</td>
+<td class="gt_row gt_left gt_striped">paulorzp</td>
+<td class="gt_row gt_left gt_striped">Paulo Pinto</td>
+<td class="gt_row gt_left gt_striped">02/22/2016</td>
+<td class="gt_row gt_right gt_striped">521</td></tr>
+    <tr><td class="gt_row gt_left">203</td>
+<td class="gt_row gt_left">boliu0</td>
+<td class="gt_row gt_left">Bo</td>
+<td class="gt_row gt_left">06/11/2017</td>
+<td class="gt_row gt_right">520</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">204</td>
+<td class="gt_row gt_left gt_striped">omercolakoglu</td>
+<td class="gt_row gt_left gt_striped">Omer Colakoglu</td>
+<td class="gt_row gt_left gt_striped">02/05/2018</td>
+<td class="gt_row gt_right gt_striped">517</td></tr>
+    <tr><td class="gt_row gt_left">205</td>
+<td class="gt_row gt_left">selfishgene</td>
+<td class="gt_row gt_left">David Beniaguev</td>
+<td class="gt_row gt_left">09/27/2013</td>
+<td class="gt_row gt_right">512</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">206</td>
+<td class="gt_row gt_left gt_striped">shahules</td>
+<td class="gt_row gt_left gt_striped">Shahules</td>
+<td class="gt_row gt_left gt_striped">04/20/2017</td>
+<td class="gt_row gt_right gt_striped">512</td></tr>
+    <tr><td class="gt_row gt_left">207</td>
+<td class="gt_row gt_left">khyeh0719</td>
+<td class="gt_row gt_left">khyeh</td>
+<td class="gt_row gt_left">09/13/2017</td>
+<td class="gt_row gt_right">511</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">208</td>
+<td class="gt_row gt_left gt_striped">aleksandradeis</td>
+<td class="gt_row gt_left gt_striped">Aleksandra Deis</td>
+<td class="gt_row gt_left gt_striped">01/08/2018</td>
+<td class="gt_row gt_right gt_striped">510</td></tr>
+    <tr><td class="gt_row gt_left">209</td>
+<td class="gt_row gt_left">ambarish</td>
+<td class="gt_row gt_left">Bukun</td>
+<td class="gt_row gt_left">05/27/2013</td>
+<td class="gt_row gt_right">502</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">210</td>
+<td class="gt_row gt_left gt_striped">odins0n</td>
+<td class="gt_row gt_left gt_striped">Sanskar Hasija</td>
+<td class="gt_row gt_left gt_striped">02/09/2021</td>
+<td class="gt_row gt_right gt_striped">498</td></tr>
+    <tr><td class="gt_row gt_left">211</td>
+<td class="gt_row gt_left">pestipeti</td>
+<td class="gt_row gt_left">Peter</td>
+<td class="gt_row gt_left">01/12/2017</td>
+<td class="gt_row gt_right">497</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">212</td>
+<td class="gt_row gt_left gt_striped">kelexu</td>
+<td class="gt_row gt_left gt_striped">Kele Xu</td>
+<td class="gt_row gt_left gt_striped">02/23/2015</td>
+<td class="gt_row gt_right gt_striped">495</td></tr>
+    <tr><td class="gt_row gt_left">213</td>
+<td class="gt_row gt_left">imdevskp</td>
+<td class="gt_row gt_left">Devakumar K. P.</td>
+<td class="gt_row gt_left">09/30/2017</td>
+<td class="gt_row gt_right">494</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">214</td>
+<td class="gt_row gt_left gt_striped">breakfastpirate</td>
+<td class="gt_row gt_left gt_striped">BreakfastPirate</td>
+<td class="gt_row gt_left gt_striped">04/14/2011</td>
+<td class="gt_row gt_right gt_striped">493</td></tr>
+    <tr><td class="gt_row gt_left">215</td>
+<td class="gt_row gt_left">ddanevskyi</td>
+<td class="gt_row gt_left">Dmytro Danevskyi</td>
+<td class="gt_row gt_left">01/25/2016</td>
+<td class="gt_row gt_right">490</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">216</td>
+<td class="gt_row gt_left gt_striped">timoboz</td>
+<td class="gt_row gt_left gt_striped">Timo Bozsolik</td>
+<td class="gt_row gt_left gt_striped">03/31/2017</td>
+<td class="gt_row gt_right gt_striped">489</td></tr>
+    <tr><td class="gt_row gt_left">217</td>
+<td class="gt_row gt_left">philippsp</td>
+<td class="gt_row gt_left">Philipp Spachtholz</td>
+<td class="gt_row gt_left">02/28/2017</td>
+<td class="gt_row gt_right">487</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">218</td>
+<td class="gt_row gt_left gt_striped">rdizzl3</td>
+<td class="gt_row gt_left gt_striped">RDizzl3</td>
+<td class="gt_row gt_left gt_striped">02/08/2015</td>
+<td class="gt_row gt_right gt_striped">485</td></tr>
+    <tr><td class="gt_row gt_left">219</td>
+<td class="gt_row gt_left">darraghdog</td>
+<td class="gt_row gt_left">Darragh</td>
+<td class="gt_row gt_left">07/03/2014</td>
+<td class="gt_row gt_right">482</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">220</td>
+<td class="gt_row gt_left gt_striped">yasserhessein</td>
+<td class="gt_row gt_left gt_striped">Yasir Hussein Shakir</td>
+<td class="gt_row gt_left gt_striped">01/15/2020</td>
+<td class="gt_row gt_right gt_striped">481</td></tr>
+    <tr><td class="gt_row gt_left">221</td>
+<td class="gt_row gt_left">kerneler</td>
+<td class="gt_row gt_left">Kaggle Kerneler</td>
+<td class="gt_row gt_left">07/19/2018</td>
+<td class="gt_row gt_right">480</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">222</td>
+<td class="gt_row gt_left gt_striped">seanjv</td>
+<td class="gt_row gt_left gt_striped">sjv</td>
+<td class="gt_row gt_left gt_striped">11/28/2015</td>
+<td class="gt_row gt_right gt_striped">479</td></tr>
+    <tr><td class="gt_row gt_left">223</td>
+<td class="gt_row gt_left">jeffheaton</td>
+<td class="gt_row gt_left">Jeff Heaton</td>
+<td class="gt_row gt_left">03/10/2014</td>
+<td class="gt_row gt_right">476</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">224</td>
+<td class="gt_row gt_left gt_striped">aakashnain</td>
+<td class="gt_row gt_left gt_striped">NAIN</td>
+<td class="gt_row gt_left gt_striped">02/23/2016</td>
+<td class="gt_row gt_right gt_striped">474</td></tr>
+    <tr><td class="gt_row gt_left">225</td>
+<td class="gt_row gt_left">tivfrvqhs5</td>
+<td class="gt_row gt_left">David Austin</td>
+<td class="gt_row gt_left">01/29/2017</td>
+<td class="gt_row gt_right">470</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">226</td>
+<td class="gt_row gt_left gt_striped">khoongweihao</td>
+<td class="gt_row gt_left gt_striped">Wei Hao Khoong</td>
+<td class="gt_row gt_left gt_striped">03/20/2018</td>
+<td class="gt_row gt_right gt_striped">470</td></tr>
+    <tr><td class="gt_row gt_left">227</td>
+<td class="gt_row gt_left">anasofiauzsoy</td>
+<td class="gt_row gt_left">Ana Sofia Uzsoy</td>
+<td class="gt_row gt_left">05/12/2020</td>
+<td class="gt_row gt_right">469</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">228</td>
+<td class="gt_row gt_left gt_striped">shrutimechlearn</td>
+<td class="gt_row gt_left gt_striped">Shruti_Iyyer</td>
+<td class="gt_row gt_left gt_striped">12/30/2016</td>
+<td class="gt_row gt_right gt_striped">468</td></tr>
+    <tr><td class="gt_row gt_left">229</td>
+<td class="gt_row gt_left">rjqian</td>
+<td class="gt_row gt_left">Renjie Qian</td>
+<td class="gt_row gt_left">06/26/2017</td>
+<td class="gt_row gt_right">468</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">230</td>
+<td class="gt_row gt_left gt_striped">ybabakhin</td>
+<td class="gt_row gt_left gt_striped">Yauhen Babakhin</td>
+<td class="gt_row gt_left gt_striped">03/04/2015</td>
+<td class="gt_row gt_right gt_striped">467</td></tr>
+    <tr><td class="gt_row gt_left">231</td>
+<td class="gt_row gt_left">heyytanay</td>
+<td class="gt_row gt_left">Tanay Mehta</td>
+<td class="gt_row gt_left">07/10/2019</td>
+<td class="gt_row gt_right">465</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">232</td>
+<td class="gt_row gt_left gt_striped">fahadmehfoooz</td>
+<td class="gt_row gt_left gt_striped">Fahad Mehfooz</td>
+<td class="gt_row gt_left gt_striped">07/23/2020</td>
+<td class="gt_row gt_right gt_striped">464</td></tr>
+    <tr><td class="gt_row gt_left">233</td>
+<td class="gt_row gt_left">tavoosi</td>
+<td class="gt_row gt_left">Saba Tavoosi</td>
+<td class="gt_row gt_left">12/07/2018</td>
+<td class="gt_row gt_right">463</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">234</td>
+<td class="gt_row gt_left gt_striped">serkanpeldek</td>
+<td class="gt_row gt_left gt_striped">Serkan Peldek</td>
+<td class="gt_row gt_left gt_striped">12/19/2017</td>
+<td class="gt_row gt_right gt_striped">462</td></tr>
+    <tr><td class="gt_row gt_left">235</td>
+<td class="gt_row gt_left">ishandutta</td>
+<td class="gt_row gt_left">Ishan Dutta</td>
+<td class="gt_row gt_left">03/07/2020</td>
+<td class="gt_row gt_right">460</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">236</td>
+<td class="gt_row gt_left gt_striped">mchahhou</td>
+<td class="gt_row gt_left gt_striped">Chahhou Mohamed</td>
+<td class="gt_row gt_left gt_striped">10/19/2013</td>
+<td class="gt_row gt_right gt_striped">458</td></tr>
+    <tr><td class="gt_row gt_left">237</td>
+<td class="gt_row gt_left">mamasinkgs</td>
+<td class="gt_row gt_left">mamas</td>
+<td class="gt_row gt_left">10/23/2016</td>
+<td class="gt_row gt_right">458</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">238</td>
+<td class="gt_row gt_left gt_striped">maggiemd</td>
+<td class="gt_row gt_left gt_striped">Maggie</td>
+<td class="gt_row gt_left gt_striped">03/29/2017</td>
+<td class="gt_row gt_right gt_striped">454</td></tr>
+    <tr><td class="gt_row gt_left">239</td>
+<td class="gt_row gt_left">keetar</td>
+<td class="gt_row gt_left">keetar</td>
+<td class="gt_row gt_left">08/31/2016</td>
+<td class="gt_row gt_right">452</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">240</td>
+<td class="gt_row gt_left gt_striped">ragnar123</td>
+<td class="gt_row gt_left gt_striped">Martin Kovacevic Buvinic</td>
+<td class="gt_row gt_left gt_striped">08/24/2017</td>
+<td class="gt_row gt_right gt_striped">452</td></tr>
+    <tr><td class="gt_row gt_left">241</td>
+<td class="gt_row gt_left">mylesoneill</td>
+<td class="gt_row gt_left">Myles O'Neill</td>
+<td class="gt_row gt_left">03/05/2015</td>
+<td class="gt_row gt_right">451</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">242</td>
+<td class="gt_row gt_left gt_striped">nullrecurrent</td>
+<td class="gt_row gt_left gt_striped">Jiayang Gao</td>
+<td class="gt_row gt_left gt_striped">09/02/2019</td>
+<td class="gt_row gt_right gt_striped">451</td></tr>
+    <tr><td class="gt_row gt_left">243</td>
+<td class="gt_row gt_left">johnpateha</td>
+<td class="gt_row gt_left">Evgeny Patekha</td>
+<td class="gt_row gt_left">02/04/2016</td>
+<td class="gt_row gt_right">449</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">244</td>
+<td class="gt_row gt_left gt_striped">datafan07</td>
+<td class="gt_row gt_left gt_striped">Ertuğrul Demir</td>
+<td class="gt_row gt_left gt_striped">03/05/2020</td>
+<td class="gt_row gt_right gt_striped">446</td></tr>
+    <tr><td class="gt_row gt_left">245</td>
+<td class="gt_row gt_left">arashnic</td>
+<td class="gt_row gt_left">Möbius</td>
+<td class="gt_row gt_left">10/21/2016</td>
+<td class="gt_row gt_right">443</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">246</td>
+<td class="gt_row gt_left gt_striped">nyanpn</td>
+<td class="gt_row gt_left gt_striped">nyanp</td>
+<td class="gt_row gt_left gt_striped">01/05/2018</td>
+<td class="gt_row gt_right gt_striped">442</td></tr>
+    <tr><td class="gt_row gt_left">247</td>
+<td class="gt_row gt_left">tqchen</td>
+<td class="gt_row gt_left">Tianqi Chen</td>
+<td class="gt_row gt_left">02/22/2012</td>
+<td class="gt_row gt_right">438</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">248</td>
+<td class="gt_row gt_left gt_striped">kailex</td>
+<td class="gt_row gt_left gt_striped">kxx</td>
+<td class="gt_row gt_left gt_striped">03/11/2013</td>
+<td class="gt_row gt_right gt_striped">436</td></tr>
+    <tr><td class="gt_row gt_left">249</td>
+<td class="gt_row gt_left">mikhailtrofimov</td>
+<td class="gt_row gt_left">Mikhail Trofimov</td>
+<td class="gt_row gt_left">04/19/2013</td>
+<td class="gt_row gt_right">435</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">250</td>
+<td class="gt_row gt_left gt_striped">masumrumi</td>
+<td class="gt_row gt_left gt_striped">Masum Rumi</td>
+<td class="gt_row gt_left gt_striped">08/18/2016</td>
+<td class="gt_row gt_right gt_striped">435</td></tr>
+    <tr><td class="gt_row gt_left">251</td>
+<td class="gt_row gt_left">vikasukani</td>
+<td class="gt_row gt_left">Vikas Ukani</td>
+<td class="gt_row gt_left">07/17/2020</td>
+<td class="gt_row gt_right">435</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">252</td>
+<td class="gt_row gt_left gt_striped">ccccat</td>
+<td class="gt_row gt_left gt_striped">Sergey Yurgenson</td>
+<td class="gt_row gt_left gt_striped">12/02/2010</td>
+<td class="gt_row gt_right gt_striped">432</td></tr>
+    <tr><td class="gt_row gt_left">253</td>
+<td class="gt_row gt_left">dwin183287</td>
+<td class="gt_row gt_left">Sharlto Cope</td>
+<td class="gt_row gt_left">04/09/2014</td>
+<td class="gt_row gt_right">432</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">254</td>
+<td class="gt_row gt_left gt_striped">debarshichanda</td>
+<td class="gt_row gt_left gt_striped">Debarshi Chanda</td>
+<td class="gt_row gt_left gt_striped">04/14/2020</td>
+<td class="gt_row gt_right gt_striped">432</td></tr>
+    <tr><td class="gt_row gt_left">255</td>
+<td class="gt_row gt_left">pureheart</td>
+<td class="gt_row gt_left">piupiu</td>
+<td class="gt_row gt_left">03/23/2016</td>
+<td class="gt_row gt_right">430</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">256</td>
+<td class="gt_row gt_left gt_striped">nvnnghia</td>
+<td class="gt_row gt_left gt_striped">nvnn</td>
+<td class="gt_row gt_left gt_striped">11/27/2018</td>
+<td class="gt_row gt_right gt_striped">427</td></tr>
+    <tr><td class="gt_row gt_left">257</td>
+<td class="gt_row gt_left">gertjac</td>
+<td class="gt_row gt_left">Gert</td>
+<td class="gt_row gt_left">04/19/2011</td>
+<td class="gt_row gt_right">425</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">258</td>
+<td class="gt_row gt_left gt_striped">rhtsingh</td>
+<td class="gt_row gt_left gt_striped">torch</td>
+<td class="gt_row gt_left gt_striped">10/05/2017</td>
+<td class="gt_row gt_right gt_striped">425</td></tr>
+    <tr><td class="gt_row gt_left">259</td>
+<td class="gt_row gt_left">brendan45774</td>
+<td class="gt_row gt_left">Brenda N</td>
+<td class="gt_row gt_left">01/07/2019</td>
+<td class="gt_row gt_right">420</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">260</td>
+<td class="gt_row gt_left gt_striped">philculliton</td>
+<td class="gt_row gt_left gt_striped">Phil Culliton</td>
+<td class="gt_row gt_left gt_striped">07/22/2013</td>
+<td class="gt_row gt_right gt_striped">419</td></tr>
+    <tr><td class="gt_row gt_left">261</td>
+<td class="gt_row gt_left">bminixhofer</td>
+<td class="gt_row gt_left">Benjamin Minixhofer</td>
+<td class="gt_row gt_left">01/18/2017</td>
+<td class="gt_row gt_right">415</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">262</td>
+<td class="gt_row gt_left gt_striped">aguschin</td>
+<td class="gt_row gt_left gt_striped">Alexander Guschin</td>
+<td class="gt_row gt_left gt_striped">05/24/2014</td>
+<td class="gt_row gt_right gt_striped">414</td></tr>
+    <tr><td class="gt_row gt_left">263</td>
+<td class="gt_row gt_left">andresionek</td>
+<td class="gt_row gt_left">Andre Sionek</td>
+<td class="gt_row gt_left">01/13/2018</td>
+<td class="gt_row gt_right">413</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">264</td>
+<td class="gt_row gt_left gt_striped">yashvi</td>
+<td class="gt_row gt_left gt_striped">Yashvi Patel</td>
+<td class="gt_row gt_left gt_striped">12/22/2017</td>
+<td class="gt_row gt_right gt_striped">412</td></tr>
+    <tr><td class="gt_row gt_left">265</td>
+<td class="gt_row gt_left">qiaojian</td>
+<td class="gt_row gt_left">earhian</td>
+<td class="gt_row gt_left">11/07/2017</td>
+<td class="gt_row gt_right">410</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">266</td>
+<td class="gt_row gt_left gt_striped">apapiu</td>
+<td class="gt_row gt_left gt_striped">Alexandru Papiu</td>
+<td class="gt_row gt_left gt_striped">08/14/2015</td>
+<td class="gt_row gt_right gt_striped">405</td></tr>
+    <tr><td class="gt_row gt_left">267</td>
+<td class="gt_row gt_left">jeongyoonlee</td>
+<td class="gt_row gt_left">Jeong-Yoon Lee</td>
+<td class="gt_row gt_left">11/01/2011</td>
+<td class="gt_row gt_right">403</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">268</td>
+<td class="gt_row gt_left gt_striped">ckomaki</td>
+<td class="gt_row gt_left gt_striped">Komaki</td>
+<td class="gt_row gt_left gt_striped">11/13/2012</td>
+<td class="gt_row gt_right gt_striped">403</td></tr>
+    <tr><td class="gt_row gt_left">269</td>
+<td class="gt_row gt_left">ldfreeman3</td>
+<td class="gt_row gt_left">LD Freeman</td>
+<td class="gt_row gt_left">11/19/2017</td>
+<td class="gt_row gt_right">403</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">270</td>
+<td class="gt_row gt_left gt_striped">joshuaswords</td>
+<td class="gt_row gt_left gt_striped">Josh</td>
+<td class="gt_row gt_left gt_striped">01/05/2020</td>
+<td class="gt_row gt_right gt_striped">402</td></tr>
+    <tr><td class="gt_row gt_left">271</td>
+<td class="gt_row gt_left">zachmayer</td>
+<td class="gt_row gt_left">Zach</td>
+<td class="gt_row gt_left">03/02/2011</td>
+<td class="gt_row gt_right">400</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">272</td>
+<td class="gt_row gt_left gt_striped">saurabhshahane</td>
+<td class="gt_row gt_left gt_striped">Saurabh Shahane</td>
+<td class="gt_row gt_left gt_striped">10/26/2018</td>
+<td class="gt_row gt_right gt_striped">399</td></tr>
+    <tr><td class="gt_row gt_left">273</td>
+<td class="gt_row gt_left">sanarasheed</td>
+<td class="gt_row gt_left">Sana Rasheed</td>
+<td class="gt_row gt_left">01/06/2015</td>
+<td class="gt_row gt_right">397</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">274</td>
+<td class="gt_row gt_left gt_striped">laurae2</td>
+<td class="gt_row gt_left gt_striped">Laurae</td>
+<td class="gt_row gt_left gt_striped">02/06/2016</td>
+<td class="gt_row gt_right gt_striped">396</td></tr>
+    <tr><td class="gt_row gt_left">275</td>
+<td class="gt_row gt_left">jasonbrownlee</td>
+<td class="gt_row gt_left">Jason Brownlee</td>
+<td class="gt_row gt_left">07/31/2010</td>
+<td class="gt_row gt_right">395</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">276</td>
+<td class="gt_row gt_left gt_striped">andrej0marinchenko</td>
+<td class="gt_row gt_left gt_striped">Andrej Marinchenko</td>
+<td class="gt_row gt_left gt_striped">06/12/2021</td>
+<td class="gt_row gt_right gt_striped">393</td></tr>
+    <tr><td class="gt_row gt_left">277</td>
+<td class="gt_row gt_left">dataraj</td>
+<td class="gt_row gt_left">Raju Kumar Mishra</td>
+<td class="gt_row gt_left">12/31/2012</td>
+<td class="gt_row gt_right">392</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">278</td>
+<td class="gt_row gt_left gt_striped">yuval6967</td>
+<td class="gt_row gt_left gt_striped">yuval reina</td>
+<td class="gt_row gt_left gt_striped">01/15/2018</td>
+<td class="gt_row gt_right gt_striped">391</td></tr>
+    <tr><td class="gt_row gt_left">279</td>
+<td class="gt_row gt_left">rhgrossm</td>
+<td class="gt_row gt_left">To Train Them Is My Cause</td>
+<td class="gt_row gt_left">12/08/2016</td>
+<td class="gt_row gt_right">390</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">280</td>
+<td class="gt_row gt_left gt_striped">annavictoria</td>
+<td class="gt_row gt_left gt_striped">Anna Montoya</td>
+<td class="gt_row gt_left gt_striped">11/17/2014</td>
+<td class="gt_row gt_right gt_striped">388</td></tr>
+    <tr><td class="gt_row gt_left">281</td>
+<td class="gt_row gt_left">qiaoshiji</td>
+<td class="gt_row gt_left">0ct0pus</td>
+<td class="gt_row gt_left">12/26/2016</td>
+<td class="gt_row gt_right">385</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">282</td>
+<td class="gt_row gt_left gt_striped">ravichaubey1506</td>
+<td class="gt_row gt_left gt_striped">Ravi Ranjan Chaubey</td>
+<td class="gt_row gt_left gt_striped">03/13/2019</td>
+<td class="gt_row gt_right gt_striped">385</td></tr>
+    <tr><td class="gt_row gt_left">283</td>
+<td class="gt_row gt_left">adityaecdrid</td>
+<td class="gt_row gt_left">Aditya Soni</td>
+<td class="gt_row gt_left">12/14/2016</td>
+<td class="gt_row gt_right">383</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">284</td>
+<td class="gt_row gt_left gt_striped">domcastro</td>
+<td class="gt_row gt_left gt_striped">Bluefool</td>
+<td class="gt_row gt_left gt_striped">08/08/2010</td>
+<td class="gt_row gt_right gt_striped">382</td></tr>
+    <tr><td class="gt_row gt_left">285</td>
+<td class="gt_row gt_left">roydatascience</td>
+<td class="gt_row gt_left">Ashish Gupta</td>
+<td class="gt_row gt_left">05/16/2018</td>
+<td class="gt_row gt_right">382</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">286</td>
+<td class="gt_row gt_left gt_striped">leustagos</td>
+<td class="gt_row gt_left gt_striped">Leustagos</td>
+<td class="gt_row gt_left gt_striped">11/22/2011</td>
+<td class="gt_row gt_right gt_striped">380</td></tr>
+    <tr><td class="gt_row gt_left">287</td>
+<td class="gt_row gt_left">ratthachat</td>
+<td class="gt_row gt_left">Jung</td>
+<td class="gt_row gt_left">10/27/2017</td>
+<td class="gt_row gt_right">379</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">288</td>
+<td class="gt_row gt_left gt_striped">antorsae</td>
+<td class="gt_row gt_left gt_striped">Andres Torrubia</td>
+<td class="gt_row gt_left gt_striped">04/05/2011</td>
+<td class="gt_row gt_right gt_striped">377</td></tr>
+    <tr><td class="gt_row gt_left">289</td>
+<td class="gt_row gt_left">caesarlupum</td>
+<td class="gt_row gt_left">Caesar Lupum</td>
+<td class="gt_row gt_left">08/18/2019</td>
+<td class="gt_row gt_right">377</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">290</td>
+<td class="gt_row gt_left gt_striped">bulentsiyah</td>
+<td class="gt_row gt_left gt_striped">Bulent Siyah</td>
+<td class="gt_row gt_left gt_striped">08/04/2017</td>
+<td class="gt_row gt_right gt_striped">374</td></tr>
+    <tr><td class="gt_row gt_left">291</td>
+<td class="gt_row gt_left">rakshitvig</td>
+<td class="gt_row gt_left">Rakshit Vig</td>
+<td class="gt_row gt_left">10/22/2021</td>
+<td class="gt_row gt_right">374</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">292</td>
+<td class="gt_row gt_left gt_striped">yassinealouini</td>
+<td class="gt_row gt_left gt_striped">Yassine Alouini</td>
+<td class="gt_row gt_left gt_striped">03/10/2014</td>
+<td class="gt_row gt_right gt_striped">372</td></tr>
+    <tr><td class="gt_row gt_left">293</td>
+<td class="gt_row gt_left">yaroshevskiy</td>
+<td class="gt_row gt_left">Oleg Yaroshevskiy</td>
+<td class="gt_row gt_left">11/21/2016</td>
+<td class="gt_row gt_right">371</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">294</td>
+<td class="gt_row gt_left gt_striped">iangoodfellow</td>
+<td class="gt_row gt_left gt_striped">Ian Goodfellow</td>
+<td class="gt_row gt_left gt_striped">02/06/2013</td>
+<td class="gt_row gt_right gt_striped">370</td></tr>
+    <tr><td class="gt_row gt_left">295</td>
+<td class="gt_row gt_left">vetrirah</td>
+<td class="gt_row gt_left">Vetrivel-PS</td>
+<td class="gt_row gt_left">08/04/2017</td>
+<td class="gt_row gt_right">370</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">296</td>
+<td class="gt_row gt_left gt_striped">corochann</td>
+<td class="gt_row gt_left gt_striped">corochann</td>
+<td class="gt_row gt_left gt_striped">02/01/2016</td>
+<td class="gt_row gt_right gt_striped">369</td></tr>
+    <tr><td class="gt_row gt_left">297</td>
+<td class="gt_row gt_left">julian3833</td>
+<td class="gt_row gt_left">dataista0 (Julián Peller)</td>
+<td class="gt_row gt_left">07/09/2017</td>
+<td class="gt_row gt_right">368</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">298</td>
+<td class="gt_row gt_left gt_striped">louise2001</td>
+<td class="gt_row gt_left gt_striped">Loulou</td>
+<td class="gt_row gt_left gt_striped">08/22/2019</td>
+<td class="gt_row gt_right gt_striped">367</td></tr>
+    <tr><td class="gt_row gt_left">299</td>
+<td class="gt_row gt_left">kaanboke</td>
+<td class="gt_row gt_left">Kaan BOKE</td>
+<td class="gt_row gt_left">06/14/2021</td>
+<td class="gt_row gt_right">366</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">300</td>
+<td class="gt_row gt_left gt_striped">meaninglesslives</td>
+<td class="gt_row gt_left gt_striped">Siddhartha</td>
+<td class="gt_row gt_left gt_striped">08/11/2017</td>
+<td class="gt_row gt_right gt_striped">363</td></tr>
+    <tr><td class="gt_row gt_left">301</td>
+<td class="gt_row gt_left">rinnqd</td>
+<td class="gt_row gt_left">Firas Baba</td>
+<td class="gt_row gt_left">04/04/2018</td>
+<td class="gt_row gt_right">360</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">302</td>
+<td class="gt_row gt_left gt_striped">harangdev</td>
+<td class="gt_row gt_left gt_striped">YoonSoo</td>
+<td class="gt_row gt_left gt_striped">04/07/2018</td>
+<td class="gt_row gt_right gt_striped">360</td></tr>
+    <tr><td class="gt_row gt_left">303</td>
+<td class="gt_row gt_left">mvahit</td>
+<td class="gt_row gt_left">MVK</td>
+<td class="gt_row gt_left">10/05/2019</td>
+<td class="gt_row gt_right">360</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">304</td>
+<td class="gt_row gt_left gt_striped">toshik</td>
+<td class="gt_row gt_left gt_striped">toshi_k</td>
+<td class="gt_row gt_left gt_striped">03/07/2014</td>
+<td class="gt_row gt_right gt_striped">357</td></tr>
+    <tr><td class="gt_row gt_left">305</td>
+<td class="gt_row gt_left">shivan118</td>
+<td class="gt_row gt_left">shivan kumar</td>
+<td class="gt_row gt_left">06/11/2019</td>
+<td class="gt_row gt_right">357</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">306</td>
+<td class="gt_row gt_left gt_striped">bextuychiev</td>
+<td class="gt_row gt_left gt_striped">bexgboost</td>
+<td class="gt_row gt_left gt_striped">03/17/2020</td>
+<td class="gt_row gt_right gt_striped">351</td></tr>
+    <tr><td class="gt_row gt_left">307</td>
+<td class="gt_row gt_left">lanjunyelan</td>
+<td class="gt_row gt_left">yelan</td>
+<td class="gt_row gt_left">08/28/2018</td>
+<td class="gt_row gt_right">350</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">308</td>
+<td class="gt_row gt_left gt_striped">saurav9786</td>
+<td class="gt_row gt_left gt_striped">Saurav Anand</td>
+<td class="gt_row gt_left gt_striped">04/18/2019</td>
+<td class="gt_row gt_right gt_striped">350</td></tr>
+    <tr><td class="gt_row gt_left">309</td>
+<td class="gt_row gt_left">mulicmu</td>
+<td class="gt_row gt_left">Mu Li</td>
+<td class="gt_row gt_left">01/19/2014</td>
+<td class="gt_row gt_right">346</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">310</td>
+<td class="gt_row gt_left gt_striped">arunkumarramanan</td>
+<td class="gt_row gt_left gt_striped">Arunkumar Venkataramanan</td>
+<td class="gt_row gt_left gt_striped">03/08/2017</td>
+<td class="gt_row gt_right gt_striped">346</td></tr>
+    <tr><td class="gt_row gt_left">311</td>
+<td class="gt_row gt_left">yiheng</td>
+<td class="gt_row gt_left">Yiheng Wang</td>
+<td class="gt_row gt_left">08/09/2016</td>
+<td class="gt_row gt_right">345</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">312</td>
+<td class="gt_row gt_left gt_striped">sreshta140</td>
+<td class="gt_row gt_left gt_striped">Sreshta Putchala</td>
+<td class="gt_row gt_left gt_striped">05/15/2019</td>
+<td class="gt_row gt_right gt_striped">344</td></tr>
+    <tr><td class="gt_row gt_left">313</td>
+<td class="gt_row gt_left">weimin</td>
+<td class="gt_row gt_left">Weimin Wang</td>
+<td class="gt_row gt_left">06/04/2014</td>
+<td class="gt_row gt_right">339</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">314</td>
+<td class="gt_row gt_left gt_striped">samratp</td>
+<td class="gt_row gt_left gt_striped">Samrat Pandiri</td>
+<td class="gt_row gt_left gt_striped">04/20/2017</td>
+<td class="gt_row gt_right gt_striped">339</td></tr>
+    <tr><td class="gt_row gt_left">315</td>
+<td class="gt_row gt_left">surajjha101</td>
+<td class="gt_row gt_left">Suraj Jha</td>
+<td class="gt_row gt_left">02/06/2022</td>
+<td class="gt_row gt_right">337</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">316</td>
+<td class="gt_row gt_left gt_striped">golubev</td>
+<td class="gt_row gt_left gt_striped">Vlad Golubev</td>
+<td class="gt_row gt_left gt_striped">09/19/2017</td>
+<td class="gt_row gt_right gt_striped">336</td></tr>
+    <tr><td class="gt_row gt_left">317</td>
+<td class="gt_row gt_left">tezdhar</td>
+<td class="gt_row gt_left">Mohsin hasan</td>
+<td class="gt_row gt_left">11/19/2014</td>
+<td class="gt_row gt_right">334</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">318</td>
+<td class="gt_row gt_left gt_striped">dempton</td>
+<td class="gt_row gt_left gt_striped">Konstantin Gavrilchik</td>
+<td class="gt_row gt_left gt_striped">10/30/2016</td>
+<td class="gt_row gt_right gt_striped">333</td></tr>
+    <tr><td class="gt_row gt_left">319</td>
+<td class="gt_row gt_left">randylaosat</td>
+<td class="gt_row gt_left">randy lao</td>
+<td class="gt_row gt_left">06/06/2017</td>
+<td class="gt_row gt_right">333</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">320</td>
+<td class="gt_row gt_left gt_striped">rounakbanik</td>
+<td class="gt_row gt_left gt_striped">Rounak Banik</td>
+<td class="gt_row gt_left gt_striped">02/23/2017</td>
+<td class="gt_row gt_right gt_striped">332</td></tr>
+    <tr><td class="gt_row gt_left">321</td>
+<td class="gt_row gt_left">lordozvlad</td>
+<td class="gt_row gt_left">Devlikamov Vlad</td>
+<td class="gt_row gt_left">06/10/2020</td>
+<td class="gt_row gt_right">332</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">322</td>
+<td class="gt_row gt_left gt_striped">tanlikesmath</td>
+<td class="gt_row gt_left gt_striped">ilovescience</td>
+<td class="gt_row gt_left gt_striped">07/29/2016</td>
+<td class="gt_row gt_right gt_striped">330</td></tr>
+    <tr><td class="gt_row gt_left">323</td>
+<td class="gt_row gt_left">prashantkikani</td>
+<td class="gt_row gt_left">Prashant Kikani</td>
+<td class="gt_row gt_left">09/16/2017</td>
+<td class="gt_row gt_right">327</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">324</td>
+<td class="gt_row gt_left gt_striped">longyin2</td>
+<td class="gt_row gt_left gt_striped">LongYin/杰少</td>
+<td class="gt_row gt_left gt_striped">08/10/2017</td>
+<td class="gt_row gt_right gt_striped">322</td></tr>
+    <tr><td class="gt_row gt_left">325</td>
+<td class="gt_row gt_left">halimedogan</td>
+<td class="gt_row gt_left">Halime Doğan</td>
+<td class="gt_row gt_left">11/08/2020</td>
+<td class="gt_row gt_right">321</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">326</td>
+<td class="gt_row gt_left gt_striped">chumajin</td>
+<td class="gt_row gt_left gt_striped">chumajin</td>
+<td class="gt_row gt_left gt_striped">11/08/2019</td>
+<td class="gt_row gt_right gt_striped">319</td></tr>
+    <tr><td class="gt_row gt_left">327</td>
+<td class="gt_row gt_left">baomengjiao</td>
+<td class="gt_row gt_left">spongebob</td>
+<td class="gt_row gt_left">03/23/2017</td>
+<td class="gt_row gt_right">318</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">328</td>
+<td class="gt_row gt_left gt_striped">gauravduttakiit</td>
+<td class="gt_row gt_left gt_striped">Gaurav Dutta</td>
+<td class="gt_row gt_left gt_striped">03/28/2020</td>
+<td class="gt_row gt_right gt_striped">318</td></tr>
+    <tr><td class="gt_row gt_left">329</td>
+<td class="gt_row gt_left">tereka</td>
+<td class="gt_row gt_left">tereka</td>
+<td class="gt_row gt_left">01/16/2015</td>
+<td class="gt_row gt_right">317</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">330</td>
+<td class="gt_row gt_left gt_striped">lyakaap</td>
+<td class="gt_row gt_left gt_striped">lyakaap</td>
+<td class="gt_row gt_left gt_striped">07/29/2017</td>
+<td class="gt_row gt_right gt_striped">314</td></tr>
+    <tr><td class="gt_row gt_left">331</td>
+<td class="gt_row gt_left">sercanyesiloz</td>
+<td class="gt_row gt_left">Sercan Yeşilöz</td>
+<td class="gt_row gt_left">03/11/2019</td>
+<td class="gt_row gt_right">314</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">332</td>
+<td class="gt_row gt_left gt_striped">mmoralesr</td>
+<td class="gt_row gt_left gt_striped">Mario Morales</td>
+<td class="gt_row gt_left gt_striped">07/23/2020</td>
+<td class="gt_row gt_right gt_striped">314</td></tr>
+    <tr><td class="gt_row gt_left">333</td>
+<td class="gt_row gt_left">thedrcat</td>
+<td class="gt_row gt_left">Darek Kłeczek</td>
+<td class="gt_row gt_left">10/11/2017</td>
+<td class="gt_row gt_right">313</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">334</td>
+<td class="gt_row gt_left gt_striped">tkm2261</td>
+<td class="gt_row gt_left gt_striped">tkm2261</td>
+<td class="gt_row gt_left gt_striped">10/06/2015</td>
+<td class="gt_row gt_right gt_striped">311</td></tr>
+    <tr><td class="gt_row gt_left">335</td>
+<td class="gt_row gt_left">mahluo</td>
+<td class="gt_row gt_left">Young for you</td>
+<td class="gt_row gt_left">04/21/2017</td>
+<td class="gt_row gt_right">311</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">336</td>
+<td class="gt_row gt_left gt_striped">carlolepelaars</td>
+<td class="gt_row gt_left gt_striped">Carlo Lepelaars</td>
+<td class="gt_row gt_left gt_striped">05/31/2018</td>
+<td class="gt_row gt_right gt_striped">310</td></tr>
+    <tr><td class="gt_row gt_left">337</td>
+<td class="gt_row gt_left">aminizahra</td>
+<td class="gt_row gt_left">Zahra Amini</td>
+<td class="gt_row gt_left">05/09/2021</td>
+<td class="gt_row gt_right">310</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">338</td>
+<td class="gt_row gt_left gt_striped">crained</td>
+<td class="gt_row gt_left gt_striped">Charlie Craine</td>
+<td class="gt_row gt_left gt_striped">07/08/2014</td>
+<td class="gt_row gt_right gt_striped">304</td></tr>
+    <tr><td class="gt_row gt_left">339</td>
+<td class="gt_row gt_left">pjreddie</td>
+<td class="gt_row gt_left">pjreddie</td>
+<td class="gt_row gt_left">09/12/2011</td>
+<td class="gt_row gt_right">301</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">340</td>
+<td class="gt_row gt_left gt_striped">onefourthlabs</td>
+<td class="gt_row gt_left gt_striped">One Fourth Labs</td>
+<td class="gt_row gt_left gt_striped">01/17/2019</td>
+<td class="gt_row gt_right gt_striped">301</td></tr>
+    <tr><td class="gt_row gt_left">341</td>
+<td class="gt_row gt_left">lftuwujie</td>
+<td class="gt_row gt_left">Jie Wu</td>
+<td class="gt_row gt_left">02/16/2016</td>
+<td class="gt_row gt_right">300</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">342</td>
+<td class="gt_row gt_left gt_striped">thomaskonstantin</td>
+<td class="gt_row gt_left gt_striped">Thomas Konstantin</td>
+<td class="gt_row gt_left gt_striped">03/17/2020</td>
+<td class="gt_row gt_right gt_striped">300</td></tr>
+    <tr><td class="gt_row gt_left">343</td>
+<td class="gt_row gt_left">agoodman</td>
+<td class="gt_row gt_left">Allen Goodman</td>
+<td class="gt_row gt_left">01/12/2018</td>
+<td class="gt_row gt_right">298</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">344</td>
+<td class="gt_row gt_left gt_striped">hasanbasriakcay</td>
+<td class="gt_row gt_left gt_striped">Hasan Basri Akçay</td>
+<td class="gt_row gt_left gt_striped">06/22/2019</td>
+<td class="gt_row gt_right gt_striped">298</td></tr>
+    <tr><td class="gt_row gt_left">345</td>
+<td class="gt_row gt_left">anandhuh</td>
+<td class="gt_row gt_left">Anandhu H</td>
+<td class="gt_row gt_left">11/04/2020</td>
+<td class="gt_row gt_right">298</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">346</td>
+<td class="gt_row gt_left gt_striped">iamsouravbanerjee</td>
+<td class="gt_row gt_left gt_striped">Sourav Banerjee</td>
+<td class="gt_row gt_left gt_striped">03/25/2021</td>
+<td class="gt_row gt_right gt_striped">296</td></tr>
+    <tr><td class="gt_row gt_left">347</td>
+<td class="gt_row gt_left">utility</td>
+<td class="gt_row gt_left">utility</td>
+<td class="gt_row gt_left">12/09/2014</td>
+<td class="gt_row gt_right">295</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">348</td>
+<td class="gt_row gt_left gt_striped">nigelcarpenter</td>
+<td class="gt_row gt_left gt_striped">Nigel Carpenter</td>
+<td class="gt_row gt_left gt_striped">08/17/2011</td>
+<td class="gt_row gt_right gt_striped">294</td></tr>
+    <tr><td class="gt_row gt_left">349</td>
+<td class="gt_row gt_left">radek1</td>
+<td class="gt_row gt_left">Radek Osmulski</td>
+<td class="gt_row gt_left">02/02/2013</td>
+<td class="gt_row gt_right">294</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">350</td>
+<td class="gt_row gt_left gt_striped">hamelg</td>
+<td class="gt_row gt_left gt_striped">Greg Hamel</td>
+<td class="gt_row gt_left gt_striped">04/08/2014</td>
+<td class="gt_row gt_right gt_striped">294</td></tr>
+    <tr><td class="gt_row gt_left">351</td>
+<td class="gt_row gt_left">thedevastator</td>
+<td class="gt_row gt_left">The Devastator</td>
+<td class="gt_row gt_left">05/26/2022</td>
+<td class="gt_row gt_right">294</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">352</td>
+<td class="gt_row gt_left gt_striped">hamditarek</td>
+<td class="gt_row gt_left gt_striped">Tarek Hamdi</td>
+<td class="gt_row gt_left gt_striped">02/27/2018</td>
+<td class="gt_row gt_right gt_striped">293</td></tr>
+    <tr><td class="gt_row gt_left">353</td>
+<td class="gt_row gt_left">naivelamb</td>
+<td class="gt_row gt_left">Xuan Cao</td>
+<td class="gt_row gt_left">03/31/2017</td>
+<td class="gt_row gt_right">292</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">354</td>
+<td class="gt_row gt_left gt_striped">kellibelcher</td>
+<td class="gt_row gt_left gt_striped">Kelli Belcher</td>
+<td class="gt_row gt_left gt_striped">06/14/2020</td>
+<td class="gt_row gt_right gt_striped">292</td></tr>
+    <tr><td class="gt_row gt_left">355</td>
+<td class="gt_row gt_left">group16</td>
+<td class="gt_row gt_left">Gilles Vandewiele</td>
+<td class="gt_row gt_left">10/15/2015</td>
+<td class="gt_row gt_right">290</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">356</td>
+<td class="gt_row gt_left gt_striped">poteman</td>
+<td class="gt_row gt_left gt_striped">poteman</td>
+<td class="gt_row gt_left gt_striped">11/05/2015</td>
+<td class="gt_row gt_right gt_striped">290</td></tr>
+    <tr><td class="gt_row gt_left">357</td>
+<td class="gt_row gt_left">yufengg</td>
+<td class="gt_row gt_left">Yufeng Guo</td>
+<td class="gt_row gt_left">07/26/2017</td>
+<td class="gt_row gt_right">286</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">358</td>
+<td class="gt_row gt_left gt_striped">funxexcel</td>
+<td class="gt_row gt_left gt_striped">Kunaal Naik</td>
+<td class="gt_row gt_left gt_striped">11/19/2017</td>
+<td class="gt_row gt_right gt_striped">285</td></tr>
+    <tr><td class="gt_row gt_left">359</td>
+<td class="gt_row gt_left">muhammadahmed68</td>
+<td class="gt_row gt_left">Moezilda</td>
+<td class="gt_row gt_left">12/23/2020</td>
+<td class="gt_row gt_right">285</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">360</td>
+<td class="gt_row gt_left gt_striped">kritidoneria</td>
+<td class="gt_row gt_left gt_striped">KritiDoneria</td>
+<td class="gt_row gt_left gt_striped">09/11/2017</td>
+<td class="gt_row gt_right gt_striped">284</td></tr>
+    <tr><td class="gt_row gt_left">361</td>
+<td class="gt_row gt_left">harunshimanto</td>
+<td class="gt_row gt_left">Harun-Ur-Rashid</td>
+<td class="gt_row gt_left">10/07/2017</td>
+<td class="gt_row gt_right">283</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">362</td>
+<td class="gt_row gt_left gt_striped">heshamasem</td>
+<td class="gt_row gt_left gt_striped">Hesham Asem</td>
+<td class="gt_row gt_left gt_striped">02/05/2018</td>
+<td class="gt_row gt_right gt_striped">282</td></tr>
+    <tr><td class="gt_row gt_left">363</td>
+<td class="gt_row gt_left">jagangupta</td>
+<td class="gt_row gt_left">Jagan</td>
+<td class="gt_row gt_left">12/10/2015</td>
+<td class="gt_row gt_right">280</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">364</td>
+<td class="gt_row gt_left gt_striped">drhabib</td>
+<td class="gt_row gt_left gt_striped">DrHB</td>
+<td class="gt_row gt_left gt_striped">03/27/2017</td>
+<td class="gt_row gt_right gt_striped">280</td></tr>
+    <tr><td class="gt_row gt_left">365</td>
+<td class="gt_row gt_left">vad13irt</td>
+<td class="gt_row gt_left">Vadim Irtlach</td>
+<td class="gt_row gt_left">09/10/2020</td>
+<td class="gt_row gt_right">280</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">366</td>
+<td class="gt_row gt_left gt_striped">nicapotato</td>
+<td class="gt_row gt_left gt_striped">nicapotato</td>
+<td class="gt_row gt_left gt_striped">01/13/2017</td>
+<td class="gt_row gt_right gt_striped">279</td></tr>
+    <tr><td class="gt_row gt_left">367</td>
+<td class="gt_row gt_left">sergeifironov</td>
+<td class="gt_row gt_left">Sergei Fironov</td>
+<td class="gt_row gt_left">11/30/2012</td>
+<td class="gt_row gt_right">278</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">368</td>
+<td class="gt_row gt_left gt_striped">sgalib</td>
+<td class="gt_row gt_left gt_striped">Shai</td>
+<td class="gt_row gt_left gt_striped">11/16/2016</td>
+<td class="gt_row gt_right gt_striped">278</td></tr>
+    <tr><td class="gt_row gt_left">369</td>
+<td class="gt_row gt_left">vicensgaitan</td>
+<td class="gt_row gt_left">Vicens Gaitan</td>
+<td class="gt_row gt_left">11/04/2014</td>
+<td class="gt_row gt_right">277</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">370</td>
+<td class="gt_row gt_left gt_striped">fakeplastictrees</td>
+<td class="gt_row gt_left gt_striped">fakeplastictrees</td>
+<td class="gt_row gt_left gt_striped">02/24/2014</td>
+<td class="gt_row gt_right gt_striped">275</td></tr>
+    <tr><td class="gt_row gt_left">371</td>
+<td class="gt_row gt_left">nagadomi</td>
+<td class="gt_row gt_left">nagadomi</td>
+<td class="gt_row gt_left">01/27/2014</td>
+<td class="gt_row gt_right">274</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">372</td>
+<td class="gt_row gt_left gt_striped">marcovasquez</td>
+<td class="gt_row gt_left gt_striped">Marco Vasquez E</td>
+<td class="gt_row gt_left gt_striped">08/09/2019</td>
+<td class="gt_row gt_right gt_striped">274</td></tr>
+    <tr><td class="gt_row gt_left">373</td>
+<td class="gt_row gt_left">brandao</td>
+<td class="gt_row gt_left">Humberto Brandão, Ph.D.</td>
+<td class="gt_row gt_left">11/04/2015</td>
+<td class="gt_row gt_right">273</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">374</td>
+<td class="gt_row gt_left gt_striped">fatmakursun</td>
+<td class="gt_row gt_left gt_striped">Fatma Kurşun</td>
+<td class="gt_row gt_left gt_striped">12/17/2017</td>
+<td class="gt_row gt_right gt_striped">273</td></tr>
+    <tr><td class="gt_row gt_left">375</td>
+<td class="gt_row gt_left">steamedsheep</td>
+<td class="gt_row gt_left">sheep</td>
+<td class="gt_row gt_left">11/27/2016</td>
+<td class="gt_row gt_right">272</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">376</td>
+<td class="gt_row gt_left gt_striped">mathchi</td>
+<td class="gt_row gt_left gt_striped">Mehmet Akturk</td>
+<td class="gt_row gt_left gt_striped">09/01/2019</td>
+<td class="gt_row gt_right gt_striped">272</td></tr>
+    <tr><td class="gt_row gt_left">377</td>
+<td class="gt_row gt_left">qwang88</td>
+<td class="gt_row gt_left">Qingchen</td>
+<td class="gt_row gt_left">01/17/2012</td>
+<td class="gt_row gt_right">271</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">378</td>
+<td class="gt_row gt_left gt_striped">ishivinal</td>
+<td class="gt_row gt_left gt_striped">Ouassim Adnane</td>
+<td class="gt_row gt_left gt_striped">12/27/2016</td>
+<td class="gt_row gt_right gt_striped">271</td></tr>
+    <tr><td class="gt_row gt_left">379</td>
+<td class="gt_row gt_left">nejumi</td>
+<td class="gt_row gt_left">YuyaYamamoto</td>
+<td class="gt_row gt_left">03/29/2016</td>
+<td class="gt_row gt_right">269</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">380</td>
+<td class="gt_row gt_left gt_striped">alincijov</td>
+<td class="gt_row gt_left gt_striped">Alin Cijov</td>
+<td class="gt_row gt_left gt_striped">04/25/2020</td>
+<td class="gt_row gt_right gt_striped">268</td></tr>
+    <tr><td class="gt_row gt_left">381</td>
+<td class="gt_row gt_left">lystdo</td>
+<td class="gt_row gt_left">icebai</td>
+<td class="gt_row gt_left">10/13/2016</td>
+<td class="gt_row gt_right">267</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">382</td>
+<td class="gt_row gt_left gt_striped">abhinand05</td>
+<td class="gt_row gt_left gt_striped">Abhinand</td>
+<td class="gt_row gt_left gt_striped">12/08/2018</td>
+<td class="gt_row gt_right gt_striped">266</td></tr>
+    <tr><td class="gt_row gt_left">383</td>
+<td class="gt_row gt_left">ayuraj</td>
+<td class="gt_row gt_left">Ayush Thakur</td>
+<td class="gt_row gt_left">09/05/2018</td>
+<td class="gt_row gt_right">265</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">384</td>
+<td class="gt_row gt_left gt_striped">blurredmachine</td>
+<td class="gt_row gt_left gt_striped">Paras Varshney</td>
+<td class="gt_row gt_left gt_striped">05/30/2020</td>
+<td class="gt_row gt_right gt_striped">264</td></tr>
+    <tr><td class="gt_row gt_left">385</td>
+<td class="gt_row gt_left">whitebird</td>
+<td class="gt_row gt_left">bird</td>
+<td class="gt_row gt_left">12/12/2015</td>
+<td class="gt_row gt_right">262</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">386</td>
+<td class="gt_row gt_left gt_striped">fengari</td>
+<td class="gt_row gt_left gt_striped">Fengari</td>
+<td class="gt_row gt_left gt_striped">03/11/2016</td>
+<td class="gt_row gt_right gt_striped">261</td></tr>
+    <tr><td class="gt_row gt_left">387</td>
+<td class="gt_row gt_left">aashita</td>
+<td class="gt_row gt_left">Aashita Kesarwani</td>
+<td class="gt_row gt_left">12/23/2016</td>
+<td class="gt_row gt_right">261</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">388</td>
+<td class="gt_row gt_left gt_striped">nthanhtam</td>
+<td class="gt_row gt_left gt_striped">Tam T. Nguyen</td>
+<td class="gt_row gt_left gt_striped">03/15/2013</td>
+<td class="gt_row gt_right gt_striped">259</td></tr>
+    <tr><td class="gt_row gt_left">389</td>
+<td class="gt_row gt_left">nickycan</td>
+<td class="gt_row gt_left">🐳鲲(China)</td>
+<td class="gt_row gt_left">10/23/2015</td>
+<td class="gt_row gt_right">259</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">390</td>
+<td class="gt_row gt_left gt_striped">matleonard</td>
+<td class="gt_row gt_left gt_striped">Mat Leonard</td>
+<td class="gt_row gt_left gt_striped">04/18/2019</td>
+<td class="gt_row gt_right gt_striped">258</td></tr>
+    <tr><td class="gt_row gt_left">391</td>
+<td class="gt_row gt_left">seesee</td>
+<td class="gt_row gt_left">See--</td>
+<td class="gt_row gt_left">09/11/2016</td>
+<td class="gt_row gt_right">256</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">392</td>
+<td class="gt_row gt_left gt_striped">madz2000</td>
+<td class="gt_row gt_left gt_striped">Madhav Mathur</td>
+<td class="gt_row gt_left gt_striped">02/28/2020</td>
+<td class="gt_row gt_right gt_striped">255</td></tr>
+    <tr><td class="gt_row gt_left">393</td>
+<td class="gt_row gt_left">chizhu2018</td>
+<td class="gt_row gt_left">chizhu</td>
+<td class="gt_row gt_left">02/02/2018</td>
+<td class="gt_row gt_right">254</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">394</td>
+<td class="gt_row gt_left gt_striped">lava18</td>
+<td class="gt_row gt_left gt_striped">Lavanya</td>
+<td class="gt_row gt_left gt_striped">07/31/2018</td>
+<td class="gt_row gt_right gt_striped">254</td></tr>
+    <tr><td class="gt_row gt_left">395</td>
+<td class="gt_row gt_left">berkayalan</td>
+<td class="gt_row gt_left">Berkay Alan</td>
+<td class="gt_row gt_left">05/23/2019</td>
+<td class="gt_row gt_right">254</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">396</td>
+<td class="gt_row gt_left gt_striped">triskelion</td>
+<td class="gt_row gt_left gt_striped">Triskelion</td>
+<td class="gt_row gt_left gt_striped">07/20/2013</td>
+<td class="gt_row gt_right gt_striped">253</td></tr>
+    <tr><td class="gt_row gt_left">397</td>
+<td class="gt_row gt_left">nulldata</td>
+<td class="gt_row gt_left">amrrs</td>
+<td class="gt_row gt_left">06/23/2015</td>
+<td class="gt_row gt_right">252</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">398</td>
+<td class="gt_row gt_left gt_striped">osciiart</td>
+<td class="gt_row gt_left gt_striped">OsciiArt</td>
+<td class="gt_row gt_left gt_striped">03/31/2017</td>
+<td class="gt_row gt_right gt_striped">250</td></tr>
+    <tr><td class="gt_row gt_left">399</td>
+<td class="gt_row gt_left">seriousran</td>
+<td class="gt_row gt_left">Chanran Kim</td>
+<td class="gt_row gt_left">08/01/2017</td>
+<td class="gt_row gt_right">250</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">400</td>
+<td class="gt_row gt_left gt_striped">mmotoki</td>
+<td class="gt_row gt_left gt_striped">Matt Motoki</td>
+<td class="gt_row gt_left gt_striped">04/11/2015</td>
+<td class="gt_row gt_right gt_striped">249</td></tr>
+    <tr><td class="gt_row gt_left">401</td>
+<td class="gt_row gt_left">nxrprime</td>
+<td class="gt_row gt_left">Trigram</td>
+<td class="gt_row gt_left">01/13/2020</td>
+<td class="gt_row gt_right">249</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">402</td>
+<td class="gt_row gt_left gt_striped">clustifier</td>
+<td class="gt_row gt_left gt_striped">clustifier</td>
+<td class="gt_row gt_left gt_striped">11/11/2012</td>
+<td class="gt_row gt_right gt_striped">248</td></tr>
+    <tr><td class="gt_row gt_left">403</td>
+<td class="gt_row gt_left">peterhurford</td>
+<td class="gt_row gt_left">Peter Hurford</td>
+<td class="gt_row gt_left">05/08/2014</td>
+<td class="gt_row gt_right">246</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">404</td>
+<td class="gt_row gt_left gt_striped">mihaskalic</td>
+<td class="gt_row gt_left gt_striped">Miha Skalic</td>
+<td class="gt_row gt_left gt_striped">07/05/2014</td>
+<td class="gt_row gt_right gt_striped">246</td></tr>
+    <tr><td class="gt_row gt_left">405</td>
+<td class="gt_row gt_left">gcdatkin</td>
+<td class="gt_row gt_left">Gabriel Atkin</td>
+<td class="gt_row gt_left">04/09/2019</td>
+<td class="gt_row gt_right">246</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">406</td>
+<td class="gt_row gt_left gt_striped">imoore</td>
+<td class="gt_row gt_left gt_striped">Moore</td>
+<td class="gt_row gt_left gt_striped">06/20/2020</td>
+<td class="gt_row gt_right gt_striped">246</td></tr>
+    <tr><td class="gt_row gt_left">407</td>
+<td class="gt_row gt_left">jeffd23</td>
+<td class="gt_row gt_left">Jeff Delaney</td>
+<td class="gt_row gt_left">06/07/2016</td>
+<td class="gt_row gt_right">245</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">408</td>
+<td class="gt_row gt_left gt_striped">blindape</td>
+<td class="gt_row gt_left gt_striped">José A. Guerrero</td>
+<td class="gt_row gt_left gt_striped">01/27/2011</td>
+<td class="gt_row gt_right gt_striped">243</td></tr>
+    <tr><td class="gt_row gt_left">409</td>
+<td class="gt_row gt_left">returnofsputnik</td>
+<td class="gt_row gt_left">CoreyLevinson</td>
+<td class="gt_row gt_left">08/29/2017</td>
+<td class="gt_row gt_right">243</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">410</td>
+<td class="gt_row gt_left gt_striped">psycon</td>
+<td class="gt_row gt_left gt_striped">Batucan Senkal</td>
+<td class="gt_row gt_left gt_striped">04/20/2020</td>
+<td class="gt_row gt_right gt_striped">242</td></tr>
+    <tr><td class="gt_row gt_left">411</td>
+<td class="gt_row gt_left">therealcyberlord</td>
+<td class="gt_row gt_left">Xingyu Bian</td>
+<td class="gt_row gt_left">02/19/2019</td>
+<td class="gt_row gt_right">239</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">412</td>
+<td class="gt_row gt_left gt_striped">salmaneunus</td>
+<td class="gt_row gt_left gt_striped">Salman Ibne Eunus</td>
+<td class="gt_row gt_left gt_striped">07/22/2019</td>
+<td class="gt_row gt_right gt_striped">239</td></tr>
+    <tr><td class="gt_row gt_left">413</td>
+<td class="gt_row gt_left">tetyanayatsenko</td>
+<td class="gt_row gt_left">Tetyana Yatsenko</td>
+<td class="gt_row gt_left">12/13/2016</td>
+<td class="gt_row gt_right">238</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">414</td>
+<td class="gt_row gt_left gt_striped">terenceshin</td>
+<td class="gt_row gt_left gt_striped">Terence Shin</td>
+<td class="gt_row gt_left gt_striped">09/13/2018</td>
+<td class="gt_row gt_right gt_striped">238</td></tr>
+    <tr><td class="gt_row gt_left">415</td>
+<td class="gt_row gt_left">davidthaler</td>
+<td class="gt_row gt_left">David Thaler</td>
+<td class="gt_row gt_left">03/23/2013</td>
+<td class="gt_row gt_right">237</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">416</td>
+<td class="gt_row gt_left gt_striped">captcalculator</td>
+<td class="gt_row gt_left gt_striped">Troy Walters</td>
+<td class="gt_row gt_left gt_striped">07/08/2015</td>
+<td class="gt_row gt_right gt_striped">237</td></tr>
+    <tr><td class="gt_row gt_left">417</td>
+<td class="gt_row gt_left">gvyshnya</td>
+<td class="gt_row gt_left">Georgii Vyshnia</td>
+<td class="gt_row gt_left">05/23/2016</td>
+<td class="gt_row gt_right">236</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">418</td>
+<td class="gt_row gt_left gt_striped">jiashenliu</td>
+<td class="gt_row gt_left gt_striped">Jiashen Liu</td>
+<td class="gt_row gt_left gt_striped">09/07/2016</td>
+<td class="gt_row gt_right gt_striped">236</td></tr>
+    <tr><td class="gt_row gt_left">419</td>
+<td class="gt_row gt_left">caesarmario</td>
+<td class="gt_row gt_left">Mario Caesar</td>
+<td class="gt_row gt_left">07/22/2019</td>
+<td class="gt_row gt_right">236</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">420</td>
+<td class="gt_row gt_left gt_striped">amiras</td>
+<td class="gt_row gt_left gt_striped">Miras Amir</td>
+<td class="gt_row gt_left gt_striped">09/05/2015</td>
+<td class="gt_row gt_right gt_striped">235</td></tr>
+    <tr><td class="gt_row gt_left">421</td>
+<td class="gt_row gt_left">takiba</td>
+<td class="gt_row gt_left">iwiwi</td>
+<td class="gt_row gt_left">03/12/2012</td>
+<td class="gt_row gt_right">234</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">422</td>
+<td class="gt_row gt_left gt_striped">lovedm</td>
+<td class="gt_row gt_left gt_striped">安静</td>
+<td class="gt_row gt_left gt_striped">04/09/2017</td>
+<td class="gt_row gt_right gt_striped">234</td></tr>
+    <tr><td class="gt_row gt_left">423</td>
+<td class="gt_row gt_left">hadeux</td>
+<td class="gt_row gt_left">Woo Seung Han</td>
+<td class="gt_row gt_left">09/16/2019</td>
+<td class="gt_row gt_right">232</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">424</td>
+<td class="gt_row gt_left gt_striped">brsdincer</td>
+<td class="gt_row gt_left gt_striped">Baris Dincer</td>
+<td class="gt_row gt_left gt_striped">03/27/2021</td>
+<td class="gt_row gt_right gt_striped">232</td></tr>
+    <tr><td class="gt_row gt_left">425</td>
+<td class="gt_row gt_left">hiro5299834</td>
+<td class="gt_row gt_left">BIZEN</td>
+<td class="gt_row gt_left">02/24/2015</td>
+<td class="gt_row gt_right">231</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">426</td>
+<td class="gt_row gt_left gt_striped">vincentlugat</td>
+<td class="gt_row gt_left gt_striped">Vincent Lugat</td>
+<td class="gt_row gt_left gt_striped">03/06/2017</td>
+<td class="gt_row gt_right gt_striped">231</td></tr>
+    <tr><td class="gt_row gt_left">427</td>
+<td class="gt_row gt_left">a763337092</td>
+<td class="gt_row gt_left">Lindada</td>
+<td class="gt_row gt_left">09/16/2016</td>
+<td class="gt_row gt_right">230</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">428</td>
+<td class="gt_row gt_left gt_striped">ks2019</td>
+<td class="gt_row gt_left gt_striped">KS</td>
+<td class="gt_row gt_left gt_striped">06/29/2018</td>
+<td class="gt_row gt_right gt_striped">230</td></tr>
+    <tr><td class="gt_row gt_left">429</td>
+<td class="gt_row gt_left">kneroma</td>
+<td class="gt_row gt_left">kkiller</td>
+<td class="gt_row gt_left">12/15/2017</td>
+<td class="gt_row gt_right">229</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">430</td>
+<td class="gt_row gt_left gt_striped">dulyanov</td>
+<td class="gt_row gt_left gt_striped">Dmitry Ulyanov</td>
+<td class="gt_row gt_left gt_striped">01/27/2014</td>
+<td class="gt_row gt_right gt_striped">228</td></tr>
+    <tr><td class="gt_row gt_left">431</td>
+<td class="gt_row gt_left">wuyhbb</td>
+<td class="gt_row gt_left">Yuanhao</td>
+<td class="gt_row gt_left">09/25/2017</td>
+<td class="gt_row gt_right">228</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">432</td>
+<td class="gt_row gt_left gt_striped">ceshine</td>
+<td class="gt_row gt_left gt_striped">Ceshine Lee</td>
+<td class="gt_row gt_left gt_striped">05/14/2013</td>
+<td class="gt_row gt_right gt_striped">227</td></tr>
+    <tr><td class="gt_row gt_left">433</td>
+<td class="gt_row gt_left">ipythonx</td>
+<td class="gt_row gt_left">M.Innat</td>
+<td class="gt_row gt_left">06/11/2018</td>
+<td class="gt_row gt_right">227</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">434</td>
+<td class="gt_row gt_left gt_striped">jeongbinpark</td>
+<td class="gt_row gt_left gt_striped">JeongBin Park</td>
+<td class="gt_row gt_left gt_striped">10/28/2020</td>
+<td class="gt_row gt_right gt_striped">227</td></tr>
+    <tr><td class="gt_row gt_left">435</td>
+<td class="gt_row gt_left">kaggleteam</td>
+<td class="gt_row gt_left">Kaggle Team</td>
+<td class="gt_row gt_left">03/24/2011</td>
+<td class="gt_row gt_right">226</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">436</td>
+<td class="gt_row gt_left gt_striped">ttahara</td>
+<td class="gt_row gt_left gt_striped">Tawara</td>
+<td class="gt_row gt_left gt_striped">11/24/2015</td>
+<td class="gt_row gt_right gt_striped">226</td></tr>
+    <tr><td class="gt_row gt_left">437</td>
+<td class="gt_row gt_left">takoihiraokazu</td>
+<td class="gt_row gt_left">Takoi</td>
+<td class="gt_row gt_left">05/24/2016</td>
+<td class="gt_row gt_right">226</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">438</td>
+<td class="gt_row gt_left gt_striped">backaggle</td>
+<td class="gt_row gt_left gt_striped">automata</td>
+<td class="gt_row gt_left gt_striped">05/24/2018</td>
+<td class="gt_row gt_right gt_striped">226</td></tr>
+    <tr><td class="gt_row gt_left">439</td>
+<td class="gt_row gt_left">btgraham</td>
+<td class="gt_row gt_left">Benjamin Graham</td>
+<td class="gt_row gt_left">12/01/2013</td>
+<td class="gt_row gt_right">224</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">440</td>
+<td class="gt_row gt_left gt_striped">underwearfitting</td>
+<td class="gt_row gt_left gt_striped">sin</td>
+<td class="gt_row gt_left gt_striped">05/26/2020</td>
+<td class="gt_row gt_right gt_striped">223</td></tr>
+    <tr><td class="gt_row gt_left">441</td>
+<td class="gt_row gt_left">opanichev</td>
+<td class="gt_row gt_left">Oleg Panichev</td>
+<td class="gt_row gt_left">06/10/2014</td>
+<td class="gt_row gt_right">222</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">442</td>
+<td class="gt_row gt_left gt_striped">bryanb</td>
+<td class="gt_row gt_left gt_striped">BryanB</td>
+<td class="gt_row gt_left gt_striped">10/16/2016</td>
+<td class="gt_row gt_right gt_striped">220</td></tr>
+    <tr><td class="gt_row gt_left">443</td>
+<td class="gt_row gt_left">lucabasa</td>
+<td class="gt_row gt_left">Luca Basanisi</td>
+<td class="gt_row gt_left">07/24/2017</td>
+<td class="gt_row gt_right">220</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">444</td>
+<td class="gt_row gt_left gt_striped">dynamic24</td>
+<td class="gt_row gt_left gt_striped">dynamic24</td>
+<td class="gt_row gt_left gt_striped">04/23/2011</td>
+<td class="gt_row gt_right gt_striped">219</td></tr>
+    <tr><td class="gt_row gt_left">445</td>
+<td class="gt_row gt_left">meminozturk</td>
+<td class="gt_row gt_left">Emin Ozturk</td>
+<td class="gt_row gt_left">05/13/2016</td>
+<td class="gt_row gt_right">219</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">446</td>
+<td class="gt_row gt_left gt_striped">phunghieu</td>
+<td class="gt_row gt_left gt_striped">Hieu Phung</td>
+<td class="gt_row gt_left gt_striped">04/24/2018</td>
+<td class="gt_row gt_right gt_striped">219</td></tr>
+    <tr><td class="gt_row gt_left">447</td>
+<td class="gt_row gt_left">asuilin</td>
+<td class="gt_row gt_left">Arthur Suilin</td>
+<td class="gt_row gt_left">04/20/2017</td>
+<td class="gt_row gt_right">218</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">448</td>
+<td class="gt_row gt_left gt_striped">nadintamer</td>
+<td class="gt_row gt_left gt_striped">Nadin Tamer</td>
+<td class="gt_row gt_left gt_striped">09/08/2017</td>
+<td class="gt_row gt_right gt_striped">218</td></tr>
+    <tr><td class="gt_row gt_left">449</td>
+<td class="gt_row gt_left">frankmollard</td>
+<td class="gt_row gt_left">🌵</td>
+<td class="gt_row gt_left">01/09/2020</td>
+<td class="gt_row gt_right">218</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">450</td>
+<td class="gt_row gt_left gt_striped">vyombhatia</td>
+<td class="gt_row gt_left gt_striped">vyom bhatia</td>
+<td class="gt_row gt_left gt_striped">06/03/2020</td>
+<td class="gt_row gt_right gt_striped">218</td></tr>
+    <tr><td class="gt_row gt_left">451</td>
+<td class="gt_row gt_left">khahuras</td>
+<td class="gt_row gt_left">Kha Vo</td>
+<td class="gt_row gt_left">04/17/2018</td>
+<td class="gt_row gt_right">216</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">452</td>
+<td class="gt_row gt_left gt_striped">zikazika</td>
+<td class="gt_row gt_left gt_striped">Noah Weber</td>
+<td class="gt_row gt_left gt_striped">03/31/2018</td>
+<td class="gt_row gt_right gt_striped">215</td></tr>
+    <tr><td class="gt_row gt_left">453</td>
+<td class="gt_row gt_left">piantic</td>
+<td class="gt_row gt_left">Heroseo</td>
+<td class="gt_row gt_left">07/22/2019</td>
+<td class="gt_row gt_right">215</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">454</td>
+<td class="gt_row gt_left gt_striped">reighns</td>
+<td class="gt_row gt_left gt_striped">Hongnan G</td>
+<td class="gt_row gt_left gt_striped">07/17/2019</td>
+<td class="gt_row gt_right gt_striped">214</td></tr>
+    <tr><td class="gt_row gt_left">455</td>
+<td class="gt_row gt_left">ligtfeather</td>
+<td class="gt_row gt_left">Tanishq Gautam</td>
+<td class="gt_row gt_left">08/04/2019</td>
+<td class="gt_row gt_right">214</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">456</td>
+<td class="gt_row gt_left gt_striped">loaiabdalslam</td>
+<td class="gt_row gt_left gt_striped">Loai abdalslam</td>
+<td class="gt_row gt_left gt_striped">10/07/2018</td>
+<td class="gt_row gt_right gt_striped">213</td></tr>
+    <tr><td class="gt_row gt_left">457</td>
+<td class="gt_row gt_left">azizozmen</td>
+<td class="gt_row gt_left">Aziz Özmen</td>
+<td class="gt_row gt_left">06/25/2021</td>
+<td class="gt_row gt_right">213</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">458</td>
+<td class="gt_row gt_left gt_striped">solorzano</td>
+<td class="gt_row gt_left gt_striped">José H. Solórzano</td>
+<td class="gt_row gt_left gt_striped">07/21/2010</td>
+<td class="gt_row gt_right gt_striped">212</td></tr>
+    <tr><td class="gt_row gt_left">459</td>
+<td class="gt_row gt_left">markpeng</td>
+<td class="gt_row gt_left">Mark Peng</td>
+<td class="gt_row gt_left">05/29/2014</td>
+<td class="gt_row gt_right">211</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">460</td>
+<td class="gt_row gt_left gt_striped">liaofz</td>
+<td class="gt_row gt_left gt_striped">Fangzhou Liao</td>
+<td class="gt_row gt_left gt_striped">01/10/2016</td>
+<td class="gt_row gt_right gt_striped">211</td></tr>
+    <tr><td class="gt_row gt_left">461</td>
+<td class="gt_row gt_left">sonalisingh1411</td>
+<td class="gt_row gt_left">🚀𝐒𝐨𝐧𝐚𝐥𝐢 𝐒𝐢𝐧𝐠𝐡</td>
+<td class="gt_row gt_left">05/29/2019</td>
+<td class="gt_row gt_right">211</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">462</td>
+<td class="gt_row gt_left gt_striped">icecuber</td>
+<td class="gt_row gt_left gt_striped">icecuber</td>
+<td class="gt_row gt_left gt_striped">07/16/2016</td>
+<td class="gt_row gt_right gt_striped">210</td></tr>
+    <tr><td class="gt_row gt_left">463</td>
+<td class="gt_row gt_left">daishu</td>
+<td class="gt_row gt_left">daishu</td>
+<td class="gt_row gt_left">05/29/2017</td>
+<td class="gt_row gt_right">210</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">464</td>
+<td class="gt_row gt_left gt_striped">mariapushkareva</td>
+<td class="gt_row gt_left gt_striped">Marie</td>
+<td class="gt_row gt_left gt_striped">10/08/2018</td>
+<td class="gt_row gt_right gt_striped">210</td></tr>
+    <tr><td class="gt_row gt_left">465</td>
+<td class="gt_row gt_left">coreacasa</td>
+<td class="gt_row gt_left">Manuel Campos</td>
+<td class="gt_row gt_left">11/28/2017</td>
+<td class="gt_row gt_right">209</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">466</td>
+<td class="gt_row gt_left gt_striped">aquatic</td>
+<td class="gt_row gt_left gt_striped">Joe Eddy</td>
+<td class="gt_row gt_left gt_striped">03/27/2016</td>
+<td class="gt_row gt_right gt_striped">208</td></tr>
+    <tr><td class="gt_row gt_left">467</td>
+<td class="gt_row gt_left">khsamaha</td>
+<td class="gt_row gt_left">Kheirallah Samaha</td>
+<td class="gt_row gt_left">11/18/2016</td>
+<td class="gt_row gt_right">208</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">468</td>
+<td class="gt_row gt_left gt_striped">phoenix9032</td>
+<td class="gt_row gt_left gt_striped">Doomsday</td>
+<td class="gt_row gt_left gt_striped">09/11/2018</td>
+<td class="gt_row gt_right gt_striped">208</td></tr>
+    <tr><td class="gt_row gt_left">469</td>
+<td class="gt_row gt_left">jizhouwei</td>
+<td class="gt_row gt_left">Jizhou Wei</td>
+<td class="gt_row gt_left">11/11/2020</td>
+<td class="gt_row gt_right">208</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">470</td>
+<td class="gt_row gt_left gt_striped">nroman</td>
+<td class="gt_row gt_left gt_striped">Roman</td>
+<td class="gt_row gt_left gt_striped">03/06/2018</td>
+<td class="gt_row gt_right gt_striped">207</td></tr>
+    <tr><td class="gt_row gt_left">471</td>
+<td class="gt_row gt_left">goldens</td>
+<td class="gt_row gt_left">Golden</td>
+<td class="gt_row gt_left">07/24/2018</td>
+<td class="gt_row gt_right">207</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">472</td>
+<td class="gt_row gt_left gt_striped">nareshbhat</td>
+<td class="gt_row gt_left gt_striped">Naresha Bhat</td>
+<td class="gt_row gt_left gt_striped">12/27/2019</td>
+<td class="gt_row gt_right gt_striped">207</td></tr>
+    <tr><td class="gt_row gt_left">473</td>
+<td class="gt_row gt_left">xucheng</td>
+<td class="gt_row gt_left">大顺</td>
+<td class="gt_row gt_left">06/19/2017</td>
+<td class="gt_row gt_right">206</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">474</td>
+<td class="gt_row gt_left gt_striped">yogidsba</td>
+<td class="gt_row gt_left gt_striped">Yogita Darade</td>
+<td class="gt_row gt_left gt_striped">01/28/2021</td>
+<td class="gt_row gt_right gt_striped">205</td></tr>
+    <tr><td class="gt_row gt_left">475</td>
+<td class="gt_row gt_left">aishwarya2210</td>
+<td class="gt_row gt_left">Padmavathi D</td>
+<td class="gt_row gt_left">12/30/2021</td>
+<td class="gt_row gt_right">203</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">476</td>
+<td class="gt_row gt_left gt_striped">dslate</td>
+<td class="gt_row gt_left gt_striped">David J. Slate</td>
+<td class="gt_row gt_left gt_striped">08/05/2010</td>
+<td class="gt_row gt_right gt_striped">202</td></tr>
+    <tr><td class="gt_row gt_left">477</td>
+<td class="gt_row gt_left">pliptor</td>
+<td class="gt_row gt_left">Oscar Takeshita</td>
+<td class="gt_row gt_left">04/13/2017</td>
+<td class="gt_row gt_right">202</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">478</td>
+<td class="gt_row gt_left gt_striped">hely333</td>
+<td class="gt_row gt_left gt_striped">Dandelion</td>
+<td class="gt_row gt_left gt_striped">03/23/2018</td>
+<td class="gt_row gt_right gt_striped">202</td></tr>
+    <tr><td class="gt_row gt_left">479</td>
+<td class="gt_row gt_left">zaharch</td>
+<td class="gt_row gt_left">nosound</td>
+<td class="gt_row gt_left">09/13/2018</td>
+<td class="gt_row gt_right">202</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">480</td>
+<td class="gt_row gt_left gt_striped">finlay</td>
+<td class="gt_row gt_left gt_striped">MaXXX</td>
+<td class="gt_row gt_left gt_striped">05/24/2016</td>
+<td class="gt_row gt_right gt_striped">201</td></tr>
+    <tr><td class="gt_row gt_left">481</td>
+<td class="gt_row gt_left">nitindatta</td>
+<td class="gt_row gt_left">Nitin Datta</td>
+<td class="gt_row gt_left">07/21/2018</td>
+<td class="gt_row gt_right">200</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">482</td>
+<td class="gt_row gt_left gt_striped">morizin</td>
+<td class="gt_row gt_left gt_striped">Mohammed Rizin V K</td>
+<td class="gt_row gt_left gt_striped">07/28/2019</td>
+<td class="gt_row gt_right gt_striped">200</td></tr>
+    <tr><td class="gt_row gt_left">483</td>
+<td class="gt_row gt_left">authman</td>
+<td class="gt_row gt_left">عثمان</td>
+<td class="gt_row gt_left">02/28/2017</td>
+<td class="gt_row gt_right">199</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">484</td>
+<td class="gt_row gt_left gt_striped">andy2709</td>
+<td class="gt_row gt_left gt_striped">NguyenThanhNhan</td>
+<td class="gt_row gt_left gt_striped">06/20/2017</td>
+<td class="gt_row gt_right gt_striped">199</td></tr>
+    <tr><td class="gt_row gt_left">485</td>
+<td class="gt_row gt_left">utkukubilay</td>
+<td class="gt_row gt_left">Utku_Kubilay</td>
+<td class="gt_row gt_left">05/25/2019</td>
+<td class="gt_row gt_right">199</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">486</td>
+<td class="gt_row gt_left gt_striped">ejlok1</td>
+<td class="gt_row gt_left gt_striped">Eu Jin Lok</td>
+<td class="gt_row gt_left gt_striped">10/21/2010</td>
+<td class="gt_row gt_right gt_striped">198</td></tr>
+    <tr><td class="gt_row gt_left">487</td>
+<td class="gt_row gt_left">jtrotman</td>
+<td class="gt_row gt_left">James Trotman</td>
+<td class="gt_row gt_left">05/05/2015</td>
+<td class="gt_row gt_right">198</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">488</td>
+<td class="gt_row gt_left gt_striped">kylinorange</td>
+<td class="gt_row gt_left gt_striped">Jun Xie</td>
+<td class="gt_row gt_left gt_striped">04/28/2017</td>
+<td class="gt_row gt_right gt_striped">198</td></tr>
+    <tr><td class="gt_row gt_left">489</td>
+<td class="gt_row gt_left">bguberfain</td>
+<td class="gt_row gt_left">Bruno G. do Amaral</td>
+<td class="gt_row gt_left">09/02/2014</td>
+<td class="gt_row gt_right">197</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">490</td>
+<td class="gt_row gt_left gt_striped">bolkonsky</td>
+<td class="gt_row gt_left gt_striped">YuryBolkonsky</td>
+<td class="gt_row gt_left gt_striped">07/30/2017</td>
+<td class="gt_row gt_right gt_striped">197</td></tr>
+    <tr><td class="gt_row gt_left">491</td>
+<td class="gt_row gt_left">tikutiku</td>
+<td class="gt_row gt_left">Tom</td>
+<td class="gt_row gt_left">01/19/2018</td>
+<td class="gt_row gt_right">197</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">492</td>
+<td class="gt_row gt_left gt_striped">niharika41298</td>
+<td class="gt_row gt_left gt_striped">Niharika Pandit</td>
+<td class="gt_row gt_left gt_striped">01/20/2019</td>
+<td class="gt_row gt_right gt_striped">197</td></tr>
+    <tr><td class="gt_row gt_left">493</td>
+<td class="gt_row gt_left">anshuls235</td>
+<td class="gt_row gt_left">Anshul Sharma</td>
+<td class="gt_row gt_left">10/11/2017</td>
+<td class="gt_row gt_right">196</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">494</td>
+<td class="gt_row gt_left gt_striped">ruslankl</td>
+<td class="gt_row gt_left gt_striped">def me(x)</td>
+<td class="gt_row gt_left gt_striped">12/26/2017</td>
+<td class="gt_row gt_right gt_striped">196</td></tr>
+    <tr><td class="gt_row gt_left">495</td>
+<td class="gt_row gt_left">nancyalaswad90</td>
+<td class="gt_row gt_left">Ms. Nancy Al Aswad</td>
+<td class="gt_row gt_left">11/22/2018</td>
+<td class="gt_row gt_right">196</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">496</td>
+<td class="gt_row gt_left gt_striped">linshokaku</td>
+<td class="gt_row gt_left gt_striped">deoxy</td>
+<td class="gt_row gt_left gt_striped">11/27/2019</td>
+<td class="gt_row gt_right gt_striped">196</td></tr>
+    <tr><td class="gt_row gt_left">497</td>
+<td class="gt_row gt_left">goldenlock</td>
+<td class="gt_row gt_left">gezi</td>
+<td class="gt_row gt_left">05/06/2012</td>
+<td class="gt_row gt_right">195</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">498</td>
+<td class="gt_row gt_left gt_striped">arbazkhan971</td>
+<td class="gt_row gt_left gt_striped">ask9</td>
+<td class="gt_row gt_left gt_striped">10/21/2017</td>
+<td class="gt_row gt_right gt_striped">195</td></tr>
+    <tr><td class="gt_row gt_left">499</td>
+<td class="gt_row gt_left">marcuslin</td>
+<td class="gt_row gt_left">Marcus Lin</td>
+<td class="gt_row gt_left">12/04/2017</td>
+<td class="gt_row gt_right">195</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">500</td>
+<td class="gt_row gt_left gt_striped">ubamba98</td>
+<td class="gt_row gt_left gt_striped">Udbhav Bamba</td>
+<td class="gt_row gt_left gt_striped">12/14/2017</td>
+<td class="gt_row gt_right gt_striped">195</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<p>Big names in the top 10, and among them yours truly at rank 7. Which is mind-blowing, to be honest. Among the ten most followed Kagglers in the world. Wow. I hope that I can give interesting ideas and inspiration back to the community.</p>
+<p>Seeing <a href="https://www.kaggle.com/abhishek">Abhishek Thakur</a> in 1st place is no surprise. He was the first 3 x Grandmaster <em>and</em> 4 x Grandmaster, and constantly shares great knowledge on Kaggle and through his <a href="https://www.youtube.com/channel/UCBPRJjIWfyNG4X-CRbnv78A">popular Youtube channel</a>. <a href="https://www.kaggle.com/sudalairajkumar">SRK</a>, another 4 x GM, was already a Kaggle legend when I joined the platform. And <a href="https://www.kaggle.com/bestfitting">bestfitting</a> has just reclaimed the title of Competitions #1, which they had previously held for several years.</p>
+<p>Feel free to scroll through the table and you will recognise many names from Kaggle’s past or present.</p>
+</div>
+<div id="get-ready-for-networking" class="section level3">
+<h3>Get ready for networking</h3>
+<p>To wrap up this post, we will prepare a compact dataset which we can then feed into the network analysis tools that I want to practice in the upcoming post. We could do that already based on the <code>UserFollowers.csv</code> file only. But I’d like to work with the user names instead.</p>
+<p>In this notation, <code>user_1</code> is being followed by <code>user_2</code>. We’re also keeping track of the <code>CreationDate</code>, which is the <code>date</code> at which the follow began. And of the Kaggle tiers (e.g. Expert, Master) of both users. The new dataset only contains relationships between the top 500 followed Kagglers.</p>
+<pre class="r"><code>follow_network &lt;- follow |&gt; 
+  left_join(top500 |&gt; select(user_1 = UserName,
+                             tier_1 = PerformanceTier,
+                             followers_1 = n,
+                             FollowingUserId), by = &quot;FollowingUserId&quot;) |&gt; 
+  left_join(top500 |&gt; select(user_2 = UserName,
+                             tier_2 = PerformanceTier,
+                             followers_2 = n,
+                             UserId = FollowingUserId), by = &quot;UserId&quot;) |&gt; 
+  filter(!is.na(user_1) &amp; !is.na(user_2)) |&gt; 
+  mutate(date = mdy(CreationDate)) |&gt; 
+  select(user_1, user_2, tier_1, tier_2, followers_1, followers_2, date)</code></pre>
+<p>Here are the first few rows to illustrate what the file looks like. Those rows show the <a href="https://www.kaggle.com/antgoldbloom">Kaggle founder and now former CEO Anthony Goldblum</a> following his Co-Founder <a href="https://www.kaggle.com/benhamner">Ben Hamner</a> and a few other people:</p>
+<pre class="r"><code>follow_network |&gt; 
+  head(5) |&gt; 
+  gt() |&gt; 
+  opt_row_striping()</code></pre>
+<div id="rkuuffvbqr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#rkuuffvbqr .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#rkuuffvbqr .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rkuuffvbqr .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#rkuuffvbqr .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#rkuuffvbqr .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rkuuffvbqr .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rkuuffvbqr .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#rkuuffvbqr .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#rkuuffvbqr .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#rkuuffvbqr .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#rkuuffvbqr .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#rkuuffvbqr .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#rkuuffvbqr .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#rkuuffvbqr .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#rkuuffvbqr .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#rkuuffvbqr .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#rkuuffvbqr .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#rkuuffvbqr .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rkuuffvbqr .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#rkuuffvbqr .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rkuuffvbqr .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#rkuuffvbqr .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#rkuuffvbqr .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rkuuffvbqr .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rkuuffvbqr .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#rkuuffvbqr .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rkuuffvbqr .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#rkuuffvbqr .gt_left {
+  text-align: left;
+}
+
+#rkuuffvbqr .gt_center {
+  text-align: center;
+}
+
+#rkuuffvbqr .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#rkuuffvbqr .gt_font_normal {
+  font-weight: normal;
+}
+
+#rkuuffvbqr .gt_font_bold {
+  font-weight: bold;
+}
+
+#rkuuffvbqr .gt_font_italic {
+  font-style: italic;
+}
+
+#rkuuffvbqr .gt_super {
+  font-size: 65%;
+}
+
+#rkuuffvbqr .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">user_1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">user_2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">tier_1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">tier_2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">followers_1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">followers_2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">date</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">benhamner</td>
+<td class="gt_row gt_left">antgoldbloom</td>
+<td class="gt_row gt_right">3</td>
+<td class="gt_row gt_right">2</td>
+<td class="gt_row gt_right">1526</td>
+<td class="gt_row gt_right">996</td>
+<td class="gt_row gt_left">2017-05-23</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">kmader</td>
+<td class="gt_row gt_left gt_striped">antgoldbloom</td>
+<td class="gt_row gt_right gt_striped">4</td>
+<td class="gt_row gt_right gt_striped">2</td>
+<td class="gt_row gt_right gt_striped">1614</td>
+<td class="gt_row gt_right gt_striped">996</td>
+<td class="gt_row gt_left gt_striped">2018-08-07</td></tr>
+    <tr><td class="gt_row gt_left">lavanyashukla01</td>
+<td class="gt_row gt_left">antgoldbloom</td>
+<td class="gt_row gt_right">2</td>
+<td class="gt_row gt_right">2</td>
+<td class="gt_row gt_right">876</td>
+<td class="gt_row gt_right">996</td>
+<td class="gt_row gt_left">2019-09-18</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">imdevskp</td>
+<td class="gt_row gt_left gt_striped">antgoldbloom</td>
+<td class="gt_row gt_right gt_striped">3</td>
+<td class="gt_row gt_right gt_striped">2</td>
+<td class="gt_row gt_right gt_striped">494</td>
+<td class="gt_row gt_right gt_striped">996</td>
+<td class="gt_row gt_left gt_striped">2020-03-08</td></tr>
+    <tr><td class="gt_row gt_left">parulpandey</td>
+<td class="gt_row gt_left">antgoldbloom</td>
+<td class="gt_row gt_right">4</td>
+<td class="gt_row gt_right">2</td>
+<td class="gt_row gt_right">3974</td>
+<td class="gt_row gt_right">996</td>
+<td class="gt_row gt_left">2020-04-27</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<hr />
+<p>This is all for the scope of this post. See the next posts for a continuation of this analysis and a deeper dive into Kaggle community dynamics. Have fun!</p>
+</div>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//headsortails.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/python.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137904077-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  </body>
+</html>
+
